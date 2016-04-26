@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+  <module name="ccspcommon_mbus" testGroup="Component">
+    <primitiveTests>
+      <primitiveTest id="" name="CCSPMBUS_LoadCfg" version="1">
+        <function>CCSPMBUS_LoadCfg</function>
+        <parameters>
+          <parameter name="cmpCfgFile" value="a"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_LoadDmXml" version="1">
+        <function>CCSPMBUS_LoadDmXml</function>
+        <parameters>
+          <parameter name="xmlfileName" value="a"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_Init" version="1">
+        <function>CCSPMBUS_Init</function>
+        <parameters>
+          <parameter name="cfgfileName" value="a"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_RegisterPath" version="1">
+        <function>CCSPMBUS_RegisterPath</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_RegisterBase" version="1">
+        <function>CCSPMBUS_RegisterBase</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_Exit" version="1">
+        <function>CCSPMBUS_Exit</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_BusCheck" version="1">
+        <function>CCSPMBUS_BusCheck</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_CheckNamespaceDataType" version="1">
+        <function>CCSPMBUS_CheckNamespaceDataType</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_DiskComponentSupportingDynamicTbl" version="1">
+        <function>CCSPMBUS_DiskComponentSupportingDynamicTbl</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_DiskNamespaceSupportedByComponent" version="1">
+        <function>CCSPMBUS_DiskNamespaceSupportedByComponent</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_DumpComponentRegistry" version="1">
+        <function>CCSPMBUS_DumpComponentRegistry</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_GetAllocMemory" version="1">
+        <function>CCSPMBUS_GetAllocMemory</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_GetHealth" version="1">
+        <function>CCSPMBUS_GetHealth</function>
+        <parameters>
+          <parameter name="cmpId" value="a"/>
+          <parameter name="cmpPath" value="a"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_GetMaxMemory" version="1">
+        <function>CCSPMBUS_GetMaxMemory</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_GetRegisteredComponents" version="1">
+        <function>CCSPMBUS_GetRegisteredComponents</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_InformEndSession" version="1">
+        <function>CCSPMBUS_InformEndSession</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_RegisterCapabilities" version="1">
+        <function>CCSPMBUS_RegisterCapabilities</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_IsSystemReady" version="1">
+        <function>CCSPMBUS_IsSystemReady</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_QueryStatus" version="1">
+        <function>CCSPMBUS_QueryStatus</function>
+      </primitiveTest>
+      <primitiveTest name="CCSPMBUS_RegisterEvent" id=" " version="3">
+        <function>CCSPMBUS_RegisterEvent</function>
+        <parameters>
+          <parameter name="eventName" value="a"/>
+          <parameter name="eventName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_ReqSessionId" version="1">
+        <function>CCSPMBUS_ReqSessionId</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_SendSignal" version="1">
+        <function>CCSPMBUS_SendSignal</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_UnRegisterComponent" version="1">
+        <function>CCSPMBUS_UnRegisterComponent</function>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_UnRegisterEvent" version="1">
+        <function>CCSPMBUS_UnRegisterEvent</function>
+        <parameters>
+          <parameter name="eventName" value="a"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="CCSPMBUS_UnRegisterNamespace" version="1">
+        <function>CCSPMBUS_UnRegisterNamespace</function>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>

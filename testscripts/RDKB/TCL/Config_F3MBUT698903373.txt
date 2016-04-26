@@ -1,0 +1,62 @@
+#Automation Server Details ,in which the tcl scripts are stored and executes
+
+#Java files path 
+classPath /home/rdkb/HDM/WEBPA2.0.jar:/home/rdkb/HDM/lib/commons-logging-1.1.2.jar
+#class com.comcast.xarcbatch.rdkb.TelescopeClient
+class com.comcast.xarcbatch.rdkb.WebPAClient
+
+#classPath /home/rdkb/HDM:/home/rdkb/HDM/HDM.jar:/home/rdkb/HDM/THDM.jar
+#class com.comcast.xarcbatch.rdkb.util.TelescopeClient
+
+#Device Details - Cable Modem
+cmIP 10.254.207.34
+SerialNo 14:CF:E2:14:C2:32
+DeviceType XB3
+OUI 0000CA
+
+#SSID Name Details for 2.4GHZ and 5GHZ Radio.
+SSID2 RDKB-2.4
+SSID5 RDKB-5
+
+#SSID and Radio Index Details for 2.4GHZ and 5GHZ Radio.
+RadioIndex2 10000
+SSIDIndex2 10001
+RadioIndex5 10100
+SSIDIndex5 10101
+
+#Ethernet PC1 connected to the Cable Modem - Details
+telnetIP 10.255.42.162
+UserName root
+Password RDKB@DevOps!
+OsName1 linux
+
+
+#Wireless Lan PC1 Details
+WlanIP 10.255.42.172
+WlanName Automation4
+WlanPassword RDKB@DevOps
+WlanInterfaceName Wireless_Network_Connection_6
+WlanAdminName Administrator
+WlanAdminPassword #infy123
+ProfilePath C:\Users\Automation4\Repository
+Interface 6
+
+
+#WAN Machine Details
+WanIP 10.255.47.231
+WanName ACPE
+WanPassword ACPE$121
+
+#Lan ftp details
+FtpIP 10.255.42.162
+FtpName rdkbtest
+FtpPassword rdkbtest123
+
+#Wan ftp details
+WanFtpIP 10.255.47.231
+WanFtpName sysadmin
+WanFtpPassword #infy123
+
+
+
+

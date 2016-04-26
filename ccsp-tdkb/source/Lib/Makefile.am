@@ -1,0 +1,14 @@
+AM_CFLAGS = -D_ANSC_LINUX
+AM_CFLAGS += -D_ANSC_USER
+AM_CFLAGS += -D_ANSC_LITTLE_ENDIAN_
+AM_LDFLAGS = -lccsp_common
+AM_LDFLAGS += -lcm_mgnt
+AM_LDFLAGS += -lcm_tr181
+AM_CFLAGS += -DeRT=0
+AM_CPPFLAGS = -Wall
+ACLOCAL_AMFLAGS = -I m4
+hardware_platform = i686-linux-gnu
+lib_LTLIBRARIES = libtdkagentssp.la
+libtdkagentssp_la_CPPFLAGS = -I/var/tmp/pc-rdkb/include/dbus-1.0 -I$(top_srcdir)/../../CcspCMAgent/source/TR-181/board_sbapi -I$(top_srcdir)/../..//CcspCMAgent/source/TR-181/middle_layer_src -I$(top_srcdir)/../../CcspCMAgnet/source/TR-181/include -I$(top_srcdir)/../../CcspWifiAgent/source/TR-181/sbapi/ -I$(top_srcdir)/../../CcspWifiAgent/include/TR-181/ml/ -I$(top_srcdir)/../../CcspCMAgent/source/TR-181/include/ -I$(top_srcdir)/source/Custom $(CPPFLAGS)
+libtdkagentssp_la_SOURCES = ssp_messagebus_interface.c ssp_tdk_mbus_wrp.c ssp_tdk_mbus_lib.c ssp_action.c ssp_main.c ssp_tdk_CosaCM_wrp.c ssp_tdk_wrp.c
+libtdkagentssp_la_LDFLAGS =  -lccsp_common -lcm_mgnt -lcm_tr181

@@ -1,0 +1,11 @@
+[Unit]
+Description=TDK Test Agent Start
+After=swupdate.service
+Requires=swupdate.service
+
+[Service]
+ExecStartPre=/bin/sh -c 'cp -r /var/TDK /opt/'
+ExecStart=/bin/sh -c '/opt/TDK/StartTDK.sh'
+Restart=always
+[Install]
+WantedBy=multi-user.target
