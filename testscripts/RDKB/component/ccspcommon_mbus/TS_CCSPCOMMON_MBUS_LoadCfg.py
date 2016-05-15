@@ -1,3 +1,14 @@
+# ==============================================
+# COMCAST CONFIDENTIAL AND PROPRIETARY
+# ==============================================
+
+# This file and its contents are the intellectual property of Comcast.  
+# It may not be used,copied,distributed or otherwise  disclosed in 
+# whole or in part without the express written permission of Comcast.
+
+# ===============================================
+# Copyright (c) 2016 Comcast. All rights reserved.
+# ===============================================
 '''
 <?xml version='1.0' encoding='utf-8'?>
 <xml>
@@ -37,10 +48,12 @@
   </rdk_versions>
 </xml>
 '''
+
+#use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib; 
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("ccspcommon_mbus","1");
+obj = tdklib.TDKScriptingLibrary("ccspcommon_mbus","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -63,13 +76,12 @@ if loadStatusExpected not in loadModuleresult.upper():
 tdkTestObj = obj.createTestStep('CCSPMBUS_LoadCfg');
 
 #Input Parameters
-#tdkTestObj.addParameter("cfgfileName","/opt/TDK/tdkb/ccsp_msg.cfg");
-tdkTestObj.addParameter("cmpCfgFile","/opt/TDK/CcspTDKB.cfg");
-
-#Execute the test case in STB
-tdkTestObj.executeTestCase("");
+tdkTestObj.addParameter("cmpCfgFile","/var/TDK/CcspTDKB.cfg");
 
 expectedresult = "SUCCESS";
+
+#Execute the test case in STB
+tdkTestObj.executeTestCase(expectedresult);
 
 #Get the result of execution
 actualresult = tdkTestObj.getResult();

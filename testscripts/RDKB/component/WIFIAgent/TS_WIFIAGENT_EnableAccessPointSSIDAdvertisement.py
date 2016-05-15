@@ -1,3 +1,14 @@
+# ==============================================
+# COMCAST CONFIDENTIAL AND PROPRIETARY
+# ==============================================
+
+# This file and its contents are the intellectual property of Comcast.  
+# It may not be used,copied,distributed or otherwise  disclosed in 
+# whole or in part without the express written permission of Comcast.
+
+# ===============================================
+# Copyright (c) 2016 Comcast. All rights reserved.
+# ===============================================
 '''
 <?xml version='1.0' encoding='utf-8'?>
 <xml>
@@ -37,11 +48,12 @@
   </rdk_versions>
 </xml>
 '''
+
 #use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import time;
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("wifiagent","1");
+obj = tdklib.TDKScriptingLibrary("wifiagent","RDKB");
 #IP and Port of box, No need to change,
 #This will be replaced with corresponding Box Ip and port while executing script
 ip = <ipaddress>

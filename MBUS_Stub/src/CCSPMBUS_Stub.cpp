@@ -1,15 +1,16 @@
 /*
- * ============================================================================
- * COMCAST C O N F I D E N T I A L AND PROPRIETARY
- * ============================================================================
- * This file and its contents are the intellectual property of Comcast.  It may
- * not be used, copied, distributed or otherwise  disclosed in whole or in part
- * without the express written permission of Comcast.
- * ============================================================================
- * Copyright (c) 2014 Comcast. All rights reserved.
- * ============================================================================
- */
+* ============================================================================
+* COMCAST CONFIDENTIAL AND PROPRIETARY
+* ============================================================================
 
+* This file and its contents are the intellectual property of Comcast.  It may
+* not be used, copied, distributed or otherwise  disclosed in whole or in part
+* without the express written permission of Comcast.
+
+* ============================================================================
+* Copyright (c) 2016 Comcast. All rights reserved.
+* ============================================================================
+*/
 #include "CCSPMBUS_Stub.h"
 #include "ssp_tdk_wrp.h"
 #include "ssp_tdk_mbus_wrp.h"
@@ -106,7 +107,7 @@ bool CCSPMBUS::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_ReqSessionId, "CCSPMBUS_ReqSessionId");
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_InformEndSession, "CCSPMBUS_InformEndSession");
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_BusCheck, "CCSPMBUS_BusCheck");
-    ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_BusCheck, "CCSPMBUS_CheckNamespaceDataType");
+    ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_CheckNamespaceDataType, "CCSPMBUS_CheckNamespaceDataType");
 
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_CosaWifiInit, "CCSPMBUS_CosaWifiInit");
     return TEST_SUCCESS;
@@ -1046,6 +1047,8 @@ bool CCSPMBUS::CCSPMBUS_DumpComponentRegistry(IN const Json::Value& req, OUT Jso
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_DumpComponentRegistry --->Entry \n");
 
     int returnValue = SSP_MBUS_FAILURE;
+
+    returnValue = ssp_mbus_dump_component_registry();
 
     if(SSP_MBUS_SUCCESS == returnValue)
     {

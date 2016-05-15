@@ -1,14 +1,16 @@
 /*
- * ============================================================================
- * COMCAST C O N F I D E N T I A L AND PROPRIETARY
- * ============================================================================
- * This file and its contents are the intellectual property of Comcast.  It may
- * not be used, copied, distributed or otherwise  disclosed in whole or in part
- * without the express written permission of Comcast.
- * ============================================================================
- * Copyright (c) 2014 Comcast. All rights reserved.
- * ============================================================================
- */
+* ============================================================================
+* COMCAST CONFIDENTIAL AND PROPRIETARY
+* ============================================================================
+
+* This file and its contents are the intellectual property of Comcast.  It may
+* not be used, copied, distributed or otherwise  disclosed in whole or in part
+* without the express written permission of Comcast.
+
+* ============================================================================
+* Copyright (c) 2016 Comcast. All rights reserved.
+* ============================================================================
+*/
 
 #ifdef __GNUC__
 #if (!defined _BUILD_ANDROID) && (!defined _NO_EXECINFO_H_)
@@ -245,6 +247,10 @@ int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType, i
         val[0].type = ccsp_int;
     }
     else if (strcmp(pParamType,"unsignedint")==0)
+    {
+        val[0].type = ccsp_unsignedInt;
+    }
+    else if (strcmp(pParamType,"unsignedInt")==0)
     {
         val[0].type = ccsp_unsignedInt;
     }

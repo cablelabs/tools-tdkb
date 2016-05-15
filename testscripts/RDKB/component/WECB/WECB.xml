@@ -1,0 +1,81 @@
+<!-- 
+# ============================================================================
+# COMCAST CONFIDENTIAL AND PROPRIETARY
+# ============================================================================
+
+# This file and its contents are the intellectual property of Comcast.  It may
+# not be used, copied, distributed or otherwise  disclosed in whole or in part
+# without the express written permission of Comcast.
+
+# ============================================================================
+# Copyright (c) 2016 Comcast. All rights reserved.
+# ============================================================================ 
+-->
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+  <module name="WECB" testGroup="Component">
+    <primitiveTests>
+      <primitiveTest id="" name="WECB_GetParamValues" version="1">
+        <function>WECB_GetParamValues</function>
+        <parameters>
+          <parameter name="paramName" value="Device.MoCA"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WECB_GetParamNames" version="3">
+        <function>WECB_GetParamNames</function>
+        <parameters>
+          <parameter name="paramName" value="Device.MoCA.X_CISCO_COM_ProvisioningServerAddress"/>
+          <parameter name="recursive" value="1"/>
+          <parameter name="paramList" value="Device.MoCA."/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WECB_GetParamAttributes" version="1">
+        <function>WECB_GetParamAttributes</function>
+        <parameters>
+          <parameter name="paramName" value="Device.MoCA."/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="WECB_SetParamValues" id=" " version="2">
+        <function>WECB_SetParamValues</function>
+        <parameters>
+          <parameter name="paramName" value="Device.MoCA."/>
+          <parameter name="paramValue" value="Moca"/>
+          <parameter name="paramType" value="string"/>
+          <parameter name="commit" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WECB_SetParamAttribute" version="1">
+        <function>WECB_SetParamAttribute</function>
+        <parameters>
+          <parameter name="accessControl" value="anybody"/>
+          <parameter name="notify" value="active"/>
+          <parameter name="paramName" value="Device.MoCA."/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WECB_SetSessionId" version="1">
+        <function>WECB_SetSessionId</function>
+        <parameters>
+          <parameter name="sessionId" value="1"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WECB_AddObject" version="1">
+        <function>WECB_AddObject</function>
+        <parameters>
+          <parameter name="paramName" value="Device.MoCA."/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WECB_DelObject" version="1">
+        <function>WECB_DelObject</function>
+        <parameters>
+          <parameter name="paramName" value="Device.MoCA."/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WECB_SetCommit" version="1">
+        <function>WECB_SetCommit</function>
+        <parameters>
+          <parameter name="paramName" value="Device.MoCA."/>
+        </parameters>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>

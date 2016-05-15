@@ -1,0 +1,64 @@
+<!-- 
+# ============================================================================
+# COMCAST CONFIDENTIAL AND PROPRIETARY
+# ============================================================================
+
+# This file and its contents are the intellectual property of Comcast.  It may
+# not be used, copied, distributed or otherwise  disclosed in whole or in part
+# without the express written permission of Comcast.
+
+# ============================================================================
+# Copyright (c) 2016 Comcast. All rights reserved.
+# ============================================================================ 
+-->
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+  <module name="AdvancedConfig" testGroup="Component">
+    <primitiveTests>
+      <primitiveTest id=" " name="AdvancedConfig_AddObject" version="1">
+        <function>AdvancedConfig_AddObject</function>
+        <parameters>
+          <parameter name="paramName" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="AdvancedConfig_Get" version="1">
+        <function>AdvancedConfig_Get</function>
+        <parameters>
+          <parameter name="paramName" value=""/>
+          <parameter name="paramName" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="paramValue" value=""/>
+          <parameter name="paramValue" value=""/>
+          <parameter name="paramValue" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="AdvancedConfig_Set" version="1">
+        <function>AdvancedConfig_Set</function>
+        <parameters>
+          <parameter name="paramName" value=""/>
+          <parameter name="paramName" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="paramValue" value=""/>
+          <parameter name="paramValue" value=""/>
+          <parameter name="paramValue" value=""/>
+          <parameter name="paramValue" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="AdvancedConfig_DelObject" version="1">
+        <function>AdvancedConfig_DelObject</function>
+        <parameters>
+          <parameter name="paramName" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="AdvancedConfig_ExecuteCurlCommand" id=" " version="4">
+        <function>AdvancedConfig_ExecuteCurlCommand</function>
+        <parameters>
+          <parameter name="CurlCommand" value="curl -i "/>
+        </parameters>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>

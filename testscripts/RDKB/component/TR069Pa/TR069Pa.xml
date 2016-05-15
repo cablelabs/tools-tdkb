@@ -1,0 +1,75 @@
+<!-- 
+# ============================================================================
+# COMCAST CONFIDENTIAL AND PROPRIETARY
+# ============================================================================
+
+# This file and its contents are the intellectual property of Comcast.  It may
+# not be used, copied, distributed or otherwise  disclosed in whole or in part
+# without the express written permission of Comcast.
+
+# ============================================================================
+# Copyright (c) 2016 Comcast. All rights reserved.
+# ============================================================================ 
+-->
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+  <module name="TR069Pa" testGroup="E2E">
+    <primitiveTests>
+      <primitiveTest id=" " name="TR069Agent_GetParameterValues" version="1">
+        <function>TR069Agent_GetParameterValues</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="TR069Agent_SetParameterValues" version="1">
+        <function>TR069Agent_SetParameterValues</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+          <parameter name="ParamValue" value="A"/>
+          <parameter name="Type" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="TR069Agent_Terminate" version="1">
+        <function>TR069Agent_Terminate</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="TR069Agent_Init" version="1">
+        <function>TR069Agent_Init</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id=" " name="TR069Agent_GetParameterNames" version="1">
+        <function>TR069Agent_GetParameterNames</function>
+        <parameters>
+          <parameter name="ParamList" value="A"/>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="TR069Agent_SetParameterAttr" version="4">
+        <function>TR069Agent_SetParameterAttr</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+          <parameter name="AccessControl" value="A"/>
+          <parameter name="Notify" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="TR069Agent_GetParameterAttr" version="1">
+        <function>TR069Agent_GetParameterAttr</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="TR069Agent_Execute" id=" " version="1">
+        <function>TR069Agent_Execute</function>
+        <parameters>
+          <parameter name="AccessControl" value="A"/>
+          <parameter name="ACSReq" value="A"/>
+          <parameter name="Notify" value="A"/>
+          <parameter name="ParamName" value="A"/>
+          <parameter name="ParamValue" value="A"/>
+          <parameter name="RPCMethod" value="A"/>
+          <parameter name="Type" value="A"/>
+        </parameters>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>

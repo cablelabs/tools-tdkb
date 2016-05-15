@@ -1,0 +1,102 @@
+<!-- 
+# ============================================================================
+# COMCAST CONFIDENTIAL AND PROPRIETARY
+# ============================================================================
+
+# This file and its contents are the intellectual property of Comcast.  It may
+# not be used, copied, distributed or otherwise  disclosed in whole or in part
+# without the express written permission of Comcast.
+
+# ============================================================================
+# Copyright (c) 2016 Comcast. All rights reserved.
+# ============================================================================ 
+-->
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+  <module name="MTA_Agent" testGroup="E2E">
+    <primitiveTests>
+      <primitiveTest id="" name="MTA_agent_SetParameterAttr" version="1">
+        <function>MTA_agent_SetParameterAttr</function>
+        <parameters>
+          <parameter name="AccessControl" value="A"/>
+          <parameter name="Notify" value="A"/>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="MTA_agent_SetParameterValues" version="1">
+        <function>MTA_agent_SetParameterValues</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+          <parameter name="ParamValue" value="A"/>
+          <parameter name="Type" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="MTA_agent_Init" version="1">
+        <function>MTA_agent_Init</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="MTA_agent_Terminate" version="1">
+        <function>MTA_agent_Terminate</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id=" " name="MTA_agent_GetParameterValues" version="1">
+        <function>MTA_agent_GetParameterValues</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="MTA_agent_GetParameterNames" version="1">
+        <function>MTA_agent_GetParameterNames</function>
+        <parameters>
+          <parameter name="ParamList" value="A"/>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="MTA_agent_GetParameterAttr" version="1">
+        <function>MTA_agent_GetParameterAttr</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="MTA_agent_Commit" version="3">
+        <function>MTA_agent_Commit</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+          <parameter name="ParamValue" value="A"/>
+          <parameter name="Type" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="MTA_agent_GetParameterNames_NextLevel" version="1">
+        <function>MTA_agent_GetParameterNames_NextLevel</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="MTA_agent_AddTbl" version="1">
+        <function>MTA_agent_AddTbl</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="MTA_agent_DelTble" version="1">
+        <function>MTA_agent_DelTble</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="MTA_agent_GetHealth" version="1">
+        <function>MTA_agent_GetHealth</function>
+        <parameters>
+          <parameter name="ParamName" value="A"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="MTA_agent_SetSessionId" id=" " version="1">
+        <function>MTA_agent_SetSessionId</function>
+        <parameters>
+          <parameter name="priority" value="1"/>
+          <parameter name="sessionId" value="1"/>
+        </parameters>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>

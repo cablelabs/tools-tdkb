@@ -1,3 +1,16 @@
+<!-- 
+# ============================================================================
+# COMCAST CONFIDENTIAL AND PROPRIETARY
+# ============================================================================
+
+# This file and its contents are the intellectual property of Comcast.  It may
+# not be used, copied, distributed or otherwise  disclosed in whole or in part
+# without the express written permission of Comcast.
+
+# ============================================================================
+# Copyright (c) 2016 Comcast. All rights reserved.
+# ============================================================================ 
+-->
 <?xml version="1.0" encoding="UTF-8"?>
 <xml>
   <module name="CosaCM" testGroup="Component">
@@ -137,7 +150,7 @@
         </parameters>
       </primitiveTest>
       <primitiveTest id=" " name="CosaCM_SetLoopDiagnosticsStart" version="2">
-        <function>COSACM_SetLoopDiagnosticsStart</function>
+        <function>CosaCM_SetLoopDiagnosticsStart</function>
         <parameters>
           <parameter name="handleType" value="0"/>
           <parameter name="boolValue" value="0"/>

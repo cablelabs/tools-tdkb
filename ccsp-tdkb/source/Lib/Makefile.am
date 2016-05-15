@@ -1,10 +1,22 @@
+# ============================================================================
+# COMCAST CONFIDENTIAL AND PROPRIETARY
+# ============================================================================
+
+# This file and its contents are the intellectual property of Comcast.  It may
+# not be used, copied, distributed or otherwise  disclosed in whole or in part
+# without the express written permission of Comcast.
+
+# ============================================================================
+# Copyright (c) 2016 Comcast. All rights reserved.
+# ============================================================================
+
 AM_CFLAGS = -D_ANSC_LINUX
 AM_CFLAGS += -D_ANSC_USER
 AM_CFLAGS += -D_ANSC_LITTLE_ENDIAN_
 AM_LDFLAGS = -lccsp_common
 AM_LDFLAGS += -lcm_mgnt
 AM_LDFLAGS += -lcm_tr181
-AM_CFLAGS += -DeRT=0
+AM_CFLAGS += -DeRT=$(ERT_VALUE)
 AM_CPPFLAGS = -Wall
 ACLOCAL_AMFLAGS = -I m4
 hardware_platform = i686-linux-gnu

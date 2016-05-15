@@ -1,0 +1,99 @@
+<!-- 
+# ============================================================================
+# COMCAST CONFIDENTIAL AND PROPRIETARY
+# ============================================================================
+
+# This file and its contents are the intellectual property of Comcast.  It may
+# not be used, copied, distributed or otherwise  disclosed in whole or in part
+# without the express written permission of Comcast.
+
+# ============================================================================
+# Copyright (c) 2016 Comcast. All rights reserved.
+# ============================================================================ 
+-->
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+  <module name="CMAgent" testGroup="E2E">
+    <primitiveTests>
+      <primitiveTest name="CMAgent_Get" id=" " version="2">
+        <function>CMAgent_Get</function>
+        <parameters>
+          <parameter name="paramName" value="Device.X_CISCO_COM_CableModem."/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMAgent_AddObject" version="1">
+        <function>CMAgent_AddObject</function>
+        <parameters>
+          <parameter name="paramName" value="Device.X_CISCO_COM_CableModem."/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMAgent_DelObject" version="2">
+        <function>CMAgent_DelObject</function>
+        <parameters>
+          <parameter name="paramName" value="Device.X_CISCO_COM_CableModem."/>
+          <parameter name="apiTest" value="1"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMAgent_GetAttr" version="1">
+        <function>CMAgent_GetAttr</function>
+        <parameters>
+          <parameter name="paramname" value="Device.X_CISCO_COM_CableModem.LoopDiagnosticsDetails"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMAgent_GetNames" version="1">
+        <function>CMAgent_GetNames</function>
+        <parameters>
+          <parameter name="brecursive" value="1"/>
+          <parameter name="pathname" value="Device.X_CISCO_COM_CableModem."/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMAgent_GetHealth" version="1">
+        <function>CMAgent_GetHealth</function>
+        <parameters>
+          <parameter name="paramName" value="Device.X_CISCO_COM_CableModem."/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMAgent_Set" version="3">
+        <function>CMAgent_Set</function>
+        <parameters>
+          <parameter name="paramName" value="Device.X_CISCO_COM_CableModem.DOCSISConfigFileName"/>
+          <parameter name="paramValue" value="string"/>
+          <parameter name="paramType" value="TDKTEST.cm"/>
+          <parameter name="commit" value="1"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMAgent_SetAttr" version="1">
+        <function>CMAgent_SetAttr</function>
+        <parameters>
+          <parameter name="accessControlChanged" value="anybody"/>
+          <parameter name="notification" value="passive"/>
+          <parameter name="paramname" value="Device.X_CISCO_COM_CableModem.LoopDiagnosticsDetails"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMAgent_SetCommit" version="1">
+        <function>CMAgent_SetCommit</function>
+        <parameters>
+          <parameter name="paramName" value="Device.X_CISCO_COM_CableModem."/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMAgent_SetSessionId" version="5">
+        <function>CMAgent_SetSessionId</function>
+        <parameters>
+          <parameter name="sessionId" value="1"/>
+          <parameter name="pathname" value="Device.X_CISCO_COM_CableModem."/>
+          <parameter name="override" value="0"/>
+          <parameter name="priority" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMAgent_Set_Get" version="1">
+        <function>CMAgent_Set_Get</function>
+        <parameters>
+          <parameter name="commit" value=""/>
+          <parameter name="paramName" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="paramValue" value=""/>
+        </parameters>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>

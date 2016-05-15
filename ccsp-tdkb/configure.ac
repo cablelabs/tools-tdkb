@@ -1,3 +1,15 @@
+# ============================================================================
+# COMCAST CONFIDENTIAL AND PROPRIETARY
+# ============================================================================
+
+# This file and its contents are the intellectual property of Comcast.  It may
+# not be used, copied, distributed or otherwise  disclosed in whole or in part
+# without the express written permission of Comcast.
+
+# ============================================================================
+# Copyright (c) 2016 Comcast. All rights reserved.
+# ============================================================================
+
 #                                              -*- Autoconf -*-
 # Process this file with autoconf to produce configure script.
 #
@@ -29,6 +41,23 @@ AC_C_INLINE
 
 # Checks for library functions.
 AC_FUNC_MALLOC
+
+ERT_VALUE=0
+
+AC_ARG_ENABLE([ert],
+        AS_HELP_STRING([--enable-ert],[enable ert]),
+        [
+          case "${enableval}" in
+             yes) ERT_VALUE=1 ;;
+           no) ERT_VALUE=0 ;;
+          *) AC_MSG_ERROR([bad value ${enableval} for --enable-ert ]) ;;
+           esac
+           ],
+         [echo "ert is enabled"])
+
+
+AC_SUBST(ERT_VALUE)
+
 
 AC_CONFIG_FILES(
         source/Lib/Makefile

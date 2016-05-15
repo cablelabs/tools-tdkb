@@ -1,15 +1,16 @@
 /*
- * ============================================================================
- * COMCAST C O N F I D E N T I A L AND PROPRIETARY
- * ============================================================================
- * This file and its contents are the intellectual property of Comcast.  It may
- * not be used, copied, distributed or otherwise  disclosed in whole or in part
- * without the express written permission of Comcast.
- * ============================================================================
- * Copyright (c) 2014 Comcast. All rights reserved.
- * ============================================================================
- */
+* ============================================================================
+* COMCAST CONFIDENTIAL AND PROPRIETARY
+* ============================================================================
 
+* This file and its contents are the intellectual property of Comcast.  It may
+* not be used, copied, distributed or otherwise  disclosed in whole or in part
+* without the express written permission of Comcast.
+
+* ============================================================================
+* Copyright (c) 2016 Comcast. All rights reserved.
+* ============================================================================
+*/
 
 #ifndef __SSP_MBUS_WRP_C__
 #define __SSP_MBUS_WRP_C__
@@ -786,7 +787,9 @@ int ssp_mbus_dump_component_registry()
 
     int return_status = SSP_MBUS_FAILURE;
 
-    if(return_status == SSP_MBUS_TRUE)
+    return_status = CcspBaseIf_dumpComponentRegistry (tdk_bus_handle,
+                                                      CCSP_CR_NAME);
+    if(return_status == CCSP_SUCCESS)
     {
         printf("\n ssp_mbus_dump_component_registry :: CcspBaseIf_dumpComponentRegistry function is success and  return status %d",return_status);
         printf("\n ssp_mbus_dump_component_registry :: Please check DUT Console Log for the CR Dump ... \n");
