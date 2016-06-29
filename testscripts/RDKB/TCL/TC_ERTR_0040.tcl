@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -34,7 +35,7 @@ puts $output1;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output1] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "In 1st parameter setting";
+puts "Failed in 1st parameter setting";
 set result "FAILED";	
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -53,7 +54,7 @@ puts $output2;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output2] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "In 1st parameter setting";
+puts "Failed in 1st parameter getting";
 set result "FAILED";	
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -63,7 +64,7 @@ after 80000;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                 					 
+#Step 3 :Trying to Telnet to WLAN Client                                                           					 
 ################################################################################
 }
 spawn telnet $wlanIP
@@ -98,7 +99,7 @@ set failFlag "";
 
 puts {
 ################################################################################
-#Step 4 :Verifying the connection to the proper SSID		 				   
+#Step 4 :Verifying the 5GHz Wi-Fi Connection Establishment	   
 ################################################################################
 }
 
@@ -121,15 +122,15 @@ if {[regexp {There is no profile "$ssid5" assigned to the specified interface.} 
 	puts "Test case failed; Unable to obtain IP\n";
 	set failFlag [expr $failFlag + 1];
 	
-	} else { 
-	
-	if {[regexp {10\..*\..*\..*} $ip] == 1} {
-	puts "Connection Successful";
-	puts "IP obtained is: $ip\n";
-	set passFlag [expr $passFlag + 1];
-	 
-		}
-	}
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
 
 	
 } else {

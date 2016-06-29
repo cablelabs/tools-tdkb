@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -61,15 +62,15 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                 
+#Step 3 :Trying to Telnet to WLAN Client
 ################################################################################
 }
 spawn telnet $wlanIP
 set timeout 100;
 expect -re (.*ogin:);
-send "$wlanName\r";
+send "$wlanAdminName\r";
 expect -re (.*word:);
-send "$wlanPassword\r";
+send "$wlanAdminPassword\r";
 expect -re ".*>";
 send "netsh wlan add profile filename=\"$profilePath\\Wireless.xml\" interface=\"$interface_name1\"\r";
 expect -re ".*>";
@@ -77,12 +78,17 @@ send "netsh wlan connect $ssid2\r";
 expect -re ".*>";
 set outpCon $expect_out(buffer);
 after 30000;
+send "route add $wanIP mask 255.255.255.255 10.0.0.1\r";
+expect -re ".*OK!.*>";
 send "ipconfig\r";
 expect -re ".*>";
 set outIp $expect_out(buffer);
 send "ping -n 4 $wanIP\r";
 expect -re ".*>";
 set outPing $expect_out(buffer);
+send "route delete $wanIP\r";
+expect -re ".*OK!.*>";
+
 send "netsh wlan delete profile name=\"$ssid2\"\r";
 expect -re ".*>";
 send "exit\r"
@@ -150,10 +156,10 @@ if {[regexp {.*Lost.*=.*\((.*)% loss\)} $outPing match lossPercent] == 1} {
 
         if {$lossPercent == 0} {
         set passFlag [expr $passFlag + 1];
-        puts "Ping successful from WLAN to WAN IP of WG  when firewall is set to low"
+        puts "Ping successful from WLAN to WAN when firewall is set to Low"
         } else {
         set failFlag [expr $failFlag + 1];
-        puts "Ping not successful from WLAN to WAN IP of WG when firewall is set to low"
+        puts "Ping not successful from WLAN to WAN when firewall is set to Low"
 
         }
 }

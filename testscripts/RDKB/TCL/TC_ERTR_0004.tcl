@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -35,7 +36,7 @@ puts $voutput;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $voutput] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to set 2nd parameter";
+puts "Failed to set 1st parameter";
 set result "FAILED";
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -79,7 +80,7 @@ set interface_name1 [split $wlanInterfaceName "_"];
 after 45000;
 puts {
 #################################################################
-#Step 3 :Trying to connect to WG by telnet-ing to the WLAN client                                                                           			
+#Step 3 :Trying to Telnet to WLAN Client                                                                           			
 #################################################################
 }
 spawn telnet $wlanIP
@@ -111,7 +112,7 @@ set passFlag "";
 set failFlag "";
 puts {
 #################################################################################################################
-#Step 4 :Checking whether the CPE is able to connect to the network with the specified SSID and obtain the IP address                                                         					  
+#Step 4 : Verifying the 2.4GHz Wi-Fi Connection Establishment                                                         					  
 #################################################################################################################
 }
 if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} $outpCon match] == 1} {
@@ -157,7 +158,7 @@ set result "PASSED"
   }
 puts {
 ################################################################################
-#Step 5 :Reverting the ModeEnabled and PreSharedKey back to their initial value                                                              					 
+#Step 5 : Reverting back to its default values
 ################################################################################
 }
 set voutput "";
@@ -166,7 +167,7 @@ puts $voutput;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $voutput] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to set 2nd parameter";
+puts "Failed to set 1st parameter";
 set result "FAILED";
 set passContent "Test Result : $result$~";
 displayProc $passContent;

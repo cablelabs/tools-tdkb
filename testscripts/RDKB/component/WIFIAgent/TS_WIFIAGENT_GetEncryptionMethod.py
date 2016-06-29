@@ -16,7 +16,7 @@
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
   <version>9</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
-  <name>TS_WIFIAGENT_GetParamValues</name>
+  <name>TS_WIFIAGENT_GetEncryptionMethod</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id></primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
@@ -26,7 +26,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>Get Param Values API Validation</synopsis>
+  <synopsis>This test case will fetch the current WIFI encryption method</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -39,7 +39,7 @@
   <skip>false</skip>
   <!--  -->
   <box_types>
-    <box_type>Hybrid-1</box_type>
+    <box_type>Broadband</box_type>
     <!--  -->
   </box_types>
   <rdk_versions>
@@ -59,7 +59,7 @@ obj = tdklib.TDKScriptingLibrary("wifiagent","RDKB");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_WIFIAGENT_GetParamValues');
+obj.configureTestCase(ip,port,'TS_WIFIAGENT_GetEncryptionMethod');
 
 #Get the result of connection with test component and STB
 loadModuleresult =obj.getLoadModuleResult();

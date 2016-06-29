@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -25,7 +26,7 @@ Initializer $configFile;
 
 puts {
 ######################################################################################################################### 
-#Step 1 :Enabling the MAC filter but allowing specific WIFI clients    			  
+#Step 1 :Enabling the MAC filter and allow access for Specific Wi-Fi Client    			  
 #########################################################################################################################
 }
 
@@ -41,9 +42,10 @@ set passContent "Test Result : $result$~";
 displayProc $passContent;
 exit 0;
 }
+after 5000;
 
 set output1 "";
-set output1 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.FilterAsBlackList true boolean];
+set output1 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.FilterAsBlackList false boolean];
 puts $output1;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output1] == 1 } {
 
@@ -54,7 +56,7 @@ set passContent "Test Result : $result$~";
 displayProc $passContent;
 exit 0;
 }
-
+after 5000;
 spawn telnet $wlanIP;
 set timeout 100;
 expect -re (.*ogin:);
@@ -65,6 +67,8 @@ expect -re ".*>";
 send "ipconfig /all\r";
 expect -re ".*>";
 set outIp $expect_out(buffer);
+send "netsh wlan delete profile name=\"$ssid2\"\r";
+expect -re ".*>";
 send "exit\r";
 expect -re ".*>";
 #wait
@@ -75,9 +79,27 @@ regexp {.*Wireless LAN.*Physical Address.*: ([0-9 A-F]{1,2}-[0-9 A-F]{1,2}-[0-9 
 regsub -all {\-} $MAC1 {:} m1;
 
 
-
 set output2 "";
-set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.MACAddress $m1 string];
+#set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.MACAddress $m1 string];
+
+spawn telnet $AutomationServerIP;
+set timeout 100;
+expect -re (.*ogin:);
+send "$AutomationServerName\r";
+expect -re (.*word:);
+send "$AutomationServerPassword\r";
+expect -re ".*$";
+
+regsub -all {\:} $SNno {} SNnoWithoutColon;
+set output2 "";
+send "curl -X PUT -H \"Authorization: Basic d2VicGFfcmVsZWFzZTEuMA==\" -H \"content-type:application/json\" -H \"X-Webpa-Atomic:true\" -k -i https://api.webpa.comcast.net:8090/api/v2/device/mac:$SNnoWithoutColon/config/Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable. -d '{\"0\":{\"DeviceName\": \"Automation4-PC\",\"MACAddress\": \"$m1\"}}'\r";
+
+expect -re ".*~]";
+set output2 $expect_out(buffer);
+
+#Exiting Automation Server
+send "exit\r";
+expect -re ".*";
 puts $output2;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output2] == 1 } {
 
@@ -88,7 +110,7 @@ set passContent "Test Result : $result$~";
 displayProc $passContent;
 exit 0;
 }
-
+after 40000;
 puts {
 ######################################################################################################################### 
 #Step 2 :Get the parameters that has been set     											 
@@ -121,25 +143,12 @@ displayProc $passContent;
 exit 0;
 }
 
-set output5 "";
-set output5 [exec java -cp $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.MACAddress null null];
-puts $output5;
-if {[regexp {.*Time limit has crossed 2 minutes.*} $output5] == 1 } {
-
-puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to get 3rd parameter";
-set result "FAILED";
-set passContent "Test Result : $result$~";
-displayProc $passContent;
-exit 0;
-}
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ######################################################################################################################### 
-#Step 3 :Telneting to a WLAN client  and trying to connect to the broadcasted SSID.                                                                					
+#Step 3 : Trying to Telnet WLAN Client
 #########################################################################################################################
 }
-#telnet-ing to a WLAN server
 spawn telnet $wlanIP
 set timeout 100;
 expect -re (.*ogin:);
@@ -166,7 +175,7 @@ set failFlag "";
 
 puts {
 ######################################################################################################################### 
-#Step 4 :Checking the connection details by validating the response.                                                               					 
+#Step 5 :Checking the connection details by validating the response.                                                               					 
 #########################################################################################################################
 }
 
@@ -188,15 +197,15 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 	
 	puts " Unable to obtain IP\n";
 		
-	} else { 
-	
-	if {[regexp {10\..*\..*\..*} $ip] == 1} {
-	puts "Client connected successfully"
-	puts "IP obtained is: $ip\n";
-	set passFlag [expr $passFlag + 1];
-	 
-		}
-	}
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
 
 	
 } else {
@@ -216,7 +225,7 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 }
 puts {
 ######################################################################################################################### 
-#Step 5 :Reverting the parameters to its default value     			  
+#Step 6 :Reverting the parameters to its default value     			  
 #########################################################################################################################
 }
 
@@ -240,6 +249,36 @@ if {[regexp {.*Time limit has crossed 2 minutes.*} $output6] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
 puts "Failed to set 2nd parameter";
+set result "FAILED";
+set passContent "Test Result : $result$~";
+displayProc $passContent;
+exit 0;
+}
+
+spawn telnet $AutomationServerIP;
+set timeout 100;
+expect -re (.*ogin:);
+send "$AutomationServerName\r";
+expect -re (.*word:);
+send "$AutomationServerPassword\r";
+expect -re ".*$";
+
+regsub -all {\:} $SNno {} SNnoWithoutColon;
+set soutput "";
+send "curl -X PUT -H \"Authorization: Basic d2VicGFfcmVsZWFzZTEuMA==\" -H \"content-type:application/json\" -H \"X-Webpa-Atomic:true\" -k -i https://api.webpa.comcast.net:8090/api/v2/device/mac:$SNnoWithoutColon/config/Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable. -d '{\"0\":{\"DeviceName\": \"Automation4-PC\",\"MACAddress\": \"00:00:00:00:00:00\"}}'\r";
+
+expect -re ".*~]";
+set soutput $expect_out(buffer);
+after 5000;
+#Exiting Automation Server
+send "exit\r";
+expect -re ".*";
+
+puts $soutput;
+if {[regexp {.*Time limit has crossed 2 minutes.*} $soutput] == 1 } {
+
+puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
+puts "Failed to set 3rd parameter";
 set result "FAILED";
 set passContent "Test Result : $result$~";
 displayProc $passContent;

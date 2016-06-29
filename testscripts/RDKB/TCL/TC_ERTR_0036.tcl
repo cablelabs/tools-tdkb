@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -94,7 +95,7 @@ set interface_name1 [split $wlanInterfaceName "_"];
 after 45000;
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                 					 
+#Step 3 :Trying to connect to CM telnet-ing to a WLAN server                                                                 					 
 ################################################################################
 }
 spawn telnet $wlanIP
@@ -148,15 +149,15 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 	if {[regexp {169\.254\..*\..*} $ip] == 1 || [regexp {127\.0\.0\.0} $ip] == 1 } {
 	puts " Unable to obtain IP\n";
 		
-	} else { 
-	
-	if {[regexp {10\..*\..*\..*} $ip] == 1} {
-	puts "IP obtained is: $ip\n";
-	puts "Failed : Client should not connect successfully";
-	set failFlag1 [expr $failFlag1 + 1];
-	 
-		}
-	}
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
 
 	
 }
@@ -168,7 +169,7 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 
 puts {
 ################################################################################
-#Step 5 :Trying to connect to WG telnet-ing to a WLAN client                                                                 					 
+#Step 5 :Trying to connect to CM telnet-ing to a WLAN server                                                                 					 
 ################################################################################
 }
 spawn telnet $wlanIP
@@ -214,8 +215,8 @@ if {[regexp {There is no profile "$ssid5" assigned to the specified interface.} 
  } 
 	if {[regexp {Connection request was completed successfully.} $outpCon match] == 1} {
 	set passFlag2 [expr $passFlag2 + 1];
-        puts "IP address has not been obtained as the 5GHz WiFi radio has been disabled."
-        if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match ip] == 1 } {
+	puts "IP address has not been obtained as the 5GHz WiFi radio has been disabled."
+	if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match ip] == 1 } {
 		
 	if {[regexp {169\.254\..*\..*} $ip] == 1 || [regexp {127\.0\.0\.0} $ip] == 1 } {
 	puts " Unable to obtain IP\n";
@@ -246,7 +247,7 @@ set result "PASSED"
  }
   puts {
 ################################################################################
-#Step 7 :Reverting the ModeEnabled and PreSharedKey back to their initial value.                                                               					 
+#Step 7 :Reverting  back to its default values                                                               					 
 ################################################################################
 }
 set output5 "";

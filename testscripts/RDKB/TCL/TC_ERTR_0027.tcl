@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -94,7 +95,7 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                 					 
+#Step 3 : Trying to Telnet to WLAN Client
 ################################################################################
 }
 spawn telnet $wlanIP
@@ -126,8 +127,7 @@ set passFlag "";
 set failFlag "";
 puts {
 ################################################################################
-#Step 4 :Validating the output and checking for the ip address within defined
- range                                                               					 
+#Step 4 :Verifying the 5GHz Wi-Fi Connection Establishment
 ################################################################################
 }
 if {[regexp {There is no profile "RDKB-5" assigned to the specified interface.} $outpCon match] == 1} {

@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -63,7 +64,7 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts { 
 ################################################################################ 
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                                                      
+#Step 3 :Trying to Telnet to LAN Client
 ################################################################################ 
 } 
 spawn telnet $Telnetip;
@@ -95,7 +96,7 @@ after 30000;
 send "ipconfig\r"; 
 expect -re ".*>"; 
 set outIp $expect_out(buffer); 
-send "wget http://$Ipval/test.txt\r";
+send "wget --tries=1 -T 60 http://$Ipval/test.txt\r";
 expect -re ".*>";
 set outHttp $expect_out(buffer);
 send "netsh wlan delete profile name=\"$ssid2\"\r";
@@ -133,15 +134,15 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
         puts "Test case failed; Unable to obtain IP\n"; 
         set failFlag [expr $failFlag + 1]; 
          
-        } else {  
-         
-        if {[regexp {10\..*\..*\..*} $ip] == 1} {
-        puts "Connection Successful"; 
-        puts "IP obtained is: $ip\n"; 
-        set passFlag [expr $passFlag + 1]; 
-          
-                } 
-        } 
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
  
          
 } else { 
@@ -155,12 +156,12 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 
 puts {
 ############################################################################################
-#Step 5 :Verifying the reachability of the http message                                            
+#Step 5 :Verifying the reachability of the HTTP Request                                            
 ############################################################################################
 }
 if {[regexp {.*200 OK.*} $outHttp match] == 1} {
         set passFlag [expr $passFlag + 1];
-        puts "HTTP traffic from LAN to LAN is allowed when firewall is set to high" 
+        puts "HTTP traffic from LAN to LAN is allowed when firewall is set to High" 
 		} else {
         set failFlag [expr $failFlag + 1];
         puts "HTTP traffic is blocked from LAN to LAN"

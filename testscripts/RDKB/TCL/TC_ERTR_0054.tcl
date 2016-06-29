@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -60,7 +61,7 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts { 
 ################################################################################ 
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                                                       
+#Step 3 :Trying to Telnet to WLAN Client
 ################################################################################ 
 } 
 spawn telnet $wlanIP 
@@ -115,15 +116,15 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
         puts "Test case failed; Unable to obtain IP\n"; 
         set failFlag [expr $failFlag + 1]; 
          
-        } else {  
-         
-        if {[regexp {10\..*\..*\..*} $ip] == 1} {
-        puts "Connection Successful"; 
-        puts "IP obtained is: $ip\n"; 
-        set passFlag [expr $passFlag + 1]; 
-          
-                } 
-        } 
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
  
          
 } else { 
@@ -140,7 +141,7 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 
 puts {
 ################################################################################
-#Step 5 :Trying to connect to WG telnet-ing to a LAN client                                                                                                      
+#Step 5 :Trying to Telnet to LAN Client                                                                                
 ################################################################################
 } 
 spawn telnet $Telnetip;
@@ -195,7 +196,7 @@ if {[regexp {.*Microsoft.*} $outTelnet match] == 1 } {
 
 
 set failFlag [expr $failFlag + 1];
-        puts "Telnet Request not successful from LAN to LAN when firewall is set to high"
+        puts "Telnet Request not successful from LAN to LAN when firewall is set to High"
 	}
  
 if {$passFlag == 1} {

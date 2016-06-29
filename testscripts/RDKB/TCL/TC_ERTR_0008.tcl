@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -91,7 +92,7 @@ after 60000;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ######################################################################################################################### 
-#Step 3 :Trying to connect to WG  Telneting to a WLAN Client                                                            
+#Step 3 :Trying to connect Telnet to a WLAN Client                                                            
 #########################################################################################################################
 }
 
@@ -146,15 +147,16 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 	puts "Test case failed; Unable to obtain IP\n";
 	set failFlag [expr $failFlag + 1];
 	
-	} else { 
-	
-	if {[regexp {10\..*\..*\..*} $ip] == 1} {
-	puts "Connection Successful"
-	puts "IP obtained is: $ip\n";
-	set passFlag [expr $passFlag + 1];
-	 
-		}
-	}
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
+ 
 	
 } else {
 	 puts "\IP address not obtained.";

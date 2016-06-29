@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -62,7 +63,7 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                 					 
+#Step 3 : trying to Telnet to WLAN Client
 ################################################################################
 }
 spawn telnet $wlanIP
@@ -84,9 +85,46 @@ set outIp $expect_out(buffer);
 send "netsh wlan show interfaces\r";
 expect -re ".*>";
 set outInt $expect_out(buffer);
-send "ping 68.87.16.190\r";
+
+
+send "nslookup\r";
+expect -re ".*>";
+send "server 10.252.139.244\r";
+expect -re ".*>";
+send "www.google.com\r";
+expect -re ".*>";
+set outUrlResp $expect_out(buffer);
+if {[regexp {.*connection timed out.*} $outUrlResp match] == 1} {
+send "server 10.252.139.247\r";
+expect -re ".*>";
+send "www.google.com\r";
+expect -re ".*>";
+set outUrlResp $expect_out(buffer);
+
+if {[regexp {.*connection timed out.*} $outUrlResp match] == 1} {
+send "server 10.0.0.1\r";
+expect -re ".*>";
+send "www.google.com\r";
+expect -re ".*>";
+set outUrlResp $expect_out(buffer);
+}
+}
+send "exit\r";
+expect -re ".*>"
+regexp {.*Name.*?([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*} $outUrlResp match ipFull;
+regexp {(\d+\.\d+).*} $ipFull match ip;
+send "route add $ip.0.0 mask 255.255.0.0 10.0.0.1\r";
+expect -re ".*OK!.*>";
+
+
+send "ping www.google.com\r";
 expect -re ".*>";
 set outPing $expect_out(buffer);
+
+
+send "route delete $ip.0.0\r";
+expect -re ".*>";
+
 send "netsh wlan delete profile name=\"$ssid2\"\r";
 expect -re ".*>";
 send "exit\r";
@@ -124,14 +162,14 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
         puts "Test case failed; Unable to obtain IP\n";
         set failFlag [expr $failFlag + 1];
         
-        } else { 
-        
-        if {[regexp {10\..*\..*\..*} $ip] == 1} {
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
         puts "Connection Successful";
         puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
         set passFlag [expr $passFlag + 1];
-         
-                }
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
         }
 
         

@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+#
+
 package require Expect;
 #Procedure initialize values from Config.txt
 proc Initializer {configFile} {   
@@ -94,7 +95,6 @@ puts "$configFile";
                 if { ![string compare $Vname "cmPassword"] } {
                         global CMpassword "";
                         set CMpassword $Vvalue;
-
                 }
 
 
@@ -298,9 +298,9 @@ puts "$configFile";
 
    		} 
 		
-		if { ![string compare $Vname "WanIPv6"] } {
-                        global wanIPv6 "";
-                        set wanIPv6 $Vvalue;
+		if { ![string compare $Vname "WanIPv6WG"] } {
+                        global wanIPv6WG "";
+                        set wanIPv6WG $Vvalue;
 
                 }
 
@@ -321,7 +321,19 @@ puts "$configFile";
 			global ftpPassword "";
 			set ftpPassword $Vvalue;
 
-   		} 
+   		}
+
+                 if { ![string compare $Vname "FtpAudiofile"] } {
+                        global FtpAudiofile "";
+                        set FtpAudiofile $Vvalue;
+
+                }
+ 
+                if { ![string compare $Vname "FtpVideofile"] } {
+                        global FtpVideofile "";
+                        set FtpVideofile $Vvalue;
+
+                }
 
 		if { ![string compare $Vname "WanFtpIP"] } {
 			global wanFtpIP "";
@@ -381,20 +393,46 @@ puts "$configFile";
                         set siteUrl $Vvalue;
 
                 }
+		if { ![string compare $Vname "SiteHttps"] } {
+                        global siteHttps "";
+                        set siteHttps $Vvalue;
+
+                }
+		if { ![string compare $Vname "SiteKeywordIPv6"] } {
+                        global siteKeywordIPv6 "";
+                        set siteKeywordIPv6 $Vvalue;
+
+                }
 		
+		if { ![string compare $Vname "SiteUrlIPv6"] } {
+                        global siteUrlIPv6 "";
+                        set siteUrlIPv6 $Vvalue;
+
+                }
+                
+		if { ![string compare $Vname "SiteHttpsIPv6"] } {
+                        global siteHttpsIPv6 "";
+                        set siteHttpsIPv6 $Vvalue;
+
+                }
+
+		if { ![string compare $Vname "FtpIPv6"] } {
+                        global ftpIPv6 "";
+                        set ftpIPv6 $Vvalue;
+
+                }
+
 		if { ![string compare $Vname "IntNo"] } {
                         global intNo "";
                         set intNo $Vvalue;
 
                 }
-		 if { ![string compare $Vname "LeaseCommand"] } {
+		 
+		if { ![string compare $Vname "LeaseCommand"] } {
                         global leaseCommand "";
                         set leaseCommand $Vvalue;
 
                 }
-
-
-		
 
 		if { ![string compare $Vname "EthInterface"] } {
                         global ethInterface "";
@@ -465,10 +503,32 @@ puts "$configFile";
                         set AutomationServerPassword $Vvalue;
 
                 }
+		if { ![string compare $Vname "DeleteLogPath"] } {
+                        global deleteLogPath "";
+                        set deleteLogPath $Vvalue;
 
+                }
+		if { ![string compare $Vname "DeleteBackupLogPath"] } {
+                        global deleteBackupLogPath "";
+                        set deleteBackupLogPath $Vvalue;
 
-
-
+                }
+		if { ![string compare $Vname "LogfilePath"] } {
+                        global logFilePath "";
+                        set logFilePath $Vvalue;
+                }
+		if { ![string compare $Vname "BackupLogfilePath"] } {
+                        global backupLogfilePath "";
+                        set backupLogfilePath $Vvalue;
+                }
+		if { ![string compare $Vname "WifiLogFilename"] } {
+                        global wifiLogFilename "";
+                        set wifiLogFilename $Vvalue;
+                }
+		if { ![string compare $Vname "WebpaLogFilename"] } {
+                        global webpaLogFilename "";
+                        set webpaLogFilename $Vvalue;
+                }
 
 
 		if { ![string compare $Vname "exejar"] } {

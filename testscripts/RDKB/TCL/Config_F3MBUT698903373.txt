@@ -49,6 +49,13 @@ WanFtpIP XX.XX.XX.XXX
 WanFtpName XXXXXX
 WanFtpPassword YYYYYYY
 
+#Keyword Details
+SiteKeyword google
+SiteUrl www.google.com
+SiteHttps webmail.xxxx.com
+
+#Wan IP of Gateway device
+WanIPWG XX.XX.XX.XXX
 
 
 

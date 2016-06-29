@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -42,8 +43,7 @@ exit 0;
 
 puts {
 ################################################################################
-#Step 2 :Telnet-ing to a WLAN client and getting the broadcasted SSID on the 
-#client side                                                         					 
+#Step 2 :Trying to Telnet to WLAN Client                                                          					 
 ################################################################################
 }
 spawn telnet $wlanIP
@@ -86,7 +86,6 @@ set result "PASSED"
 } 
 }
 
-proc commented {} { 
  puts {
 ################################################################################
 #Step 4 : Reverting the SSID advertisement to its default value                                                               			 
@@ -103,7 +102,6 @@ set result "FAILED";
 set passContent "Test Result : $result$~";
 displayProc $passContent;
 exit 0;
-}
 }
 set passContent "Test Result : $result$~";
 displayProc $passContent;

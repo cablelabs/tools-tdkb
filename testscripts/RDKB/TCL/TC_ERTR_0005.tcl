@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -23,7 +24,7 @@ Initializer $configFile;
 
 puts {
 ######################################################################################################################### 
-#Step 1 :Configuring the Cable Modem with the specified Operating Standard for 2.4GHz radio.                                                                         			 
+#Step 1 :Configuring the WG with  Operating Standard 'n' for 2.4GHz radio.                                                                         			 
 #########################################################################################################################
 }
 set output1 "";
@@ -60,7 +61,7 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts { 
 ######################################################################################################################### 
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                              		
+#Step 3: Trying to Telnet to WLAN Client                                                       		
 #########################################################################################################################
 }
 
@@ -93,7 +94,7 @@ set passFlag "";
 set failFlag "";
 puts {
 ######################################################################################################################### 
-#Step 4 :Checking whether the CPE is able to connect to the network with the specified SSID and obtain the IP address.                                                               					  
+#Step 4 : Verifying the 2.4GHz Wi-Fi Connection Establishment
 #########################################################################################################################
 }
 if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} $outpCon match] == 1} {
@@ -115,15 +116,16 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 	puts "Test case failed; Unable to obtain IP\n";
 	set failFlag [expr $failFlag + 1];
 	
-	} else { 
-	
-	if {[regexp {10\..*\..*\..*} $ip] == 1} {
-	puts "Connection successful"
-	puts "IP obtained is: $ip\n";
-	set passFlag [expr $passFlag + 1];
-		}
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
 
-	}
 	
 } else {
 	 puts "\IP address not obtained.";
@@ -172,8 +174,7 @@ puts {
 #Step 6 :Reverting the Operating Standard for 2.4GHz Radio to its initial value.                                                               					 
 ################################################################################
 }
-set output3 "";
-set output3 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.Radio.$ri2.OperatingStandards g,n string];
+set output3 "";set output3 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.Radio.$ri2.OperatingStandards g,n string];
 puts $output3;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output3] == 1 } {
 

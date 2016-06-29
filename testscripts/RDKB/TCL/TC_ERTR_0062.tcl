@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -30,7 +31,7 @@ puts {
 ##########################################################################################################
 } 
 set output1 "";
-set otuput1 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.X_CISCO_COM_Security.Firewall.FirewallLevel Medium string];
+set output1 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.X_CISCO_COM_Security.Firewall.FirewallLevel Medium string];
 puts $output1;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output1] == 1 } {
 
@@ -61,7 +62,7 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts { 
 ################################################################################ 
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                                                      
+#Step 3 :Trying to Telnet to LAN Client
 ################################################################################ 
 } 
 spawn telnet $Telnetip;
@@ -131,15 +132,15 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
         puts "Test case failed; Unable to obtain IP\n"; 
         set failFlag [expr $failFlag + 1]; 
          
-        } else {  
-         
-        if {[regexp {10\..*\..*\..*} $ip] == 1} {
-        puts "Connection Successful"; 
-        puts "IP obtained is: $ip\n"; 
-        set passFlag [expr $passFlag + 1]; 
-          
-                } 
-        } 
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
  
          
 } else { 
@@ -153,12 +154,12 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 
 puts {
 ############################################################################################
-#Step 5 :Verifying the reachability of the http message                                            
+#Step 5 :Verifying the reachability of the HTTP Request
 ############################################################################################
 }
 if {[regexp {.*200 OK.*} $outHttp match] == 1} {
         set passFlag [expr $passFlag + 1];
-        puts "HTTP traffic from LAN to LAN is allowed when firewall is set to medium" 
+        puts "HTTP traffic from LAN to LAN is allowed when firewall is set to Medium" 
 		} else {
         set failFlag [expr $failFlag + 1];
         puts "HTTP traffic is blocked from LAN to LAN"
@@ -178,7 +179,7 @@ puts {
 }
 
 set output3 "";
-set otuput3 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.X_CISCO_COM_Security.Firewall.FirewallLevel Low string];
+set output3 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.X_CISCO_COM_Security.Firewall.FirewallLevel Low string];
 puts $output3;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output3] == 1 } {
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";

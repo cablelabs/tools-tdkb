@@ -185,6 +185,10 @@ bool WIFIAgent::WIFIAgent_Get(IN const Json::Value& req, OUT Json::Value& respon
         bReturn = TEST_SUCCESS;
         for(int i=0; i < paramsize; i++)
         {
+            DEBUG_PRINT(DEBUG_TRACE,"Parameter Id is %d\n",i);
+            DEBUG_PRINT(DEBUG_TRACE,"Parameter Name retrieved is: %s\n",resultDetails[i].pParamNames);
+            DEBUG_PRINT(DEBUG_TRACE,"Parameter Value retrieved is: %s",resultDetails[i].pParamValues);
+            DEBUG_PRINT(DEBUG_TRACE,"Parameter Type retrieved is: %d\n",resultDetails[i].pParamType);
             free(resultDetails[i].pParamValues);
         }
     }

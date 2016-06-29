@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -35,7 +36,7 @@ puts $voutput;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $voutput] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to set 2nd parameter";
+puts "Failed to set 1st parameter";
 set result "FAILED";
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -48,7 +49,7 @@ puts $output2;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output2] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to set 3rd parameter";
+puts "Failed to set 2nd parameter";
 set result "FAILED";
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -77,7 +78,7 @@ set interface_name1 [split $wlanInterfaceName "_"];
 after 45000;
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                 					 
+#Step 3 :Trying to Telnet to WLAN Client
 ################################################################################
 }
 spawn telnet $wlanIP
@@ -109,7 +110,7 @@ set passFlag "";
 set failFlag "";
 puts {
 ################################################################################
-#Step 4 :Verifying the connection to the proper SSID		 		
+#Step 4 :Verifying the 2.4GHz Wi-Fi Connection Establishment
 ################################################################################
 }
 
@@ -129,15 +130,16 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 	
 	puts " Unable to obtain IP\n";
 		
-	} else { 
-	
-	if {[regexp {10\..*\..*\..*} $ip] == 1} {
-	puts "IP obtained is: $ip\n";
-	puts "Failed : Client should not connect successfully"
-	set failFlag [expr $failFlag + 1];
-	 
-		}
-	}
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set failFlag [expr $failFlag + 1];
+	} else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
+ 
 
 	
 } else {
@@ -157,7 +159,7 @@ set result "PASSED"
   
 puts {
 ################################################################################
-#Step 5 :Reverting the ModeEnabled and PreSharedKey back to their initial value.                                                               					 
+#Step 5 :Reverting back to its default values                                                               					 
 ################################################################################
 }
 set voutput "";
@@ -166,7 +168,7 @@ puts $voutput;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $voutput] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to set 2nd parameter";
+puts "Failed to set 1st parameter";
 set result "FAILED";
 set passContent "Test Result : $result$~";
 displayProc $passContent;

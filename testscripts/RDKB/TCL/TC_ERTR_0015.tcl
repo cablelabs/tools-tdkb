@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -55,7 +56,7 @@ puts $soutput;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $soutput] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to set 1st parameter";
+puts "Failed to set 2nd parameter";
 set result "FAILED";	
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -69,7 +70,7 @@ puts $voutput;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $voutput] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to set 2nd parameter";
+puts "Failed to set 3rd parameter";
 set result "FAILED";
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -78,13 +79,13 @@ exit 0;
 
 set output2 "";
 
-set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si5.Security.X_CISCO_COM_KeyPassphrase wifitest123 string];
+set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si5.Security.PreSharedKey wifitest123 string];
 
 puts $output2;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output2] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to set 2nd parameter";
+puts "Failed to set 4th parameter";
 set result "FAILED";	
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -118,7 +119,7 @@ puts $output3;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output3] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to get 1st parameter ";
+puts "Failed to get 2nd parameter ";
 set result "FAILED";	
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -130,7 +131,7 @@ set interface_name1 [split $wlanInterfaceName "_"];
 after 30000;
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                 					 
+#Step 3 : Trying to Telnet to WLAN Client
 ################################################################################
 }
 spawn telnet $wlanIP
@@ -145,7 +146,7 @@ expect -re ".*>";
 send "netsh wlan connect $ssid5\r";
 expect -re ".*>";
 set outpCon $expect_out(buffer);
-after 20000
+after 30000;
 send "ipconfig\r";
 expect -re ".*>";
 set outIp $expect_out(buffer);
@@ -165,7 +166,7 @@ set failFlag "";
 
 puts {
 ################################################################################
-#Step 4 :Verifying the connection to the proper SSID		 				   
+#Step 4 :Verifying the 5GHz Wi-Fi Connection Establishment
 ################################################################################
 }
 
@@ -188,15 +189,15 @@ if {[regexp {There is no profile "$ssid5" assigned to the specified interface.} 
 	puts "Test case failed; Unable to obtain IP\n";
 	set failFlag [expr $failFlag + 1];
 	
-	} else { 
-	
-	if {[regexp {10\..*\..*\..*} $ip] == 1} {
-	puts "Connection Successful";
-	puts "IP obtained is: $ip\n";
-	set passFlag [expr $passFlag + 1];
-	 
-		}
-	}
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
 
 	
 } else {
@@ -261,7 +262,7 @@ puts $voutput;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $voutput] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to set 2nd parameter";
+puts "Failed to set 1st  parameter";
 set result "FAILED";
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -269,7 +270,7 @@ exit 0;
 }
 set output6 "";
 after 30000 {
-catch { exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si5.Security.X_CISCO_COM_KeyPassphrase wifitest123 string } output6;
+catch { exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si5.Security.PreSharedKey wifitest123 string } output6;
 }
 vwait output6;
 puts $output6;

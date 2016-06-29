@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -46,7 +47,7 @@ puts {
 ##########################################################################################################
 }
 set output3 "";
-set otuput3 [exec java -cp $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.X_CISCO_COM_Security.Firewall.FirewallLevel  null null];
+set output3 [exec java -cp $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.X_CISCO_COM_Security.Firewall.FirewallLevel  null null];
 puts $output3;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output3] == 1 } {
 
@@ -60,30 +61,90 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a LAN client                                                                  
+#Step 3 :Trying to Telnet to WLAN Client
 ################################################################################
 }
-spawn telnet $wlanIP
+spawn telnet $wlanIP;
 set timeout 100;
 expect -re (.*ogin:);
-send "$wlanName\r";
+send "$wlanAdminName\r";
 expect -re (.*word:);
-send "$wlanPassword\r";
+send "$wlanAdminPassword\r";
 expect -re ".*>";
 send "netsh wlan add profile filename=\"$profilePath\\Wireless.xml\" interface=\"$interface_name1\"\r";
 expect -re ".*>";
 send "netsh wlan connect $ssid2\r";
 expect -re ".*>";
 after 30000;
+send "ipconfig\r";
+expect -re ".*>";
+set outIp $expect_out(buffer);
+if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match ip] == 1 } {
+        if {[regexp {169\.254\..*\..*} $ip] == 1 || [regexp {127\.0\.0\.0} $ip] == 1 } {
+        puts "Test case failed; Unable to obtain IP\n";
+	set result "FAILED";
+	set passContent "Test Result : $result$~";
+	displayProc $passContent;
+	exit 0;
+        } else {
+        if {[regexp {10\..*\..*\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+                } else {
+         puts "\IP address not obtained.";
+        set result "FAILED";
+        set passContent "Test Result : $result$~";
+        displayProc $passContent;
+        exit 0;
+
+}
+}
+}
+send "nslookup\r";
+expect -re ".*>";
+send "server 10.252.139.244\r";
+expect -re ".*>";
+send "$siteUrl\r";
+expect -re ".*>";
+set outUrlResp $expect_out(buffer);
+send "exit\r";
+expect -re ".*>"
+regexp {.*Name.*?([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*} $outUrlResp match ipFull;
+regexp {(\d+\.\d+).*} $ipFull match ip;
+send "route add $ip.0.0 mask 255.255.0.0 10.0.0.1\r";
+expect -re ".*OK!.*>";
+send "wget --tries=1 -T 60 http://$siteUrl\r";
+expect -re ".*>";
+set outHttp $expect_out(buffer);
+send "route delete $ip.0.0\r";
+expect -re ".*>";
+send "exit\r";
+
+proc commented {} {
+spawn telnet $wlanIP
+set timeout 100;
+expect -re (.*ogin:);
+send "$wlanAdminName\r";
+expect -re (.*word:);
+send "$wlanAdminPassword\r";
+expect -re ".*>";
+send "netsh wlan add profile filename=\"$profilePath\\Wireless.xml\" interface=\"$interface_name1\"\r";
+expect -re ".*>";
+send "netsh wlan connect $ssid2\r";
+expect -re ".*>";
+after 30000;
+send "route add $wanIP mask 255.255.255.255 10.0.0.1\r";
+expect -re ".*OK!.*>";
 send "wget --tries=1 -T 60 http://$wanIP/test1.txt\r";
 expect -re ".*>";
 set outHttp $expect_out(buffer);
+send "route delete $wanIP\r";
+expect -re ".*OK!.*>";
 send "netsh wlan delete \"$ssid2\"\r";
 expect -re ".*>";
 send "exit\r";
 expect -re ".*>";
-
-
+}
 
 #wait
 close $spawn_id;
@@ -116,7 +177,7 @@ set result "PASSED"
 ##########################################################################################################
 }
 set output1 "";
-set otuput1 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.X_CISCO_COM_Security.Firewall.FirewallLevel Low string];
+set output1 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.X_CISCO_COM_Security.Firewall.FirewallLevel Low string];
 puts $output1;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output1] == 1 } {
 

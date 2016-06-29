@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -59,16 +60,15 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client and telneting 
-from WLAN Client to WAN.                                                                  
+#Step 3 :Trying to Telnet to WLAN Client
 ################################################################################
 }
 spawn telnet $wlanIP
 set timeout 100;
 expect -re (.*ogin:);
-send "$wlanName\r";
+send "$wlanAdminName\r";
 expect -re (.*word:);
-send "$wlanPassword\r";
+send "$wlanAdminPassword\r";
 expect -re ".*>";
 send "netsh wlan add profile filename=\"$profilePath\\Wireless.xml\" interface=\"$interface_name1\"\r";
 expect -re ".*>";
@@ -79,11 +79,36 @@ after 30000;
 send "ipconfig\r";
 expect -re ".*>";
 set outIp $expect_out(buffer);
+if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match ip] == 1 } {
+        if {[regexp {169\.254\..*\..*} $ip] == 1 || [regexp {127\.0\.0\.0} $ip] == 1 } {
+        puts "Test case failed; Unable to obtain IP\n";
+        set result "FAILED";
+        set passContent "Test Result : $result$~";
+        displayProc $passContent;
+        exit 0;
+        } else {
+        if {[regexp {10\..*\..*\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+                } else {
+         puts "\IP address not obtained.";
+        set result "FAILED";
+        set passContent "Test Result : $result$~";
+        displayProc $passContent;
+        exit 0;
+
+}
+}
+}
+
+send "route add $wanIP mask 255.255.255.255 10.0.0.1\r";
+expect -re ".*OK!.*>";
+
 send "telnet $wanIP\r";
 set timeout 100;
 expect\
 {
-".*#"
+".*>"
 {
 set outTelnet $expect_out(buffer);
 }
@@ -101,7 +126,10 @@ send "exit\r";
 set outTelnet $expect_out(buffer);
 }
 }
+
 #wait
+send "route delete $wanIP\r";
+expect -re ".*OK!.*>";
 
 close $spawn_id
 
@@ -157,16 +185,22 @@ puts {
 #Step 5 :Verifying the telnet access from WLAN to WAN
 ############################################################################################
 }
+if {$outTelnet eq ""} {
 
+    puts "Telnet Request not successful"
+
+} else {
 if {[regexp {.*Microsoft.*} $outTelnet match] == 1 } {
-        set passFlag [expr $passFlag + 1];
+#        set passFlag [expr $passFlag + 1];
+	set failFlag [expr $failFlag + 1];
         puts "Telnet Request successful from WLAN to WAN when Firewall is set to High"
                 } else {
+set passFlag [expr $passFlag + 1];
 
-
-set failFlag [expr $failFlag + 1];
-        puts "Telnet Request not successful from WLAN to WAN when firewall is set to high"
+#set failFlag [expr $failFlag + 1];
+        puts "Telnet Request not successful from WLAN to WAN when firewall is set to High"
         }
+}
 
 if {$passFlag == 4} {
 set result "PASSED"
@@ -177,7 +211,7 @@ set result "PASSED"
   }
 puts {
 ##########################################################################################################
-#Step 7 :Reverting the Firewall configurations back to its initial value.                                                    
+#Step 6 :Reverting the Firewall configurations back to its initial value.                                                    
 ##########################################################################################################
 }
 

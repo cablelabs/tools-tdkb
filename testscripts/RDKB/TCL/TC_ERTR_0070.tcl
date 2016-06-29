@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -61,16 +62,15 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client and ftp 
-from WLAN client to WAN.                                                                 
+#Step 3 :Trying to Telnet to WLAN Client
 ################################################################################
 }
 spawn telnet $wlanIP
 set timeout 100;
 expect -re (.*ogin:);
-send "$wlanName\r";
+send "$wlanAdminName\r";
 expect -re (.*word:);
-send "$wlanPassword\r";
+send "$wlanAdminPassword\r";
 expect -re ".*>";
 send "netsh wlan add profile filename=\"$profilePath\\Wireless.xml\" interface=\"$interface_name1\"\r";
 expect -re ".*>";
@@ -81,6 +81,31 @@ after 30000;
 send "ipconfig\r";
 expect -re ".*>";
 set outIp $expect_out(buffer);
+if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match ip] == 1 } {
+        if {[regexp {169\.254\..*\..*} $ip] == 1 || [regexp {127\.0\.0\.0} $ip] == 1 } {
+        puts "Test case failed; Unable to obtain IP\n";
+        set result "FAILED";
+        set passContent "Test Result : $result$~";
+        displayProc $passContent;
+        exit 0;
+        } else {
+        if {[regexp {10\..*\..*\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+                } else {
+         puts "\IP address not obtained.";
+        set result "FAILED";
+        set passContent "Test Result : $result$~";
+        displayProc $passContent;
+        exit 0;
+
+}
+}
+}
+
+send "route add $wanIP mask 255.255.255.255 10.0.0.1\r";
+expect -re ".*OK!.*>";
+
 send "ftp $wanIP\r";
 expect\
 {
@@ -104,6 +129,9 @@ expect -re (.*>);
 set outFtp $expect_out(buffer);
 }
 }
+send "route delete $wanIP\r";
+expect -re ".*OK!.*>";
+
 #wait
 close $spawn_id;
 
@@ -160,7 +188,7 @@ puts {
 }
 if {[regexp {.*230.*} $outFtp match] == 1} {
         set failFlag [expr $failFlag + 1];
-        puts "FTP access is allowed from WLAN to WAN when firewall is set to high"
+        puts "FTP access is allowed from WLAN to WAN when firewall is set to High"
                 } else {
         set passFlag [expr $passFlag + 1];
         puts "FTP access blocked from WLAN to WAN"

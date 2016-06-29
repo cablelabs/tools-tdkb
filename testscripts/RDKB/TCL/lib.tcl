@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+#
+
 package require Expect;
 source proc.tcl;
 
@@ -110,6 +111,10 @@ send "$wlanName\r";
 expect -re (.*word:); 
 send "$wlanPassword\r";
 expect -re ".*>";
+send "netsh wlan set profileparameter name=RDKB-2.4 connectionmode=manual\r";
+expect -re ".*>";
+send "netsh wlan set profileparameter name=RDKB-5 connectionmode=manual\r";
+expect -re ".*>";
 send "netsh wlan add profile filename=\"$profilePath\\$profileType\" interface=\"$no\"\r";
 expect -re ".*>";
 sleep 30;
@@ -185,7 +190,6 @@ return $result;
 }
 
 #################Procedure to get ip address from lan pc############################
-
 proc connect_lan_pc {Telnetip Name password osName} {
  
 if {[info exists Telnetip] && [info exists Name] && [info exists password]} {
@@ -490,3 +494,152 @@ close $spawn_id;
 
 return $result;
 }
+
+
+
+
+
+
+
+############procedure for RDK Logs###############################
+
+proc delete_rdklogs {cmIp cmPassword logPath backupLogPath logFileName} {
+set result "pass";
+set deleteLogPath [split $logPath "_"];
+set deleteBackupLogPath [split $backupLogPath "_"];
+
+spawn telnet $cmIp
+set timeout 100;
+expect -re (.*sword>);
+send "$cmPassword\r";
+expect -re (.*sole>);
+send "\r\rquit\r";
+expect -re (.*#);
+send "cat $deleteLogPath/$logFileName\r";
+expect -re (.*#);
+send "cat $deleteBackupLogPath/$logFileName\r";
+expect -re (.*#);
+#send "cd /rdklogs/logs/\r";
+#expect -re (.*#);
+#send "cat WiFilog.txt.0\r";
+#expect -re (.*#);
+send "exit\r";
+expect -re (.*sole>);
+send "\r\r!logout\r";
+#send "\r";
+
+return $result;
+}
+
+
+
+
+
+
+############procedure for Fetching and validating RDK Logs###############################
+
+
+proc fetch_validate_rdklogs {cmIp cmPassword logFilePath backupLogFilePath logFileName parameterName value alternateparameterName} {
+set result "pass";
+
+spawn telnet $cmIp
+set timeout 100;
+expect -re (.*sword>);
+send "$cmPassword\r";
+expect -re (.*sole>);
+send "\r\rquit\r";
+expect -re (.*#);
+
+send "cd $logFilePath\r";
+expect -re (.*#);
+send "cat $logFileName\r";
+expect -re (.*#);
+set outputLog $expect_out(buffer);
+send "cd $backupLogFilePath\r";
+expect -re (.*#);
+send "cat $logFileName\r";
+expect -re (.*#);
+set outputBackupLog $expect_out(buffer);
+send "exit\r";
+expect -re (.*sole>);
+send "\r\r!logout\r";
+send "\r";
+puts {
+#########################################
+#Verifying the Values in RDK Logger
+#########################################
+}
+puts "Expected Value : $value";
+set outPut1 "";
+set outPut2 "";
+set outPut3 "";
+set outPut4 "";
+if {$logFileName == "WiFilog.txt.0"} {
+if {[regexp "$parameterName" $outputLog match] == 1 || [regexp "$value" $outputLog match outPut1] == 1} {
+#	puts "Obtained Output : $outPut1";
+	puts "'$value' FOUND in the log ";
+        set result "pass";
+} else {
+	if {[regexp "$alternateparameterName" $outputLog match] == 1 || [regexp "$value" $outputLog match outPut2] == 1} {
+ #    		puts "Obtained Output : $outPut2";
+                puts "'$value' FOUND in the log";
+		set result "pass";
+} else {
+		puts "'$value' NOT FOUND in the log";
+		set result "fail";
+	}
+
+}
+if {$result == "fail"} {
+if {[regexp "$parameterName" $outputBackupLog match] == 1 || [regexp "$value" $outputBackupLog match outPut3] == 1} {
+#	puts "Obtained Output : $outPut3";
+        puts "'$value' FOUND in Backuplogs";
+        set result "pass";
+} else {
+        if {[regexp "$alternateparameterName" $outputBackupLog match] == 1 || [regexp "$value" $outputBackupLog match outPut4] == 1} {
+ #       puts "Obtained Output : $outPut4";
+	puts "'$value' FOUND in Backuplogs";
+	set result "pass";
+} else {
+                puts "'$value' NOT FOUND in Backuplogs";
+		set result "fail";
+        }
+
+}
+}
+} else {
+puts "Expected Parameter : $parameterName";
+if {[regexp "$parameterName" $outputLog match] == 1 && [regexp "$value" $outputLog match] == 1} {
+        puts "'$value' FOUND in the log ";
+        set result "pass";
+} else {
+        if {[regexp "$alternateparameterName" $outputLog match] == 1 && [regexp "$value" $outputLog match] == 1} {
+                puts "'$value' FOUND in the log";
+                set result "pass";
+} else {
+                puts "'$value' NOT FOUND in the log";
+                set result "fail";
+        }
+
+}
+if {$result == "fail"} {
+if {[regexp "$parameterName" $outputBackupLog match] == 1 && [regexp "$value" $outputBackupLog match] == 1} {
+        puts "'$value' FOUND in Backuplogs";
+        set result "pass";
+} else {
+        if {[regexp "$alternateparameterName" $outputBackupLog match] == 1 && [regexp "$value" $outputBackupLog match ] == 1} {
+        puts "'$value' FOUND in Backuplogs";
+        set result "pass";
+} else {
+                puts "'$value' NOT FOUND in Backuplogs";
+                set result "fail";
+        }
+
+}
+}
+
+}
+return $result;
+}
+
+

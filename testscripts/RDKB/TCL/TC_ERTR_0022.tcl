@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -23,7 +24,7 @@ Initializer $configFile;
 
 puts {
 ######################################################################################################################### 
-#Step 1 :Configuring the Wireless Gateway with the specified Channel number                                            						  
+#Step 1 :Configuring the WG with the specified Channel number                                            						  
 #########################################################################################################################
 }
 
@@ -47,7 +48,7 @@ puts $output1;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output1] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to set 1st parameter";
+puts "Failed to set 2nd parameter";
 set result "FAILED";	
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -82,7 +83,7 @@ puts $output2;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output2] == 1 } {
 
 puts "\nPossible errors:\n1.Device might not be listed\n2.Wrong parameters or values\n3.Network connection";
-puts "Failed to get 1st parameter";
+puts "Failed to get 2nd parameter";
 set result "FAILED";	
 set passContent "Test Result : $result$~";
 displayProc $passContent;
@@ -92,7 +93,7 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ######################################################################################################################### 
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                            
+#Step 3 : Trying to Telnet to WLAN Client
 #########################################################################################################################
 }
 
@@ -127,7 +128,7 @@ set passFlag "";
 set failFlag "";
 puts {
 ######################################################################################################################### 
-#Step 4 :Checking whether the CPE is able to connect to the network with the specified SSID and obtain the IP address.                                                               					
+##Step 4 :Verifying the 5GHz Wi-Fi Connection Establishment                                                           					
 #########################################################################################################################
 }
 if {[regexp {There is no profile "$ssid5" assigned to the specified interface.} $outpCon match] == 1} {
@@ -149,15 +150,16 @@ if {[regexp {There is no profile "$ssid5" assigned to the specified interface.} 
 	puts "Test case failed; Unable to obtain IP\n";
 	set failFlag [expr $failFlag + 1];
 	
-	} else { 
 	
-	if {[regexp {10\..*\..*\..*} $ip] == 1} {
-	puts "Connection Successful"
-	puts "IP obtained is: $ip\n";
-	set passFlag [expr $passFlag + 1];
-	 
-		}
-	}
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
 	
 } else {
 	 puts "\IP address not obtained.";

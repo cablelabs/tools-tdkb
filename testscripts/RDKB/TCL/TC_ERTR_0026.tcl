@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,7 +8,8 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
@@ -95,7 +96,7 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                 					 
+#Step 3 : Trying to Telnet to WLAN Client
 ################################################################################
 }
 spawn telnet $wlanIP
@@ -127,8 +128,7 @@ set passFlag "";
 set failFlag "";
 puts {
 ################################################################################
-#Step 4 :Validating the output and checking for the ip address within defined
- range                                                               					 
+#Step 4 :Verifying the 5GHz Wi-Fi Connection Establishment                            					 
 ################################################################################
 }
 if {[regexp {There is no profile "RDKB-5" assigned to the specified interface.} $outpCon match] == 1} {
@@ -150,15 +150,16 @@ if {[regexp {There is no profile "RDKB-5" assigned to the specified interface.} 
 	puts "Test case failed; Unable to obtain IP\n";
 	set failFlag [expr $failFlag + 1];
 	
-	} else { 
 	
-	if {[regexp {10\..*\..*\..*} $ip] == 1} {	
-	puts "Connection successful after setting Guard interval \"400ns\" and Channel BW \"40MHZ\""
-	puts "IP obtained is: $ip\n";
-	set passFlag [expr $passFlag + 1];
-	 
-		}
-	}
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
+        puts "Connection Successful";
+        puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
+        set passFlag [expr $passFlag + 1];
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
+        }
 
 	
 } else {

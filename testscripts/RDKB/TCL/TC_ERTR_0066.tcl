@@ -1,4 +1,4 @@
-##
+#
 # ============================================================================
 # COMCAST CONFIDENTIAL AND PROPRIETARY
 # ============================================================================
@@ -8,13 +8,14 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-##
+# 
+
 package require Expect;
 source proc.tcl;
 puts {
 ##########################################################################################################################################
 #TEST CASEID :TC_ERTR_0066                                                                                                   
-#Description  :Verify that when Firewall Config is set to High, ICMP message from WLAN to WAN IP of gateway should be blocked
+#Description  :Verify that when Firewall Config is set to High, ICMP message from WLAN to WAN should be blocked
 
 ##########################################################################################################################################
 }
@@ -25,7 +26,7 @@ Initializer $configFile;
 
 puts {
 ################################################################################
-#Step 1 :Set the firewall to maximum
+#Step 1 :Set the firewall to High
 ################################################################################
 }
 
@@ -60,15 +61,15 @@ exit 0;
 set interface_name1 [split $wlanInterfaceName "_"];
 puts {
 ################################################################################
-#Step 3 :Trying to connect to WG telnet-ing to a WLAN client                                                                 
+#Step 3 :Trying to Telnet to WLAN Client
 ################################################################################
 }
 spawn telnet $wlanIP
 set timeout 100;
 expect -re (.*ogin:);
-send "$wlanName\r";
+send "$wlanAdminName\r";
 expect -re (.*word:);
-send "$wlanPassword\r";
+send "$wlanAdminPassword\r";
 expect -re ".*>";
 send "netsh wlan add profile filename=\"$profilePath\\Wireless.xml\" interface=\"$interface_name1\"\r";
 expect -re ".*>";
@@ -76,19 +77,23 @@ send "netsh wlan connect $ssid2\r";
 expect -re ".*>";
 set outpCon $expect_out(buffer);
 after 30000;
+send "route add $wanIP mask 255.255.255.255 10.0.0.1\r";
+expect -re ".*OK!.*>";
 send "ipconfig\r";
 expect -re ".*>";
 set outIp $expect_out(buffer);
 send "ping -n 4 $wanIP\r";
 expect -re ".*>";
 set outPing $expect_out(buffer);
+send "route delete $wanIP\r";
+expect -re ".*OK!.*>";
+
 send "netsh wlan delete profile name=\"$ssid2\"\r";
 expect -re ".*>";
 send "exit\r"
 expect -re ".*>";
 #wait
 close $spawn_id
-
 
 set passFlag "";
 set failFlag "";
@@ -118,14 +123,14 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
         puts "Test case failed; Unable to obtain IP\n";
         set failFlag [expr $failFlag + 1];
 
-        } else {
-
-        if {[regexp {10\..*\..*\..*} $ip] == 1} {
+	} elseif {[regexp {10\.0\.0\..*} $ip] == 1} {
         puts "Connection Successful";
         puts "IP obtained is: $ip\n";
+        puts "IP address obtained within the Default DHCP server range";
         set passFlag [expr $passFlag + 1];
-
-                }
+        } else {
+        puts "IP obtained is: $ip\n";
+        puts "IP address not obtained within the Default DHCP server range";
         }
 
 
@@ -149,10 +154,10 @@ if {[regexp {.*Lost.*=.*\((.*)% loss\)} $outPing match lossPercent] == 1} {
 
         if {$lossPercent == 0} {
         set failFlag [expr $failFlag + 1];
-        puts "Ping successful from WLAN to WAN IP when firewall is set to high"
+        puts "Ping successful from WLAN to WAN when firewall is set to High"
         } else {
         set passFlag [expr $passFlag + 1];
-        puts "Ping not successful from WLAN to WAN when firewall is set to high"
+        puts "Ping not successful from WLAN to WAN when firewall is set to High"
 
         }
 }
