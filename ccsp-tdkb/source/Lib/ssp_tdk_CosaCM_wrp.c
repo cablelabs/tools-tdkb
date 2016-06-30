@@ -307,7 +307,7 @@ int ssp_CosaDmlCMGetIPv6DHCPInfo(int handleType, int bufferType)
 
     if(bufferType == 0)
     {
-        dhcpIpv6 = ((PCOSA_CM_IPV6DHCP_INFO *) malloc(100));
+        dhcpIpv6 = ((PCOSA_CM_IPV6DHCP_INFO *) malloc(450));
     }
 
     return_status = CosaDmlCMGetIPv6DHCPInfo(cm_handle,dhcpIpv6);
@@ -347,6 +347,7 @@ int ssp_CosaDmlCMGetStatus(int handleType, int Value)
         pValue = ((char *) malloc(100));
     }
     return_status = CosaDmlCMGetStatus(cm_handle,pValue);
+    printf("Return status of CosaDmlCMGetStatus is %d \n", return_status);  
     if(return_status == SSP_SUCCESS)
     {
         printf("\n ssp_CosaDmlCMGetStatus :: CosaDmlCMGetStatus function is success with return status %d",return_status);
@@ -585,14 +586,17 @@ int ssp_cosacm_GetDHCPInfo(int handleType, int bufferType)
     if(handleType == 0)
     {
         cm_handle = bus_handle_client;
-        dhcp = ((PCOSA_CM_DHCP_INFO *) malloc(20));
-        return_status = CosaDmlCMGetDHCPInfo(cm_handle,dhcp);
+    }
 
+    if(bufferType == 0)
+    {
+        dhcp = ((PCOSA_CM_DHCP_INFO *) malloc(450));
+        return_status = CosaDmlCMGetDHCPInfo(cm_handle, dhcp);
     }
     else
     {
-        return_status = CosaDmlCMGetDHCPInfo(cm_handle,NULL);
-    }    
+        return_status = CosaDmlCMGetDHCPInfo(cm_handle, NULL);
+    }
 
     printf("ssp_cosacm_GetDHCPInfo: DHCP Info:%s\n",dhcp);
 
@@ -626,15 +630,20 @@ int ssp_cosacm_GetDOCSISInfo(int handleType, int bufferType)
     if(handleType == 0)
     {
         cm_handle = bus_handle_client;
-        docsis=(PCOSA_CM_DOCSIS_INFO*)malloc(200);
+    }
+    
+    if(bufferType == 0)
+    {
+        docsis=((PCOSA_CM_DOCSIS_INFO*)malloc(20));
         return_status = CosaDmlCMGetDOCSISInfo(cm_handle,docsis);
     }
     else
     {
         return_status = CosaDmlCMGetDOCSISInfo(cm_handle,NULL);
 
-    }    
-
+    }
+    
+    printf("Return status of CosaDmlCMGetDOCSISInfo %d ",return_status);
     printf("ssp_cosacm_GetDOCSISInfo: DOCSIS Info:%s\n",docsis);
 
     if ( return_status != SSP_SUCCESS)
@@ -742,10 +751,14 @@ int ssp_cosacm_GetDocsisLog(int handleType, int bufferType)
     ANSC_HANDLE cm_handle = NULL;
     int *count = NULL;
     PCOSA_DML_DOCSISLOG_FULL *ppConf = NULL;
-    cm_handle = bus_handle_client;
+    
     printf("\n Entering ssp_cosacm_GetDocsisLog function\n\n");
 
     if(handleType == 0)
+    {
+	cm_handle = bus_handle_client;
+    }
+    if(bufferType == 0) 
     {
         count=(int*)malloc(20*sizeof(int));
         return_status = CosaDmlCmGetDocsisLog(cm_handle,&count,&ppConf);
@@ -755,8 +768,6 @@ int ssp_cosacm_GetDocsisLog(int handleType, int bufferType)
 
         return_status = CosaDmlCmGetDocsisLog(cm_handle,NULL,&ppConf);
     }   
-
-
     printf("ssp_cosacm_GetDocsisLog: DOCSIS Log Info:%s\n",ppConf);
 
     if ( return_status != SSP_SUCCESS)
@@ -784,16 +795,19 @@ int ssp_cosacm_GetDownstreamChannel(int handleType, int bufferType)
     ANSC_HANDLE cm_handle = NULL;
     int     *Count=NULL;
     PCOSA_CM_DS_CHANNEL *pcfg = NULL;
-    cm_handle = bus_handle_client;
+    
     printf("\n Entering ssp_cosacm_GetDownstreamChannel function\n\n");
 
     if(handleType == 0)
     {
+	cm_handle = bus_handle_client;
+    }
+    if(bufferType == 0)
+    {
         Count=(int*)malloc(20*sizeof(int));
         return_status = CosaDmlCmGetDownstreamChannel(cm_handle,&Count,&pcfg);
     }
-
-    if(handleType == 1)
+    else
     {
         return_status = CosaDmlCmGetDownstreamChannel(cm_handle,NULL,&pcfg);
     }
@@ -824,16 +838,19 @@ int ssp_cosacm_GetUpstreamChannel(int handleType, int bufferType)
     ANSC_HANDLE cm_handle = NULL;
     int     *Count=NULL;
     PCOSA_CM_US_CHANNEL *pcfg = NULL;
-    cm_handle = bus_handle_client;
 
     printf("\n Entering ssp_cosacm_GetUpstreamChannel function\n\n");
 
     if(handleType == 0)
     {
+	cm_handle = bus_handle_client;
+    }
+    if(bufferType == 0)
+    {
         Count=(int*)malloc(20*sizeof(int));
         return_status = CosaDmlCmGetUpstreamChannel(cm_handle,&Count,&pcfg);
     }
-    if(handleType == 1)
+    else
     {
         return_status = CosaDmlCmGetUpstreamChannel(cm_handle,NULL,&pcfg);
     }
@@ -1221,6 +1238,7 @@ int ssp_cosacm_getcpelist()
     printf("\nEntering ssp_cosacm_getcpelist function\n\n");
 
     return_status = CosaDmlCmGetCPEList(NULL,&ulInstanceNumber,pCPEList);
+    printf("Return status of CosaDmlCmGetCPEList is %d \n", return_status);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1333,6 +1351,8 @@ int ssp_cosacm_getmddipoverride_memory_unalloc()
     printf("\n Entering ssp_cosacm_getmddipoverride_memory_unalloc function\n\n");
 
     return_status = CosaDmlCMGetMDDIPOverride(bus_handle_client,value);
+    
+    printf("Return status of CosaDmlCMGetMDDIPOverride %d ",return_status);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1407,6 +1427,8 @@ int ssp_cosacm_getcmerrorcodewords_invalid_arg()
     printf("\n Entering ssp_cosacm_getcmerrorcodewords_invalid_arg function\n\n");
 
     return_status = CosaDmlCmGetCMErrorCodewords(bus_handle_client,&count,&pCfg);
+    
+    printf("Return status of CosaDmlCmGetCMErrorCodewords %d ",return_status);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1436,6 +1458,8 @@ int ssp_cosacm_getcertstatus_invalid_arg()
     printf("\n Entering ssp_cosacm_getcertstatus_invalid_arg function\n\n");
 
     return_status = CosaDmlCmGetCMCertStatus(bus_handle_client,bValue);
+
+    printf("Return status of CosaDmlCmGetCMCertStatus %d ", return_status);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1468,6 +1492,8 @@ int ssp_cosacm_getcpelist_invalid_arg()
     printf("\nEntering ssp_cosacm_getcpelist_invalid_arg function\n\n");
 
     return_status = CosaDmlCmGetCPEList(bus_handle_client,&ulInstanceNumber,pCPEList);
+
+    printf("Return status of CosaDmlCmGetCPEList %d " , return_status);
 
     if ( return_status != SSP_SUCCESS)
     {

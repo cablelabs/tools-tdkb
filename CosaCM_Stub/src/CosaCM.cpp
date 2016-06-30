@@ -148,15 +148,7 @@ std::string CosaCM::testmodulepre_requisites()
  *****************************************************************************/
 bool CosaCM::testmodulepost_requisites()
 {
-    int returnValue;
-    returnValue = ssp_terminate();
-
-    if(0 != returnValue)
-    {
-        DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepost_requisites: Failed to terminate\n");
-        return 1;
-    }
-
+    DEBUG_PRINT(DEBUG_LOG,"DBG:CosaCM:testmodulepost_requisites() \n");
     return 0;
 }
 
