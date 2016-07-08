@@ -6,11 +6,14 @@
  * not be used, copied, distributed or otherwise  disclosed in whole or in part
  * without the express written permission of Comcast.
  * ============================================================================
- * Copyright (c) 2014 Comcast. All rights reserved.
+ * Copyright (c) 2016 Comcast. All rights reserved.
  * ============================================================================
  */
 
 #include "SNMPProtocolAgent.h"
+
+#define BUFFERMEMSIZE 512
+static std::string Command;
 
 /*************************************************************************
   Function name : SNMPProtocolAgent::SNMPProtocolAgent
@@ -22,7 +25,7 @@ Description   : Constructor for SNMPProtocolAgent class
 
 SNMPProtocolAgent::SNMPProtocolAgent()
 {
-    DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialized\n");
+	DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialized\n");
 }
 
 /***************************************************************************
@@ -33,7 +36,7 @@ SNMPProtocolAgent::SNMPProtocolAgent()
  *****************************************************************************/
 std::string SNMPProtocolAgent::testmodulepre_requisites()
 {
-    return "SUCCESS";
+	return "SUCCESS";
 }
 
 /***************************************************************************
@@ -44,52 +47,11 @@ std::string SNMPProtocolAgent::testmodulepre_requisites()
  *****************************************************************************/
 bool SNMPProtocolAgent::testmodulepost_requisites()
 {
-    return true;
+	return true;
 }
-
-/***************************************************************************
- *Function name : GetHostIP
- *Arguments	: interfaceName 
- *Descrption    : Returns the ip address for the interface name passed as argument.
- *                
- *****************************************************************************/
-std::string GetHostIP (const char* szInterface)
-{
-    struct ifaddrs* pIfAddrStruct = NULL;
-    struct ifaddrs* pIfAddrIterator = NULL;
-    void* pvTmpAddrPtr = NULL;
-    char szAddressBuffer [INET_ADDRSTRLEN];
-    getifaddrs (&pIfAddrStruct);
-
-    for (pIfAddrIterator = pIfAddrStruct; pIfAddrIterator != NULL; pIfAddrIterator = pIfAddrIterator->ifa_next)
-    {
-        if (pIfAddrIterator->ifa_addr->sa_family == AF_INET)
-        {
-            // check it is a valid IP4 Address
-            pvTmpAddrPtr = & ( (struct sockaddr_in *)pIfAddrIterator->ifa_addr )-> sin_addr;
-            inet_ntop (AF_INET, pvTmpAddrPtr, szAddressBuffer, INET_ADDRSTRLEN);
-
-            if ( (strcmp (pIfAddrIterator -> ifa_name, szInterface) ) == 0)
-            {
-                break;
-            }
-        }
-    }
-
-    DEBUG_PRINT(DEBUG_TRACE, "Found IP: %s\n",szAddressBuffer);
-
-    if (pIfAddrStruct != NULL)
-    {
-        freeifaddrs (pIfAddrStruct);
-    }
-
-    return szAddressBuffer;
-
-}
-
 
 /**************************************************************************
-Function name : initialize
+Function name : SNMPProtocolAgent::initialize
 
 Arguments     : Input arguments are Version string and SNMPProtocolAgent obj ptr
 
@@ -97,558 +59,189 @@ Description   : Registering all the wrapper functions with the agent for using t
  ***************************************************************************/
 bool SNMPProtocolAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
 {
-    DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialize----->Entry\n");
+	DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialize----->Entry\n");
 
-    ptrAgentObj->RegisterMethod(*this,&SNMPProtocolAgent::SNMPProtocolAgent_GetParameterValue, "TestMgr_GetParameterValue");
-    ptrAgentObj->RegisterMethod(*this,&SNMPProtocolAgent::SNMPProtocolAgent_VerifyParameterValue, "TestMgr_VerifyParameterValue");
+	ptrAgentObj->RegisterMethod(*this,&SNMPProtocolAgent::ExecuteSNMPCommand, "ExecuteSNMPCommand");
+	ptrAgentObj->RegisterMethod(*this,&SNMPProtocolAgent::LogValidation, "LogValidation");
+	DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialize----->Exit\n");
 
-    DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialize----->Exit\n");
-
-    return TEST_SUCCESS;
+	return TEST_SUCCESS;
 }
 
-/**************************************************************************
-Function name : SNMPProtocolAgent_GetParameterValue
-
-Arguments     : Input arguments are json request object and json response object
-
-Description   : This method queries for the parameter requested through curl and returns the value.
- ***************************************************************************/
-bool SNMPProtocolAgent::SNMPProtocolAgent_GetParameterValue(IN const Json::Value& req, OUT Json::Value& response)
+/*******************************************************************************
+ *
+ * Function Name      : SNMPTrigger
+ * @param SnmpMethod  : This parameter contains Snmp Method - snmpget, snmpset, snmpwalk.
+ * @param SnmpCommStr : This parameter contains Snmp Community String - private, public.
+ * @param SnmpIP      : This parameter contains IP Address.
+ * @param SnmpOID     : This parameter contains Snmp Object Identifier.
+ * Description        : SNMPTrigger function will be called by ExecuteSNMPCommand
+ *                 to execute Snmp command.
+ *
+ *******************************************************************************/
+int SNMPTrigger(string SnmpMethod, string SnmpCommStr, string SnmpIP, string SnmpOID)
 {
-    DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent_GetParameterValue -->Entry\n");
+	DEBUG_PRINT(DEBUG_TRACE,"\n SNMPTrigger --->Entry\n");
+	std::string Command;
+	try
+	{
+		//concatenate strings
+		Command.append(SnmpMethod);
+		Command.append(" ");
+		Command.append(SnmpCommStr);
+		Command.append(" ");
+		Command.append(SnmpIP);
+		Command.append(" ");
+		Command.append(SnmpOID);
+		DEBUG_PRINT(DEBUG_TRACE,"\nSNMP COMMAND : %s\n", Command.c_str());
 
-    string profilePath = req["path"].asCString();	
-    FILE *fp = NULL;
-    char readRespBuff[BUFF_LENGTH];
-
-    DEBUG_PRINT(DEBUG_TRACE, "Requesting Parameter Value is: %s\n",profilePath.c_str());
-
-    /*Frame the command  */
-    string path = CMD;
-    path.append(profilePath);
-    path.append(HTTP);
-
-    DEBUG_PRINT(DEBUG_TRACE, "Curl Request Framed: %s\n",path.c_str());
-
-    fp = popen(path.c_str(),"r");
-
-    /*Check for popen failure*/	
-    if(fp == NULL)
+		system(Command.c_str());
+		DEBUG_PRINT(DEBUG_TRACE,"\nExecuted SNMP COMMAND Successfully\n");
+		return TEST_SUCCESS;
+	}
+	catch(...)
+	{
+		DEBUG_PRINT(DEBUG_TRACE,"\n SNMP COMMAND not executed\n");
+		return TEST_FAILURE;
+	}
+	DEBUG_PRINT(DEBUG_TRACE,"\n SNMPTrigger --->Exit\n");
+	return TEST_SUCCESS;
+}
+/**************************************************************************
+ *
+ * Function Name : SNMPProtocolAgent::ExecuteSNMPCommand
+ * Descrption    : This command is used to execute the snmp command.
+ *
+ * @param [in] req- has "SnmpMethod"  which is input to ExecuteSNMPCommand
+ * @param [in] req- has "SnmpCommStr" which is input to ExecuteSNMPCommand
+ * @param [in] req- has "SnmpIP"      which is input to ExecuteSNMPCommand
+ * @param [in] req- has "SnmpOID"     which is input to ExecuteSNMPCommand
+ * @param [out] response- filled with SUCCESS or FAILURE based on the return value of SNMPCommand.
+ ***************************************************************************/
+bool SNMPProtocolAgent::ExecuteSNMPCommand(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n ExecuteSNMPCommand --->Entry\n");
+    int retval=0;
+    char *SnmpMethod;
+    char *SnmpCommStr;
+    char *SnmpIP;
+    char *SnmpOID;
+    if((&req["SnmpMethod"]==NULL) && (&req["SnmpCommStr"]==NULL) && (&req["SnmpIP"]==NULL) && (&req["SnmpOID"]==NULL))
     {
-        response["result"] = "FAILURE";
-        response["details"] = "popen() failure";
-        DEBUG_PRINT(DEBUG_ERROR, "popen() failure\n");
-
         return TEST_FAILURE;
     }
 
-    /*copy the response to a buffer */
-    while(fgets(readRespBuff,sizeof(readRespBuff),fp) != NULL)
+    SnmpMethod  = (char *)req["SnmpMethod"].asCString();
+    SnmpCommStr = (char *)req["SnmpCommStr"].asCString();
+    SnmpIP      = (char *)req["SnmpIP"].asCString();
+    SnmpOID     = (char *)req["SnmpOID"].asCString();
+    retval = SNMPTrigger(SnmpMethod, SnmpCommStr, SnmpIP, SnmpOID);
+    if(retval == TEST_SUCCESS)
     {
-        DEBUG_PRINT(DEBUG_TRACE, "Curl Response:\n");
-        cout<<readRespBuff<<endl;
+		response["result"]="SUCCESS";
+		response["details"]="Successfully Executed SNMP Command";
     }
-
-    pclose(fp);	
-
-    /*Check for the failure case, if curl request fails  */
-    if(NULL != (strcasestr(readRespBuff,"curl:")))
+    else
     {
-        string curlResp(readRespBuff);
-        response["result"] = "FAILURE";
-        response["details"] = curlResp;
-        DEBUG_PRINT(DEBUG_ERROR, "Curl Error: %s\n",curlResp.c_str());
+		response["result"]="FAILURE";
+		response["details"]="Invalid SNMP Command";
 
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n ExecuteSNMPCommand --->Exit\n");
+    return TEST_SUCCESS;
+}
+
+/**************************************************************************************
+ *
+ * Function Name : ValidateSNMPLog
+ * @param FindStr: This parameter contains find string in log file.
+ * Description   : ValidateSNMPLog function will be called by LogValidation function
+ *                 to execute verify snmp logs.
+ *
+ **************************************************************************************/
+
+int ValidateSNMPLog(char *FindStr)
+{
+	try
+        {
+		DEBUG_PRINT(DEBUG_TRACE,"Entering ValidateSNMPLog function ------> Entry");
+		const char *LogFile = "/opt/TDK/logs/AgentConsole.log";
+		FILE *fp;
+		char tempBuf[512];
+		int line_num = 1;
+		int find_result = 0;
+		fp = fopen("/opt/TDK/logs/AgentConsole.log","r");
+		DEBUG_PRINT(DEBUG_TRACE,"\n Log file Name :: %s", LogFile);
+		if(NULL == fp)
+		{
+			DEBUG_PRINT(DEBUG_TRACE,"\n Error opening files!\n");
+			DEBUG_PRINT(DEBUG_TRACE,"\n Exiting from SNMP Log Validation on Failure------->exit\n");
+			return TEST_FAILURE;
+		}
+		while(fgets(tempBuf, BUFFERMEMSIZE, fp) != NULL) {
+			if((strstr(tempBuf, FindStr)) != NULL) {
+				DEBUG_PRINT(DEBUG_TRACE,"A match found on line: %d\n", line_num);
+				find_result ++;
+			}
+			line_num++;
+		}
+
+		if(find_result == 0) {
+			DEBUG_PRINT(DEBUG_TRACE,"\nSorry, couldn't find a match.\n");
+			return TEST_FAILURE;
+		}
+		//Close the file if still open.
+	        if(fp) {
+        	      fclose(fp);
+	        }
+		DEBUG_PRINT(DEBUG_TRACE,"\n Log Validation performed successfully \n");
+                return TEST_SUCCESS;
+	}
+	catch(...)
+        {
+			DEBUG_PRINT(DEBUG_TRACE,"\n Log Validation not performed \n");
+			return TEST_FAILURE;
+        }
+        DEBUG_PRINT(DEBUG_TRACE,"ValidateSNMPLog ------> Exit");
+	return TEST_SUCCESS;
+}
+
+/**************************************************************************
+ * Function Name : LogValidation
+ * Descrption    : This function is used to validate the SNMP log
+ *
+ * @param [in] req- has "FindStr"  which is input to LogValidation
+ * @param [out] response- filled with SUCCESS or FAILURE based on the return value of LogValidation.
+ ***************************************************************************/
+bool SNMPProtocolAgent::LogValidation(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n  --->Entry\n");
+    int retval=0;
+    char *FindStr;
+    if(&req["FindStr"]==NULL)
+    {
         return TEST_FAILURE;
     }
+    FindStr = (char *)req["FindStr"].asCString();;
 
-    string respResult(readRespBuff);
-    DEBUG_PRINT(DEBUG_TRACE, "\n\nResponse: %s\n",respResult.c_str());
-    int pos = respResult.find("\"value\":");
-    string valueString,finalString;
-
-    if (pos != -1)
+    retval = ValidateSNMPLog(FindStr);
+    DEBUG_PRINT(DEBUG_TRACE,"\n retval ===================== %d\n", retval);
+    if(retval != TEST_SUCCESS)
     {
-        valueString = respResult.substr(pos+8);
-        finalString = valueString.substr(0,valueString.length()-3);
-
-        DEBUG_PRINT(DEBUG_LOG, "Final Value: %s\n",finalString.c_str());
-
-        response["result"] = "SUCCESS";
-        response["details"] = finalString;
+        response["result"]="FAILURE";
+        response["details"]="Failed to find the expected string in log file";
     }
     else
     {
-        response["result"] = "FAILURE";
-        response["details"] = "Empty No Response";
-
-        DEBUG_PRINT(DEBUG_ERROR, "Empty No Response\n");
+        response["result"]="SUCCESS";
+        response["details"]="Found the expected string in the log file";
     }
-
-
-    DEBUG_PRINT(DEBUG_LOG, "Execution success\n");
-
-    DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent_GetParameterValue -->Exit\n");
-    return TEST_SUCCESS;
-
-}
-
-
-/**************************************************************************
-  Function name : SNMPProtocolAgent::SNMPProtocolAgent_VerifyParameterValue
-
-Arguments     : Input arguments are json request object and json response object
-
-Description   : This method verifies the value for the parameter name and returns SUCCESS or FAILURE. 
- ***************************************************************************/
-bool SNMPProtocolAgent::SNMPProtocolAgent_VerifyParameterValue(IN const Json::Value& req, OUT Json::Value& response)
-{
-    DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent_VerifyParameterValue -->Entry\n");
-
-    string profilePath = req["path"].asCString();
-
-    if (profilePath ==  "Device.IP.ActivePortNumberOfEntries")
-    {
-        FILE *fp = NULL;
-        char resultBuff[256] = {'\0'};
-        int noOfActivePorts = 0;
-
-        fp = popen(GET_NUM_OF_ACTIVE_PORTS,"r");
-
-        if(fp == NULL)
-        {
-            DEBUG_PRINT(DEBUG_ERROR, "popen failed\n");
-
-            response["result"] = "FAILURE";
-            response["details"] = "popen failed";
-
-            return TEST_FAILURE;
-        }
-
-        if(fgets(resultBuff, sizeof(resultBuff), fp)!=NULL)
-        {
-            sscanf(resultBuff,"%d",&noOfActivePorts);
-        }
-
-        string activePorts = req["paramValue"].asCString();
-        int value = atoi(activePorts.c_str());
-
-        DEBUG_PRINT(DEBUG_TRACE, "NumberOfActiveports: %d\n",noOfActivePorts);
-
-        if (value == noOfActivePorts)
-        {
-            response["result"] = "SUCCESS";
-            response["details"] = "Verification Success";
-
-            DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-        }
-        else
-        {
-            response["result"] = "FAILURE";
-            response["details"] = "Verification Failure";
-
-            DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-        }
-
-        pclose(fp);
-    }
-    else if(profilePath == "Device.DeviceInfo.X_COMCAST-COM_FirmwareFilename")
-    {
-        FILE *fp = NULL;
-        char resultBuff[256] = {'\0'};
-        char imageName[128] = {'\0'};
-
-        fp = popen(GET_IMAGE_VERSION,"r");
-
-        if(fp == NULL)
-        {
-            DEBUG_PRINT(DEBUG_ERROR, "popen failed\n");
-
-            response["result"] = "FAILURE";
-            response["details"] = "popen failed";
-
-            return TEST_FAILURE;
-        }
-
-        if(fgets(resultBuff, sizeof(resultBuff), fp)!=NULL)
-        {
-            sscanf(resultBuff,"%s",imageName);
-        }
-
-        pclose(fp);
-
-        string firmwareName(imageName);
-        string value = req["paramValue"].asCString();
-
-        DEBUG_PRINT(DEBUG_TRACE, "Value: %s and FirmwareName: %s\n",value.c_str(),firmwareName.c_str());
-
-        int len = firmwareName.size();		
-
-        if (value.compare(0,len,firmwareName) == 0)
-        {
-            response["result"] = "SUCCESS";
-            response["details"] = "Verification Success";
-
-            DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-
-        }
-        else
-        {
-            response["result"] = "FAILURE";
-            response["details"] = "Verification Failure";
-
-            DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-        }
-    }
-    else if(profilePath == "Device.DeviceInfo.MemoryStatus.Total")
-    {
-        struct sysinfo sys_info;
-
-        sysinfo (&sys_info);
-        unsigned int freeMemory = (unsigned int)(sys_info.totalram *(unsigned long long)sys_info.mem_unit / 1024);
-        string freeValue = req["paramValue"].asCString();
-        unsigned int value = atoi(freeValue.c_str());
-
-        DEBUG_PRINT(DEBUG_TRACE, "Value: %d and TotalMemory: %d\n",value,freeMemory);
-
-        if(freeMemory == value)
-        {
-            response["result"] = "SUCCESS";
-            response["details"] = "Verification Success";
-
-            DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-
-        }
-        else
-        {
-            response["result"] = "FAILURE";
-            response["details"] = "Verification Failure";
-
-            DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-        }
-    }
-    else if(profilePath == "Device.DeviceInfo.MemoryStatus.Free")
-    {
-        struct sysinfo sys_info;
-
-        sysinfo (&sys_info);
-        unsigned int freeMemory = (unsigned int)(sys_info.freeram *(unsigned long long)sys_info.mem_unit / 1024);
-        string freeValue = req["paramValue"].asCString();
-        unsigned int value = atoi(freeValue.c_str());
-
-        DEBUG_PRINT(DEBUG_TRACE, "Value: %d and freeMemory: %d\n",value,freeMemory);
-
-        if(freeMemory >= value)
-        {
-            response["result"] = "SUCCESS";
-            response["details"] = "Verification Success";
-
-            DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-
-        }
-        else
-        {
-            response["result"] = "FAILURE";
-            response["details"] = "Verification Failure";
-
-            DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-        }
-    }
-    else if(profilePath == "Device.DeviceInfo.Processor.1.Architecture")
-    {
-        struct utsname  utsName;
-        uname(&utsName);
-
-        string architecture(utsName.machine);
-
-        string value = req["paramValue"].asCString();
-
-        DEBUG_PRINT(DEBUG_TRACE, "Value: %s and Processor Architecture: %s\n",value.c_str(),architecture.c_str());
-
-        if(value == architecture)
-        {
-            response["result"] = "SUCCESS";
-            response["details"] = "Verification Success";
-
-            DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-
-        }
-        else
-        {
-            response["result"] = "FAILURE";
-            response["details"] = "Verification Failure";
-
-            DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-        }
-    }
-    else if(profilePath == "Device.IP.InterfaceNumberOfEntries")
-    {
-        struct if_nameindex *ifname = NULL, *ifnp = NULL;
-        int noOfIPInterfaces = 0;
-
-        //retrieve the current interfaces
-        if ((ifname = if_nameindex()) == NULL)
-        {
-            response["result"] = "FAILURE";
-            response["details"] = "if_name index error";
-
-            DEBUG_PRINT(DEBUG_ERROR, "if_name index error\n");
-
-            return TEST_FAILURE;
-        }
-
-        for (ifnp = ifname; ifnp->if_index != 0; ifnp++)
-        {
-            noOfIPInterfaces++;
-        }
-
-        if (ifname)
-        {
-            if_freenameindex(ifname); /* free the dynamic memory */
-            ifname = NULL;            /* prevent use after free  */
-        }
-
-        string num = req["paramValue"].asCString();
-        int value = atoi(num.c_str());
-        DEBUG_PRINT(DEBUG_TRACE, "Value: %d and Number of IP Interfaces: %d\n",value,noOfIPInterfaces);
-
-        if(value == noOfIPInterfaces)
-        {
-            response["result"] = "SUCCESS";
-            response["details"] = "Verification Success";
-
-            DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-
-        }
-        else
-        {
-            response["result"] = "FAILURE";
-            response["details"] = "Verification Failure";
-
-            DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-        }
-    }
-    else if((profilePath == "Device.IP.IPv4Enable") || (profilePath == "Device.IP.IPv4Status" ))
-    {
-
-        FILE *fp = NULL;
-        char resultBuff[256] = {'\0'};
-        int numIf = 0;
-
-        fp = popen(GET_IPV4_ENABLE_STATUS,"r");
-
-        if(fp == NULL)
-        {
-            DEBUG_PRINT(DEBUG_ERROR, "popen failed\n");
-
-            response["result"] = "FAILURE";
-            response["details"] = "popen failed";
-
-            return TEST_FAILURE;
-        }
-
-        if(fgets(resultBuff, sizeof(resultBuff), fp)!=NULL)
-        {
-            sscanf(resultBuff,"%d",&numIf);
-        }
-
-        pclose(fp);
-
-        string num = req["paramValue"].asCString();
-
-        if (numIf == 0)
-        {
-            if (profilePath == "Device.IP.IPv4Enable")
-            {
-
-                if (num == "false")
-                {
-                    response["result"] = "SUCCESS";
-                    response["details"] = "Verification Success";
-
-                    DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-                }
-                else
-                {
-                    response["result"] = "FAILURE";
-                    response["details"] = "Verification Failure";
-
-                    DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-                }	
-            }
-
-            if (profilePath == "Device.IP.IPv4Status")
-            {
-                if (num == "Disabled")	
-                {
-                    response["result"] = "SUCCESS";
-                    response["details"] = "Verification Success";
-
-                    DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-
-                }
-                else
-                {
-                    response["result"] = "FAILURE";
-                    response["details"] = "Verification Failure";
-
-                    DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-                }
-            }
-        }
-        else
-        {
-            if (profilePath == "Device.IP.IPv4Enable")
-            {
-                if (num == "true")
-                {
-                    response["result"] = "SUCCESS";
-                    response["details"] = "Verification Success";
-
-                    DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-                }
-                else
-                {
-                    response["result"] = "FAILURE";
-                    response["details"] = "Verification Failure";
-
-                    DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-                }
-            }
-
-            if (profilePath == "Device.IP.IPv4Status")
-            {
-                if (num == "Enabled")
-                {
-                    response["result"] = "SUCCESS";
-                    response["details"] = "Verification Success";
-
-                    DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-
-                }
-                else
-                {
-                    response["result"] = "FAILURE";
-                    response["details"] = "Verification Failure";
-
-                    DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-                }
-            }
-
-        }
-    }
-    else if(profilePath == "Device.DeviceInfo.X_COMCAST-COM_STB_IP")
-    {
-        string value = req["paramValue"].asCString();
-        string ip = GetHostIP("eth1");	
-
-        DEBUG_PRINT(DEBUG_TRACE, "Value: %s and IPAddress: %s\n",value.c_str(),ip.c_str());
-
-        if(value == ip)
-        {
-            response["result"] = "SUCCESS";
-            response["details"] = "Verification Success";
-
-            DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-
-        }
-        else
-        {
-            response["result"] = "FAILURE";
-            response["details"] = "Verification Failure";
-
-            DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-        }
-    }
-    else if(profilePath == "Device.DeviceInfo.X_COMCAST-COM_STB_MAC")
-    {
-        FILE *fp = NULL;
-        char resultBuff[256] = {'\0'};
-        char macAddr[128] = {'\0'};
-
-        fp = popen(GET_STB_MAC,"r");
-
-        if(fp == NULL)
-        {
-            DEBUG_PRINT(DEBUG_ERROR, "popen failed\n");
-
-            response["result"] = "FAILURE";
-            response["details"] = "popen failed";
-
-            return TEST_FAILURE;
-        }
-
-        if(fgets(resultBuff, sizeof(resultBuff), fp)!=NULL)
-        {
-            sscanf(resultBuff,"%s",macAddr);
-        }
-
-        pclose(fp);
-
-        string macAddre(macAddr);
-        string value = req["paramValue"].asCString();
-
-        DEBUG_PRINT(DEBUG_TRACE, "Value: %s and MACAddress: %s\n",value.c_str(),macAddre.c_str());
-
-        if(value == macAddre)
-        {
-            response["result"] = "SUCCESS";
-            response["details"] = "Verification Success";
-
-            DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-
-        }
-        else
-        {
-            response["result"] = "FAILURE";
-            response["details"] = "Verification Failure";
-
-            DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-        }
-    }
-    else if(profilePath == "Device.DeviceInfo.UpTime")
-    {
-        struct sysinfo sys_info;
-
-        sysinfo (&sys_info);
-        int time = (int) sys_info.uptime;
-        string timeValue = req["paramValue"].asCString();
-        int value = atoi(timeValue.c_str());
-
-        DEBUG_PRINT(DEBUG_TRACE, "Value: %d and upTime: %d\n",value,time);
-
-        /*if(time == value)*/
-        if(time >= value)
-        {
-            response["result"] = "SUCCESS";
-            response["details"] = "Verification Success";
-
-            DEBUG_PRINT(DEBUG_LOG, "Verification Success\n");
-
-        }
-        else
-        {
-            response["result"] = "FAILURE";
-            response["details"] = "Verification Failure";
-
-            DEBUG_PRINT(DEBUG_ERROR, "Verification Failure\n");
-        }
-    }
-    else
-    {
-        response["result"] = "FAILURE";
-        response["details"] = "Verification Failure";
-
-        DEBUG_PRINT(DEBUG_LOG, "Profile Path not supported\n");
-    }
-
-    DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent_VerifyParameterValue -->Exit\n");
+    DEBUG_PRINT(DEBUG_TRACE,"\n LogValidation --->Exit\n");
     return TEST_SUCCESS;
 }
 
 /**************************************************************************
-  Function Name   : CreateObject
+Function Name   : CreateObject
 
 Arguments       : NULL
 
@@ -657,13 +250,13 @@ Description     : This function is used to create a new object of the class "SNM
 
 extern "C" SNMPProtocolAgent* CreateObject()
 {
-    DEBUG_PRINT(DEBUG_TRACE, "Creating SNMP Protocol Agent Object\n");
+	DEBUG_PRINT(DEBUG_TRACE, "Creating SNMP Protocol Agent Object\n");
 
-    return new SNMPProtocolAgent();
+	return new SNMPProtocolAgent();
 }
 
 /**************************************************************************
-  Function Name   : cleanup
+Function Name   : cleanup
 
 Arguments       : NULL
 
@@ -671,23 +264,23 @@ Description     : This function will be used to the close things cleanly.
  **************************************************************************/
 bool SNMPProtocolAgent::cleanup(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj)
 {
-    DEBUG_PRINT(DEBUG_TRACE, "cleaningup\n");
+	DEBUG_PRINT(DEBUG_TRACE, "cleaningup\n");
 
-    if(NULL == ptrAgentObj)
-    {
-        return TEST_FAILURE;
-    }
+	if(NULL == ptrAgentObj)
+	{
+		return TEST_FAILURE;
+	}
 
-    ptrAgentObj->UnregisterMethod("TestMgr_GetParameterValue");
-    ptrAgentObj->UnregisterMethod("TestMgr_VerifyParameterValue");
+	ptrAgentObj->UnregisterMethod("ExecuteSNMPCommand");
+	ptrAgentObj->UnregisterMethod("LogValidation");
 
-    DEBUG_PRINT(DEBUG_TRACE, "cleaningup done\n");
+	DEBUG_PRINT(DEBUG_TRACE, "cleaningup done\n");
 
-    return TEST_SUCCESS;
+	return TEST_SUCCESS;
 }
 
 /**************************************************************************
-  Function Name : DestroyObject
+Function Name : DestroyObject
 
 Arguments     : Input argument is SNMPProtocolAgent Object
 
@@ -695,6 +288,7 @@ Description   : This function will be used to destory the SNMPProtocolAgent obje
  **************************************************************************/
 extern "C" void DestroyObject(SNMPProtocolAgent *stubobj)
 {
-    DEBUG_PRINT(DEBUG_TRACE, "Destroying SNMPProtocolAgent object\n");
-    delete stubobj;
+	DEBUG_PRINT(DEBUG_TRACE, "Destroying SNMPProtocolAgent object\n");
+	delete stubobj;
 }
+
