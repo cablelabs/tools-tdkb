@@ -65,6 +65,7 @@ AC_CONFIG_FILES([Makefile
 	 WECB_Stub/Makefile
 	 Mta_agent_Stub/Makefile
 	 CosaCM_Stub/Makefile
+         CosaMTA_Stub/Makefile
 	 TR069Pa_Stub/Makefile
 	 AdvancedConfig_stub/Makefile
 	 SNMP_PA_Stub/Makefile])
