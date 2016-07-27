@@ -138,7 +138,7 @@ expect -re ".*>";
 after 30000;
 send "route add $wanIP mask 255.255.255.255 10.0.0.1\r";
 expect -re ".*OK!.*>";
-send "wget --tries=1 -T 60 https://webmail.comcast.com --no-check-certificate\r";
+send "wget --tries=1 -T 60 https://$siteHttps --no-check-certificate\r";
 expect -re ".*>";
 set outHttps $expect_out(buffer);
 send "route delete $wanIP\r";

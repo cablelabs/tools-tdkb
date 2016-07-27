@@ -8,15 +8,14 @@
 # ============================================================================
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
-# 
+#
 
 package require Expect;
 source proc.tcl;
 puts {
 ######################################################################################################################### 
-#TEST CASEID :TC_ERTR_0044 																						    
-#Description  :Verify that WG is able to allow Access for specific Wi-Fi clients that are configured that in MAC address filter
-			
+#TEST CASEID :TC_ERTR_0138
+#Description :Verify that MAC Filter based Access control allow specific clients that are connected via 5GHz radio
 #########################################################################################################################
  }
 #Initializing the values to the parameters by invoking Initializer proc
@@ -31,7 +30,7 @@ puts {
 }
 
 set output "";
-set output [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.Enable true boolean];
+set output [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MACFilter.Enable true boolean];
 puts $output;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output] == 1 } {
 
@@ -45,7 +44,7 @@ exit 0;
 after 5000;
 
 set output1 "";
-set output1 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.FilterAsBlackList false boolean];
+set output1 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MACFilter.FilterAsBlackList false boolean];
 puts $output1;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output1] == 1 } {
 
@@ -67,7 +66,7 @@ expect -re ".*>";
 send "ipconfig /all\r";
 expect -re ".*>";
 set outIp $expect_out(buffer);
-send "netsh wlan delete profile name=\"$ssid2\"\r";
+send "netsh wlan delete profile name=\"$ssid5\"\r";
 expect -re ".*>";
 send "exit\r";
 expect -re ".*>";
@@ -80,7 +79,7 @@ regsub -all {\-} $MAC1 {:} m1;
 
 
 set output2 "";
-#set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.MACAddress $m1 string];
+#set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MACFilter.MACAddress $m1 string];
 
 spawn telnet $AutomationServerIP;
 set timeout 100;
@@ -92,7 +91,7 @@ expect -re ".*$";
 
 regsub -all {\:} $SNno {} SNnoWithoutColon;
 set output2 "";
-set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.DeviceName,Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.MACAddress $wlanName,$m1 string,string];
+set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MacFilterTable.DeviceName,Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MacFilterTable.MACAddress $wlanName,$m1 string,string];
 
 #expect -re ".*~]";
 #set output2 $expect_out(buffer);
@@ -113,12 +112,12 @@ exit 0;
 after 40000;
 puts {
 ######################################################################################################################### 
-#Step 2 :Get the parameters that has been set     											 
+#Step 2 :Get the parameters that have been set
 #########################################################################################################################
 }
 
 set output3 "";
-set output3 [exec java -cp $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.Enable null null];
+set output3 [exec java -cp $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MACFilter.Enable null null];
 puts $output3;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output3] == 1 } {
 
@@ -131,7 +130,7 @@ exit 0;
 }
 
 set output4 "";
-set output4 [exec java -cp $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.FilterAsBlackList null null];
+set output4 [exec java -cp $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MACFilter.FilterAsBlackList null null];
 puts $output4;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output4] == 1 } {
 
@@ -156,9 +155,9 @@ send "$wlanName\r";
 expect -re (.*word:); 
 send "$wlanPassword\r";
 expect -re ".*>";
-send "netsh wlan add profile filename=\"$profilePath\\Wireless.xml\" interface=\"$interface_name1\"\r";
+send "netsh wlan add profile filename=\"$profilePath\\Wireless-5GHz.xml\" interface=\"$interface_name1\"\r";
 expect -re ".*>";
-send "netsh wlan connect $ssid2\r";
+send "netsh wlan connect $ssid5\r";
 expect -re ".*>";
 set outpCon $expect_out(buffer);
 after 20000
@@ -175,12 +174,11 @@ set failFlag "";
 
 puts {
 ######################################################################################################################### 
-#Step 5 :Checking the connection details by validating the response.                                                               					 
+#Step 4 :Checking the connection details by validating the response
 #########################################################################################################################
 }
 
-
-if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} $outpCon match] == 1} {
+if {[regexp {There is no profile "$ssid5" assigned to the specified interface.} $outpCon match] == 1} {
 
 	puts "\nMissing profile. Please ensure that you create a profile and then try connecting";
 	#set passFlag [expr $passFlag +1];
@@ -225,12 +223,12 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 }
 puts {
 ######################################################################################################################### 
-#Step 6 :Reverting the parameters to its default value     			  
+#Step 5 :Reverting the parameters to its default value     			  
 #########################################################################################################################
 }
 
 set output5 "";
-set output5 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.Enable false boolean];
+set output5 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MACFilter.Enable false boolean];
 puts $output5;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output5] == 1 } {
 
@@ -243,7 +241,7 @@ exit 0;
 }
 
 set output6 "";
-set output6 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MACFilter.FilterAsBlackList false boolean];
+set output6 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MACFilter.FilterAsBlackList false boolean];
 puts $output6;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output6] == 1 } {
 
@@ -265,7 +263,7 @@ expect -re ".*$";
 
 regsub -all {\:} $SNno {} SNnoWithoutColon;
 set soutput "";
-set soutput [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.DeviceName,Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.MACAddress $wlanName,00:00:00:00:00:00 string,string];
+set soutput [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MacFilterTable.DeviceName,Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MacFilterTable.MACAddress $wlanName,00:00:00:00:00:00 string,string];
 
 #expect -re ".*~]";
 #set soutput $expect_out(buffer);
@@ -287,3 +285,4 @@ exit 0;
 
 set passContent "Test Result : $result$~";
 displayProc $passContent;
+

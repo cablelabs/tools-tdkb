@@ -23,6 +23,8 @@ telnetIP XX.XX.XX.XXX
 UserName XXXX
 Password YYYY
 OsName1 linux
+EthInterface Local_Area_Connection_2
+IntNo 5
 
 #Wireless Lan PC1 Details
 WlanIP XX.XX.XX.XXX
@@ -39,7 +41,7 @@ WanIP XX.XXX.XX.XXX
 WanName XXXXXX
 WanPassword YYYYYY
 
-#Lan ftp details
+#Lan ftp details. Ensure that ftp username and password configured for wlan and lan client are same
 FtpIP XX.XX.XX.XXX
 FtpName XXXXXX
 FtpPassword YYYYYYY
@@ -49,7 +51,7 @@ WanFtpIP XX.XX.XX.XXX
 WanFtpName XXXXXX
 WanFtpPassword YYYYYYY
 
-#Keyword Details
+#Keyword Details. Values can be changed based on the requirement
 SiteKeyword google
 SiteUrl www.google.com
 SiteHttps webmail.xxxx.com
@@ -57,6 +59,9 @@ SiteHttps webmail.xxxx.com
 #Wan IP of Gateway device
 WanIPWG XX.XX.XX.XXX
 
-
+#Linux server details used for running the TCL script
+AutomationServerIP XX.XX.XX.XX
+AutomationServerName XXXXX
+AutomationServerPassword YYYYY
 
 

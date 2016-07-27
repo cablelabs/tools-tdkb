@@ -166,6 +166,7 @@ bool WIFIAgent::WIFIAgent_Get(IN const Json::Value& req, OUT Json::Value& respon
     char ParamNames[MAX_PARAM_SIZE];
     GETPARAMVALUES *resultDetails;
     int	paramsize=0;
+    char paramDetails[200] = {0};
 
     strcpy(ParamNames,req["paramName"].asCString());
 
@@ -180,8 +181,9 @@ bool WIFIAgent::WIFIAgent_Get(IN const Json::Value& req, OUT Json::Value& respon
     }
     else
     {
+        sprintf(paramDetails, "NAME:%s VALUE:%s TYPE:%d",resultDetails[0].pParamNames,resultDetails[0].pParamValues,resultDetails[0].pParamType);
         response["result"]="SUCCESS";
-        response["details"]="Get Parameter Value API Validation is Succeeded";
+        response["details"]=paramDetails;
         bReturn = TEST_SUCCESS;
         for(int i=0; i < paramsize; i++)
         {

@@ -114,14 +114,14 @@ expect -re ".*$";
 
 regsub -all {\:} $SNno {} SNnoWithoutColon;
 set output2 "";
-send "curl -X PUT -H \"Authorization: Basic d2VicGFfcmVsZWFzZTEuMA==\" -H \"content-type:application/json\" -H \"X-Webpa-Atomic:true\" -k -i https://api.webpa.comcast.net:8090/api/v2/device/mac:$SNnoWithoutColon/config/Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable. -d '{\"0\":{\"DeviceName\": \"Automation\",\"MACAddress\": \"$m1\"}}'\r";
+set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.DeviceName,Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.MACAddress $wlanName,$m1 string,string];
 
-expect -re ".*~]";
-set output2 $expect_out(buffer);
+#expect -re ".*~]";
+#set output2 $expect_out(buffer);
 
 #Exiting Automation Server
-send "exit\r";
-expect -re ".*";
+#send "exit\r";
+#expect -re ".*";
 puts $output2;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output2] == 1 } {
 
@@ -142,14 +142,14 @@ expect -re ".*$";
 
 regsub -all {\:} $SNno {} SNnoWithoutColon;
 set voutput2 "";
-send "curl -X PUT -H \"Authorization: Basic d2VicGFfcmVsZWFzZTEuMA==\" -H \"content-type:application/json\" -H \"X-Webpa-Atomic:true\" -k -i https://api.webpa.comcast.net:8090/api/v2/device/mac:$SNnoWithoutColon/config/Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MacFilterTable. -d '{\"0\":{\"DeviceName\": \"Automation\",\"MACAddress\": \"$m1\"}}'\r";
+set voutput2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.DeviceName,Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.MACAddress $wlanName,$m1 string,string];
 
-expect -re ".*~]";
-set voutput2 $expect_out(buffer);
+#expect -re ".*~]";
+#set voutput2 $expect_out(buffer);
 
 #Exiting Automation Server
-send "exit\r";
-expect -re ".*";
+#send "exit\r";
+#expect -re ".*";
 puts $voutput2;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $voutput2] == 1 } {
 
@@ -421,22 +421,22 @@ expect -re ".*$";
 
 regsub -all {\:} $SNno {} SNnoWithoutColon;
 set soutput "";
-send "curl -X PUT -H \"Authorization: Basic d2VicGFfcmVsZWFzZTEuMA==\" -H \"content-type:application/json\" -H \"X-Webpa-Atomic:true\" -k -i https://api.webpa.comcast.net:8090/api/v2/device/mac:$SNnoWithoutColon/config/Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable. -d '{\"0\":{\"DeviceName\": \"Automation4-PC\",\"MACAddress\": \"00:00:00:00:00:00\"}}'\r";
+set soutput [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.DeviceName,Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.MACAddress $wlanName,00:00:00:00:00:00 string,string];
 
-expect -re ".*~]";
-set soutput $expect_out(buffer);
-after 5000;
+#expect -re ".*~]";
+#set soutput $expect_out(buffer);
+#after 5000;
 
 set soutput1 "";
-send "curl -X PUT -H \"Authorization: Basic d2VicGFfcmVsZWFzZTEuMA==\" -H \"content-type:application/json\" -H \"X-Webpa-Atomic:true\" -k -i https://api.webpa.comcast.net:8090/api/v2/device/mac:$SNnoWithoutColon/config/Device.WiFi.AccessPoint.$si5.X_CISCO_COM_MacFilterTable. -d '{\"0\":{\"DeviceName\": \"Automation4-PC\",\"MACAddress\": \"00:00:00:00:00:00\"}}'\r";
+set soutput1 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.DeviceName,Device.WiFi.AccessPoint.$si2.X_CISCO_COM_MacFilterTable.MACAddress $wlanName,00:00:00:00:00:00 string,string];
 
-expect -re ".*~]";
-set soutput1 $expect_out(buffer);
-after 5000;
+#expect -re ".*~]";
+#set soutput1 $expect_out(buffer);
+#after 5000;
 
 #Exiting Automation Server
-send "exit\r";
-expect -re ".*";
+#send "exit\r";
+#expect -re ".*";
 
 puts $soutput;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $soutput] == 1 } {
