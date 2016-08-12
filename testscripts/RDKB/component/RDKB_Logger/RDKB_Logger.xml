@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <module name="RDKB_Logger" testGroup="Component">
+    <primitiveTests>
+      <primitiveTest id="" name="RDKBLogger_Init" version="1">
+        <function>TestMgr_RDKBLogger_Init</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_Dbg_Enabled_Status" version="1">
+        <function>TestMgr_RDKBLogger_Dbg_Enabled_Status</function>
+        <parameters>
+          <parameter name="level" value=""/>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_EnvGet" version="1">
+        <function>TestMgr_RDKBLogger_EnvGet</function>
+        <parameters>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_EnvGetNum" version="1">
+        <function>TestMgr_RDKBLogger_EnvGetNum</function>
+        <parameters>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_EnvGetValueFromNum" version="1">
+        <function>TestMgr_RDKBLogger_EnvGetValueFromNum</function>
+        <parameters>
+          <parameter name="number" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_EnvGetModFromNum" version="1">
+        <function>TestMgr_RDKBLogger_EnvGetModFromNum</function>
+        <parameters>
+          <parameter name="number" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_Log" version="1">
+        <function>TestMgr_RDKBLogger_Log</function>
+        <parameters>
+          <parameter name="level" value=""/>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_Log_All" version="1">
+        <function>TestMgr_RDKBLogger_Log_All</function>
+        <parameters>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_Log_InverseTrace" version="1">
+        <function>TestMgr_RDKBLogger_Log_InverseTrace</function>
+        <parameters>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_Log_Msg" version="1">
+        <function>TestMgr_RDKBLogger_Log_Msg</function>
+        <parameters>
+          <parameter name="level" value=""/>
+          <parameter name="module" value=""/>
+          <parameter name="msg" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_Log_Trace" version="1">
+        <function>TestMgr_RDKBLogger_Log_Trace</function>
+        <parameters>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="RDKBLogger_CheckMPELogEnabled" version="1">
+        <function>TestMgr_RDKBLogger_CheckMPELogEnabled</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_SetLogLevel" version="1">
+        <function>TestMgr_RDKBLogger_SetLogLevel</function>
+        <parameters>
+          <parameter name="level" value=""/>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_GetLogLevel" version="1">
+        <function>TestMgr_RDKBLogger_GetLogLevel</function>
+        <parameters>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="RDKBLogger_Log_MPEOSDisabled" version="1">
+        <function>TestMgr_RDKBLogger_Log_MPEOSDisabled</function>
+        <parameters>
+          <parameter name="level" value=""/>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="RDKBLogger_Log_None" id=" " version="1">
+        <function>TestMgr_RDKBLogger_Log_None</function>
+        <parameters>
+          <parameter name="module" value=""/>
+        </parameters>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>

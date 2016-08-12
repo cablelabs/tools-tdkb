@@ -68,5 +68,6 @@ AC_CONFIG_FILES([Makefile
          CosaMTA_Stub/Makefile
 	 TR069Pa_Stub/Makefile
 	 AdvancedConfig_stub/Makefile
-	 SNMP_PA_Stub/Makefile])
+	 SNMP_PA_Stub/Makefile
+         RDKLogger_stub/Makefile])
 AC_OUTPUT
