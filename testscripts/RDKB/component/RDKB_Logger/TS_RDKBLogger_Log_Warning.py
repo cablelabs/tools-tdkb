@@ -12,7 +12,7 @@
 <xml>
   <id>1387</id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>4</version>
+  <version>5</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_RDKBLogger_Log_Warning</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -59,7 +59,7 @@ port = <port>
 
 #Test component to be tested
 obj = TDKScriptingLibrary("rdklogger","RDKB");
-obj.configureTestCase(ip,port,'TS_RDKLogger_Log_Warning');
+obj.configureTestCase(ip,port,'TS_RDKBLogger_Log_Warning');
 #Get the result of connection with test component and Gateway
 result =obj.getLoadModuleResult();
 print "rdklogger module loading status :%s" %result;
@@ -70,7 +70,7 @@ if "SUCCESS" in result.upper():
     obj.setLoadModuleStatus("SUCCESS");
 
     #Primitive test case which associated to this Script
-    tdkTestObj = obj.createTestStep('RDKLogger_Log_Msg');
+    tdkTestObj = obj.createTestStep('RDKBLogger_Log_Msg');
 
     expectedRes = "SUCCESS"
 

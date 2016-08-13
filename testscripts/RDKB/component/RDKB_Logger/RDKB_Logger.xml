@@ -24,16 +24,16 @@
           <parameter name="module" value=""/>
         </parameters>
       </primitiveTest>
-      <primitiveTest id=" " name="RDKBLogger_EnvGetValueFromNum" version="1">
+      <primitiveTest name="RDKBLogger_EnvGetValueFromNum" id=" " version="2">
         <function>TestMgr_RDKBLogger_EnvGetValueFromNum</function>
         <parameters>
-          <parameter name="number" value=""/>
+          <parameter name="number" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest id=" " name="RDKBLogger_EnvGetModFromNum" version="1">
+      <primitiveTest name="RDKBLogger_EnvGetModFromNum" id=" " version="2">
         <function>TestMgr_RDKBLogger_EnvGetModFromNum</function>
         <parameters>
-          <parameter name="number" value=""/>
+          <parameter name="number" value="0"/>
         </parameters>
       </primitiveTest>
       <primitiveTest id=" " name="RDKBLogger_Log" version="1">

@@ -2,8 +2,8 @@ dnl                                               -*- Autoconf -*-
 dnl Process this file with autoconf to produce a configure script.
 
 dnl AC_PREREQ([2.69])
-AC_INIT(tdk-b, 1.0, sabarinathp@tataelxsi.co.in,tdk-b)
-AC_CONFIG_SRCDIR([CMAgent_stub/src/CMAgent.cpp])
+AC_INIT(tdk-b, 1.0, praveensnair@tataelxsi.co.in,tdk-b)
+AC_CONFIG_SRCDIR([agent/src/agentmain.cpp])
 AM_CONFIG_HEADER(cfg/config.h)
 AC_CONFIG_MACRO_DIR([cfg])
 AC_CONFIG_AUX_DIR([cfg])
@@ -45,6 +45,7 @@ AC_CHECK_FUNCS([memset strdup strerror])
 COPTS="-DDEBUG_LEVEL_TRACE"
 AM_CXXFLAGS="$AM_CXXFLAGS -DDEBUG_LEVEL_TRACE"
 AGENT_FLAGS=" "
+CONFIG_PREFIX="/etc/"
 RDK_VERSION="RDKB"
 SUBDIR_HYBRID=" "
 SUBDIR_CLIENT=" "
@@ -53,6 +54,7 @@ SUBDIR_CLIENT=" "
 
 AC_SUBST(COPTS)
 AC_SUBST(AGENT_FLAGS)
+AC_SUBST(CONFIG_PREFIX)
 AC_SUBST(RDK_VERSION)
 AC_SUBST(SUBDIR_HYBRID)
 AC_SUBST(SUBDIR_CLIENT)
