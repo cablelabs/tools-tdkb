@@ -145,6 +145,7 @@ bool createTdkDebugIniFile(bool enableMPELog=true)
         debugFile.open (tdkDebugIniFile, ios::in | ios::out | ios::app);
         if (debugFile.is_open())
         {
+            debugFile << "LOG.RDK.TEST = ALL DEBUG" << endl;
             debugFile << "LOG.RDK.TEST1 = ALL DEBUG TRACE" << endl;
             debugFile << "LOG.RDK.TEST2 = NONE ALL" << endl;
             debugFile << "LOG.RDK.TEST3 = ALL NONE" << endl;
