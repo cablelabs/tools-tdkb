@@ -214,7 +214,7 @@ puts {
 ################################################################################
 }
 set voutput "";
-set voutput [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues  Device.WiFi.AccessPoint.$si2.Security.X_CISCO_COM_EncryptionMethod,Device.WiFi.AccessPoint.10001.Security.ModeEnabled AES+TKIP,WPA-WPA2-Personal string,string];
+set voutput [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues  Device.WiFi.AccessPoint.$si2.Security.X_CISCO_COM_EncryptionMethod,Device.WiFi.AccessPoint.$si2.Security.ModeEnabled AES+TKIP,WPA-WPA2-Personal string,string];
 puts $voutput;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $voutput] == 1 } {
 
