@@ -307,7 +307,7 @@ int ssp_CosaDmlCMGetIPv6DHCPInfo(int handleType, int bufferType)
 
     if(bufferType == 0)
     {
-        dhcpIpv6 = ((PCOSA_CM_IPV6DHCP_INFO *) malloc(450));
+        dhcpIpv6 = ((PCOSA_CM_IPV6DHCP_INFO) malloc(sizeof(COSA_CM_IPV6DHCP_INFO)));
     }
 
     return_status = CosaDmlCMGetIPv6DHCPInfo(cm_handle,dhcpIpv6);
@@ -623,7 +623,7 @@ int ssp_cosacm_GetDOCSISInfo(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    PCOSA_CM_DOCSIS_INFO *docsis = 0;
+    PCOSA_CM_DOCSIS_INFO docsis = NULL;
 
     printf("\n Entering ssp_cosacm_GetDOCSISInfo function\n\n");
 
@@ -634,7 +634,7 @@ int ssp_cosacm_GetDOCSISInfo(int handleType, int bufferType)
     
     if(bufferType == 0)
     {
-        docsis=((PCOSA_CM_DOCSIS_INFO*)malloc(20));
+        docsis=((PCOSA_CM_DOCSIS_INFO)malloc(sizeof(COSA_CM_DOCSIS_INFO)));
         return_status = CosaDmlCMGetDOCSISInfo(cm_handle,docsis);
     }
     else
@@ -1237,7 +1237,7 @@ int ssp_cosacm_getcpelist()
 
     printf("\nEntering ssp_cosacm_getcpelist function\n\n");
 
-    return_status = CosaDmlCmGetCPEList(NULL,&ulInstanceNumber,pCPEList);
+    return_status = CosaDmlCmGetCPEList(NULL,ulInstanceNumber,pCPEList);
     printf("Return status of CosaDmlCmGetCPEList is %d \n", return_status);
 
     if ( return_status != SSP_SUCCESS)
@@ -1421,9 +1421,9 @@ int ssp_cosacm_getcert_memory_unalloc()
 int ssp_cosacm_getcmerrorcodewords_invalid_arg()
 {
     int return_status = 0;
-    ULONG count = 0;
-    int **pCfg = NULL;
-
+    int* count = NULL;
+//    int **pCfg = NULL;
+PCOSA_DML_CMERRORCODEWORDS_FULL   *pCfg = NULL;
     printf("\n Entering ssp_cosacm_getcmerrorcodewords_invalid_arg function\n\n");
 
     return_status = CosaDmlCmGetCMErrorCodewords(bus_handle_client,&count,&pCfg);
