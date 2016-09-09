@@ -447,12 +447,13 @@ bool AdvancedConfig::AdvancedConfig_GetNames(IN const Json::Value& req, OUT Json
     }
     else
     {
+        response["result"]="SUCCESS";
+        response["details"]=resultDetails[0].pParamNames;
+
         for(int nameCnt=0; nameCnt < retParamNameSize; nameCnt++)
         {
             free(resultDetails[nameCnt].pParamNames);
         }
-        response["result"]="SUCCESS";
-        response["details"]="Get Parameter Names API Validation is Success";
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_getnames --->Exit\n");
