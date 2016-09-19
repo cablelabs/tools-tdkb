@@ -10,7 +10,16 @@
 # Copyright (c) 2016 Comcast. All rights reserved.
 # ============================================================================
 
-SUBDIRS = agent RDKLogger_stub CMAgent_stub WIFIAgent_stub MBUS_Stub WECB_Stub CosaCM_Stub SNMP_PA_Stub TR069Pa_Stub Mta_agent_Stub AdvancedConfig_stub CosaMTA_Stub pam_stub
-DIST_SUBDIRS = @SUBDIRS@
+ACLOCAL_AMFLAGS = -Im4 --install
+AM_LDFLAGS = -ltdkagentssp
+AM_CPPFLAGS = ${COPTS} -fPIC -DDEBUG_LEVEL_TRACE
 
-distcleancheck_listfiles = *-libtool
+INCLUDES = -I${top_srcdir}/pam_stub/include -I${top_srcdir}/agent/include
+
+
+AM_CXXFLAGS = -I${top_srcdir}/pam_stub/include -I${top_srcdir}/agent/include
+
+
+lib_LTLIBRARIES = libpamstub.la
+libpamstub_la_SOURCES = src/pam_bridge.cpp
+libpamstub_la_LDFLAGS = -ltdkagentssp

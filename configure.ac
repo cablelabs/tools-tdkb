@@ -71,5 +71,6 @@ AC_CONFIG_FILES([Makefile
 	 TR069Pa_Stub/Makefile
 	 AdvancedConfig_stub/Makefile
 	 SNMP_PA_Stub/Makefile
+	 pam_stub/Makefile
          RDKLogger_stub/Makefile])
 AC_OUTPUT
