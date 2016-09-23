@@ -58,6 +58,14 @@ AC_ARG_ENABLE([ert],
 
 AC_SUBST(ERT_VALUE)
 
+AC_ARG_ENABLE([platform],
+[  --enable-platform    Enable platform],
+[case "${enableval}" in
+  yes) platform=true ;;
+  no)  platform=false ;;
+  *) AC_MSG_ERROR([bad value ${enableval} for --enable-platform]) ;;
+esac],[platform=false])
+AM_CONDITIONAL([PLATFORM_ENABLED], [test x$platform = xtrue])
 
 AC_CONFIG_FILES(
         source/Lib/Makefile
