@@ -202,22 +202,13 @@ send "$Name\r";
 expect -re (.*word:);
 send "$password\r";
 expect -re ".*>";
-#send "netsh interface set interface name=\"Wireless Network Connection 6\" admin=disabled\r";
-#expect -re ".*>";
 send "ipconfig\r";
 expect -re ".*>";
 set outConfig $expect_out(buffer);
 send "exit\r";
 puts "$outConfig";
 
-#if { [regexp {.*Local Area Connection 3.*IPv4 Address.*: ([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*Ethernet adapter.*} $outConfig match Ipval] == 1 } {
-#puts "Obtained IP : $Ipval";
-#} else {
-#puts "IP has not been obtained due to technical reasons."
-#set result "Error"
-#return $result
-#}
-#if {[regexp -nocase {.*Local Area Connection 3.*IPv4 Address.*: ([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*Subnet.*IPv4 Address.*:.*} $outConfig match Ipval] == 1 } {}
+
 if { [regexp {.*IPv4 Address.*: (\d+\.\d+\.\d+\.\d+).*Subnet.*Default Gateway.*:.*10.0.0.1.*Ethernet.*} $outConfig matcn Ipval] == 1 } {
 puts "Obtained IP : $Ipval";
 } else {

@@ -536,6 +536,30 @@ puts "$configFile";
                         set EXEJAR $Vvalue;
 		
                 }
+               if { ![string compare $Vname "DefaultSSID2"] } {
+                        global defaultssid2 "";
+                        set defaultssid2 $Vvalue;
+
+                }
+
+
+                if { ![string compare $Vname "DefaultSSID5"] } {
+                        global defaultssid5 "";
+                        set defaultssid5 $Vvalue;
+
+                }
+                
+	 	if { ![string compare $Vname "WlanMAC"] } {
+                        global wlanMAC "";
+                        set wlanMAC $Vvalue;
+
+                }
+
+		if { ![string compare $Vname "serverPort"] } {
+                        global serverPort "";
+                        set serverPort $Vvalue;
+
+                }
 
 	 }
 close $handle;
