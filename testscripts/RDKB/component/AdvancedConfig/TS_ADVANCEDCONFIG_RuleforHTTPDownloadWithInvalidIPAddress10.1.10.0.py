@@ -1,20 +1,18 @@
-##
-# ============================================================================
-# COMCAST CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-# This file and its contents are the intellectual property of Comcast.  It may
-# not be used, copied, distributed or otherwise  disclosed in whole or in part
-# without the express written permission of Comcast.
-# ============================================================================
-# Copyright (c) 2016 Comcast. All rights reserved.
-# ============================================================================
-##
+#  ============================================================================
+#  COMCAST C O N F I D E N T I A L AND PROPRIETARY
+#  ============================================================================
+#  This file (and its contents) are the intellectual property of Comcast.  It may
+#  not be used, copied, distributed or otherwise  disclosed in whole or in part
+#  without the express written permission of Comcast.
+#  ============================================================================
+#  Copyright (c) 2014 Comcast. All rights reserved.
+#  ===========================================================================
 '''
 <?xml version='1.0' encoding='utf-8'?>
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>2</version>
+  <version>4</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_ADVANCEDCONFIG_RuleforHTTPDownloadWithInvalidIPAddress10.1.10.0</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -46,14 +44,15 @@
     <rdk_version>RDKB</rdk_version>
     <!--  -->
   </rdk_versions>
+  <script_tags />
 </xml>
 '''
-
-#use tdklib library,which provides a wrapper for tdk testcase script0
+						#use tdklib library,which provides a wrapper for tdk testcase script0
 import tdklib;
+import tdkutilitylib;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("advancedconfig","1");
+obj = tdklib.TDKScriptingLibrary("advancedconfig","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -99,50 +98,67 @@ if "SUCCESS" in loadModuleresult.upper():
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "Enable Port Triggering\n"
-
-                        # Enable Port Triggering
-                        tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
-                        tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.1.Enable");
-                        tdkTestObj.addParameter("paramValue","true");
-                        tdkTestObj.addParameter("paramType","boolean");
-                        expectedresult="SUCCESS";
+			tdkTestObj = obj.createTestStep("AdvancedConfig_GetNames");
+                        tdkTestObj.addParameter("pathname","Device.NAT.PortMapping.");
+                        tdkTestObj.addParameter("brecursive",1);
+                        expectedresult = "SUCCESS";
                         tdkTestObj.executeTestCase(expectedresult);
                         actualresult = tdkTestObj.getResult();
+                        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
                         if expectedresult in actualresult:
                                 #Set the result status of execution
                                 tdkTestObj.setResultStatus("SUCCESS");
                                 details = tdkTestObj.getResultDetails();
-                                print "ACTUAL RESULT 3: %s" %details;
-                                #Get the result of execution
+                                print "ACTUAL RESULT 1: %s" %details;
                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                print "Port Triggering is Enabled \n"
-
-                                # Setting the protocol type
-                                tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
-                                tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.1.Protocol");
-                                tdkTestObj.addParameter("paramValue","TCP");
-                                tdkTestObj.addParameter("paramType","string");
-                                expectedresult="SUCCESS";
-                                tdkTestObj.executeTestCase(expectedresult);
-                                actualresult = tdkTestObj.getResult();
-                                if expectedresult in actualresult:
+                                index = 3;
+                                instance = tdkutilitylib.getInstanceNumber(details,index);
+                                print "INSTANCE VALUE: %s" %instance
+                                if (instance > 0):
+                                    print "INSTANCE VALUE: %s" %instance
+                                    # Enable Port Triggering
+                                    tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
+                                    tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.Enable"%instance);
+                                    tdkTestObj.addParameter("paramValue","true");
+                                    tdkTestObj.addParameter("paramType","boolean");
+                                    expectedresult="SUCCESS";
+                                    tdkTestObj.executeTestCase(expectedresult);
+                                    actualresult = tdkTestObj.getResult();
+                                    if expectedresult in actualresult:
                                         #Set the result status of execution
                                         tdkTestObj.setResultStatus("SUCCESS");
                                         details = tdkTestObj.getResultDetails();
-                                        print "ACTUAL RESULT 4: %s" %details;
+                                        print "ACTUAL RESULT 3: %s" %details;
                                         #Get the result of execution
                                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                        print "Protocol type option is set to TCP \n"
+                                        print "Port Triggering is Enabled \n"
 
-                                        #Setting the start port
+                                        # Setting the protocol type
                                         tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
-                                        tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.1.ExternalPort");
-                                        tdkTestObj.addParameter("paramValue","80");
-                                        tdkTestObj.addParameter("paramType","uint");
+                                        tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.Protocol"%instance);
+                                        tdkTestObj.addParameter("paramValue","TCP");
+                                        tdkTestObj.addParameter("paramType","string");
                                         expectedresult="SUCCESS";
                                         tdkTestObj.executeTestCase(expectedresult);
                                         actualresult = tdkTestObj.getResult();
                                         if expectedresult in actualresult:
+                                            #Set the result status of execution
+                                            tdkTestObj.setResultStatus("SUCCESS");
+                                            details = tdkTestObj.getResultDetails();
+                                            print "ACTUAL RESULT 4: %s" %details;
+                                            #Get the result of execution
+                                            print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                                            print "Protocol type option is set to TCP \n"
+
+                                            #Setting the start port
+                                            tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
+                                            tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.ExternalPort"%instance);
+                                            tdkTestObj.addParameter("paramValue","80");
+                                            tdkTestObj.addParameter("paramType","uint");
+                                            expectedresult="SUCCESS";
+                                            tdkTestObj.executeTestCase(expectedresult);
+                                            actualresult = tdkTestObj.getResult();
+                                            if expectedresult in actualresult:
                                                 #Set the result status of execution
                                                 tdkTestObj.setResultStatus("SUCCESS");
                                                 details = tdkTestObj.getResultDetails();
@@ -153,7 +169,7 @@ if "SUCCESS" in loadModuleresult.upper():
 
                                                 #Setting the end port
                                                 tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
-                                                tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.1.ExternalPortEndRange");
+                                                tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.ExternalPortEndRange"%instance);
                                                 tdkTestObj.addParameter("paramValue","80");
                                                 tdkTestObj.addParameter("paramType","uint");
                                                 expectedresult="SUCCESS";
@@ -170,7 +186,7 @@ if "SUCCESS" in loadModuleresult.upper():
 
                                                         #Setting the ip
                                                         tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
-                                                        tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.1.InternalClient");
+                                                        tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.InternalClient"%instance);
                                                         tdkTestObj.addParameter("paramValue","10.1.10.0");
                                                         tdkTestObj.addParameter("paramType","string");
                                                         expectedresult="SUCCESS";
@@ -199,24 +215,36 @@ if "SUCCESS" in loadModuleresult.upper():
                                                         print "ACTUAL RESULT 6: %s" %details;
                                                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
                                                         print "Failure in setting the end port\n"
-                                        else:
+                                            else:
                                                 tdkTestObj.setResultStatus("FAILURE");
                                                 details = tdkTestObj.getResultDetails();
                                                 print "ACTUAL RESULT 5: %s" %details;
                                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                                                 print "Failure in setting the start port\n"
-                                else:
+                                        else:
+                                            tdkTestObj.setResultStatus("FAILURE");
+                                            details = tdkTestObj.getResultDetails();
+                                            print "ACTUAL RESULT 4: %s" %details;
+                                            print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                                            print "Failure in setting the protocol type\n"
+                                    else:
                                         tdkTestObj.setResultStatus("FAILURE");
                                         details = tdkTestObj.getResultDetails();
-                                        print "ACTUAL RESULT 4: %s" %details;
+                                        print "ACTUAL RESULT 3: %s" %details;
                                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                        print "Failure in setting the protocol type\n"
+                                        print "Failure in enabling port trigger\n"
+                                    
+                                else:
+                                    print "Instance value should be greater than 0\n"
+                                    print "Wrong instance value\n"
                         else:
                                 tdkTestObj.setResultStatus("FAILURE");
                                 details = tdkTestObj.getResultDetails();
-                                print "ACTUAL RESULT 3: %s" %details;
+                                print "ACTUAL RESULT 1: %s" %details;
                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                print "Failure in enabling port trigger\n"
+                                print "Failed to getnames\n "
+
+                        
                 else:
                         tdkTestObj.setResultStatus("FAILURE");
                         details = tdkTestObj.getResultDetails();
@@ -230,8 +258,27 @@ if "SUCCESS" in loadModuleresult.upper():
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Failure in setting the port forwarding as true\n "
 
+        #To delete the added table
+        tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
+        tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s." %instance);
+        expectedresult = "SUCCESS";
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+        if expectedresult in actualresult:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            details = tdkTestObj.getResultDetails();
+            print "ACTUAL RESULT: %s" %details;
+            print "[TEST EXECUTION RESULT] : %s" %actualresult;
+            print "Added table is deleted successfully\n"
+        else:
+            print "Added table could not be deleted\n"
+
         obj.unloadModule("advancedconfig");
 else:
         print "FAILURE to load Advancedconfig module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
+
+					

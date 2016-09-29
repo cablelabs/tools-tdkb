@@ -1,62 +1,39 @@
-<!-- 
-# ============================================================================
-# COMCAST CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-
-# This file and its contents are the intellectual property of Comcast.  It may
-# not be used, copied, distributed or otherwise  disclosed in whole or in part
-# without the express written permission of Comcast.
-
-# ============================================================================
-# Copyright (c) 2016 Comcast. All rights reserved.
-# ============================================================================ 
--->
-<?xml version="1.0" encoding="UTF-8"?>
-<xml>
+<?xml version="1.0" encoding="UTF-8"?><xml>
   <module name="AdvancedConfig" testGroup="Component">
     <primitiveTests>
-      <primitiveTest id=" " name="AdvancedConfig_AddObject" version="1">
+      <primitiveTest id=" " name="AdvancedConfig_AddObject" version="2">
         <function>AdvancedConfig_AddObject</function>
         <parameters>
-          <parameter name="paramName" value=""/>
+          <parameter name="paramName" value="Device.NAT.PortMapping."/>
         </parameters>
       </primitiveTest>
-      <primitiveTest id=" " name="AdvancedConfig_Get" version="1">
+      <primitiveTest name="AdvancedConfig_Get" id=" " version="2">
         <function>AdvancedConfig_Get</function>
         <parameters>
-          <parameter name="paramName" value=""/>
-          <parameter name="paramName" value=""/>
-          <parameter name="paramType" value=""/>
-          <parameter name="paramType" value=""/>
-          <parameter name="paramValue" value=""/>
-          <parameter name="paramValue" value=""/>
-          <parameter name="paramValue" value=""/>
+          <parameter name="paramName" value="Device.NAT.PortMapping."/>
+          <parameter name="paramType" value="string"/>
+          <parameter name="paramValue" value="Enable"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest id=" " name="AdvancedConfig_Set" version="1">
+      <primitiveTest name="AdvancedConfig_Set" id=" " version="2">
         <function>AdvancedConfig_Set</function>
         <parameters>
-          <parameter name="paramName" value=""/>
-          <parameter name="paramName" value=""/>
-          <parameter name="paramType" value=""/>
-          <parameter name="paramType" value=""/>
-          <parameter name="paramType" value=""/>
-          <parameter name="paramValue" value=""/>
-          <parameter name="paramValue" value=""/>
-          <parameter name="paramValue" value=""/>
-          <parameter name="paramValue" value=""/>
+          <parameter name="paramType" value="string"/>
+          <parameter name="paramValue" value="Enable"/>
+          <parameter name="paramName" value="Device.NAT.PortMapping."/>
         </parameters>
       </primitiveTest>
-      <primitiveTest id=" " name="AdvancedConfig_DelObject" version="1">
+      <primitiveTest name="AdvancedConfig_DelObject" id=" " version="2">
         <function>AdvancedConfig_DelObject</function>
         <parameters>
-          <parameter name="paramName" value=""/>
+          <parameter name="paramName" value="Device.NAT.PortMapping."/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="AdvancedConfig_ExecuteCurlCommand" id=" " version="4">
-        <function>AdvancedConfig_ExecuteCurlCommand</function>
+      <primitiveTest id=" " name="AdvancedConfig_GetNames" version="1">
+        <function>AdvancedConfig_GetNames</function>
         <parameters>
-          <parameter name="CurlCommand" value="curl -i "/>
+          <parameter name="brecursive" value="0"/>
+          <parameter name="pathname" value="Device.NAT.PortMapping."/>
         </parameters>
       </primitiveTest>
     </primitiveTests>

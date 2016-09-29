@@ -14,6 +14,7 @@
 #define __PAM_H__
 #include <json/json.h>
 #include <unistd.h>
+#include <iostream>
 #include <string.h>
 #include <dlfcn.h>
 #include <stdlib.h>
@@ -30,6 +31,8 @@
 #define TEST_FAILURE false
 #define MAX_PARAM_SIZE	100
 #define MAX_PARAM_NAMES_ARRAY	1000
+  
+using namespace std;
 
 class RDKTestAgent;
 
@@ -46,6 +49,11 @@ class pam : public RDKTestStubInterface
 	std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
         /*pam Stub Wrapper functions*/
-	bool pam_bridge_GetParamBoolValue(IN const Json::Value& req, OUT Json::Value& response);
+	bool pam_bridge_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response);
+        bool pam_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response);
+	bool pam_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
+	bool pam_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
+	bool pam_MTAAgentRestart(IN const Json::Value& req, OUT Json::Value& response);
+	bool pam_CRRestart(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__PAM_STUB_H__

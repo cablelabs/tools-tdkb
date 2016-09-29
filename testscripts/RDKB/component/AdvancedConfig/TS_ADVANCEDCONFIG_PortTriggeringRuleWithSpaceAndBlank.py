@@ -1,20 +1,18 @@
-##
-# ============================================================================
-# COMCAST CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-# This file and its contents are the intellectual property of Comcast.  It may
-# not be used, copied, distributed or otherwise  disclosed in whole or in part
-# without the express written permission of Comcast.
-# ============================================================================
-# Copyright (c) 2016 Comcast. All rights reserved.
-# ============================================================================
-##
+#  ============================================================================
+#  COMCAST C O N F I D E N T I A L AND PROPRIETARY
+#  ============================================================================
+#  This file (and its contents) are the intellectual property of Comcast.  It may
+#  not be used, copied, distributed or otherwise  disclosed in whole or in part
+#  without the express written permission of Comcast.
+#  ============================================================================
+#  Copyright (c) 2014 Comcast. All rights reserved.
+#  ===========================================================================
 '''
 <?xml version='1.0' encoding='utf-8'?>
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>10</version>
+  <version>12</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_ADVANCEDCONFIG_PortTriggeringRuleWithSpaceAndBlank</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -46,14 +44,17 @@
     <rdk_version>RDKB</rdk_version>
     <!--  -->
   </rdk_versions>
+  <script_tags />
 </xml>
 '''
-
-#use tdklib library,which provides a wrapper for tdk testcase script
+						#use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import time;
+import tdkutilitylib;
+
+
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("advancedconfig","1");
+obj = tdklib.TDKScriptingLibrary("advancedconfig","RDKB");
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
@@ -92,28 +93,76 @@ if "SUCCESS" in loadmodulestatus.upper():
 			tdkTestObj.setResultStatus("SUCCESS");
 			details = tdkTestObj.getResultDetails();
 			#Get the result of execution
-			print "[TEST EXECUTION RESULT] : %s" %actualresult ;                  	    
+			print "[TEST EXECUTION RESULT] : %s" %actualresult ;   
+			tdkTestObj = obj.createTestStep("AdvancedConfig_GetNames");
+                        tdkTestObj.addParameter("pathname","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
+                        tdkTestObj.addParameter("brecursive",1);
+                        expectedresult = "SUCCESS";
+                        tdkTestObj.executeTestCase(expectedresult);
+                        actualresult = tdkTestObj.getResult();
+                        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+                        if expectedresult in actualresult:
+                                #Set the result status of execution
+                                tdkTestObj.setResultStatus("SUCCESS");
+                                details = tdkTestObj.getResultDetails();
+                                print "ACTUAL RESULT 1: %s" %details;
+                                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                                index = 4;
+                                instance = tdkutilitylib.getInstanceNumber(details,index);
+                                print "INSTANCE VALUE: %s" %instance
+                                if (instance > 0):
+                                    print "INSTANCE VALUE: %s" %instance
+                                    tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
+                                    tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Description" %instance);		    
+                                    tdkTestObj.addParameter("paramValue","Myservice1");
+                                    tdkTestObj.addParameter("paramType","string");
+                                    expectedresult="SUCCESS";
+                                    tdkTestObj.executeTestCase(expectedresult);
+                                    actualresult = tdkTestObj.getResult();
+                                    if expectedresult in actualresult:
+                                        #Set the result status of execution
+                                        tdkTestObj.setResultStatus("SUCCESS");
+                                        details = tdkTestObj.getResultDetails();
+                                        #Get the result of execution
+                                        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+                                        ## server name with blank and spaces ##
+                                        tdkTestObj = obj.createTestStep("AdvancedConfig_Set"); 
+                                        tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Alias" %instance);		    
+                                        tdkTestObj.addParameter("paramValue","   ");
+                                        tdkTestObj.addParameter("paramType","string");
+                                        expectedresult="SUCCESS";
+                                        tdkTestObj.executeTestCase(expectedresult);
+                                        actualresult = tdkTestObj.getResult();
+                                        if expectedresult in actualresult:
+                                            #Set the result status of execution
+                                            tdkTestObj.setResultStatus("SUCCESS");
+                                            details = tdkTestObj.getResultDetails();
+                                            #Get the result of execution
+                                            print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+                                        else:
+                                            tdkTestObj.setResultStatus("FAILURE");
+                                            details = tdkTestObj.getResultDetails();
+                                            print "ACTUAL RESULT 3: %s" %details;
+                                            print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                                            print "Failed to add string for server name \n "
+                                    else:
+                                        tdkTestObj.setResultStatus("FAILURE");
+                                        details = tdkTestObj.getResultDetails();
+                                        print "ACTUAL RESULT 3: %s" %details;
+                                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                                        print "Failed to add description for trigger protocol \n "
+                                else:
+                                    print "Instance value should be greater than 0\n"
+                                    print "Wrong instance value\n"
+                   
+                        else:
+                                tdkTestObj.setResultStatus("FAILURE");
+                                details = tdkTestObj.getResultDetails();
+                                print "ACTUAL RESULT 1: %s" %details;
+                                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                                print "Failed to getnames\n "               	    
 			
-			## server name with blank and spaces ##
-			tdkTestObj = obj.createTestStep("AdvancedConfig_Set"); 
-			tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.1.Alias");		    
-			tdkTestObj.addParameter("paramValue","   ");
-			tdkTestObj.addParameter("paramType","string");
-			expectedresult="SUCCESS";
-			tdkTestObj.executeTestCase(expectedresult);
-			actualresult = tdkTestObj.getResult();
-			if expectedresult in actualresult:
-	                	#Set the result status of execution
-		                tdkTestObj.setResultStatus("SUCCESS");
-		                details = tdkTestObj.getResultDetails();
-		                #Get the result of execution
-		       	        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-			else:
-		                tdkTestObj.setResultStatus("FAILURE");
-		                details = tdkTestObj.getResultDetails();
-		                print "ACTUAL RESULT 3: %s" %details;
-		                print "[TEST EXECUTION RESULT] : %s" %actualresult;
-		                print "Failed to add string for server name \n "
+			
 	        else:   	    
 			tdkTestObj.setResultStatus("FAILURE");
 			details = tdkTestObj.getResultDetails();
@@ -126,8 +175,26 @@ if "SUCCESS" in loadmodulestatus.upper():
 		print "ACTUAL RESULT 1: %s" %details;
 		print "[TEST EXECUTION RESULT] : %s" %actualresult;
 		print "Failed to enable port trigger \n "
+	#To delete the added table
+        tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
+        tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s." %instance);
+        expectedresult = "SUCCESS";
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+        if expectedresult in actualresult:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            details = tdkTestObj.getResultDetails();
+            print "ACTUAL RESULT: %s" %details;
+            print "[TEST EXECUTION RESULT] : %s" %actualresult;
+            print "Added table is deleted successfully\n"
+        else:
+            print "Added table could not be deleted\n"
 	obj.unloadModule("advancedconfig");
 else:
 	print "FAILURE to load Advancedconfig module";
 	obj.setLoadModuleStatus("FAILURE");
 	print "Module loading FAILURE";		
+
+					

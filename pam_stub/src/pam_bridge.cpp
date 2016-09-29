@@ -19,7 +19,15 @@ extern "C"
 {
 int ssp_register(bool);
 int ssp_terminate();
-int ssp_pam_Bridging_GetParamUlongValue(char* paramName,unsigned long* ulongValue);
+GETPARAMVALUES* ssp_getParameterValue(char* pParamName,int* pParamsize);
+int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType, int commit);
+int ssp_MTAAgentRestart();
+int ssp_CRRestart();
+GETPARAMNAMES *ssp_getParameterNames(char* pPathName,int recursive,int* pParamSize);
+void free_Memory_Names(int size,GETPARAMNAMES *Freestruct);
+void free_Memory_val(int size,GETPARAMVALUES *Freestruct);
+void free_Memory_Attr(int size,GETPARAMATTR *Freestruct);
+int ssp_pam_Bridging_GetParamUlongValue(char* paramName,unsigned long* ulongValue, char* module);
 };
 
 /*This is a constructor function for pam class*/
@@ -39,7 +47,12 @@ bool pam::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::pam Initialize\n");
     /*Register stub function for callback*/
-    ptrAgentObj->RegisterMethod(*this,&pam::pam_bridge_GetParamBoolValue,"pam_bridge_GetParamBoolValue");
+    ptrAgentObj->RegisterMethod(*this,&pam::pam_bridge_GetParamUlongValue,"pam_bridge_GetParamUlongValue");
+    ptrAgentObj->RegisterMethod(*this,&pam::pam_GetParameterNames,"pam_GetParameterNames");
+    ptrAgentObj->RegisterMethod(*this,&pam::pam_SetParameterValues,"pam_SetParameterValues");
+    ptrAgentObj->RegisterMethod(*this,&pam::pam_GetParameterValues,"pam_GetParameterValues");
+    ptrAgentObj->RegisterMethod(*this,&pam::pam_MTAAgentRestart,"pam_MTAAgentRestart");
+    ptrAgentObj->RegisterMethod(*this,&pam::pam_CRRestart,"pam_CRRestart");
 
     return TEST_SUCCESS;
 }
@@ -78,34 +91,27 @@ bool pam::testmodulepost_requisites()
 
 /*******************************************************************************************
  *
- * Function Name    : pam_bridge_GetParamBoolValue
+ * Function Name    : pam_bridge_GetParamUlongValue
  * Description      : This function is used to retrieve the value of ulong parameter
  *
  * @param [in]  req - paramName : Parameter name whose value to be retrieved
- * @param [in]  req - valueType : Value type to be fetched
  * @param [in]  req - module : keyword of the module associated with the paramName
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
 
-bool pam::pam_bridge_GetParamBoolValue(IN const Json::Value& req, OUT Json::Value& response)
+bool pam::pam_bridge_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response)
 {
-    DEBUG_PRINT(DEBUG_TRACE,"\n pam_bridge_GetParamBoolValue --->Entry \n");
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_bridge_GetParamUlongValue --->Entry \n");
 
     int returnValue = 0;
     char paramName[MAX_PARAM_SIZE];
-    int valueType = 0;
     char module[MAX_PARAM_SIZE];
+    char ulongDetails[64] = {'\0'};
     unsigned long ulongValue = 0;
 
     /* Validate the input arguments */
     if(&req["paramName"]==NULL)
-    {
-        response["result"]="FAILURE";
-        response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
-    }
-    if(&req["valueType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -118,31 +124,256 @@ bool pam::pam_bridge_GetParamBoolValue(IN const Json::Value& req, OUT Json::Valu
         return TEST_FAILURE;
     }
 
-    DEBUG_PRINT(DEBUG_TRACE,"\n after module validation \n");
     strcpy(paramName,req["paramName"].asCString());
-    valueType = req["valueType"].asInt();
     strcpy(module,req["module"].asCString());
-    if(strcmp(module,"Bridging") == 0)
-    {
- 	/* Invoke the wrapper function to get the value of ulong parameter */
-    	 returnValue = ssp_pam_Bridging_GetParamUlongValue(paramName, &ulongValue);
-         DEBUG_PRINT(DEBUG_TRACE,"\n ulongValue retrieved is:%lu\n",ulongValue);
-    }
+
+    /* Invoke the wrapper function to get the value of ulong parameter */
+    returnValue = ssp_pam_Bridging_GetParamUlongValue(paramName, &ulongValue, module);
 
     if(0 == returnValue)
     {
+	sprintf(ulongDetails,"UlongValue retrieved for the param name is: %lu", ulongValue);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the value";
+        response["details"]=ulongDetails;
     }
     else
     {
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the value of ulong parameter";
-        DEBUG_PRINT(DEBUG_TRACE,"\n pam_bridge_GetParamBoolValue --->Exit\n");
+        DEBUG_PRINT(DEBUG_TRACE,"\n pam_bridge_GetParamUlongValue --->Exit\n");
         return  TEST_FAILURE;
     }
-    DEBUG_PRINT(DEBUG_TRACE,"\n pam_bridge_GetParamBoolValue  --->Exit\n");
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_bridge_GetParamUlongValue  --->Exit\n");
     return TEST_SUCCESS;
+}
+
+/***************************************************************************
+ *Function name : pam_GetParameterNames
+ *Descrption    : pam Component Get Param Name API functionality checking
+ *
+ * @param [in]  req - ParamName : Holds the name of the parameter
+ * @param [in]  req - ParamList : Holds the List of the parameter
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *****************************************************************************/
+bool pam::pam_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"Inside Fucntion GetParamNames \n");
+    string ParamName=req["ParamName"].asCString();
+    string ParamList=req["ParamList"].asCString();
+    int size=0,i=0;
+    int size_ret=0;
+    GETPARAMNAMES *DataValue;
+    GETPARAMNAMES *DataValue1;
+    DataValue=ssp_getParameterNames(&ParamName[0],1,&size_ret);
+    if(NULL==DataValue)
+    {
+        response["result"] = "FAILURE";
+        response["details"] = "Get Param Name for Parameter returned NULL";
+        return TEST_FAILURE;
+    }
+    DataValue1=ssp_getParameterNames(&ParamList[0],0,&size);
+    if(NULL==DataValue1)
+    {
+        printf("Get Param Name for ParameterList returned NULL\n");	
+        free_Memory_Names(size_ret,DataValue);
+    }
+    else
+    {
+        for(i=0;i<size;i++)
+        {	
+            if(strcmp(DataValue1[i].pParamNames,DataValue[0].pParamNames)==0)
+            {
+                if(DataValue[0].writable==DataValue1[i].writable)
+                {
+                    free_Memory_Names(size,DataValue1);
+                    printf("Parameter Name has been fetched successfully and it matched with parameter List\n");
+                    response["result"] = "SUCCESS";
+                    response["details"] = "Parameter Name has been fetched successfully and it matched with parameter List";
+                    return TEST_SUCCESS;
+                }
+                else
+                {
+
+                    free_Memory_Names(size,DataValue1);
+                    printf("Parameter attributes does not match with the parameter List\n");
+                    response["result"] = "FAILURE";
+                    response["details"] = "Parameter Name and its attributes does not match with the parameter List";
+                    return TEST_FAILURE;
+                }
+            }
+        }
+        free_Memory_Names(size,DataValue1);	
+        response["result"] = "FAILURE";
+        response["details"] = "Parameter Name does not match with the paramters in paramter list";
+        return TEST_FAILURE;	
+    }
+
+}
+
+/***************************************************************************
+ *Function name : pam_GetParameterValues
+ *Descrption    : pamPa Component Get Param Value API functionality checking
+ *
+ * @param [in]  req - ParamName : Holds the name of the parameter
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *****************************************************************************/
+bool pam::pam_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"Inside Function GetParamValues \n");
+    int size_ret=0;
+    GETPARAMVALUES *DataParamValue;
+
+    string ParamName=req["ParamName"].asCString();
+    DataParamValue=ssp_getParameterValue(&ParamName[0],&size_ret);
+    if((DataParamValue == NULL))
+    {
+        printf("GetParamValue funtion returns NULL as o/p\n");
+    }
+    else
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"Parameter Values are as :\n");
+            DEBUG_PRINT(DEBUG_TRACE,"Parameter Name is %s\n",ParamName.c_str());
+            DEBUG_PRINT(DEBUG_TRACE,"Value is %s",DataParamValue[0].pParamValues);
+            DEBUG_PRINT(DEBUG_TRACE," Type is %d\n",DataParamValue[0].pParamType);
+            response["result"] = "SUCCESS";
+            response["details"] = DataParamValue[0].pParamValues;
+	    free_Memory_val(size_ret,DataParamValue);
+            return TEST_SUCCESS;
+
+    }
+    response["result"] = "FAILURE";
+    response["details"] = "Get Param value Failure of the function";
+    return TEST_FAILURE;
+
+}
+
+/***************************************************************************
+ *Function name : pam_SetParameterValues
+ *Descrption    : pamPa Component Set Param Value API functionality checking
+ * @param [in]  req - ParamName : Holds the name of the parameter
+ * @param [in]  req - ParamValue : Holds the value of the parameter
+ * @param [in]  req - Type : Holds the Type of the parameter
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+bool pam::pam_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"Inside Function SetParamValues \n");
+
+    int size_ret=0,i=0,setResult=0;
+
+    string ParamName=req["ParamName"].asCString();    
+    string ParamValue=req["ParamValue"].asCString();
+    string Type=req["Type"].asCString();
+
+    GETPARAMVALUES *DataParamValue1;
+
+    setResult=ssp_setParameterValue(&ParamName[0],&ParamValue[0],&Type[0],1);
+    if(setResult==0)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"Parameter Values have been set.Needs to cross be checked with Get Parameter Names\n");
+        DataParamValue1=ssp_getParameterValue(&ParamName[0],&size_ret);
+    }
+    else
+    {
+        response["result"] = "FAILURE";
+        response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
+        return TEST_FAILURE;
+    }
+
+    if((DataParamValue1== NULL))
+    {
+        printf("GetParamValue funtion returns NULL as output\n");
+    }
+    else
+    {
+        if(strcmp(&ParamValue[0],&DataParamValue1[i].pParamValues[0])==0)
+        {
+            printf("Set has been validated successfully\n");
+            free_Memory_val(size_ret,DataParamValue1);
+            response["result"] = "SUCCESS";
+            response["details"] = "Set has been validated successfully";
+            return TEST_SUCCESS;
+        }
+        else
+        {	
+            free_Memory_val(size_ret,DataParamValue1);
+            printf("Parameter Value has not changed after a proper Set\n");
+
+        }
+    }
+
+    response["result"] = "FAILURE";
+    response["details"] = "FAILURE : Parameter Value has not changed after a proper Set";
+    return TEST_FAILURE;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name    : pam_CMAgentRestart
+ * Description      : This function will kill the CMAgent process which is running by default
+ *                    and check if the process has restarted after kill.
+ *
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+
+bool pam::pam_MTAAgentRestart(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_MTAAgentRestart --->Entry \n");
+
+    int returnValue = 0;
+
+    returnValue = ssp_MTAAgentRestart();
+    if(0 == returnValue)
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Successfully restarted the MTAAgent after killing\n";
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to restart the MTAAgent after being killed\n";
+        DEBUG_PRINT(DEBUG_TRACE,"\n pam_MTAAgentRestart --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_MTAAgentRestart  --->Exit\n");
+    return TEST_SUCCESS;
+
+}
+
+/*******************************************************************************************
+ *
+ * Function Name    : pam_CRRestart
+ * Description      : This function will kill the CR process which is running by default
+ *                    and check if the system has restarted after kill.
+ *
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+
+bool pam::pam_CRRestart(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_CRRestart --->Entry \n");
+
+    int returnValue = 0;
+
+    returnValue = ssp_CRRestart();
+    if(0 == returnValue)
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Successfully rebooted the system after CR is killed\n";
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to reboot the system after CR being killed\n";
+        DEBUG_PRINT(DEBUG_TRACE,"\n pam_CRRestart --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_CRRestart  --->Exit\n");
+    return TEST_SUCCESS;
+
 }
 
 /**************************************************************************
@@ -172,7 +403,12 @@ bool pam::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     }
 
     /*unRegister stub function for callback*/
-    ptrAgentObj->UnregisterMethod("pam_bridge_GetParamBoolValue");
+    ptrAgentObj->UnregisterMethod("pam_bridge_GetParamUlongValue");
+    ptrAgentObj->UnregisterMethod("pam_SetParameterValues");
+    ptrAgentObj->UnregisterMethod("pam_GetParameterValues");
+    ptrAgentObj->UnregisterMethod("pam_MTAAgentRestart");
+    ptrAgentObj->UnregisterMethod("pam_CRRestart");
+    ptrAgentObj->UnregisterMethod("pam_GetParameterNames");
 
     return TEST_SUCCESS;
 }
