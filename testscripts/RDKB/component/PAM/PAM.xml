@@ -2,31 +2,37 @@
   <module name="PAM" testGroup="Component">
     <primitiveTests>
       <primitiveTest id=" " name="pam_bridge_GetParamBoolValue" version="2">
+        <function>pam_bridge_GetParamBoolValue</function>
         <parameters>
           <parameter name="paramName" value="MaxBridgeEntries"/>
           <parameter name="module" value="Bridging"/>
         </parameters>
       </primitiveTest>
       <primitiveTest id=" " name="pam_bridge_GetParamUlongValue" version="1">
+        <function>pam_bridge_GetParamUlongValue</function>
         <parameters>
           <parameter name="module" value="Bridging"/>
           <parameter name="paramName" value="MaxBridgeEntries"/>
         </parameters>
       </primitiveTest>
       <primitiveTest id=" " name="pam_AddObject" version="1">
+        <function>pam_AddObject</function>
         <parameters>
           <parameter name="paramName" value="a"/>
         </parameters>
       </primitiveTest>
       <primitiveTest id="" name="pam_CRRestart" version="1">
+        <function>pam_CRRestart</function>
         <parameters/>
       </primitiveTest>
       <primitiveTest id=" " name="pam_DelObject" version="1">
+        <function>pam_DelObject</function>
         <parameters>
           <parameter name="paramName" value="a"/>
         </parameters>
       </primitiveTest>
       <primitiveTest id=" " name="pam_GetParameterNames" version="1">
+        <function>pam_GetParameterNames</function>
         <parameters>
           <parameter name="brecursive" value="1"/>
           <parameter name="ParamList" value="a"/>
@@ -34,11 +40,13 @@
         </parameters>
       </primitiveTest>
       <primitiveTest id=" " name="pam_GetParameterValues" version="1">
+        <function>pam_GetParameterValues</function>
         <parameters>
           <parameter name="ParamName" value="a"/>
         </parameters>
       </primitiveTest>
       <primitiveTest id=" " name="pam_SetParameterValues" version="2">
+        <function>pam_SetParameterValues</function>
         <parameters>
           <parameter name="Type" value="a"/>
           <parameter name="ParamValue" value="a"/>

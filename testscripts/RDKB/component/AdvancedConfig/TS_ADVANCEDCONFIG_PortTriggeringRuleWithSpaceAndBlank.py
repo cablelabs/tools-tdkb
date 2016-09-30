@@ -50,7 +50,7 @@
 						#use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import time;
-import tdkutilitylib;
+import tdkutility;
 
 
 #Test component to be tested
@@ -108,7 +108,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                                 print "ACTUAL RESULT 1: %s" %details;
                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                                 index = 4;
-                                instance = tdkutilitylib.getInstanceNumber(details,index);
+                                instance = tdkutility.getInstanceNumber(details,index);
                                 print "INSTANCE VALUE: %s" %instance
                                 if (instance > 0):
                                     print "INSTANCE VALUE: %s" %instance
