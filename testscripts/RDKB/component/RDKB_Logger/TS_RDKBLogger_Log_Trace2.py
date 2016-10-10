@@ -74,7 +74,7 @@ if "SUCCESS" in result.upper():
 
     expectedRes = "SUCCESS"
 
-    module = "TEST4"
+    module = "TEST"
     print "Requested module: %s"%module
     tdkTestObj.addParameter("module",module);
     level = "TRACE2"

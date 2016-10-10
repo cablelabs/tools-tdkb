@@ -72,7 +72,7 @@ if "SUCCESS" in result.upper():
     obj.setLoadModuleStatus("SUCCESS");
 
     #Primitive test case which associated to this Script
-    tdkTestObj = obj.createTestStep('RDKLogger_Log_Msg');
+    tdkTestObj = obj.createTestStep('RDKBLogger_Log_Msg');
 
     expectedRes = "SUCCESS"
 
