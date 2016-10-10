@@ -13,6 +13,7 @@
 bool b_rdk_logger_enabled = false;
 string g_tdkPath = getenv("TDK_PATH");
 string tdkDebugIniFile = g_tdkPath + "/" + DEBUG_CONF;
+string log_path = "/rdklogs/logs/";
 /* Helper functions */
 /**
  * Converts a log level name to the correspodning log level enum value.
@@ -84,9 +85,8 @@ bool CheckLog(const char* search)
     ifstream logFile;
     string tdkLogFile = "";
     /* Extracting path to logs folder */
-    tdkLogFile.append(g_tdkPath);
-    tdkLogFile.append("/logs/");
-    tdkLogFile.append(TDKAGENT_LOG);
+    tdkLogFile.append(log_path);
+    tdkLogFile.append(RDKLOGGER_LOG);
     logFile.open(tdkLogFile, ios::in);
     if(logFile.is_open())
     {
@@ -145,7 +145,7 @@ bool createTdkDebugIniFile(bool enableMPELog=true)
         debugFile.open (tdkDebugIniFile, ios::in | ios::out | ios::app);
         if (debugFile.is_open())
         {
-            debugFile << "LOG.RDK.TEST = ALL DEBUG" << endl;
+            debugFile << "LOG.RDK.TEST = ALL DEBUG TRACE" << endl;
             debugFile << "LOG.RDK.TEST1 = ALL DEBUG TRACE" << endl;
             debugFile << "LOG.RDK.TEST2 = NONE ALL" << endl;
             debugFile << "LOG.RDK.TEST3 = ALL NONE" << endl;
@@ -219,6 +219,11 @@ bool RDKBLoggerAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAg
 std::string RDKBLoggerAgent::testmodulepre_requisites()
 {
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Entry\n");
+
+        std::string pre_req;
+        pre_req = g_tdkPath + "/" + PRE_REQUISITE_FILE;
+        std::string pre_req_chk= "source "+ pre_req;
+
 	// Make a copy of debug.ini file for testing
         if (false == createTdkDebugIniFile())
         {
@@ -233,6 +238,18 @@ std::string RDKBLoggerAgent::testmodulepre_requisites()
 		return "FAILURE<DETAILS>Failed to init rdk logger";
         }
 	b_rdk_logger_enabled = true;
+
+        try
+        {
+                system((char *)pre_req_chk.c_str());
+        }
+        catch(...)
+        {
+                DEBUG_PRINT(DEBUG_ERROR,"Exception occured execution of pre-requisite script\n");
+                DEBUG_PRINT(DEBUG_TRACE, " ---> Exit\n");
+                return "FAILURE<DETAILS>Exception occured execution of pre-requisite script";
+        }
+
 	DEBUG_PRINT(DEBUG_TRACE, "Init rdk logger success\n");
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Exit\n");
         return "SUCCESS";
@@ -246,6 +263,11 @@ std::string RDKBLoggerAgent::testmodulepre_requisites()
 bool RDKBLoggerAgent::testmodulepost_requisites()
 {
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule post_requisites --> Entry\n");
+
+        std::string post_req;
+        post_req = g_tdkPath + "/" + POST_REQUISITE_FILE;
+        std::string post_req_chk= "source "+ post_req;
+
 	// Remove the local copy of debug.ini file
 	if( remove( tdkDebugIniFile.c_str() ) != 0 )
 	{
@@ -257,6 +279,18 @@ bool RDKBLoggerAgent::testmodulepost_requisites()
 	{
 		DEBUG_PRINT(DEBUG_TRACE, "%s file successfully deleted\n", tdkDebugIniFile.c_str());
 	}
+
+        try
+        {
+                system((char *)post_req_chk.c_str());
+        }
+        catch(...)
+        {
+                DEBUG_PRINT(DEBUG_ERROR,"Exception occured execution of post-requisite script\n");
+                DEBUG_PRINT(DEBUG_TRACE, " ---> Exit\n");
+                return "FAILURE<DETAILS>Exception occured execution of post-requisite script";
+        }
+
 #if 0
         // De-Initialize rdklogger
         rdk_Error ret = rdk_logger_deinit();
