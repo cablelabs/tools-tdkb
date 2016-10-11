@@ -24,7 +24,7 @@
 #define TEST_SUCCESS true
 #define TEST_FAILURE false
 #define TDKAGENT_LOG		"AgentConsole.log"
-#define RDKLOGGER_LOG           "TESTLog.txt.0
+#define RDKLOGGER_LOG           "TESTLog.txt.0"
 #define PRE_REQUISITE_FILE      "scripts/Rdklogger_pre-requisite.sh"
 #define POST_REQUISITE_FILE     "scripts/Rdklogger_post-requisite.sh"
 #define DEBUG_CONF		"debug.ini"
