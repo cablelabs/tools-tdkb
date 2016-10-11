@@ -769,7 +769,7 @@ int ssp_getHealth(char *pComponentName)
     dst_pathname    = ppComponents[0]->dbusPath;
     printf("\nssp_getHealth::Destination Component Name is %s\n",dst_pathname);
 
-    ret = CcspBaseIf_healthCheck(
+    ret = CcspBaseIf_getHealth(
             bus_handle_client,
             dst_componentid,
             dst_pathname,
