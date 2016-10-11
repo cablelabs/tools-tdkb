@@ -215,7 +215,8 @@ bool WIFIAgent::WIFIAgent_Set(IN const Json::Value& req, OUT Json::Value& respon
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_set --->Entry\n");
     bool bReturn = TEST_FAILURE;
-    int returnValue;
+    int returnValue = 0;
+    int retVal = 0;
     char ParamName[MAX_PARAM_SIZE];
     char ParamValue[MAX_PARAM_SIZE];
     char ParamType[MAX_PARAM_SIZE];
@@ -243,6 +244,30 @@ bool WIFIAgent::WIFIAgent_Set(IN const Json::Value& req, OUT Json::Value& respon
         response["details"]="WIFIAgentStub::SET API Validation is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_wifiagent_set --->Error in Set API Validation of WIFI Agent in DUT !!! \n");
     }
+
+    if ((!strncmp(ParamName, "Device.WiFi.Radio.1.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.1.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.1.", 19)))
+    {
+        returnValue = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySettingSSID","1","int");
+        retVal = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySetting","true","boolean");
+    }
+    else if ((!strncmp(ParamName, "Device.WiFi.Radio.2.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.2.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.2.", 19)))
+    {
+        returnValue = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySettingSSID","2","int");
+        retVal = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting","true","boolean");
+    }
+
+    if((0 == returnValue) && (0 == retVal))
+    {
+        bReturn = TEST_SUCCESS;
+        response["result"]="SUCCESS";
+        response["details"]="SET API Validation is Success";
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="WIFIAgentStub::SET API Validation is Failure";
+        DEBUG_PRINT(DEBUG_TRACE,"\n tdk_wifiagent_set --->Error in Set API Validation in DUT !!! \n");
+    }    
 
     DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_set --->Exit\n");
     return bReturn;
