@@ -229,15 +229,6 @@ std::string RDKBLoggerAgent::testmodulepre_requisites()
         {
                 return "FAILURE<DETAILS>Failed to create test conf file";
         }
-        // Initialize the temp conf file
-	rdk_Error ret = rdk_logger_init(tdkDebugIniFile.c_str());
-        if ( RDK_SUCCESS != ret)
-        {
-                DEBUG_PRINT(DEBUG_TRACE, "Failed to init rdk logger. ErrCode = %d\n", ret);
-		DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Exit\n");
-		return "FAILURE<DETAILS>Failed to init rdk logger";
-        }
-	b_rdk_logger_enabled = true;
 
         try
         {
@@ -251,6 +242,16 @@ std::string RDKBLoggerAgent::testmodulepre_requisites()
         }
 
 	DEBUG_PRINT(DEBUG_TRACE, "Init rdk logger success\n");
+        // Initialize the temp conf file
+	rdk_Error ret = rdk_logger_init(tdkDebugIniFile.c_str());
+        if ( RDK_SUCCESS != ret)
+        {
+                DEBUG_PRINT(DEBUG_TRACE, "Failed to init rdk logger. ErrCode = %d\n", ret);
+		DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Exit\n");
+		return "FAILURE<DETAILS>Failed to init rdk logger";
+        }
+	b_rdk_logger_enabled = true;
+
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Exit\n");
         return "SUCCESS";
 }
