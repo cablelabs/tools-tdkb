@@ -269,7 +269,7 @@ int ssp_CosaDmlCMGetProvType(int handleType, int bufferType)
         provType = ((char *) malloc(20));
     }
 
-    return_status = CosaDmlCMGetProvType(cm_handle,&provType);
+    return_status = CosaDmlCMGetProvType(cm_handle,provType);
     printf("ssp_CosaDmlCMGetProvType: Provisioning type retrieved:%s\n",provType);
 
     if ( return_status != SSP_SUCCESS)
