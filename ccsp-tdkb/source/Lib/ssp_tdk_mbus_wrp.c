@@ -761,7 +761,7 @@ int ssp_mbus_check_namespace_datatype()
 
     if(return_status == CCSP_SUCCESS)
     {
-        printf("\n ssp_mbus_check_namespace_datatype :: CcspBaseIf_checkNamespaceDataType function is success for namespace %s datatype is  %d and  return status %d",NameSt.name_space,typeRet,return_status);
+        printf("\n ssp_mbus_check_namespace_datatype :: CcspBaseIf_checkNamespaceDataType function is success for namespace %s datatype is  %d and  return status %d",name_space->name_space,typeRet,return_status);
         return_status = SSP_MBUS_SUCCESS;
     }
     else
