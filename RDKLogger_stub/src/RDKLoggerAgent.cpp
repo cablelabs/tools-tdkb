@@ -220,25 +220,10 @@ std::string RDKBLoggerAgent::testmodulepre_requisites()
 {
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Entry\n");
 
-        std::string pre_req;
-        pre_req = g_tdkPath + "/" + PRE_REQUISITE_FILE;
-        std::string pre_req_chk= "source "+ pre_req;
-
 	// Make a copy of debug.ini file for testing
         if (false == createTdkDebugIniFile())
         {
                 return "FAILURE<DETAILS>Failed to create test conf file";
-        }
-
-        try
-        {
-                system((char *)pre_req_chk.c_str());
-        }
-        catch(...)
-        {
-                DEBUG_PRINT(DEBUG_ERROR,"Exception occured execution of pre-requisite script\n");
-                DEBUG_PRINT(DEBUG_TRACE, " ---> Exit\n");
-                return "FAILURE<DETAILS>Exception occured execution of pre-requisite script";
         }
 
 	DEBUG_PRINT(DEBUG_TRACE, "Init rdk logger success\n");
@@ -265,10 +250,6 @@ bool RDKBLoggerAgent::testmodulepost_requisites()
 {
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule post_requisites --> Entry\n");
 
-        std::string post_req;
-        post_req = g_tdkPath + "/" + POST_REQUISITE_FILE;
-        std::string post_req_chk= "source "+ post_req;
-
 	// Remove the local copy of debug.ini file
 	if( remove( tdkDebugIniFile.c_str() ) != 0 )
 	{
@@ -280,17 +261,6 @@ bool RDKBLoggerAgent::testmodulepost_requisites()
 	{
 		DEBUG_PRINT(DEBUG_TRACE, "%s file successfully deleted\n", tdkDebugIniFile.c_str());
 	}
-
-        try
-        {
-                system((char *)post_req_chk.c_str());
-        }
-        catch(...)
-        {
-                DEBUG_PRINT(DEBUG_ERROR,"Exception occured execution of post-requisite script\n");
-                DEBUG_PRINT(DEBUG_TRACE, " ---> Exit\n");
-                return "FAILURE<DETAILS>Exception occured execution of post-requisite script";
-        }
 
 #if 0
         // De-Initialize rdklogger
