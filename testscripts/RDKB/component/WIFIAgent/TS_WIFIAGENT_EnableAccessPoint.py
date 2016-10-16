@@ -1,20 +1,18 @@
-# ==============================================
-# COMCAST CONFIDENTIAL AND PROPRIETARY
-# ==============================================
-
-# This file and its contents are the intellectual property of Comcast.  
-# It may not be used,copied,distributed or otherwise  disclosed in 
-# whole or in part without the express written permission of Comcast.
-
-# ===============================================
-# Copyright (c) 2016 Comcast. All rights reserved.
-# ===============================================
+#  ============================================================================
+#  COMCAST C O N F I D E N T I A L AND PROPRIETARY
+#  ============================================================================
+#  This file (and its contents) are the intellectual property of Comcast.  It may
+#  not be used, copied, distributed or otherwise  disclosed in whole or in part
+#  without the express written permission of Comcast.
+#  ============================================================================
+#  Copyright (c) 2014 Comcast. All rights reserved.
+#  ===========================================================================
 '''
 <?xml version='1.0' encoding='utf-8'?>
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>3</version>
+  <version>4</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_WIFIAGENT_EnableAccessPoint</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -46,9 +44,10 @@
     <rdk_version>RDKB</rdk_version>
     <!--  -->
   </rdk_versions>
+  <script_tags />
 </xml>
 '''
-
+						
 #use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import time;
@@ -69,7 +68,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     
     #### Set and Get Values ####
     tdkTestObj = obj.createTestStep("WIFIAgent_Set_Get");
-    tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Enable");
+    tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
     tdkTestObj.addParameter("paramValue","true");
     tdkTestObj.addParameter("paramType","bool");
     expectedresult="SUCCESS";
@@ -96,3 +95,5 @@ else:
         print "FAILURE to load wifiagent module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
+
+					
