@@ -61,7 +61,7 @@ int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
     MTA_RESET_TYPE resetType = 0;
-    ULONG* resetCount = NULL;
+    ULONG resetCount = 0;
 
     printf("\n Entering ssp_CosaDmlMtaGetResetCount function\n\n");
 
@@ -78,12 +78,12 @@ int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType
     {
         resetType = LINE_RESET;
     }
-    resetCount = (ULONG*) malloc(10);
+
     printf("ssp_CosaDmlMtaGetResetCount: Reset Type:%d\n",resetType);
 
     if(bufferType == 0)
     {
-        return_status = CosaDmlMtaGetResetCount(mta_handle,resetType,resetCount);
+        return_status = CosaDmlMtaGetResetCount(mta_handle,resetType,&resetCount);
     }
     else
     {
@@ -158,11 +158,10 @@ int ssp_CosaDmlMTAGetDHCPInfo(int handleType, int bufferType)
 int ssp_CosaDmlMTATriggerDiagnostics()
 {
     int return_status = 0;
-    ULONG index = 3;
+    ULONG index = 0;
 
     printf("\n Entering ssp_CosaDmlMTATriggerDiagnostics function\n\n");
     return_status = CosaDmlMTATriggerDiagnostics(index);
-    printf("Valid index value\n");
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -187,7 +186,7 @@ int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    PCOSA_DML_BATTERY_INFO *battery = NULL;
+    COSA_DML_BATTERY_INFO battery = {0};
 
     printf("\n Entering ssp_CosaDmlMtaBatteryGetInfo function\n\n");
 
@@ -198,12 +197,11 @@ int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType)
 
     if(bufferType == 0)
     {
-        battery  = ((PCOSA_DML_BATTERY_INFO *) malloc(sizeof(COSA_DML_BATTERY_INFO)));
+        return_status = CosaDmlMtaBatteryGetInfo(mta_handle,&battery);
+
+        printf("ssp_CosaDmlMtaBatteryGetInfo: BATTERY Info:\n");
+        printf("ModelNumber:%s\n",battery.ModelNumber);
     }
-
-    return_status = CosaDmlMtaBatteryGetInfo(mta_handle,battery);
-
-    printf("ssp_CosaDmlMtaBatteryGetInfo: BATTERY Info:%s\n",battery);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -226,8 +224,8 @@ int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    PCHAR* value = NULL;
-    PULONG* size = NULL;
+    CHAR *value = NULL;
+    ULONG size = 0;
 
     printf("\n Entering ssp_CosaDmlMtaBatteryGetStatus function\n\n");
 
@@ -238,13 +236,12 @@ int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType)
 
     if(bufferType == 0)
     {
-        value  = ((PCHAR *) malloc(20));
-        size = ((PULONG *) malloc(20));
+        value  = ((CHAR *) malloc(20));
     }
 
     return_status = CosaDmlMtaBatteryGetStatus(mta_handle,value,&size);
 
-    printf("ssp_CosaDmlMtaBatteryGetStatus: BATTERY Info:%s\n",value);
+    printf("ssp_CosaDmlMtaBatteryGetStatus: Battery Status is:%s\n",value);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -268,8 +265,8 @@ int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    PCHAR* value = NULL;
-    PULONG* size = NULL;
+    CHAR *value = NULL;
+    ULONG size = 0;
 
     printf("\n Entering ssp_CosaDmlMtaBatteryGetPowerStatus function\n\n");
 
@@ -280,13 +277,12 @@ int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType)
 
     if(bufferType == 0)
     {
-        value  = ((PCHAR *) malloc(8));
-        size = ((PULONG *) malloc(8));
+        value  = ((CHAR *) malloc(20));
     }
 
     return_status = CosaDmlMtaBatteryGetPowerStatus(mta_handle,value,&size);
 
-    printf("ssp_CosaDmlMtaBatteryGetPowerStatus: BATTERY Info:%s\n",value);
+    printf("ssp_CosaDmlMtaBatteryGetPowerStatus: Battery Power Status is:%s\n",value);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -339,8 +335,8 @@ int ssp_CosaDmlMtaLineTableGetEntry(int handleType,int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    int value = 0;
-    PCOSA_MTA_LINETABLE_INFO* entry = NULL;
+    ULONG value = 0;
+    COSA_MTA_LINETABLE_INFO entry = {0};
 
     if(handleType == 0)
     {
@@ -349,11 +345,9 @@ int ssp_CosaDmlMtaLineTableGetEntry(int handleType,int bufferType)
     }
     if(bufferType == 0)
     {
-        entry  = ((PCOSA_MTA_LINETABLE_INFO *) malloc(sizeof(COSA_MTA_LINETABLE_INFO)));
+        return_status = CosaDmlMTALineTableGetEntry(mta_handle,value,&entry);
+        printf("ssp_CosaDmlMtaLineTableGetEntry: Line Table Status:%d\n",entry.Status);
     }
-    return_status = CosaDmlMTALineTableGetEntry(mta_handle,value,entry);
-    printf("ssp_CosaDmlMtaLineTableGetEntry: Line Table Info:%s\n",entry);
-    printf("return status:%d\n",return_status);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -682,10 +676,6 @@ int ssp_CosaDmlMTASetDectPIN(int handleType, int bufferType)
     return SSP_SUCCESS;
 }
 
-
-
-
-
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlMTAGetDSXLogEnable
@@ -701,20 +691,19 @@ int ssp_CosaDmlMTAGetDSXLogEnable(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    BOOLEAN *bValue = NULL;
+    BOOLEAN bValue = 0;
     printf("\n Entering ssp_CosaDmlMTAGetDSXLogEnable function\n\n");
  
     if(handleType == 0)
     {
         mta_handle = bus_handle_client;
-
     }
     
     if (Value == 0)
     {
-        bValue = ((BOOLEAN *) malloc(10));
+        return_status = CosaDmlMTAGetDSXLogEnable(mta_handle,&bValue);
+        printf("DSX Log Status is:%d\n",bValue);
     }
-    return_status = CosaDmlMTAGetDSXLogEnable(mta_handle,bValue);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -741,19 +730,13 @@ int ssp_CosaDmlMTASetDSXLogEnable(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    BOOLEAN bValue;
+    BOOLEAN bValue = 0;
     printf("\n Entering ssp_CosaDmlMTASetDSXLogEnable function\n\n");
 
     if(handleType == 0)
     {
         mta_handle = bus_handle_client;
-
     }
-//    if (Value == 0)
- //   {
- //       bValue = ((char *) malloc(100));
- //   }
-
 
     return_status = CosaDmlMTASetDSXLogEnable(mta_handle,bValue);
     if ( return_status != SSP_SUCCESS)
@@ -763,9 +746,6 @@ int ssp_CosaDmlMTASetDSXLogEnable(int handleType, int Value)
     }
 
     return SSP_SUCCESS;
-
-
-
 }
 
 
@@ -790,15 +770,12 @@ int ssp_CosaDmlMTAClearDSXLog(int handleType, int Value)
     if(handleType == 0)
     {
         mta_handle = bus_handle_client;
-
     }
-//    if (Value == 0)
- //   {
-//        bValue = ((char *) malloc(100));
-//    }
-
 
     return_status = CosaDmlMTAClearDSXLog(mta_handle,bValue);
+
+    printf("Clear DSX Log:%d\n",bValue);
+
     if ( return_status != SSP_SUCCESS)
     {
         printf("ssp_CosaDmlMTAClearDSXLog:Failed to clear the DSX log\n");
@@ -824,20 +801,19 @@ int ssp_CosaDmlMTAGetCallSignallingLogEnable(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    BOOLEAN *bValue = NULL;
+    BOOLEAN bValue = 0;
     printf("\n Entering ssp_CosaDmlMTAGetCallSignallingLogEnable function\n\n");
 
     if(handleType == 0)
     {
         mta_handle = bus_handle_client;
-
     }
 
     if (Value == 0)
     {
-        bValue = ((BOOLEAN *) malloc(10));
+        return_status = CosaDmlMTAGetCallSignallingLogEnable(mta_handle,&bValue);
+        printf("Call Signalling Log Status:%d\n",bValue);
     }
-    return_status = CosaDmlMTAGetCallSignallingLogEnable(mta_handle,bValue);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -846,8 +822,6 @@ int ssp_CosaDmlMTAGetCallSignallingLogEnable(int handleType, int Value)
     }
 
     return SSP_SUCCESS;
-
-
 }
 
 
@@ -866,19 +840,13 @@ int ssp_CosaDmlMTASetCallSignallingLogEnable(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    BOOLEAN bValue;
+    BOOLEAN bValue = 0;
     printf("\n Entering ssp_CosaDmlMTASetCallSignallingLogEnable function\n\n");
 
     if(handleType == 0)
     {
         mta_handle = bus_handle_client;
-
     }
-//    if (Value == 0)
-//    {
-//        bValue = ((char *) malloc(100));
-//    }
-
 
     return_status = CosaDmlMTASetCallSignallingLogEnable(mta_handle,bValue);
 
@@ -889,9 +857,6 @@ int ssp_CosaDmlMTASetCallSignallingLogEnable(int handleType, int Value)
     }
 
     return SSP_SUCCESS;
-
-
-
 }
 
 /*******************************************************************************************
@@ -911,20 +876,17 @@ int ssp_CosaDmlMTAClearCallSignallingLog(int handleType, int Value)
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
     BOOLEAN bValue;
+
     printf("\n Entering ssp_CosaDmlMTAClearCallSignallingLog function\n\n");
 
     if(handleType == 0)
     {
         mta_handle = bus_handle_client;
-
     }
-//    if (Value == 0)
- //   {
- //       bValue = ((char *) malloc(100));
- //   }
-
 
     return_status = CosaDmlMTAClearCallSignallingLog(mta_handle,bValue);
+
+    printf("Clear Call Signalling Log is :%d\n", bValue);
     if ( return_status != SSP_SUCCESS)
     {
         printf("ssp_CosaDmlMTAClearCallSignallingLog:Failed to clear the call signalling log\n");
@@ -932,8 +894,6 @@ int ssp_CosaDmlMTAClearCallSignallingLog(int handleType, int Value)
     }
 
     return SSP_SUCCESS;
-
-
 }
 
 
@@ -951,19 +911,18 @@ int ssp_CosaDmlMtaBatteryGetNumberofCycles(int handleType)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    PULONG *pval  = NULL;
+    ULONG val  = 0;
 
     printf("\n Entering ssp_CosaDmlMtaBatteryGetNumberofCycles function\n\n");
 
     if(handleType == 0)
     {
         mta_handle = bus_handle_client;
-        pval = (PULONG *)malloc(sizeof(ULONG));
     }
 
-    return_status = CosaDmlMtaBatteryGetNumberofCycles(mta_handle,pval);
+    return_status = CosaDmlMtaBatteryGetNumberofCycles(mta_handle,&val);
 
-    printf("ssp_CosaDmlMtaBatteryGetNumberofCycles: Number of cycles retrieved:%d\n",pval);
+    printf("ssp_CosaDmlMtaBatteryGetNumberofCycles: Number of cycles retrieved:%d\n",val);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -991,8 +950,8 @@ int ssp_CosaDmlMtaBatteryGetLife(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    PCHAR* value = NULL;
-    PULONG* size = NULL;
+    CHAR *value = NULL;
+    ULONG size = 0;
 
     printf("\n Entering ssp_CosaDmlMtaBatteryGetLife function\n\n");
 
@@ -1003,13 +962,12 @@ int ssp_CosaDmlMtaBatteryGetLife(int handleType, int bufferType)
 
     if(bufferType == 0)
     {
-        value  = ((PCHAR *) malloc(17*sizeof(CHAR)));
-        size = ((PULONG *) malloc(sizeof(ULONG)));
+        value  = ((CHAR *) malloc(20*sizeof(CHAR)));
     }
 
-    return_status = CosaDmlMtaBatteryGetLife(mta_handle,value,size);
+    return_status = CosaDmlMtaBatteryGetLife(mta_handle,value,&size);
 
-    printf("ssp_CosaDmlMtaBatteryGetLife: BATTERY Info:%s\n",value);
+    printf("ssp_CosaDmlMtaBatteryGetLife: Battery Life is:%s\n",value);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1036,8 +994,8 @@ int ssp_CosaDmlMtaBatteryGetCondition(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-   PCHAR* value = NULL;
-    PULONG* size = NULL;
+    CHAR *value = NULL;
+    ULONG size = 0;
 
     printf("\n Entering ssp_CosaDmlMtaBatteryGetCondition function\n\n");
 
@@ -1048,13 +1006,12 @@ int ssp_CosaDmlMtaBatteryGetCondition(int handleType, int bufferType)
 
     if(bufferType == 0)
     {
-        value  = ((PCHAR *) malloc(5*sizeof(char)));
-        size = ((PULONG *) malloc(sizeof(ULONG)));
+        value  = ((CHAR *) malloc(10*sizeof(char)));
     }
 
-    return_status = CosaDmlMtaBatteryGetCondition(mta_handle,value,size);
+    return_status = CosaDmlMtaBatteryGetCondition(mta_handle,value,&size);
 
-    printf("ssp_CosaDmlMtaBatteryGetCondition: BATTERY Info:%s\n",value);
+    printf("ssp_CosaDmlMtaBatteryGetCondition: BATTERY Condition is:%s\n",value);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1080,7 +1037,7 @@ int ssp_CosaDmlMtaBatteryGetRemainingTime(int handleType)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    PULONG *pval  = NULL;
+    ULONG val  = 0;
 
     printf("\n Entering ssp_CosaDmlMtaBatteryGetRemainingTime function\n\n");
 
@@ -1089,10 +1046,9 @@ int ssp_CosaDmlMtaBatteryGetRemainingTime(int handleType)
         mta_handle = bus_handle_client;
     }
 
-    pval = (PULONG*)malloc(sizeof(ULONG));
-    return_status = CosaDmlMtaBatteryGetRemainingTime(mta_handle,pval);
+    return_status = CosaDmlMtaBatteryGetRemainingTime(mta_handle,&val);
 
-    printf("ssp_CosaDmlMtaBatteryGetRemainingTime: Remaining Time retrieved:%d\n",pval);
+    printf("ssp_CosaDmlMtaBatteryGetRemainingTime: Battery Remaining Time is:%d\n",val);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1104,3 +1060,32 @@ int ssp_CosaDmlMtaBatteryGetRemainingTime(int handleType)
 
 }
 
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CosaDmlMtaInit
+ * Description          : This function will initialize the DML of Cosa Mta
+ *
+ * @param [in]          : None
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CosaDmlMtaInit(void)
+{
+
+    int return_status = 0;
+    ANSC_HANDLE mta_handle = NULL;
+
+    printf("\n Entering ssp_CosaDmlMtaInit function\n\n");
+
+    mta_handle = bus_handle_client;
+
+    return_status = CosaDmlMTAInit(NULL,(PANSC_HANDLE)mta_handle);
+
+    if ( return_status != SSP_SUCCESS)
+    {
+        printf("ssp_CosaDmlMtaInit:Failed to Initialize the DML of Cosa Mta\n");
+        return SSP_FAILURE;
+    }
+
+    return SSP_SUCCESS;
+}

@@ -46,7 +46,7 @@ extern "C"
     int ssp_CosaDmlMtaBatteryGetLife(int handleType, int bufferType);
     int ssp_CosaDmlMtaBatteryGetCondition(int handleType, int bufferType);
     int ssp_terminate();
-
+    int ssp_CosaDmlMtaInit(void);
 };
 
 /*This is a constructor function for CosaMTA class*/
@@ -116,6 +116,13 @@ std::string CosaMTA::testmodulepre_requisites()
         return "TEST_FAILURE";
     }
 
+    returnValue = ssp_CosaDmlMtaInit();
+    if(0 != returnValue)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites: Failed to initialize the COSA MTA DML\n");
+        return "TEST_FAILURE";
+    }
+
     return "SUCCESS";
 }
 
@@ -127,15 +134,6 @@ std::string CosaMTA::testmodulepre_requisites()
  *****************************************************************************/
 bool CosaMTA::testmodulepost_requisites()
 {
-    int returnValue;
-    returnValue = ssp_terminate();
-
-    if(0 != returnValue)
-    {
-        DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepost_requisites: Failed to terminate\n");
-        return 1;
-    }
-
     return 0;
 }
 
@@ -430,12 +428,12 @@ bool CosaMTA::CosaMTA_BatteryGetPowerStatus(IN const Json::Value& req, OUT Json:
     if(0 == returnValue)
     {
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the reset count";
+        response["details"]="Successfully retrieved the battery power status";
     }
     else
     {
         response["result"]="FAILURE";
-        response["details"]="Failed to retrieve the reset count";
+        response["details"]="Failed to retrieve the battery power status";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetPowerStatus --->Exit\n");
         return  TEST_FAILURE;
     }
