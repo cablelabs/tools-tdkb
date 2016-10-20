@@ -12,7 +12,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>3</version>
+  <version>5</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_GetManufacturerOUI</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -72,36 +72,31 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     #Execute the test case in STB
     tdkTestObj.executeTestCase("expectedresult");
-
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
 		
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Get the Arris manufacturer OUI\n";
-        print "EXPECTED RESULT 1: Should get the Arris manufacturer OUI\n";
-        print "ACTUAL RESULT 1: Arris manufacturer OUI is %s" %details;
+        print "TEST STEP 1: Get the Manufacturer OUI";
+        print "EXPECTED RESULT 1: Should get the Manufacturer OUI";
+        print "ACTUAL RESULT 1: Manufacturer OUI is %s" %details;
         #Get the result of execution
-        
-        
         print "[TEST EXECUTION RESULT] : SUCCESS";
-        
     else:
         tdkTestObj.setResultStatus("FAILURE");	
-        print "TEST STEP 1: Get the Arris manufacturer OUI\n";
-        print "EXPECTED RESULT 1: Failure in getting the Arris Manufacturer OUI\n";
-        print "ACTUAL RESULT 1: %s" %details;
+        print "TEST STEP 1: Get the Manufacturer OUI";
+        print "EXPECTED RESULT 1: Failure in getting the Manufacturer OUI";
+        print "ACTUAL RESULT 1: Manufacturer OUI is %s" %details;
         print "[TEST EXECUTION RESULT] : FAILURE";
-        
-
-	
     obj.unloadModule("pam");
    		 
 else:   
         print "Failed to load pam module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";				
+
+					
 
 					
 

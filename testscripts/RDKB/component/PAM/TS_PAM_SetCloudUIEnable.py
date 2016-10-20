@@ -12,7 +12,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>4</version>
+  <version>5</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_SetCloudUIEnable</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -20,7 +20,7 @@
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>pam_SetParameterValues</primitive_test_name>
   <!--  -->
-  <primitive_test_version>1</primitive_test_version>
+  <primitive_test_version>2</primitive_test_version>
   <!--  -->
   <status>FREE</status>
   <!--  -->
@@ -47,7 +47,7 @@
   <script_tags />
 </xml>
 '''
-
+																								
 #use tdk library											
 import tdklib; 
 
@@ -60,38 +60,57 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_PAM_SetCloudUIEnable');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and Gateway
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
 if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
-    obj.setLoadModuleStatus("SUCCESS");
-		
+    obj.setLoadModuleStatus("SUCCESS");	
     tdkTestObj = obj.createTestStep('pam_SetParameterValues');  
     tdkTestObj.addParameter("ParamName","Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
     tdkTestObj.addParameter("ParamValue","true");
     tdkTestObj.addParameter("Type","boolean");
-		
     expectedresult="SUCCESS";
-
-    #Execute the test case in STB
+    #Execute the test case in Gateway
     tdkTestObj.executeTestCase(expectedresult);
-
     actualresult = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails();
-		
+    details = tdkTestObj.getResultDetails();		
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-
-        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-	print "%s" %details;
-	 
+        details = tdkTestObj.getResultDetails();
+        print "TEST STEP 1: Enable the Cloud UI";
+        print "EXPECTED RESULT 1: Should enable the Cloud UI successfully";
+        print "ACTUAL RESULT 1: %s" %details;
+        tdkTestObj = obj.createTestStep('pam_SetParameterValues');  
+        tdkTestObj.addParameter("ParamName","Device.DeviceInfo.X_RDKCENTRAL-COM_CloudUIEnable");
+        tdkTestObj.addParameter("ParamValue","false");
+        tdkTestObj.addParameter("Type","boolean");
+        expectedresult="SUCCESS";
+        #Execute the test case in Gateway
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        details = tdkTestObj.getResultDetails();		
+        if expectedresult in actualresult:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            details = tdkTestObj.getResultDetails();
+            print "TEST STEP 2: Disable the Cloud UI";
+            print "EXPECTED RESULT 2: Should disable the Cloud UI successfully";
+            print "ACTUAL RESULT 2: %s" %details;
+        else:   
+            tdkTestObj.setResultStatus("FAILURE");
+            details = tdkTestObj.getResultDetails();
+            print "TEST STEP 2: Disable the Cloud UI";
+            print "EXPECTED RESULT 2: Should disable the Cloud UI successfully";
+            print "ACTUAL RESULT 2: %s" %details;
     else:   
-        tdkTestObj.setResultStatus("FAILURE"); 
-	print "[TEST EXECUTION RESULT] : %s" %actualresult ;	
-        print "%s" %details;
+        tdkTestObj.setResultStatus("FAILURE");
+        details = tdkTestObj.getResultDetails();
+        print "TEST STEP 1: Enable the Cloud UI";
+        print "EXPECTED RESULT 1: Should enable the Cloud UI successfully";
+        print "ACTUAL RESULT 1: %s" %details;
 	
     obj.unloadModule("pam");
    		 
@@ -103,6 +122,14 @@ else:
 					
 
 							
+
+					
+
+					
+
+					
+
+					
 
 					
 
