@@ -86,14 +86,14 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "EXPECTED RESULT 1: Fail to Get Telephony DHCP Status";
             print "ACTUAL RESULT 1: %s" %details;
             #Get the result of execution
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
+            print "[TEST EXECUTION RESULT] : SUCCESS" ; 
         else:
             tdkTestObj.setResultStatus("FAILURE");
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1:Apply Invalid argument to Get Telephony DHCP Status";
             print "EXPECTED RESULT 1: Fail to Get Telephony DHCP Status";
             print "ACTUAL RESULT 1: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
+            print "[TEST EXECUTION RESULT] : FAILURE" ;              
             
         obj.unloadModule("cosacm");
 else:

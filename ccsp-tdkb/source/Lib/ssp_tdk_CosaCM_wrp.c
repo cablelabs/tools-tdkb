@@ -267,10 +267,13 @@ int ssp_CosaDmlCMGetProvType(int handleType, int bufferType)
     if(bufferType == 0)
     {
         provType = ((char *) malloc(20));
+        return_status = CosaDmlCMGetProvType(cm_handle,provType);
+        printf("ssp_CosaDmlCMGetProvType: Provisioning type retrieved:%s\n",provType);
     }
-
-    return_status = CosaDmlCMGetProvType(cm_handle,provType);
-    printf("ssp_CosaDmlCMGetProvType: Provisioning type retrieved:%s\n",provType);
+    else
+    {
+        return_status = CosaDmlCMGetProvType(cm_handle,NULL);
+    }
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -296,7 +299,7 @@ int ssp_CosaDmlCMGetIPv6DHCPInfo(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    PCOSA_CM_IPV6DHCP_INFO *dhcpIpv6 = NULL;
+    COSA_CM_IPV6DHCP_INFO dhcpIpv6 = {0};
 
     printf("\n Entering ssp_CosaDmlCMGetIPv6DHCPInfo function\n\n");
 
@@ -307,12 +310,13 @@ int ssp_CosaDmlCMGetIPv6DHCPInfo(int handleType, int bufferType)
 
     if(bufferType == 0)
     {
-        dhcpIpv6 = ((PCOSA_CM_IPV6DHCP_INFO) malloc(sizeof(COSA_CM_IPV6DHCP_INFO)));
+       return_status = CosaDmlCMGetIPv6DHCPInfo(cm_handle,&dhcpIpv6);
+       printf("DHCP IPV6 RenewTimeRemaining:%d\n",dhcpIpv6.IPv6RenewTimeRemaining);
     }
-
-    return_status = CosaDmlCMGetIPv6DHCPInfo(cm_handle,dhcpIpv6);
-
-    printf("ssp_CosaDmlCMGetIPv6DHCPInfo: IPv6 DHCP Info:%s\n",dhcpIpv6);
+    else
+    {
+       return_status = CosaDmlCMGetIPv6DHCPInfo(cm_handle,NULL);
+    }
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -579,7 +583,7 @@ int ssp_cosacm_GetDHCPInfo(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    PCOSA_CM_DHCP_INFO *dhcp = NULL;
+    COSA_CM_DHCP_INFO dhcp = {0};
 
     printf("\n Entering ssp_cosacm_GetDHCPInfo function\n\n");
 
@@ -590,15 +594,13 @@ int ssp_cosacm_GetDHCPInfo(int handleType, int bufferType)
 
     if(bufferType == 0)
     {
-        dhcp = ((PCOSA_CM_DHCP_INFO *) malloc(450));
-        return_status = CosaDmlCMGetDHCPInfo(cm_handle, dhcp);
+        return_status = CosaDmlCMGetDHCPInfo(cm_handle, &dhcp);
+        printf("DHCP Info Gateway Value:%s\n",dhcp.Gateway.Value);
     }
     else
     {
         return_status = CosaDmlCMGetDHCPInfo(cm_handle, NULL);
     }
-
-    printf("ssp_cosacm_GetDHCPInfo: DHCP Info:%s\n",dhcp);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -623,7 +625,7 @@ int ssp_cosacm_GetDOCSISInfo(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    PCOSA_CM_DOCSIS_INFO docsis = NULL;
+    COSA_CM_DOCSIS_INFO docsis = {0};
 
     printf("\n Entering ssp_cosacm_GetDOCSISInfo function\n\n");
 
@@ -634,8 +636,8 @@ int ssp_cosacm_GetDOCSISInfo(int handleType, int bufferType)
     
     if(bufferType == 0)
     {
-        docsis=((PCOSA_CM_DOCSIS_INFO)malloc(sizeof(COSA_CM_DOCSIS_INFO)));
-        return_status = CosaDmlCMGetDOCSISInfo(cm_handle,docsis);
+        return_status = CosaDmlCMGetDOCSISInfo(cm_handle,&docsis);
+        printf("DOCSIS Info Max CPE Allowed:%s\n",docsis.MaxCpeAllowed);
     }
     else
     {
@@ -643,9 +645,6 @@ int ssp_cosacm_GetDOCSISInfo(int handleType, int bufferType)
 
     }
     
-    printf("Return status of CosaDmlCMGetDOCSISInfo %d ",return_status);
-    printf("ssp_cosacm_GetDOCSISInfo: DOCSIS Info:%s\n",docsis);
-
     if ( return_status != SSP_SUCCESS)
     {
         printf("ssp_cosacm_GetDOCSISInfo:Failed to retrieve the DOCSIS information \n");
@@ -1037,22 +1036,11 @@ int ssp_cosacm_getmarket()
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_cosacm_setmddipoverride()
+int ssp_cosacm_setmddipoverride(char *value)
 {
     int return_status = 0;
-    char *value = NULL;
 
     printf("\n Entering ssp_cosacm_setmddipoverride function\n\n");
-
-    value = ((char *) malloc(20));
-
-    if(value == NULL)
-    {
-        printf("\n ssp_cosacm_getmarket :: Get Value Memory alloc error \n");
-        return SSP_FAILURE;
-    }
-
-    strcpy(value,"MDD IP Override");
 
     return_status = CosaDmlCMSetMDDIPOverride(bus_handle_client,value);
 
@@ -1061,10 +1049,6 @@ int ssp_cosacm_setmddipoverride()
         printf("\n ssp_cosacm_setmddipoverride :Failed to set the MDDIPOverride \n");
         return SSP_FAILURE;
     }
-
-    if(value != NULL)
-    {
-        free(value);                                                                                             }
 
     return SSP_SUCCESS;
 }
@@ -1079,33 +1063,21 @@ int ssp_cosacm_setmddipoverride()
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_cosacm_getmddipoverride()
+int ssp_cosacm_getmddipoverride(char *value)
 {
 
     int return_status = 0;
-    char *value = NULL;
 
     printf("\n Entering ssp_cosacm_getmddipoverride function\n\n");
 
-    value = ((char *) malloc(20));
-
-    if(value == NULL)
-    {
-        printf("\n ssp_cosacm_getmddipoverride :: Get Value Memory alloc error \n");
-        return SSP_FAILURE;
-    }
-
     return_status = CosaDmlCMGetMDDIPOverride(bus_handle_client,value);
+
+    printf("MDD value retrieved is :%s\n",value);
 
     if ( return_status != SSP_SUCCESS)
     {
         printf("\n ssp_cosacm_getmddipoverride:Failed to get the MDDIPOverride \n");
         return SSP_FAILURE;
-    }
-
-    if(value != NULL)
-    {
-        free(value);
     }
 
     return SSP_SUCCESS;

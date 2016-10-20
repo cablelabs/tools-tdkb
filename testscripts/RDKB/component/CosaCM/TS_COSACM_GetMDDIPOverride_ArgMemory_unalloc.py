@@ -71,7 +71,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
         #Script to load the configuration file of the component
         tdkTestObj = obj.createTestStep("COSACM_GetMDDIPOverride_ArgMemory_unalloc");
-        expectedresult="SUCCESS";
+        expectedresult="FAILURE";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
 
@@ -82,13 +82,13 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "EXPECTED RESULT 1: Should return Error Status with respective Error code";
             print "ACTUAL RESULT 1: %s" %details;
             #Get the result of execution
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
+            print "[TEST EXECUTION RESULT] : SUCCESS" ; 
         else:
             tdkTestObj.setResultStatus("FAILURE");
             details = tdkTestObj.getResultDetails();
             print "EXPECTED RESULT 1: Should return Error Status with respective Error code";
             print "ACTUAL RESULT 1: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
+            print "[TEST EXECUTION RESULT] : FAILURE" ;              
             
         obj.unloadModule("cosacm");
 else:

@@ -85,14 +85,14 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "EXPECTED RESULT 1: Should not get the DOCSIS info successfully";
             print "ACTUAL RESULT 1: %s" %details;
             #Get the result of execution
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
+            print "[TEST EXECUTION RESULT] : SUCCESS" ; 
         else:
             tdkTestObj.setResultStatus("FAILURE");
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1: Should not get the DOCSIS info";
             print "EXPECTED RESULT 1: Should not get the DOCSIS info successfully";
             print "ACTUAL RESULT 1: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
+            print "[TEST EXECUTION RESULT] : FAILURE" ;              
             
         obj.unloadModule("cosacm");
 else:

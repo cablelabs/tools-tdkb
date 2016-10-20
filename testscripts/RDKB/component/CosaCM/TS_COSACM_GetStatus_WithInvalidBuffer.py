@@ -85,14 +85,14 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "EXPECTED RESULT 1: Fail to Get CM Status";
             print "ACTUAL RESULT 1: %s" %details;
             #Get the result of execution
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
+            print "[TEST EXECUTION RESULT] : FAILURE" ; 
         else:
             tdkTestObj.setResultStatus("FAILURE");
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1:Should nt Get CM Status";
             print "EXPECTED RESULT 1:Fail to Should Get CM Status";
             print "ACTUAL RESULT 1: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
+            print "[TEST EXECUTION RESULT] : SUCCESS" ;              
             
         obj.unloadModule("cosacm");
 else:

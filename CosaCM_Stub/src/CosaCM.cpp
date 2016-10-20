@@ -30,8 +30,8 @@ int ssp_cosacm_getcpelist();
 int ssp_cosacm_getcertstatus();
 int ssp_cosacm_getcmerrorcodewords();
 int ssp_cosacm_getcert();
-int ssp_cosacm_getmddipoverride();
-int ssp_cosacm_setmddipoverride();
+int ssp_cosacm_getmddipoverride(char *value);
+int ssp_cosacm_setmddipoverride(char *value);
 int ssp_cosacm_getmarket();
 int ssp_cosacm_getmarket_memory_unalloc();
 int ssp_cosacm_setmddipoverride_memory_unalloc();
@@ -574,8 +574,19 @@ bool CosaCM::COSACM_SetMDDIPOverride(IN const Json::Value& req, OUT Json::Value&
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_SetMDDIPOverride --->Entry \n");
 
     int returnValue = 0;
+    char value[10] = {0};
 
-    returnValue = ssp_cosacm_setmddipoverride();
+    if(&req["value"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
+    strcpy(value,req["value"].asCString());
+
+    printf("MDD value to be set is:%s\n",value);
+    returnValue = ssp_cosacm_setmddipoverride(value);
 
     if(0 == returnValue)
     {
@@ -610,13 +621,16 @@ bool CosaCM::COSACM_GetMDDIPOverride(IN const Json::Value& req, OUT Json::Value&
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMDDIPOverride --->Entry \n");
 
     int returnValue = 0;
+    char mdd_value[10] = {0};
+    char paramDetails[30] = {0};
 
-    returnValue = ssp_cosacm_getmddipoverride();
+    returnValue = ssp_cosacm_getmddipoverride(mdd_value);
 
     if(0 == returnValue)
     {
+        sprintf(paramDetails,"MDD Override Value is:%s",mdd_value);
         response["result"]="SUCCESS";
-        response["details"]="Successfully Get the MDD IP Override Function";
+        response["details"]=paramDetails;
     }
     else
     {
@@ -1823,10 +1837,17 @@ bool CosaCM::COSACM_CableModemInitialize(IN const Json::Value& req, OUT Json::Va
 
     int returnValue = 0;
     int handleType = 0;
+
+    if(&req["handleType"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
     handleType = req["handleType"].asInt();
-    printf("\nhandleType is %d\n",handleType);
+
     returnValue = ssp_CosaCableModemInitialize(handleType);
-    printf("\nreturnValue is %d\n",returnValue);
     if(0 == returnValue)
     {
         response["result"]="SUCCESS";

@@ -1,20 +1,18 @@
-##
-# ============================================================================
-# COMCAST CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-# This file and its contents are the intellectual property of Comcast.  It may
-# not be used, copied, distributed or otherwise  disclosed in whole or in part
-# without the express written permission of Comcast.
-# ============================================================================
-# Copyright (c) 2016 Comcast. All rights reserved.
-# ============================================================================
-##
+#  ============================================================================
+#  COMCAST C O N F I D E N T I A L AND PROPRIETARY
+#  ============================================================================
+#  This file (and its contents) are the intellectual property of Comcast.  It may
+#  not be used, copied, distributed or otherwise  disclosed in whole or in part
+#  without the express written permission of Comcast.
+#  ============================================================================
+#  Copyright (c) 2014 Comcast. All rights reserved.
+#  ===========================================================================
 '''
 <?xml version='1.0' encoding='utf-8'?>
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>2</version>
+  <version>3</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_COSACM_CableModemIntialize_NULL_Handle</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -28,7 +26,7 @@
   <!--  -->
   <synopsis>Test Case to validate the API CosaCableModemInitialize by giving a null handle</synopsis>
   <!--  -->
-  <groups_id>4</groups_id>
+  <groups_id />
   <!--  -->
   <execution_time>1</execution_time>
   <!--  -->
@@ -49,7 +47,7 @@
   <script_tags />
 </xml>
 '''
-#use tdklib library,which provides a wrapper for tdk testcase script
+						#use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import time;
 
@@ -72,7 +70,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Script to load the configuration file of the component
         tdkTestObj = obj.createTestStep("COSACM_CableModemInitialize");
         tdkTestObj.addParameter("handleType",0);
-        expectedresult="SUCCESS";
+        expectedresult="FAILURE";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
 
@@ -84,17 +82,19 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "EXPECTED RESULT 1: Should successfully handle NULL in CM Initialize function";
             print "ACTUAL RESULT 1: %s" %details;
             #Get the result of execution
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
+            print "[TEST EXECUTION RESULT] : SUCCESS" ; 
         else:
             tdkTestObj.setResultStatus("FAILURE");
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1:Execute CM Initialize";
             print "EXPECTED RESULT 1: Should successfully handle NULL in CM Initialize function";
             print "ACTUAL RESULT 1: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
+            print "[TEST EXECUTION RESULT] : FAILURE" ;              
             
         obj.unloadModule("cosacm");
 else:
         print "Failed to load the module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";
+
+					

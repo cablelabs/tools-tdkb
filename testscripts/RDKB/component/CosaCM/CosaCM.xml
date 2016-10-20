@@ -1,18 +1,4 @@
-<!-- 
-# ============================================================================
-# COMCAST CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-
-# This file and its contents are the intellectual property of Comcast.  It may
-# not be used, copied, distributed or otherwise  disclosed in whole or in part
-# without the express written permission of Comcast.
-
-# ============================================================================
-# Copyright (c) 2016 Comcast. All rights reserved.
-# ============================================================================ 
--->
-<?xml version="1.0" encoding="UTF-8"?>
-<xml>
+<?xml version="1.0" encoding="UTF-8"?><xml>
   <module name="CosaCM" testGroup="Component">
     <primitiveTests>
       <primitiveTest id=" " name="CosaCM_GetResetCount" version="3">
@@ -160,9 +146,13 @@
         <function>COSACM_GetMarket</function>
         <parameters/>
       </primitiveTest>
-      <primitiveTest id="" name="COSACM_SetMDDIPOverride" version="1">
+      <primitiveTest name="COSACM_SetMDDIPOverride" id=" " version="2">
         <function>COSACM_SetMDDIPOverride</function>
-        <parameters/>
+        <parameters>
+          <parameter name="valueType" value="0"/>
+          <parameter name="handleType" value="0"/>
+          <parameter name="value" value="Honor"/>
+        </parameters>
       </primitiveTest>
       <primitiveTest id="" name="COSACM_GetMDDIPOverride" version="1">
         <function>COSACM_GetMDDIPOverride</function>
