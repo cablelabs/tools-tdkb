@@ -1,20 +1,18 @@
-##
-# ============================================================================
-# COMCAST CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-# This file and its contents are the intellectual property of Comcast.  It may
-# not be used, copied, distributed or otherwise  disclosed in whole or in part
-# without the express written permission of Comcast.
-# ============================================================================
-# Copyright (c) 2016 Comcast. All rights reserved.
-# ============================================================================
-##
+#  ============================================================================
+#  COMCAST C O N F I D E N T I A L AND PROPRIETARY
+#  ============================================================================
+#  This file (and its contents) are the intellectual property of Comcast.  It may
+#  not be used, copied, distributed or otherwise  disclosed in whole or in part
+#  without the express written permission of Comcast.
+#  ============================================================================
+#  Copyright (c) 2014 Comcast. All rights reserved.
+#  ===========================================================================
 '''
 <?xml version='1.0' encoding='utf-8'?>
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>7</version>
+  <version>11</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_MTAAGENT_SetAttr_RootDevice</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -26,9 +24,9 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>TC_MTAAGENT_10 - To set the paramter attributes for all parametrs under the root "Device."</synopsis>
+  <synopsis>TC_MTAAGENT_10 - To set the parameter attributes for all parameters under the root "Device.X_CISCO_COM_MTA.DSXLog."</synopsis>
   <!--  -->
-  <groups_id>4</groups_id>
+  <groups_id />
   <!--  -->
   <execution_time>5</execution_time>
   <!--  -->
@@ -49,7 +47,7 @@
   <script_tags />
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
+																								# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 
 #Test component to be tested
@@ -70,27 +68,31 @@ if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
 		
     tdkTestObj = obj.createTestStep('MTA_agent_SetParameterAttr');  
-    tdkTestObj.addParameter("ParamName","Device.");
-    tdkTestObj.addParameter("AccessControl","acs");
+    tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_MTA.DSXLog.");
+    tdkTestObj.addParameter("AccessControl","anybody");
     tdkTestObj.addParameter("Notify","active");
-		
     expectedresult="SUCCESS";
 
     #Execute the test case in STB
     tdkTestObj.executeTestCase(expectedresult);
-
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-		
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-
+        details = tdkTestObj.getResultDetails();
+        print "TEST STEP 1:Set the notification attribute of DSX Log parameters to Anybody";
+        print "EXPECTED RESULT 1: Should Successfully set the attributes";
+        print "ACTUAL RESULT 1: %s" %details;
         print "[TEST EXECUTION RESULT] : %s" %actualresult ;
 	print "%s" %details;
 	 
     else:   
-        tdkTestObj.setResultStatus("FAILURE"); 
+        tdkTestObj.setResultStatus("FAILURE");
+        details = tdkTestObj.getResultDetails();
+        print "TEST STEP 1:Set the notification attribute of DSX Log parameters to Anybody";
+        print "EXPECTED RESULT 1: Should Successfully set the attributes";
+        print "ACTUAL RESULT 1: %s" %details;
 	print "[TEST EXECUTION RESULT] : %s" %actualresult ;	
         print "%s" %details;
 
@@ -102,3 +104,11 @@ else:
     print "Module loading failed";				
 				
 				
+
+					
+
+					
+
+					
+
+					

@@ -203,7 +203,10 @@ bool MTA_Agent::MTA_agent_SetParameterValues(IN const Json::Value& req, OUT Json
     else
     {
 
-        if(strcmp(&ParamValue[0],&DataParamValue1[i].pParamValues[0])==0)
+        printf("Set Value:%s\n",&ParamValue[0]);
+        printf("Value retrieved is:%s\n",DataParamValue1[0].pParamValues);
+
+        if(strcmp(&ParamValue[0],DataParamValue1[0].pParamValues)==0)
         {
             printf("Set has been validated successfully\n");
             free_Memory_val(size_ret,DataParamValue1);

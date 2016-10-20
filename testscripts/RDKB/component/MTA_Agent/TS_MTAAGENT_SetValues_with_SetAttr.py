@@ -1,20 +1,18 @@
-##
-# ============================================================================
-# COMCAST CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-# This file and its contents are the intellectual property of Comcast.  It may
-# not be used, copied, distributed or otherwise  disclosed in whole or in part
-# without the express written permission of Comcast.
-# ============================================================================
-# Copyright (c) 2016 Comcast. All rights reserved.
-# ============================================================================
-##
+#  ============================================================================
+#  COMCAST C O N F I D E N T I A L AND PROPRIETARY
+#  ============================================================================
+#  This file (and its contents) are the intellectual property of Comcast.  It may
+#  not be used, copied, distributed or otherwise  disclosed in whole or in part
+#  without the express written permission of Comcast.
+#  ============================================================================
+#  Copyright (c) 2014 Comcast. All rights reserved.
+#  ===========================================================================
 '''
 <?xml version='1.0' encoding='utf-8'?>
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>15</version>
+  <version>16</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_MTAAGENT_SetValues_with_SetAttr</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -29,7 +27,7 @@
   <synopsis>TC_MTAAGENT_8 - To Validate Set Param Values functionality with Set Parameter Attribute for 
 MTA Agent</synopsis>
   <!--  -->
-  <groups_id>4</groups_id>
+  <groups_id />
   <!--  -->
   <execution_time>5</execution_time>
   <!--  -->
@@ -50,7 +48,7 @@ MTA Agent</synopsis>
   <script_tags />
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
+						# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 
 #Test component to be tested
@@ -87,15 +85,15 @@ if "SUCCESS" in loadmodulestatus.upper():
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-        
-        print "Parameter value should be set as by default the access remains Anybody";		
+        details = tdkTestObj.getResultDetails();
+        print "TEST STEP 1:Enable the MTA Log";
+        print "EXPECTED RESULT 1: Should Successfully enable the MTA Log";
+        print "ACTUAL RESULT 1: %s" %details;
         print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-	print "%s" %details;
-	
 	
 	tdkTestObj = obj.createTestStep('MTA_agent_SetParameterAttr');
         tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_MTA.EnableMTALog");
-	tdkTestObj.addParameter("AccessControl","acs");
+	tdkTestObj.addParameter("AccessControl","anybody");
         tdkTestObj.addParameter("Notify","active");
 	
 	expectedresult="SUCCESS";
@@ -109,98 +107,23 @@ if "SUCCESS" in loadmodulestatus.upper():
 	if expectedresult in actualresult:
 	    #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
-	    print "Parameter access has been changed from ANYBODY";
+            print "TEST STEP 2:Set the access attribute as Anybody for MTA Log parameter";
+            print "EXPECTED RESULT 2: Should Successfully set the access attribute";
+            print "ACTUAL RESULT 2: %s" %details;
             print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-	    print "%s" %details;
-
-            tdkTestObj = obj.createTestStep('MTA_agent_SetParameterValues');  
-            tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_MTA.EnableMTALog");
-    
-            tdkTestObj.addParameter("ParamValue","false");
-            tdkTestObj.addParameter("Type","boolean");	
-	
-	    expectedresult="FAILURE";
-	    		
-	    #Execute the test case in STB
-            tdkTestObj.executeTestCase(expectedresult);
-
-	    actualresult = tdkTestObj.getResult();
-	    details = tdkTestObj.getResultDetails();
-		
-	    if expectedresult in actualresult:
-	        #Set the result status of execution
-                tdkTestObj.setResultStatus("SUCCESS");
-                print "Parameter value should not be changed as access control has changed from ANYBODY";		
-                print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-	        print "%s" %details; 
-				
-	        tdkTestObj = obj.createTestStep('MTA_agent_SetParameterAttr');
-                tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_MTA.EnableMTALog");
-	        tdkTestObj.addParameter("AccessControl","anybody");
-                tdkTestObj.addParameter("Notify","active");
-	
-	        expectedresult="SUCCESS";
-	    		
-	        #Execute the test case in STB
-                tdkTestObj.executeTestCase(expectedresult);
-
-	        actualresult = tdkTestObj.getResult();
-	        details = tdkTestObj.getResultDetails();
-		
-	        if expectedresult in actualresult:
-		    #Set the result status of execution
-                    tdkTestObj.setResultStatus("SUCCESS");
-			
-		    print "Parameter access has been changed again to ANYBODY";		
-                    print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-	            print "%s" %details; 
-					
-		    tdkTestObj = obj.createTestStep('MTA_agent_SetParameterValues');  
-                    tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_MTA.EnableMTALog");
-  
-                    tdkTestObj.addParameter("ParamValue","false");
-                    tdkTestObj.addParameter("Type","boolean");	
-			
-		    expectedresult="SUCCESS";
-	    		
-	            #Execute the test case in STB
-                    tdkTestObj.executeTestCase(expectedresult);
-
-	            actualresult = tdkTestObj.getResult();
-	            details = tdkTestObj.getResultDetails();
-		    print "Parameter value should be set as access control is ANYBODY";	
-	            if expectedresult in actualresult:
-		        #Set the result status of execution
-                        tdkTestObj.setResultStatus("SUCCESS");
-                        	
-                        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-	                print "%s" %details; 
-						
-	            else:   
-                        tdkTestObj.setResultStatus("FAILURE");
-	                print "[TEST EXECUTION RESULT] : %s" %actualresult ;	
-	                print "%s" %details;
-						
-                else:   
-                    tdkTestObj.setResultStatus("FAILURE");
-	            print "[TEST EXECUTION RESULT] : %s" %actualresult ;	
-	            print "%s" %details;  
-            else:   
-                 tdkTestObj.setResultStatus("FAILURE"); 
-	         print "[TEST EXECUTION RESULT] : %s" %actualresult ;	
-                 print "%s" %details;
-
         else:   
-            tdkTestObj.setResultStatus("FAILURE"); 
-	    print "[TEST EXECUTION RESULT] : %s" %actualresult ;	
-            print "%s" %details;
-  
-
+            tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP 2:Set the access attribute as Anybody for MTA Log parameter";
+            print "EXPECTED RESULT 2: Should Successfully set the access attribute";
+            print "ACTUAL RESULT 2: %s" %details;
+	    print "[TEST EXECUTION RESULT] : %s" %actualresult ;
     else:
 	
         tdkTestObj.setResultStatus("FAILURE");
+        print "TEST STEP 1:Enable the MTA Log";
+        print "EXPECTED RESULT 1: Should Successfully enable the MTA Log";
+        print "ACTUAL RESULT 1: %s" %details;
         print "[TEST EXECUTION RESULT] : %s" %actualresult ;	
-        print "%s" %details;
     
     obj.unloadModule("Mta_agent");
    		 
@@ -209,3 +132,5 @@ else:
     obj.setLoadModuleStatus("FAILURE");
     print "Module loading failed";	
 				
+
+					
