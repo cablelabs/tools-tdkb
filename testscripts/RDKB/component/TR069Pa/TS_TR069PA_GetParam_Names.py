@@ -1,20 +1,18 @@
-##
-# ============================================================================
-# COMCAST CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-# This file and its contents are the intellectual property of Comcast.  It may
-# not be used, copied, distributed or otherwise  disclosed in whole or in part
-# without the express written permission of Comcast.
-# ============================================================================
-# Copyright (c) 2016 Comcast. All rights reserved.
-# ============================================================================
-##
+#  ============================================================================
+#  COMCAST C O N F I D E N T I A L AND PROPRIETARY
+#  ============================================================================
+#  This file (and its contents) are the intellectual property of Comcast.  It may
+#  not be used, copied, distributed or otherwise  disclosed in whole or in part
+#  without the express written permission of Comcast.
+#  ============================================================================
+#  Copyright (c) 2016 Comcast. All rights reserved.
+#  ===========================================================================
 '''
 <?xml version='1.0' encoding='utf-8'?>
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>7</version>
+  <version>11</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_TR069PA_GetParam_Names</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -28,7 +26,7 @@
   <!--  -->
   <synopsis>TC_TR069_3 - To Validate Get Param Names API for TR069 PA</synopsis>
   <!--  -->
-  <groups_id>4</groups_id>
+  <groups_id />
   <!--  -->
   <execution_time>4</execution_time>
   <!--  -->
@@ -49,7 +47,7 @@
   <script_tags />
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
+																								# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 
 #Test component to be tested
@@ -69,7 +67,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");		
     tdkTestObj = obj.createTestStep('TR069Agent_GetParameterNames');
-    tdkTestObj.addParameter("ParamName","Device.ManagementServer.Password");
+    tdkTestObj.addParameter("ParamName","Device.ManagementServer.NATDetected");
     tdkTestObj.addParameter("ParamList","Device.ManagementServer.");
  	
     expectedresult="SUCCESS";
@@ -97,3 +95,11 @@ else:
         print "Failed to load TR069Pa module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";
+
+					
+
+					
+
+					
+
+					
