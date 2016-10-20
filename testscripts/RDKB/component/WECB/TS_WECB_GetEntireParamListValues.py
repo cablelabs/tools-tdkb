@@ -1,22 +1,20 @@
-##
-# ============================================================================
-# COMCAST CONFIDENTIAL AND PROPRIETARY
-# ============================================================================
-# This file and its contents are the intellectual property of Comcast.  It may
-# not be used, copied, distributed or otherwise  disclosed in whole or in part
-# without the express written permission of Comcast.
-# ============================================================================
-# Copyright (c) 2016 Comcast. All rights reserved.
-# ============================================================================
-##
+#  ============================================================================
+#  COMCAST C O N F I D E N T I A L AND PROPRIETARY
+#  ============================================================================
+#  This file (and its contents) are the intellectual property of Comcast.  It may
+#  not be used, copied, distributed or otherwise  disclosed in whole or in part
+#  without the express written permission of Comcast.
+#  ============================================================================
+#  Copyright (c) 2014 Comcast. All rights reserved.
+#  ===========================================================================
 '''
 <?xml version='1.0' encoding='utf-8'?>
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>4</version>
+  <version>6</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
-  <name>TS_WECB_GetParamValues_EmptyString</name>
+  <name>TS_WECB_GetEntireParamListValues</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id></primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
@@ -26,7 +24,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>TC_WECB_10 - To Validate Get Param Values Function  of WECB Controller for an empty string as parameter name</synopsis>
+  <synopsis>TC_WECB_10 - To Validate Get Param Values Function  of WECB Controller with the root node of the WECB component</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -46,9 +44,10 @@
     <rdk_version>RDKB</rdk_version>
     <!--  -->
   </rdk_versions>
+  <script_tags />
 </xml>
 '''
-
+												
 #use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib;
 import time;
@@ -60,7 +59,7 @@ obj = tdklib.TDKScriptingLibrary("wecb","RDKB");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_WECB_GetParamValues');
+obj.configureTestCase(ip,port,'TS_WECB_GetEntireParamListValues');
 
 #Get the result of connection with test component and STB
 loadmodulestatus =obj.getLoadModuleResult();
@@ -71,7 +70,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
         #Script to get the parameter values of wecb
         tdkTestObj = obj.createTestStep("WECB_GetParamValues");
-        tdkTestObj.addParameter("paramName","");
+        tdkTestObj.addParameter("paramName","Device.MoCA.");
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
@@ -81,7 +80,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             tdkTestObj.setResultStatus("SUCCESS");
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1: Get the values of the parameter specified";
-            print "EXPECTED RESULT 1: Should retrieve the parameter values for empty string";
+            print "EXPECTED RESULT 1: Should retrieve the parameter values";
             print "ACTUAL RESULT 1: %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
@@ -89,7 +88,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             tdkTestObj.setResultStatus("FAILURE");
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1: Get the values of the parameter specified";
-            print "EXPECTED RESULT 1: Should retrieve the parameter values for empty string";
+            print "EXPECTED RESULT 1: Should retrieve the parameter values";
             print "ACTUAL RESULT 1: %s" %details;
             print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
             
@@ -98,3 +97,7 @@ else:
         print "Failed to load WECB controller module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";
+
+					
+
+					
