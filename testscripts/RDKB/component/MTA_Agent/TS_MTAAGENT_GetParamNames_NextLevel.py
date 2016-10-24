@@ -71,7 +71,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
     tdkTestObj = obj.createTestStep('MTA_agent_GetParameterNames_NextLevel');  
 		
-    tdkTestObj.addParameter("ParamName","Device.");
+    tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_MTA.");
    		
     expectedresult="SUCCESS";
 
