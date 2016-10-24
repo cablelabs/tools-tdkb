@@ -109,7 +109,7 @@ int ssp_MTAAgentRestart()
         printf("\nMTAAgent process is running\n");
         printf("\nGoing to kill MTAAgent process\n");
         system ("kill -9 `pidof CcspMtaAgentSsp`");
-        sleep(1200);
+        sleep(1500);
 
         if(0 == system("pidof CcspMtaAgentSsp > /dev/null"))   {
             printf("\nMTAAgent process has restarted \n");

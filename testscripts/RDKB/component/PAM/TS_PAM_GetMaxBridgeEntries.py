@@ -12,7 +12,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>9</version>
+  <version>10</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_GetMaxBridgeEntries</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -47,7 +47,7 @@
   <script_tags />
 </xml>
 '''
-																																																						
+																																																												
 #use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib;
 import time;
@@ -82,7 +82,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1: Retrieve the Max Bridge Entry";
             print "EXPECTED RESULT 1: Should retrieve the Max Bridge Entry successfully";
-            print "ACTUAL RESULT 1: %s" %details;
+            print "ACTUAL RESULT 1: Max Bridge Entry :%s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
         else:
@@ -98,5 +98,7 @@ else:
         print "Failed to load the module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";		
+
+					
 
 					

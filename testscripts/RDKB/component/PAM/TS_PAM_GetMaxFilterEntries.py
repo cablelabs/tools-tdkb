@@ -81,7 +81,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1: Retrieve the Max Filter Entry";
             print "EXPECTED RESULT 1: Should retrieve the Max Filter Entry successfully";
-            print "ACTUAL RESULT 1: %s" %details;
+            print "ACTUAL RESULT 1:Max Filter Entry: %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
         else:

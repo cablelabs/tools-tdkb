@@ -82,7 +82,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1: Retrieve the Max DBridge Entry";
             print "EXPECTED RESULT 1: Should retrieve the Max DBridge Entry successfully";
-            print "ACTUAL RESULT 1: %s" %details;
+            print "ACTUAL RESULT 1: Max Dbridge Entries: %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
         else:

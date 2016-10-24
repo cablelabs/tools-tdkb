@@ -12,13 +12,13 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>1</version>
+  <version>2</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_PortStats_GetBroadcastPacketsReceived</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id> </primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
-  <primitive_test_name>pam_bridge_GetParamUlongValue</primitive_test_name>
+  <primitive_test_name>pam_GetParameterValues</primitive_test_name>
   <!--  -->
   <primitive_test_version>1</primitive_test_version>
   <!--  -->
@@ -44,9 +44,10 @@
     <rdk_version>RDKB</rdk_version>
     <!--  -->
   </rdk_versions>
+  <script_tags />
 </xml>
 '''
-																																																																																																																																										
+																																																												
 #use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib;
 import time;
@@ -55,12 +56,12 @@ import time;
 obj = tdklib.TDKScriptingLibrary("pam","RDKB");
 
 #IP and Port of box, No need to change,
-#This will be replaced with corresponding Box Ip and port while executing script
+#This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_PAM_PortStats_GetBroadcastPacketsReceived');
 
-#Get the result of connection with test component and DUT
+#Get the result of connection with test component and STB
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
@@ -68,9 +69,8 @@ if "SUCCESS" in loadmodulestatus.upper():
         obj.setLoadModuleStatus("SUCCESS");
 
         #Script to load the configuration file of the component
-        tdkTestObj = obj.createTestStep("pam_bridge_GetParamUlongValue");
-        tdkTestObj.addParameter("paramName","BroadcastPacketsReceived");
-        tdkTestObj.addParameter("module","PortStats");
+        tdkTestObj = obj.createTestStep("pam_GetParameterValues");
+        tdkTestObj.addParameter("ParamName","Device.Bridging.Bridge.1.Port.1.Stats.BroadcastPacketsReceived");
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
@@ -79,16 +79,16 @@ if "SUCCESS" in loadmodulestatus.upper():
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             details = tdkTestObj.getResultDetails();
-            print "TEST STEP 1: Retrieve the Port statistic information on the number of broadcast packets received";
-            print "EXPECTED RESULT 1: Should retrieve the Port statistic information on the number of broadcast packets received successfully";
-            print "ACTUAL RESULT 1: %s" %details;
+            print "TEST STEP 1: Retrieve the number of packets broadcasted";
+            print "EXPECTED RESULT 1: Should retrieve the number of packets successfully";
+            print "ACTUAL RESULT 1: Broadcast Packets Received: %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
         else:
             tdkTestObj.setResultStatus("FAILURE");
             details = tdkTestObj.getResultDetails();
-            print "TEST STEP 1: Retrieve the Port statistic information on the number of broadcast packets received";
-            print "EXPECTED RESULT 1: Should retrieve the Port statistic information on the number of broadcast packets received successfully";
+            print "TEST STEP 1: Retrieve the number of packets broadcasted";
+            print "EXPECTED RESULT 1: Should retrieve the number of packets successfully";
             print "ACTUAL RESULT 1: %s" %details;
             print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
             
@@ -96,6 +96,6 @@ if "SUCCESS" in loadmodulestatus.upper():
 else:
         print "Failed to load the module";
         obj.setLoadModuleStatus("FAILURE");
-        print "Module loading failed";					
+        print "Module loading failed";
 
 					

@@ -12,7 +12,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>3</version>
+  <version>4</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_CheckMTACrash</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -28,7 +28,7 @@
   <!--  -->
   <groups_id />
   <!--  -->
-  <execution_time>20</execution_time>
+  <execution_time>30</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
   <!-- execution_time is the time out time for test execution -->
@@ -47,7 +47,7 @@
   <script_tags />
 </xml>
 '''
-#import statements
+						#import statements
 import tdklib;
 import time;
 
@@ -96,6 +96,8 @@ else:
         print "Failed to load the module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";				
+
+					
 
 					
 

@@ -12,13 +12,13 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>1</version>
+  <version>2</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_GetPortStatus</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id> </primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
-  <primitive_test_name>pam_bridge_GetParamUlongValue</primitive_test_name>
+  <primitive_test_name>pam_GetParameterValues</primitive_test_name>
   <!--  -->
   <primitive_test_version>1</primitive_test_version>
   <!--  -->
@@ -44,9 +44,10 @@
     <rdk_version>RDKB</rdk_version>
     <!--  -->
   </rdk_versions>
+  <script_tags />
 </xml>
 '''
-																																																																														
+																																																												
 #use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib;
 import time;
@@ -60,7 +61,7 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_PAM_GetPortStatus');
 
-#Get the result of connection with test component and DUT
+#Get the result of connection with test component and STB
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
@@ -68,9 +69,8 @@ if "SUCCESS" in loadmodulestatus.upper():
         obj.setLoadModuleStatus("SUCCESS");
 
         #Script to load the configuration file of the component
-        tdkTestObj = obj.createTestStep("pam_bridge_GetParamUlongValue");
-        tdkTestObj.addParameter("paramName","Status");
-        tdkTestObj.addParameter("module","Port");
+        tdkTestObj = obj.createTestStep("pam_GetParameterValues");
+        tdkTestObj.addParameter("ParamName","Device.Bridging.Bridge.1.Port.1.Status");
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
@@ -81,7 +81,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1: Retrieve the Port Status";
             print "EXPECTED RESULT 1: Should retrieve the Port Status successfully";
-            print "ACTUAL RESULT 1: %s" %details;
+            print "ACTUAL RESULT 1: Port Status: %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
         else:
@@ -96,10 +96,6 @@ if "SUCCESS" in loadmodulestatus.upper():
 else:
         print "Failed to load the module";
         obj.setLoadModuleStatus("FAILURE");
-        print "Module loading failed";		
-
-					
-
-					
+        print "Module loading failed";
 
 					

@@ -28,7 +28,7 @@
   <!--  -->
   <groups_id />
   <!--  -->
-  <execution_time>15</execution_time>
+  <execution_time>1</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
   <!-- execution_time is the time out time for test execution -->
@@ -57,6 +57,7 @@ obj = tdklib.TDKScriptingLibrary("pam","RDKB");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
+defaultPeriod = "300"
 obj.configureTestCase(ip,port,'TS_PAM_GetNetworkDevicesTrafficPollingPeriod');
 
 #Get the result of connection with test component and STB
@@ -84,7 +85,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT 1: Polling period of network device traffic is %s" %details;
         #Get the result of execution
         
-        if (details == 300):
+        if defaultPeriod in details:
             print "Polling period of Network Device traffic is 300\n"
             print "[TEST EXECUTION RESULT] : SUCCESS";
         else:
