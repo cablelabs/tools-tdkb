@@ -62,5 +62,6 @@ class pam : public RDKTestStubInterface
 	bool pam_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
 	bool pam_MTAAgentRestart(IN const Json::Value& req, OUT Json::Value& response);
 	bool pam_CRRestart(IN const Json::Value& req, OUT Json::Value& response);
+	bool pam_Init(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__PAM_STUB_H__

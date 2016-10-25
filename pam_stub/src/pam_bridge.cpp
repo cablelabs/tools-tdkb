@@ -30,6 +30,7 @@ GETPARAMVALUES* ssp_getParameterValue(char* pParamName,int* pParamsize);
 int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType, int commit);
 int ssp_MTAAgentRestart();
 int ssp_CRRestart();
+int ssp_pam_Init();
 GETPARAMNAMES *ssp_getParameterNames(char* pPathName,int recursive,int* pParamSize);
 void free_Memory_Names(int size,GETPARAMNAMES *Freestruct);
 void free_Memory_val(int size,GETPARAMVALUES *Freestruct);
@@ -60,6 +61,7 @@ bool pam::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&pam::pam_GetParameterValues,"pam_GetParameterValues");
     ptrAgentObj->RegisterMethod(*this,&pam::pam_MTAAgentRestart,"pam_MTAAgentRestart");
     ptrAgentObj->RegisterMethod(*this,&pam::pam_CRRestart,"pam_CRRestart");
+    ptrAgentObj->RegisterMethod(*this,&pam::pam_Init,"pam_Init");
 
     return TEST_SUCCESS;
 }
@@ -416,6 +418,7 @@ bool pam::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("pam_MTAAgentRestart");
     ptrAgentObj->UnregisterMethod("pam_CRRestart");
     ptrAgentObj->UnregisterMethod("pam_GetParameterNames");
+    ptrAgentObj->UnregisterMethod("pam_Init");
 
     return TEST_SUCCESS;
 }
@@ -429,5 +432,38 @@ extern "C" void DestroyObject(pam *stubobj)
 {
     DEBUG_PRINT(DEBUG_LOG,"Destroying pam object\n");
     delete stubobj;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name    : pam_Init()
+ * Description      : This function will initialise pam
+ *
+ *
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+
+bool pam::pam_Init(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_Init --->Entry \n");
+
+    int returnValue = 0;
+    returnValue = ssp_pam_Init();
+    if(0 == returnValue)
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Successfully initiated pam module\n";
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to initialise pam module\n";
+        DEBUG_PRINT(DEBUG_TRACE,"\n pam_Init --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_Init  --->Exit\n");
+    return TEST_SUCCESS;
+
 }
 

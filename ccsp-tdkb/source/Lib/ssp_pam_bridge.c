@@ -179,4 +179,32 @@ int ssp_CRRestart()
     printf("\n Exiting ssp_CRRestart function\n\n");
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_pam_Init()
+ * Description          : This function will check if the pam module is getting initialised 
+                          or not
+ * @param [out]         : return status an integer value 0-success and 1-Failure 
+ ********************************************************************************************/
+int ssp_pam_Init()
+{
+    int return_status = 0;
+    unsigned long value = 0;
+    printf("\n Entering ssp_pam_Init function\n\n");
+       return_status = CosaDmlDiInit(NULL,NULL);
+
+    if ( return_status == 0)
+    {
+        printf("ssp_pam_Init: success\n");
+        return 0;
+    }
+
+    else
+       {
+    printf("ssp_pam_Init:Failed to initialise\n");
+    return 1;
+       }
+}
+
+
 #endif
