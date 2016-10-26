@@ -22,6 +22,7 @@ After=dbus.service
 Wants=dbus.service
 
 [Service]
+Type=forking
 ExecStart=/bin/sh -c '/var/TDK/start_tdk.sh'
 Restart=always
 [Install]
