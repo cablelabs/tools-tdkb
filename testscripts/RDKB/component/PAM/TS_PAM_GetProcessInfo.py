@@ -21,19 +21,19 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>1</version>
+  <version>5</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
-  <name>TS_PAM_Init</name>
+  <name>TS_PAM_GetProcessInfo</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id> </primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
-  <primitive_test_name>pam_Init</primitive_test_name>
+  <primitive_test_name>pam_GetParameterValues</primitive_test_name>
   <!--  -->
   <primitive_test_version>1</primitive_test_version>
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>To initialise pam module</synopsis>
+  <synopsis>Returns the status of the processes on the device</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -53,9 +53,10 @@
     <rdk_version>RDKB</rdk_version>
     <!--  -->
   </rdk_versions>
+  <script_tags />
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
+#import statement
 import tdklib; 
 
 #Test component to be tested
@@ -65,39 +66,41 @@ obj = tdklib.TDKScriptingLibrary("pam","RDKB");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_PAM_Init');
+obj.configureTestCase(ip,port,'TS_PAM_GetProcessInfo');
 
 #Get the result of connection with test component and STB
-loadModuleresult =obj.getLoadModuleResult();
-print "[LIB LOAD STATUS]  :  %s" %loadModuleresult;
+loadmodulestatus =obj.getLoadModuleResult();
+print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
-loadStatusExpected = "SUCCESS"
+if "SUCCESS" in loadmodulestatus.upper():
+    #Set the result status of execution
+    obj.setLoadModuleStatus("SUCCESS");
+    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+    tdkTestObj.addParameter("ParamName","Device.DeviceInfo.ProcessStatus.");
+    expectedresult="SUCCESS";
 
-if loadStatusExpected not in loadModuleresult.upper():
-        print "[Failed To Load PAM Stub from env TDK_PATH]"
-        print "[Exiting the Script]"
-        exit();
-
-#Prmitive test case which associated to this Script
-tdkTestObj = obj.createTestStep('pam_Init');
-expectedresult = "SUCCESS"
-#Execute the test case in STB
-tdkTestObj.executeTestCase(expectedresult);
-
-#Get the result of execution
-actualresult = tdkTestObj.getResult();
-print "[TEST EXECUTION RESULT] : %s" %actualresult;
-resultDetails = tdkTestObj.getResultDetails();
-
-if expectedresult in actualresult:
-	#Set the result status of execution
-	tdkTestObj.setResultStatus("SUCCESS");
-	print "\nPAM Initialization is SUCCESS"
-else:
-	#Set the result status of execution as failure
-	tdkTestObj.setResultStatus("FAILURE");
-        print "\nPAM Initialization is FAILURE"
-
-print "\n[TEST EXECUTION RESULT] : %s\n" %resultDetails ;
-#Unloading the module
-obj.unloadModule("pam");
+    #Execute the test case in STB
+    tdkTestObj.executeTestCase("expectedresult");
+    actualresult = tdkTestObj.getResult();
+    details = tdkTestObj.getResultDetails();
+		
+    if expectedresult in actualresult:
+        #Set the result status of execution
+        tdkTestObj.setResultStatus("SUCCESS");
+        print "TEST STEP 1: Get the ProcessInfo";
+        print "EXPECTED RESULT 1: Should get the ProcessInfo";
+        print "ACTUAL RESULT 1: ProcessInfo is %s" %details;
+        #Get the result of execution
+        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+    else:
+        tdkTestObj.setResultStatus("FAILURE");	
+        print "TEST STEP 1: Get the ProcessInfo";
+        print "EXPECTED RESULT 1: Failure in getting the ProcessInfo";
+        print "ACTUAL RESULT 1: ProcessInfo is %s" %details;
+        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+    obj.unloadModule("pam");
+   		 
+else:   
+        print "Failed to load pam module";
+        obj.setLoadModuleStatus("FAILURE");
+        print "Module loading failed";				
