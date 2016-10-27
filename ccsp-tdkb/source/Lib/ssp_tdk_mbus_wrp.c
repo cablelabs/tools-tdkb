@@ -530,17 +530,12 @@ int ssp_mbus_query_status()
 {
 
     int return_status = SSP_MBUS_FAILURE;
-
     int internalState = 0;
 
-
     /* Invoke API Under Test to Query Component(TDK) Status */
-
-    printf("\nDbusPath is %s",gpTDKStartCfg->DbusPath);
-
     return_status = CcspBaseIf_queryStatus(tdk_bus_handle,
-            gpTDKStartCfg->ComponentName,
-            gpTDKStartCfg->DbusPath,
+            CCSP_CR_NAME,
+            "/com/cisco/spvtg/ccsp/CR",
             &internalState
             );
 
@@ -571,15 +566,12 @@ int ssp_mbus_query_status()
 int ssp_mbus_get_allocmemory()
 {
     int return_status = SSP_MBUS_FAILURE;
-
     int allocatedMemory = 0;
-
-
 
     /* Invoke API Under Test to Query Component(TDK) Staus */
     return_status = CcspBaseIf_getAllocatedMemory (tdk_bus_handle,
-            gpTDKStartCfg->ComponentName,
-            gpTDKStartCfg->DbusPath,
+            CCSP_CR_NAME,
+            "/com/cisco/spvtg/ccsp/CR",
             &allocatedMemory);
 
     if(return_status == CCSP_SUCCESS)
@@ -608,16 +600,13 @@ int ssp_mbus_get_allocmemory()
 
 int ssp_mbus_get_maxmemory()
 {
-
     int return_status = SSP_MBUS_FAILURE;
-
     int maxMemory = 0;
-
 
     /* Invoke API Under Test to Query Component(TDK) Staus */
     return_status = CcspBaseIf_getMaxMemoryUsage(tdk_bus_handle,
             CCSP_CR_NAME,
-            gpTDKStartCfg->DbusPath,
+            "/com/cisco/spvtg/ccsp/CR",
             &maxMemory);
 
     if(return_status == CCSP_SUCCESS)
@@ -658,12 +647,12 @@ int ssp_mbus_namespace_supportedby_component()
 
     if(return_status == CCSP_SUCCESS)
     {
-        printf("\n ssp_mbus_unregister_namespace :: CcspBaseIf_discNamespaceSupportedByComponent function is success with namespace as %s with size %d and  return status %d",pNsArray[0]->name_space,nNsArraySize,return_status);
+        printf("\n ssp_mbus_namespace_supportedby_component :: CcspBaseIf_discNamespaceSupportedByComponent function is success with namespace as %s with size %d and  return status %d",pNsArray[0]->name_space,nNsArraySize,return_status);
         return_status = SSP_MBUS_SUCCESS;
     }
     else
     {
-        printf("\n ssp_mbus_unregister_namespace :: CcspBaseIf_discNamespaceSupportedByComponent function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_namespace_supportedby_component :: CcspBaseIf_discNamespaceSupportedByComponent function is failure and return status %d",return_status);        
         return_status = SSP_MBUS_FAILURE;
     }
 
@@ -693,12 +682,12 @@ int ssp_mbus_component_supporting_dynamictbl()
 
     if(return_status == CCSP_SUCCESS)
     {
-        printf("\n ssp_mbus_unregister_namespace :: CcspBaseIf_discNamespaceSupportedByComponent function is success with component name as %s and return status %d",component->componentName,return_status);
+        printf("\n ssp_mbus_component_supporting_dynamictbl :: CcspBaseIf_discComponentSupportingDynamicTbl function is success with component name as %s and return status %d",component->componentName,return_status);
         return_status = SSP_MBUS_SUCCESS;
     }
     else
     {
-        printf("\n ssp_mbus_unregister_namespace :: CcspBaseIf_discNamespaceSupportedByComponent function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_component_supporting_dynamictbl :: CcspBaseIf_discComponentSupportingDynamicTbl function is failure and return status %d",return_status);        
         return_status = SSP_MBUS_FAILURE;
     }
     return return_status;
