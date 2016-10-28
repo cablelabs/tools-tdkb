@@ -316,7 +316,8 @@ int ssp_CosaDmlCMGetIPv6DHCPInfo(int handleType, int bufferType)
     if(bufferType == 0)
     {
        return_status = CosaDmlCMGetIPv6DHCPInfo(cm_handle,&dhcpIpv6);
-       printf("DHCP IPV6 RenewTimeRemaining:%d\n",dhcpIpv6.IPv6RenewTimeRemaining);
+       printf("DHCPv6 Details:\n");
+       printf("IPV6 Address:%s\n",dhcpIpv6.IPv6Address);
     }
     else
     {
@@ -382,7 +383,7 @@ int ssp_CosaCMGetLoopDiagnosticsStart(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    char *bValue = NULL;
+    bool bValue = 0;
     printf("Entering ssp_CosaCMGetLoopDiagnosticsStart");
     if(handleType == 0)
     {
@@ -390,10 +391,14 @@ int ssp_CosaCMGetLoopDiagnosticsStart(int handleType, int Value)
     }
     if(Value == 0)
     {
-        bValue = ((char *) malloc(100));
+        return_status = CosaDmlCMGetLoopDiagnosticsStart(cm_handle,&bValue);
+        printf("Loop Diagnostic Start:%d\n",bValue);
+    }
+    else
+    {
+	return_status = CosaDmlCMGetLoopDiagnosticsStart(cm_handle,NULL);
     }
 
-    return_status = CosaDmlCMGetLoopDiagnosticsStart(cm_handle,bValue);
     if(return_status == SSP_SUCCESS)
     {
         printf("\n ssp_CosaCMGetLoopDiagnosticsStart :: CosaCMGetLoopDiagnosticsStart function is success with return status %d",return_status);
@@ -419,7 +424,7 @@ int ssp_CosaDmlCMGetLoopDiagnosticsDetails(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    char *pValue = NULL;
+    char pValue[20] = {0};
     printf("Entering ssp_CosaDmlCMGetLoopDiagnosticsDetails");
     if(handleType == 0)
     {
@@ -427,9 +432,14 @@ int ssp_CosaDmlCMGetLoopDiagnosticsDetails(int handleType, int Value)
     }
     if(Value == 0)
     {
-        pValue = ((char *) malloc(100));
+        return_status = CosaDmlCMGetLoopDiagnosticsDetails(cm_handle,pValue);
+        printf("Loop Diagnostic Details:%s\n",pValue);
     }
-    return_status = CosaDmlCMGetLoopDiagnosticsDetails(cm_handle,pValue);
+    else
+    {
+	return_status = CosaDmlCMGetLoopDiagnosticsDetails(cm_handle,NULL);
+    }
+
     if(return_status == SSP_SUCCESS)
     {
         printf("\n ssp_CosaDmlCMGetLoopDiagnosticsDetails :: CosaDmlCMGetLoopDiagnosticsDetails function is success with return status %d",return_status);
@@ -444,8 +454,8 @@ int ssp_CosaDmlCMGetLoopDiagnosticsDetails(int handleType, int Value)
 }
 
 /*******************************************************************************************
- * Function Name        : ssp_CosaDmlCMSetLoopDiagnosticsStart
- * Description          : This function will get 
+ * Function Name        : ssp_CosaDmlCMGetTelephonyRegistrationStatus
+ * Description          : This function will get the telephony registration status
  * @param [in]          : boolValue -
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
@@ -453,17 +463,24 @@ int ssp_CosaDmlCMGetTelephonyRegistrationStatus(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    char *pValue = NULL;
+    char pValue[30] = {0};
+
     printf("Entering ssp_CosaDmlCMGetTelephonyRegistrationStatus");
+
     if(handleType == 0)
     {
         cm_handle = bus_handle_client;
     }
     if(Value == 0)
     {
-        pValue = ((char *) malloc(100));
+    	return_status = CosaDmlCMGetTelephonyRegistrationStatus(cm_handle,pValue);
+        printf("Telephony Registration Status:%s\n",pValue);
     }
-    return_status = CosaDmlCMGetTelephonyRegistrationStatus(cm_handle,pValue);
+    else
+    {
+    	return_status = CosaDmlCMGetTelephonyRegistrationStatus(cm_handle,NULL);
+    }
+
     if(return_status == SSP_SUCCESS)
     {
         printf("\n ssp_CosaDmlCMGetTelephonyRegistrationStatus :: CosaDmlCMGetTelephonyRegistrationStatus function is success with return status %d",return_status);
@@ -487,7 +504,8 @@ int ssp_CosaDmlCMGetTelephonyDHCPStatus(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    char *pValue = NULL;
+    char pValue[30] = {0};
+
     printf("Entering ssp_CosaDmlCMGetTelephonyDHCPStatus");
     if(handleType == 0)
     {
@@ -495,9 +513,14 @@ int ssp_CosaDmlCMGetTelephonyDHCPStatus(int handleType, int Value)
     }
     if(Value == 0)
     {
-        pValue = ((char *) malloc(20));
+  	return_status = CosaDmlCMGetTelephonyDHCPStatus(cm_handle,pValue);
+        printf("Telephony DHCP Status:%s\n",pValue);
     }
-    return_status = CosaDmlCMGetTelephonyDHCPStatus(cm_handle,pValue);
+    else
+    {
+	return_status = CosaDmlCMGetTelephonyDHCPStatus(cm_handle,NULL);
+    }
+
     if(return_status == SSP_SUCCESS)
     {
         printf("\n ssp_CosaDmlCMGetTelephonyDHCPStatus :: CosaDmlCMGetTelephonyDHCPStatus function is success with return status %d",return_status);
@@ -521,17 +544,23 @@ int ssp_CosaDmlCMGetTelephonyTftpStatus(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    char *pValue = NULL;
+    char pValue[30] = {0};
+
     printf("Entering ssp_CosaDmlCMGetTelephonyTftpStatus");
+
     if(handleType == 0)
     {
         cm_handle = bus_handle_client;
     }
     if(Value == 0)
     {
-        pValue = ((char *) malloc(20));
+  	return_status = CosaDmlCMGetTelephonyTftpStatus(cm_handle,pValue);
     }
-    return_status = CosaDmlCMGetTelephonyTftpStatus(cm_handle,pValue);
+    else
+    {
+    	return_status = CosaDmlCMGetTelephonyTftpStatus(cm_handle,NULL);
+    }
+
     if(return_status == SSP_SUCCESS)
     {
         printf("\n ssp_CosaDmlCMGetTelephonyTftpStatus :: CosaDmlCMGetTelephonyTftpStatus function is success with return status %d",return_status);
@@ -555,11 +584,14 @@ int ssp_CosaDmlCMSetLoopDiagnosticsStart(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
+
     printf("Entering ssp_CosaDmlCMSetLoopDiagnosticsStart");
+
     if(handleType == 0)
     {
         cm_handle = bus_handle_client;
     }
+
     return_status = CosaDmlCMSetLoopDiagnosticsStart(cm_handle,Value);
     if(return_status == SSP_SUCCESS)
     {
@@ -600,7 +632,8 @@ int ssp_cosacm_GetDHCPInfo(int handleType, int bufferType)
     if(bufferType == 0)
     {
         return_status = CosaDmlCMGetDHCPInfo(cm_handle, &dhcp);
-        printf("DHCP Info Gateway Value:%s\n",dhcp.Gateway.Value);
+        printf("DHCP Info Details:\n");
+        printf("MAC Address:%s\n",dhcp.MACAddress);
     }
     else
     {
@@ -642,7 +675,7 @@ int ssp_cosacm_GetDOCSISInfo(int handleType, int bufferType)
     if(bufferType == 0)
     {
         return_status = CosaDmlCMGetDOCSISInfo(cm_handle,&docsis);
-        printf("DOCSIS Info Max CPE Allowed:%s\n",docsis.MaxCpeAllowed);
+        printf("DOCSIS Info Max CPE Allowed:%d\n",docsis.MaxCpeAllowed);
     }
     else
     {
@@ -673,7 +706,7 @@ int ssp_cosacm_GetLog(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    PCOSA_DML_CM_LOG *log = NULL;
+    COSA_DML_CM_LOG log = {0};
 
     printf("\n Entering ssp_cosacm_GetLog function\n\n");
 
@@ -683,12 +716,14 @@ int ssp_cosacm_GetLog(int handleType, int bufferType)
     }
     if(bufferType == 0)
     {
-        log = ((PCOSA_DML_CM_LOG *) malloc(20));
-    }  
-
-    return_status = CosaDmlCmGetLog(cm_handle,log);
-
-    printf("ssp_cosacm_GetLog: Log Info:%s\n",log);
+        return_status = CosaDmlCmGetLog(cm_handle,&log);
+        printf("Log Info:\n");
+        printf("Enable Log:%d\n",log.EnableLog);
+    }
+    else
+    {
+        return_status = CosaDmlCmGetLog(cm_handle,NULL);
+    }
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -714,7 +749,7 @@ int ssp_cosacm_SetLog(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    PCOSA_DML_CM_LOG *log = NULL;
+    COSA_DML_CM_LOG log = {0};
 
     printf("\n Entering ssp_cosacm_SetLog function\n\n");
 
@@ -724,13 +759,14 @@ int ssp_cosacm_SetLog(int handleType, int bufferType)
     }
     if(bufferType == 0)
     {
-        log = ((PCOSA_DML_CM_LOG *) malloc(20));
-
+         log.EnableLog = 1;
+         log.CleanDocsisLog = 1;
+         return_status = CosaDmlCmSetLog(cm_handle,&log);
     }
-
-    return_status = CosaDmlCmSetLog(cm_handle,log);
-
-    printf("ssp_cosacm_SetLog: Log Info:%s\n",log);
+    else
+    {
+	 return_status = CosaDmlCmSetLog(cm_handle,NULL);
+    }
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -753,8 +789,8 @@ int ssp_cosacm_GetDocsisLog(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    int *count = NULL;
-    PCOSA_DML_DOCSISLOG_FULL *ppConf = NULL;
+    ULONG count = 0;
+    COSA_DML_DOCSISLOG_FULL *ppConf = NULL;
     
     printf("\n Entering ssp_cosacm_GetDocsisLog function\n\n");
 
@@ -764,15 +800,14 @@ int ssp_cosacm_GetDocsisLog(int handleType, int bufferType)
     }
     if(bufferType == 0) 
     {
-        count=(int*)malloc(20*sizeof(int));
+        count=(COSA_DML_DOCSISLOG_FULL*)malloc(sizeof(COSA_DML_DOCSISLOG_FULL));
         return_status = CosaDmlCmGetDocsisLog(cm_handle,&count,&ppConf);
+        printf("ssp_cosacm_GetDocsisLog: DOCSIS Log Info:%s\n",ppConf->Description);
     }
     else
     {    
-
-        return_status = CosaDmlCmGetDocsisLog(cm_handle,NULL,&ppConf);
+        return_status = CosaDmlCmGetDocsisLog(cm_handle,NULL,NULL);
     }   
-    printf("ssp_cosacm_GetDocsisLog: DOCSIS Log Info:%s\n",ppConf);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -797,8 +832,8 @@ int ssp_cosacm_GetDownstreamChannel(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    int     *Count=NULL;
-    PCOSA_CM_DS_CHANNEL *pcfg = NULL;
+    ULONG Count = 0;
+    COSA_CM_DS_CHANNEL *pcfg = NULL;
     
     printf("\n Entering ssp_cosacm_GetDownstreamChannel function\n\n");
 
@@ -808,15 +843,14 @@ int ssp_cosacm_GetDownstreamChannel(int handleType, int bufferType)
     }
     if(bufferType == 0)
     {
-        Count=(int*)malloc(20*sizeof(int));
+        pcfg = (COSA_CM_DS_CHANNEL*)malloc(sizeof(COSA_CM_DS_CHANNEL));
         return_status = CosaDmlCmGetDownstreamChannel(cm_handle,&Count,&pcfg);
+        printf("ssp_cosacm_GetDownstreamChannel: Downstream channel Info:%s\n",pcfg->Frequency);
     }
     else
     {
-        return_status = CosaDmlCmGetDownstreamChannel(cm_handle,NULL,&pcfg);
+        return_status = CosaDmlCmGetDownstreamChannel(cm_handle,NULL,NULL);
     }
-
-    printf("ssp_cosacm_GetUpstreamChannel: Downstream channel Info:%s\n",pcfg);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -840,8 +874,8 @@ int ssp_cosacm_GetUpstreamChannel(int handleType, int bufferType)
 {
     int return_status = 0;
     ANSC_HANDLE cm_handle = NULL;
-    int     *Count=NULL;
-    PCOSA_CM_US_CHANNEL *pcfg = NULL;
+    ULONG Count = 0;
+    COSA_CM_US_CHANNEL *pcfg = NULL;
 
     printf("\n Entering ssp_cosacm_GetUpstreamChannel function\n\n");
 
@@ -851,15 +885,14 @@ int ssp_cosacm_GetUpstreamChannel(int handleType, int bufferType)
     }
     if(bufferType == 0)
     {
-        Count=(int*)malloc(20*sizeof(int));
+        pcfg = (COSA_CM_US_CHANNEL*)malloc(sizeof(COSA_CM_US_CHANNEL));
         return_status = CosaDmlCmGetUpstreamChannel(cm_handle,&Count,&pcfg);
+        printf("ssp_cosacm_GetUpstreamChannel: Upstream channel Info:%s\n",pcfg->Frequency);
     }
     else
     {
-        return_status = CosaDmlCmGetUpstreamChannel(cm_handle,NULL,&pcfg);
+        return_status = CosaDmlCmGetUpstreamChannel(cm_handle,NULL,NULL);
     }
-
-    printf("ssp_cosacm_GetUpstreamChannel: Upstream channel Info:%s\n",pcfg);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1005,7 +1038,6 @@ int ssp_CosaCableModemRemove(int Value)
 
 int ssp_cosacm_getmarket()
 {
-
     int return_status = 0;
     char *value = NULL;
 
@@ -1236,7 +1268,6 @@ int ssp_cosacm_getcpelist()
 
 }
 
-
 /*******************************************************************************************
  *
  * Function Name        : ssp_cosacm_getmarket_memory_unalloc
@@ -1249,14 +1280,11 @@ int ssp_cosacm_getcpelist()
 
 int ssp_cosacm_getmarket_memory_unalloc()
 {
-
     int return_status = 0;
-    char *value = NULL;
 
     printf("\n Entering ssp_cosacm_getmarket_memory_unalloc function\n\n");
 
-
-    return_status = CosaDmlCMGetMarket(bus_handle_client,value);
+    return_status = CosaDmlCMGetMarket(bus_handle_client,NULL);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1264,15 +1292,9 @@ int ssp_cosacm_getmarket_memory_unalloc()
         return SSP_FAILURE;
     }
 
-    if(value != NULL)
-    {
-        free(value);
-    }
-
     return SSP_SUCCESS;
 
 }
-
 
 /*******************************************************************************************
  *
@@ -1287,22 +1309,15 @@ int ssp_cosacm_getmarket_memory_unalloc()
 int ssp_cosacm_setmddipoverride_memory_unalloc()
 {
     int return_status = 0;
-    char *value = NULL;
 
     printf("\n Entering ssp_cosacm_setmddipoverride function\n\n");
 
-
-    return_status = CosaDmlCMSetMDDIPOverride(bus_handle_client,value);
+    return_status = CosaDmlCMSetMDDIPOverride(bus_handle_client,NULL);
 
     if ( return_status != SSP_SUCCESS)
     {
         printf("\n ssp_cosacm_setmddipoverride_memory_unalloc :Failed to set the MDDIPOverride \n");
         return SSP_FAILURE;
-    }
-
-    if(value != NULL)
-    {
-        free(value);
     }
 
     return SSP_SUCCESS;
@@ -1323,11 +1338,10 @@ int ssp_cosacm_getmddipoverride_memory_unalloc()
 {
 
     int return_status = 0;
-    char *value = NULL;
 
     printf("\n Entering ssp_cosacm_getmddipoverride_memory_unalloc function\n\n");
 
-    return_status = CosaDmlCMGetMDDIPOverride(bus_handle_client,value);
+    return_status = CosaDmlCMGetMDDIPOverride(bus_handle_client,NULL);
     
     printf("Return status of CosaDmlCMGetMDDIPOverride %d ",return_status);
 
@@ -1337,14 +1351,7 @@ int ssp_cosacm_getmddipoverride_memory_unalloc()
         return SSP_FAILURE;
     }
 
-    if(value != NULL)
-    {
-        free(value);
-    }
-
     return SSP_SUCCESS;
-
-
 }
 
 
@@ -1366,18 +1373,12 @@ int ssp_cosacm_getcert_memory_unalloc()
 
     printf("\n Entering ssp_cosacm_getcert_memory_unalloc function\n\n");
 
-
     return_status = CosaDmlCmGetCMCert(bus_handle_client,value);
 
     if ( return_status != SSP_SUCCESS)
     {
         printf("\n ssp_cosacm_getcert_memory_unalloc:Failed to get the MDDIPOverride \n");
         return SSP_FAILURE;
-    }
-
-    if(value != NULL)
-    {
-        free(value);
     }
 
     return SSP_SUCCESS;
@@ -1398,9 +1399,9 @@ int ssp_cosacm_getcert_memory_unalloc()
 int ssp_cosacm_getcmerrorcodewords_invalid_arg()
 {
     int return_status = 0;
-    int* count = NULL;
-//    int **pCfg = NULL;
-PCOSA_DML_CMERRORCODEWORDS_FULL   *pCfg = NULL;
+    ULONG count = 0;
+    PCOSA_DML_CMERRORCODEWORDS_FULL   *pCfg = NULL;
+
     printf("\n Entering ssp_cosacm_getcmerrorcodewords_invalid_arg function\n\n");
 
     return_status = CosaDmlCmGetCMErrorCodewords(bus_handle_client,&count,&pCfg);
@@ -1430,7 +1431,7 @@ int ssp_cosacm_getcertstatus_invalid_arg()
 {
 
     int return_status = 0;
-    int *bValue=NULL;
+    bool *bValue=NULL;
 
     printf("\n Entering ssp_cosacm_getcertstatus_invalid_arg function\n\n");
 
@@ -1463,30 +1464,19 @@ int ssp_cosacm_getcpelist_invalid_arg()
 
     int return_status = 0;
     char *value = NULL;
-    ULONG   ulInstanceNumber=0;
-    int *pCPEList = NULL;
+    ULONG ulInstanceNumber = 0;
+    PCOSA_DML_CPE_LIST *pCPEList = NULL;
 
     printf("\nEntering ssp_cosacm_getcpelist_invalid_arg function\n\n");
 
-    return_status = CosaDmlCmGetCPEList(bus_handle_client,&ulInstanceNumber,pCPEList);
+    return_status = CosaDmlCmGetCPEList(bus_handle_client,&ulInstanceNumber, &pCPEList);
 
-    printf("Return status of CosaDmlCmGetCPEList %d " , return_status);
+    printf("Return status of CosaDmlCmGetCPEList %d", return_status);
 
     if ( return_status != SSP_SUCCESS)
     {
         printf("ssp_cosacm_getcpelist_invalid_arg :Failed to get the CPE List Info \n");
         return SSP_FAILURE;
-    }
-
-    if(pCPEList != NULL)
-    {
-        printf("\nCosaDmlCmGetCPEList return instance number as %l with info \n",ulInstanceNumber);
-
-        if(pCPEList != NULL)
-        {
-            puts(pCPEList);
-            free(pCPEList);
-        }
     }
 
     return SSP_SUCCESS;

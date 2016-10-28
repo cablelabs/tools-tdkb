@@ -80,7 +80,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Script to load the configuration file of the component
         tdkTestObj = obj.createTestStep("CosaCM_GetTelephonyRegistrationStatus");
         tdkTestObj.addParameter("handleType",0);
-        tdkTestObj.addParameter("Value",1);
+        tdkTestObj.addParameter("bufferType",1);
         expectedresult="FAILURE";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
