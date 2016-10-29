@@ -23,7 +23,7 @@
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
   <version>5</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
-  <name>TS_PAM_GetCpuUsage</name>
+  <name>TS_PAM_IpIfSetV6Addr</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id> </primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
@@ -66,7 +66,7 @@ obj = tdklib.TDKScriptingLibrary("pam","RDKB");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_PAM_GetCpuUsage');
+obj.configureTestCase(ip,port,'TS_PAM_IpIfSetV6Addr');
 
 #Get the result of connection with test component and STB
 loadmodulestatus =obj.getLoadModuleResult();
@@ -76,28 +76,52 @@ if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
     tdkTestObj = obj.createTestStep('pam_GetParameterValues');
-    tdkTestObj.addParameter("ParamName","Device.DeviceInfo.ProcessStatus.CPUUsage");
+    tdkTestObj.addParameter("ParamName","Device.IP.Interface.1.IPv6Address.1.Alias");
     expectedresult="SUCCESS";
 
     #Execute the test case in STB
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
 		
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Get the CpuUsage";
-        print "EXPECTED RESULT 1: Should get the CpuUsage";
-        print "ACTUAL RESULT 1: CpuUsage is %s" %details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+	tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+        tdkTestObj.addParameter("ParamName","Device.IP.Interface.1.IPv6Address.1.Alias");	
+	tdkTestObj.addParameter("Type","string");
+	tdkTestObj.addParameter("ParamValue","temp");
+	org_value = details
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        details = tdkTestObj.getResultDetails();
+
+	if expectedresult in actualresult:
+	    tdkTestObj.setResultStatus("SUCCESS");
+	    print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+
+            tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+            tdkTestObj.addParameter("ParamName","Device.IP.Interface.1.IPv6Address.1.Alias");
+            tdkTestObj.addParameter("Type","string");
+    	    tdkTestObj.addParameter("ParamValue",org_value);
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            details = tdkTestObj.getResultDetails();
+
+	    if expectedresult in actualresult:
+                tdkTestObj.setResultStatus("SUCCESS");
+                print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+	    else:
+                tdkTestObj.setResultStatus("FAILURE");
+                print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+	else:
+	    tdkTestObj.setResultStatus("FAILURE");
+	    print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
     else:
         tdkTestObj.setResultStatus("FAILURE");	
-        print "TEST STEP 1: Get the CpuUsage";
-        print "EXPECTED RESULT 1: Should get the CpuUsage";
-        print "ACTUAL RESULT 1: Failure in getting the CpuUsage. Details : %s" %details;
-        print "[TEST EXECUTION RESULT] : FAILURE";
+        print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
     obj.unloadModule("pam");
    		 
 else:   

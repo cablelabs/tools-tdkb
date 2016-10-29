@@ -21,9 +21,9 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>5</version>
+  <version>2</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
-  <name>TS_PAM_GetCpuUsage</name>
+  <name>TS_PAM_IpIfGetV6AddressOrigin</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id> </primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
@@ -33,7 +33,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>This api returns the total amount of the CPU, in percent, rounded up to the nearest whole percent</synopsis>
+  <synopsis>This test case will get the Origin type of the IPv6 Address</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -56,7 +56,7 @@
   <script_tags />
 </xml>
 '''
-#import statement
+																																				#import statement
 import tdklib; 
 
 #Test component to be tested
@@ -66,7 +66,7 @@ obj = tdklib.TDKScriptingLibrary("pam","RDKB");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_PAM_GetCpuUsage');
+obj.configureTestCase(ip,port,'TS_PAM_IpIfGetV6AddressOrigin');
 
 #Get the result of connection with test component and STB
 loadmodulestatus =obj.getLoadModuleResult();
@@ -76,27 +76,27 @@ if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
     tdkTestObj = obj.createTestStep('pam_GetParameterValues');
-    tdkTestObj.addParameter("ParamName","Device.DeviceInfo.ProcessStatus.CPUUsage");
+    tdkTestObj.addParameter("ParamName","Device.IP.Interface.1.IPv6Address.1.Origin");
     expectedresult="SUCCESS";
 
     #Execute the test case in STB
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
 		
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Get the CpuUsage";
-        print "EXPECTED RESULT 1: Should get the CpuUsage";
-        print "ACTUAL RESULT 1: CpuUsage is %s" %details;
+        print "TEST STEP 1: Get the origin of IPv6 Address";
+        print "EXPECTED RESULT 1: Should get the origin of IPv6 Address";
+        print "ACTUAL RESULT 1: Origin type of IPv6 is %s" %details;
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+        print "[TEST EXECUTION RESULT] : SUCCESS";
     else:
         tdkTestObj.setResultStatus("FAILURE");	
-        print "TEST STEP 1: Get the CpuUsage";
-        print "EXPECTED RESULT 1: Should get the CpuUsage";
-        print "ACTUAL RESULT 1: Failure in getting the CpuUsage. Details : %s" %details;
+        print "TEST STEP 1: Get the origin of IPv6 Address";
+        print "EXPECTED RESULT 1: Should get the origin of IPv6 Address";
+        print "ACTUAL RESULT 1: Failure in getting the origin of IPv6 Address. Details : %s" %details;
         print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("pam");
    		 
@@ -104,3 +104,15 @@ else:
         print "Failed to load pam module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";				
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
