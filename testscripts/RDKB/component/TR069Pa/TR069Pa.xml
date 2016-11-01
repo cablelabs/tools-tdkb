@@ -63,18 +63,6 @@
           <parameter name="ParamName" value="A"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="TR069Agent_Execute" id=" " version="1">
-        <function>TR069Agent_Execute</function>
-        <parameters>
-          <parameter name="AccessControl" value="A"/>
-          <parameter name="ACSReq" value="A"/>
-          <parameter name="Notify" value="A"/>
-          <parameter name="ParamName" value="A"/>
-          <parameter name="ParamValue" value="A"/>
-          <parameter name="RPCMethod" value="A"/>
-          <parameter name="Type" value="A"/>
-        </parameters>
-      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>
