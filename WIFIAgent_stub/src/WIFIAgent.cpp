@@ -252,12 +252,12 @@ bool WIFIAgent::WIFIAgent_Set(IN const Json::Value& req, OUT Json::Value& respon
 
     if ((!strncmp(ParamName, "Device.WiFi.Radio.1.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.1.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.1.", 19)))
     {
-        returnValue = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySettingSSID","1","int");
+        //returnValue = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySettingSSID","1","int");
         retVal = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySetting","true","boolean");
     }
     else if ((!strncmp(ParamName, "Device.WiFi.Radio.2.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.2.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.2.", 19)))
     {
-        returnValue = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySettingSSID","2","int");
+        //returnValue = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySettingSSID","2","int");
         retVal = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting","true","boolean");
     }
 
