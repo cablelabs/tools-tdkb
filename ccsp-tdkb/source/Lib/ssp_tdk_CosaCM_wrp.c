@@ -1237,16 +1237,14 @@ int ssp_cosacm_getcertstatus()
 
 int ssp_cosacm_getcpelist()
 {
-
     int return_status = 0;
-    char *value = NULL;
-    int   ulInstanceNumber=0;
+    ULONG ulInstanceNumber=0;
     ANSC_HANDLE cm_handle = NULL;
-    PCOSA_DML_CPE_LIST *pCPEList = NULL;
+    COSA_DML_CPE_LIST pCPEList = {0};
 
     printf("\nEntering ssp_cosacm_getcpelist function\n\n");
 
-    return_status = CosaDmlCmGetCPEList(NULL,ulInstanceNumber,pCPEList);
+    return_status = CosaDmlCmGetCPEList(cm_handle,&ulInstanceNumber,&pCPEList);
     printf("Return status of CosaDmlCmGetCPEList is %d \n", return_status);
 
     if ( return_status != SSP_SUCCESS)
@@ -1255,14 +1253,7 @@ int ssp_cosacm_getcpelist()
         return SSP_FAILURE;
     }
 
-    if(pCPEList != NULL)
-    {
-        printf("\nCosaDmlCmGetCPEList return instance number as %l with info \n",ulInstanceNumber);
-
-        puts(pCPEList);
-        free(pCPEList);
-
-    }
+    printf("\nCosaDmlCmGetCPEList return instance number as %l with info \n",ulInstanceNumber);
 
     return SSP_SUCCESS;
 
@@ -1399,12 +1390,10 @@ int ssp_cosacm_getcert_memory_unalloc()
 int ssp_cosacm_getcmerrorcodewords_invalid_arg()
 {
     int return_status = 0;
-    ULONG count = 0;
-    PCOSA_DML_CMERRORCODEWORDS_FULL   *pCfg = NULL;
 
     printf("\n Entering ssp_cosacm_getcmerrorcodewords_invalid_arg function\n\n");
 
-    return_status = CosaDmlCmGetCMErrorCodewords(bus_handle_client,&count,&pCfg);
+    return_status = CosaDmlCmGetCMErrorCodewords(bus_handle_client,NULL,NULL);
     
     printf("Return status of CosaDmlCmGetCMErrorCodewords %d ",return_status);
 
@@ -1463,13 +1452,10 @@ int ssp_cosacm_getcpelist_invalid_arg()
 {
 
     int return_status = 0;
-    char *value = NULL;
-    ULONG ulInstanceNumber = 0;
-    PCOSA_DML_CPE_LIST *pCPEList = NULL;
 
     printf("\nEntering ssp_cosacm_getcpelist_invalid_arg function\n\n");
 
-    return_status = CosaDmlCmGetCPEList(bus_handle_client,&ulInstanceNumber, &pCPEList);
+    return_status = CosaDmlCmGetCPEList(bus_handle_client,NULL,NULL);
 
     printf("Return status of CosaDmlCmGetCPEList %d", return_status);
 

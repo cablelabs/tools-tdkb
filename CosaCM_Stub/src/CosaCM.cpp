@@ -44,7 +44,7 @@ int ssp_cosacm_getmarket_memory_unalloc();
 int ssp_cosacm_setmddipoverride_memory_unalloc();
 int ssp_cosacm_getmddipoverride_memory_unalloc();
 int ssp_cosacm_getcert_memory_unalloc();
-int ssp_cosacm_getcmrrrorcodewords_invalid_arg();
+int ssp_cosacm_getcmerrorcodewords_invalid_arg();
 int ssp_cosacm_getcertstatus_invalid_arg();
 int ssp_cosacm_getcpelist_invalid_arg();
 int ssp_CosaDmlCMGetStatus(int handleType, int Value);
@@ -995,7 +995,7 @@ bool CosaCM::COSACM_GetCMErrorCodewords_InvalidArg(IN const Json::Value& req, OU
 
     int returnValue = 0;
 
-    returnValue = ssp_cosacm_getcmrrrorcodewords_invalid_arg();
+    returnValue = ssp_cosacm_getcmerrorcodewords_invalid_arg();
 
     if(0 == returnValue)
     {
@@ -1279,7 +1279,7 @@ bool CosaCM::CosaCM_GetTelephonyTftpStatus(IN const Json::Value& req, OUT Json::
 
     int returnValue = 0;
     int handleType = 0;
-    int bufferType = 0;
+    int Value = 0;
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -1288,7 +1288,7 @@ bool CosaCM::CosaCM_GetTelephonyTftpStatus(IN const Json::Value& req, OUT Json::
         response["details"]="NULL parameter as input argument";
         return TEST_FAILURE;
     }
-    if(&req["bufferType"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -1296,9 +1296,9 @@ bool CosaCM::CosaCM_GetTelephonyTftpStatus(IN const Json::Value& req, OUT Json::
     }
 
     handleType = req["handleType"].asInt();
-    bufferType = req["bufferType"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue =ssp_CosaDmlCMGetTelephonyTftpStatus(handleType,bufferType);
+    returnValue =ssp_CosaDmlCMGetTelephonyTftpStatus(handleType,Value);
     if(0 == returnValue)
     {
         response["result"]="SUCCESS";
@@ -1330,7 +1330,7 @@ bool CosaCM::CosaCM_GetTelephonyDHCPStatus(IN const Json::Value& req, OUT Json::
 
     int returnValue = 0;
     int handleType = 0;
-    int bufferType = 0;
+    int Value = 0;
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -1339,7 +1339,7 @@ bool CosaCM::CosaCM_GetTelephonyDHCPStatus(IN const Json::Value& req, OUT Json::
         response["details"]="NULL parameter as input argument";
         return TEST_FAILURE;
     }
-    if(&req["bufferType"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -1347,9 +1347,9 @@ bool CosaCM::CosaCM_GetTelephonyDHCPStatus(IN const Json::Value& req, OUT Json::
     }
 
     handleType = req["handleType"].asInt();
-    bufferType = req["bufferType"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue =ssp_CosaDmlCMGetTelephonyDHCPStatus(handleType,bufferType);
+    returnValue =ssp_CosaDmlCMGetTelephonyDHCPStatus(handleType,Value);
     if(0 == returnValue)
     {
         response["result"]="SUCCESS";
