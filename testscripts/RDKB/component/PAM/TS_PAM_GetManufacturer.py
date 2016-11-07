@@ -33,7 +33,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis></synopsis>
+  <synopsis>This test will get the manufacturer of the CPE</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->

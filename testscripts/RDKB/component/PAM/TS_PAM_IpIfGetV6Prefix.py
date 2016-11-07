@@ -33,7 +33,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>This api returns the total amount of the CPU, in percent, rounded up to the nearest whole percent</synopsis>
+  <synopsis>This test case will get the prefix of the IPv6 Address</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->

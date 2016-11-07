@@ -56,7 +56,7 @@
   <script_tags />
 </xml>
 '''
-						#import statement
+#import statement
 import tdklib; 
 
 #Test component to be tested
@@ -88,7 +88,10 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+	print "STEP 1: Get the Maximum MTU size";
+	print "EXPECTED RESULT: Should get the Maximum MTU size";
+	print "ACTUAL RESULT: Successfully got the maximum MTU size, %s" %details;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;
         org_value = details;
 	tdkTestObj = obj.createTestStep('pam_SetParameterValues');
         tdkTestObj.addParameter("ParamName","Device.IP.Interface.1.MaxMTUSize");	
@@ -100,7 +103,10 @@ if "SUCCESS" in loadmodulestatus.upper():
 
 	if expectedresult in actualresult:
 	    tdkTestObj.setResultStatus("SUCCESS");
-	    print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+	    print "STEP 2: Set the Maximum MTU size";
+	    print "EXPECTED RESULT: Should set the Maximum MTU size";
+	    print "ACTUAL RESULT: Successfully set the maximum MTU size, %s" %details;
+	    print "[TEST EXECUTION RESULT] :%s" %actualresult;
 
             tdkTestObj = obj.createTestStep('pam_SetParameterValues');
             tdkTestObj.addParameter("ParamName","Device.IP.Interface.1.MaxMTUSize");
@@ -112,16 +118,28 @@ if "SUCCESS" in loadmodulestatus.upper():
 
 	    if expectedresult in actualresult:
                 tdkTestObj.setResultStatus("SUCCESS");
-                print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+		print "STEP 3: Set the Maximum MTU size to default value";
+                print "EXPECTED RESULT: Should set the Maximum MTU size to default value";
+                print "ACTUAL RESULT: Successfully set the maximum MTU size to default value, %s" %details;
+                print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	    else:
                 tdkTestObj.setResultStatus("FAILURE");
-                print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+		print "STEP 3: Set the Maximum MTU size to default value";
+                print "EXPECTED RESULT: Should set the Maximum MTU size to default value";
+                print "ACTUAL RESULT: Failed to set the maximum MTU size to default value, %s" %details;
+                print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	else:
 	    tdkTestObj.setResultStatus("FAILURE");
-	    print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+	    print "STEP 2: Set the Maximum MTU size";
+            print "EXPECTED RESULT: Should set the Maximum MTU size";
+            print "ACTUAL RESULT: Failed to set the maximum MTU size, %s" %details;
+            print "[TEST EXECUTION RESULT] :%s" %actualresult;
     else:
         tdkTestObj.setResultStatus("FAILURE");	
-        print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+	print "STEP 1: Get the Maximum MTU size";
+        print "EXPECTED RESULT: Should get the Maximum MTU size";
+        print "ACTUAL RESULT: Failed to get the maximum MTU size, %s" %details;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;
     obj.unloadModule("pam");
    		 
 else:   

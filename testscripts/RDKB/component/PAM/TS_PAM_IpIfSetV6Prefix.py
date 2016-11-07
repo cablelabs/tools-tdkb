@@ -33,7 +33,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>This api returns the total amount of the CPU, in percent, rounded up to the nearest whole percent</synopsis>
+  <synopsis>This test will set the prefix of the IPV6 address</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -88,7 +88,11 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+	print"STEP 1:Get the prefix";
+	print "EXPECTED RESULT:Should get the prefix of IPV6 address";
+	print "ACTUAL RESULT : Got the prefix successfully, %s" %details;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;
+
 	tdkTestObj = obj.createTestStep('pam_SetParameterValues');
         tdkTestObj.addParameter("ParamName","Device.IP.Interface.1.IPv6Prefix.1.Alias");	
 	tdkTestObj.addParameter("Type","string");
@@ -100,7 +104,10 @@ if "SUCCESS" in loadmodulestatus.upper():
 
 	if expectedresult in actualresult:
 	    tdkTestObj.setResultStatus("SUCCESS");
-	    print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+	    print "STEP 2: Set the prefix";
+	    print "EXPECTED RESULT: Should set the prefix of IPV6 address";
+	    print "ACTUAL RESULT: Prefix set successfully,%s" %details;
+	    print "[TEST EXECUTION RESULT] :%s" %actualresult;
 
             tdkTestObj = obj.createTestStep('pam_SetParameterValues');
             tdkTestObj.addParameter("ParamName","Device.IP.Interface.1.IPv6Prefix.1.Alias");
@@ -112,16 +119,28 @@ if "SUCCESS" in loadmodulestatus.upper():
 
 	    if expectedresult in actualresult:
                 tdkTestObj.setResultStatus("SUCCESS");
-                print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+		print "STEP 3: Set the prefix to default value";
+		print "EXPECTED RESULT: Should set the prefix of IPV6 address to default value";
+		print "ACTUAL RESULT:Prefix set successfully to default value, %s" %details;
+                print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	    else:
                 tdkTestObj.setResultStatus("FAILURE");
-                print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+		print "STEP 3: Set the prefix to default value";
+                print "EXPECTED RESULT: Should set the prefix of IPV6 address to default value";
+                print "ACTUAL RESULT: Failed to set the prefix to default value, %s" %details;
+                print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	else:
 	    tdkTestObj.setResultStatus("FAILURE");
-	    print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+	    print "STEP 2: Set the prefix";
+            print "EXPECTED RESULT: Should set the prefix of IPV6 address";
+            print "ACTUAL RESULT:Failed to set the prefix,%s" %details;
+            print "[TEST EXECUTION RESULT] :%s" %actualresult;
     else:
         tdkTestObj.setResultStatus("FAILURE");	
-        print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+	print"STEP 1:Get the prefix";
+        print "EXPECTED RESULT:Should get the prefix of IPV6 address";
+        print "ACTUAL RESULT : Failed to get the prefix, %s" %details;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;
     obj.unloadModule("pam");
    		 
 else:   

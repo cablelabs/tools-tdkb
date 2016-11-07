@@ -56,7 +56,7 @@
   <script_tags />
 </xml>
 '''
-																		#import statement
+#import statement
 import tdklib; 
 
 #Test component to be tested
@@ -89,7 +89,10 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+	print "STEP 1: Get the CusAdmin password";
+        print "EXPECTED RESULT : Should get the CusAdmin password";
+        print "ACTUAL RESULT: Successfully get the CusAdmin password, %s" %details;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;
         test_password = "TestPassword"
         expectedresult="FAILURE";
 	tdkTestObj = obj.createTestStep('pam_SetParameterValues');
@@ -103,7 +106,10 @@ if "SUCCESS" in loadmodulestatus.upper():
 
 	if expectedresult in actualresult:
 	    tdkTestObj.setResultStatus("SUCCESS");
-	    print "[TEST EXECUTION RESULT] : SUCCESS";
+	    print "STEP 2: Set the CusAdmin password";
+            print "EXPECTED RESULT : Should not change the CusAdmin password";
+            print "ACTUAL RESULT: Admin password is not changed, %s" %details;
+            print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
             tdkTestObj.addParameter("ParamName","Device.Users.User.2.X_CISCO_COM_Password");
             expectedresult="SUCCESS";
@@ -117,7 +123,10 @@ if "SUCCESS" in loadmodulestatus.upper():
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
                 #Get the result of execution
-                print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+		print "STEP 3: Get the CusAdmin password";
+                print "EXPECTED RESULT : Should get the CusAdmin password";
+                print "ACTUAL RESULT: Successfully get the password, %s" %details;
+                print "[TEST EXECUTION RESULT] :%s" %actualresult;
 
                 tdkTestObj = obj.createTestStep('pam_SetParameterValues');
                 tdkTestObj.addParameter("ParamName","Device.Users.User.2.Password");
@@ -130,19 +139,34 @@ if "SUCCESS" in loadmodulestatus.upper():
 
                 if expectedresult in actualresult:
                     tdkTestObj.setResultStatus("SUCCESS");
-                    print "[TEST EXECUTION RESULT] : SUCCESS";
+		    print "STEP 4: Set the CusAdmin password";
+                    print "EXPECTED RESULT : Should not change the CusAdmin password";
+                    print "ACTUAL RESULT: CusAdmin password is not changed, %s" %details;
+                    print "[TEST EXECUTION RESULT] :%s" %actualresult;
                 else:
                     tdkTestObj.setResultStatus("FAILURE");
-                    print "[TEST EXECUTION RESULT] : FAILURE";
+		    print "STEP 4: Set the CusAdmin password";
+                    print "EXPECTED RESULT : Should not change the CusAdmin password";
+                    print "ACTUAL RESULT: CusAdmin password is changed, %s" %details;
+                    print "[TEST EXECUTION RESULT] :%s" %actualresult;
             else:
                 tdkTestObj.setResultStatus("FAILURE");
-                print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+		print "STEP 3: Get the CusAdmin password";
+                print "EXPECTED RESULT : Should get the CusAdmin password";
+                print "ACTUAL RESULT: Failed to get the password, %s" %details;
+                print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	else:
 	    tdkTestObj.setResultStatus("FAILURE");
-	    print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+	    print "STEP 2: Set the CusAdmin password";
+            print "EXPECTED RESULT : Should not change the CusAdmin password";
+            print "ACTUAL RESULT: CusAdmin password is changed, %s" %details;
+            print "[TEST EXECUTION RESULT] :%s" %actualresult;
     else:
-        tdkTestObj.setResultStatus("FAILURE");	
-        print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+        tdkTestObj.setResultStatus("FAILURE");
+	print "STEP 1: Get the CusAdmin password";
+        print "EXPECTED RESULT : Should get the CusAdmin password";
+        print "ACTUAL RESULT: Failed to get the password, %s" %details;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;	
     obj.unloadModule("pam");
    		 
 else:   

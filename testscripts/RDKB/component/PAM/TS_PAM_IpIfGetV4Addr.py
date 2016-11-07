@@ -33,7 +33,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>This api returns the total amount of the CPU, in percent, rounded up to the nearest whole percent</synopsis>
+  <synopsis>This test will get the IPV4 address of the device</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->

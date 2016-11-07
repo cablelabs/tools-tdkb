@@ -87,7 +87,10 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+	print "STEP 1: Get the boolean value whether MSO user login is enabled or disabled";
+        print "EXPECTED RESULT : Should get the boolean value whether MSO user login is enabled or disabled";
+        print "ACTUAL RESULT: Successfully get the boolean value, %s" %details;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	tdkTestObj = obj.createTestStep('pam_SetParameterValues');
         tdkTestObj.addParameter("ParamName","Device.Users.User.1.Enable");	
 	tdkTestObj.addParameter("Type","boolean");
@@ -103,7 +106,10 @@ if "SUCCESS" in loadmodulestatus.upper():
 
 	if expectedresult in actualresult:
 	    tdkTestObj.setResultStatus("SUCCESS");
-	    print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+	    print "STEP 2: Set the boolean value to true if MSO user login is disabled or viceversa";
+            print "EXPECTED RESLUT: Should set the boolean value to true if MSO user login is disabled or viceversa";
+            print "ACTUAL RESULT: Successfully set the boolean value, %s" %details;
+            print "[TEST EXECUTION RESULT] :%s" %actualresult;
 
             tdkTestObj = obj.createTestStep('pam_SetParameterValues');
             tdkTestObj.addParameter("ParamName","Device.Users.User.1.Enable");
@@ -115,16 +121,28 @@ if "SUCCESS" in loadmodulestatus.upper():
 
 	    if expectedresult in actualresult:
                 tdkTestObj.setResultStatus("SUCCESS");
-                print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+		print "STEP 3: Set the boolean value to default value";
+                print "EXPECTED RESLUT: Should set the boolean value to default value";
+                print "ACTUAL RESULT:Successfully set the boolean value to default value, %s" %details;
+                print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	    else:
                 tdkTestObj.setResultStatus("FAILURE");
-                print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+		print "STEP 3: Set the boolean value to default value";
+                print "EXPECTED RESLUT: Should set the boolean value to default value";
+                print "ACTUAL RESULT:Failed to set the boolean value to default value, %s" %details;
+                print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	else:
 	    tdkTestObj.setResultStatus("FAILURE");
-	    print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+	    print "STEP 2: Set the boolean value to true if MSO user login is disabled or viceversa";
+            print "EXPECTED RESLUT: Should set the boolean value to true if MSO user login is disabled or viceversa";
+            print "ACTUAL RESULT: Failed to set the boolean value, %s" %details;
+            print "[TEST EXECUTION RESULT] :%s" %actualresult;
     else:
-        tdkTestObj.setResultStatus("FAILURE");	
-        print "[TEST EXECUTION RESULT] : FAILURE, %s" %details;
+        tdkTestObj.setResultStatus("FAILURE");
+	print "STEP 1: Get the boolean value whether MSO user login is enabled or disabled";
+        print "EXPECTED RESULT : Should get the boolean value whether MSO user login is enabled or disabled";
+        print "ACTUAL RESULT: Failed to get the boolean value, %s" %details;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;	
     obj.unloadModule("pam");
    		 
 else:   
