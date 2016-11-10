@@ -74,6 +74,37 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
+
+    #Get the default value of SSID
+    tdkTestObj = obj.createTestStep("WIFIAgent_Get");
+    tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.SSID");
+    expectedresult="SUCCESS";
+    #execute the step 
+    tdkTestObj.executeTestCase(expectedresult);
+    actualresult = tdkTestObj.getResult();
+    if expectedresult in actualresult:
+	#Set the result status of execution
+	tdkTestObj.setResultStatus("SUCCESS");
+        details = tdkTestObj.getResultDetails();
+	response = details.split(" ");
+	for str in response:
+	    if "VALUE" in str:
+		str1 = str.split(":");
+		details_default=str1[-1];
+        print "TEST STEP 1: Get the current SSID name";
+        print "EXPECTED RESULT 1: Should retrieve the SSID name";
+        print "ACTUAL RESULT 1: %s" %details_default;
+        #Get the result of execution
+        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+    else:
+	tdkTestObj.setResultStatus("FAILURE");
+        details_default = tdkTestObj.getResultDetails();
+        print "TEST STEP 1: Get the current SSID name";
+        print "EXPECTED RESULT 1: Should retrieve the SSID name";
+        print "ACTUAL RESULT 1: %s" %details_default;
+        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+	obj.unloadModule("wifiagent");
+	
     
     #### Set and Get Values ####
     tdkTestObj = obj.createTestStep("WIFIAgent_Set");
@@ -87,17 +118,12 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         details = tdkTestObj.getResultDetails();
-        print "TEST STEP 1: Set the SSID name as TDKB";
-        print "EXPECTED RESULT 1: Should set the SSID name as TDKB";
-        print "ACTUAL RESULT 1: %s" %details;
+        print "TEST STEP 2: Set the SSID name as TDKB";
+        print "EXPECTED RESULT 2: Should set the SSID name as TDKB";
+        print "ACTUAL RESULT 2: %s" %details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : %s" %actualresult;
         
-        tdkTestObj = obj.createTestStep("WIFIAgent_Get");
-        tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.SSID");
-        expectedresult="SUCCESS";
-        tdkTestObj.executeTestCase(expectedresult);
-        actualresult = tdkTestObj.getResult();
         #Script to get the parameter values of wifi
         tdkTestObj = obj.createTestStep("WIFIAgent_Get");
         tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.SSID");
@@ -109,9 +135,9 @@ if "SUCCESS" in loadmodulestatus.upper():
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             details1 = tdkTestObj.getResultDetails();
-            print "TEST STEP 2: Get the current SSID name";
-            print "EXPECTED RESULT 2: Should retrieve the SSID name";
-            print "ACTUAL RESULT 2: %s" %details1;
+            print "TEST STEP 3: Get the current SSID name";
+            print "EXPECTED RESULT 3: Should retrieve the SSID name";
+            print "ACTUAL RESULT 3: %s" %details1;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : %s" %actualresult ;
 
@@ -127,8 +153,8 @@ if "SUCCESS" in loadmodulestatus.upper():
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
                 details2 = tdkTestObj.getResultDetails();
-                print "EXPECTED RESULT 3: Should set the Factory Reset value to true";
-                print "ACTUAL RESULT 3: %s" %details2;
+                print "EXPECTED RESULT 4: Should set the Factory Reset value to true";
+                print "ACTUAL RESULT 4: %s" %details2;
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Factory Reset Function is SUCCESS: Value set to true and validated"
@@ -144,44 +170,93 @@ if "SUCCESS" in loadmodulestatus.upper():
                     #Set the result status of execution
                     tdkTestObj.setResultStatus("SUCCESS");
                     details3 = tdkTestObj.getResultDetails();
-                    print "TEST STEP 4: Get the SSID Name after factory reset";
-                    print "EXPECTED RESULT 4: Should retrieve the SSID Name";
-                    print "ACTUAL RESULT 4: %s" %details3;
+                    print "TEST STEP 5: Get the SSID Name after factory reset";
+                    print "EXPECTED RESULT 5: Should retrieve the SSID Name";
+                    print "ACTUAL RESULT 5: %s" %details3;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : %s" %actualresult ;
                     if details1 in details3:
                         print "SSID Name retrieved is matching with the name before Wifi factory reset";
                         tdkTestObj.setResultStatus("FAILURE");
+			#set the value of SSID to default value
+			tdkTestObj = obj.createTestStep("WIFIAgent_Set");
+			tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.SSID");
+			tdkTestObj.addParameter("paramValue",details_default);
+			tdkTestObj.addParameter("paramType","string");
+			expectedresult="SUCCESS";
+			tdkTestObj.executeTestCase(expectedresult);
+			actualresult = tdkTestObj.getResult();
+		        if expectedresult in actualresult:
+		            #Set the result status of execution
+		            tdkTestObj.setResultStatus("SUCCESS");
+		            details = tdkTestObj.getResultDetails();
+		            print "TEST STEP 6: Set the SSID name as default value";
+		            print "EXPECTED RESULT 6: Should set the SSID name as default value";
+		            print "ACTUAL RESULT 6: %s" %details;
+		            #Get the result of execution
+		            print "[TEST EXECUTION RESULT] : %s" %actualresult;
+			else:
+			    tdkTestObj.setResultStatus("FAILURE");
+			    details = tdkTestObj.getResultDetails();
+		            print "TEST STEP 6: Set the SSID name as default value";
+		            print "EXPECTED RESULT 6: Should set the SSID name as default value";
+		            print "ACTUAL RESULT 6: %s" %details;
+		            print "[TEST EXECUTION RESULT] : %s" %actualresult ;			    
+
                     else:
                         print "SSID Name retrieved is not matching with the name before Wifi factory reset";
                         tdkTestObj.setResultStatus("SUCCESS");
                 else:
                     tdkTestObj.setResultStatus("FAILURE");
                     details3 = tdkTestObj.getResultDetails();
-                    print "TEST STEP 4: Get the SSID Name after factory reset";
-                    print "EXPECTED RESULT 4: hould retrieve the SSID Name";
-                    print "ACTUAL RESULT 4: %s" %details3;
+                    print "TEST STEP 5: Get the SSID Name after factory reset";
+                    print "EXPECTED RESULT 5: should retrieve the SSID Name";
+                    print "ACTUAL RESULT 5: %s" %details3;
                     print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+		    #set the value of SSID to default value
+                    tdkTestObj = obj.createTestStep("WIFIAgent_Set");
+                    tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.SSID");
+                    tdkTestObj.addParameter("paramValue",details_default);
+                    tdkTestObj.addParameter("paramType","string");
+                    expectedresult="SUCCESS";
+                    tdkTestObj.executeTestCase(expectedresult);
+                    actualresult = tdkTestObj.getResult();
+                    if expectedresult in actualresult:
+                        #Set the result status of execution
+                        tdkTestObj.setResultStatus("SUCCESS");
+                        details = tdkTestObj.getResultDetails();
+                        print "TEST STEP 6: Set the SSID name as default value";
+                        print "EXPECTED RESULT 6: Should set the SSID name as default value";
+                        print "ACTUAL RESULT 6: %s" %details;
+                        #Get the result of execution
+                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                    else:
+                        tdkTestObj.setResultStatus("FAILURE");
+                        details = tdkTestObj.getResultDetails();
+                        print "TEST STEP 6: Set the SSID name as default value";
+                        print "EXPECTED RESULT 6: Should set the SSID name as default value";
+                        print "ACTUAL RESULT 6: %s" %details;
+                        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
             else:
                 tdkTestObj.setResultStatus("FAILURE");
                 details2 = tdkTestObj.getResultDetails();
-                print "EXPECTED RESULT 3: Should set the Factory Reset value to true";
-                print "ACTUAL RESULT 3: %s" %details2;
+                print "EXPECTED RESULT 4: Should set the Factory Reset value to true";
+                print "ACTUAL RESULT 4: %s" %details2;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Factory Reset Function is FAILURE: Value is not set to true"
         else:
                 tdkTestObj.setResultStatus("FAILURE");
                 details1 = tdkTestObj.getResultDetails();
-                print "TEST STEP 2: Get the current SSID name";
-                print "EXPECTED RESULT 2: Should retrieve the SSID name";
-                print "ACTUAL RESULT 2: %s" %details1;
+                print "TEST STEP 3: Get the current SSID name";
+                print "EXPECTED RESULT 3: Should retrieve the SSID name";
+                print "ACTUAL RESULT 3: %s" %details1;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult ;            
     else:
         tdkTestObj.setResultStatus("FAILURE");
         details = tdkTestObj.getResultDetails();
-        print "TEST STEP 1: Set the SSID name as TDKB";
-        print "EXPECTED RESULT 1: Should set the SSID name as TDKB";
-        print "ACTUAL RESULT 1: %s" %details;
+        print "TEST STEP 2: Set the SSID name as TDKB";
+        print "EXPECTED RESULT 2: Should set the SSID name as TDKB";
+        print "ACTUAL RESULT 2: %s" %details;
         print "[TEST EXECUTION RESULT] : %s" %actualresult ;
         
             
