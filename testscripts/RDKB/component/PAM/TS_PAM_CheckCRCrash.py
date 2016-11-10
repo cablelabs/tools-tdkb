@@ -99,6 +99,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "EXPECTED RESULT 1: Should Successfully restart the system";
             print "ACTUAL RESULT 1: %s" %details;
             print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
+	    obj.initiateReboot();
             
         obj.unloadModule("pam");
 else:
