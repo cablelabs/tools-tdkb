@@ -32,10 +32,12 @@
 
 #if eRT
     #define CCSP_CR_NAME "eRT.com.cisco.spvtg.ccsp.CR"
-    #define CCSP_CM_NAME "eRT.com.cisco.spvtg.ccsp.cm"
+    #define CCSP_PAM_NAME "eRT.com.cisco.spvtg.ccsp.pam"
+    #define CCSP_TDKB_NAMESPACE "eRT.com.cisco.spvtg.ccsp.tdkb.Name"
 #else
     #define CCSP_CR_NAME "com.cisco.spvtg.ccsp.CR"
-    #define CCSP_CM_NAME "com.cisco.spvtg.ccsp.cm"
+    #define CCSP_PAM_NAME "com.cisco.spvtg.ccsp.pam"
+    #define CCSP_TDKB_NAMESPACE "com.cisco.spvtg.ccsp.tdkb.Name"
 #endif
 
 #endif

@@ -783,10 +783,11 @@ int ssp_mbus_dump_component_registry()
 
     return_status = CcspBaseIf_dumpComponentRegistry (tdk_bus_handle,
                                                       CCSP_CR_NAME);
-    if(return_status == CCSP_SUCCESS)
+
+    /* RDKB-109:The return code from dbus is 1 and this is not a error as per dbus spec. CR dump is available in the CRlog.txt.0 */
+    if((return_status == CCSP_SUCCESS) || (return_status == 1))
     {
         printf("\n ssp_mbus_dump_component_registry :: CcspBaseIf_dumpComponentRegistry function is success and  return status %d",return_status);
-        printf("\n ssp_mbus_dump_component_registry :: Please check DUT Console Log for the CR Dump ... \n");
         return_status = SSP_MBUS_SUCCESS;
     }
     else
@@ -959,8 +960,8 @@ int ssp_mbus_unregister_namespace()
     int return_status = SSP_MBUS_FAILURE;
     return_status = CcspBaseIf_unregisterNamespace (tdk_bus_handle,
             CCSP_CR_NAME,
-            gpTDKStartCfg->ComponentName,
-            name_space);
+            CCSP_PAM_NAME,
+            CCSP_TDKB_NAMESPACE);
 
     if(return_status == CCSP_SUCCESS)
     {
