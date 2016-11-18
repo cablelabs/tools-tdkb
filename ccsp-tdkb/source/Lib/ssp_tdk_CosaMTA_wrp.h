@@ -25,35 +25,35 @@
 
 #define SSP_FAILURE   	  1
 
-int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType);
-int ssp_CosaDmlMTAGetDHCPInfo(int handleType, int bufferType);
+int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType, unsigned long* ResetCount);
+int ssp_CosaDmlMTAGetDHCPInfo(int handleType, int bufferType, void* DHCPInfo);
 int ssp_CosaDmlMTATriggerDiagnostics();
 
-int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType);
-int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType);
-int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType);
-int ssp_CosaDmlMtaLineTableGetNumberOfEntries(int handleType);
-int ssp_CosaDmlMtaLineTableGetEntry(int handleType,int bufferType);
+int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType, char* BatteryInfo);
+int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType, char* BatteryStatus);
+int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType, char* Power);
+int ssp_CosaDmlMtaLineTableGetNumberOfEntries(int handleType, int* Num);
+int ssp_CosaDmlMtaLineTableGetEntry(int handleType,int bufferType, unsigned long* TableEntry);
 
-int ssp_CosaDmlMTAGetServiceClass(int handleType);
+int ssp_CosaDmlMTAGetServiceClass(int handleType, void* SerClass);
 int ssp_CosaDmlMTADectGetEnable(int handleType,int Value);
 int ssp_CosaDmlMTADectSetEnable(int handleType,int Value);
 int ssp_CosaDmlMTADectGetRegistrationMode(int handleType,int Value);
 int ssp_CosaDmlMTADectSetRegistrationMode(int handleType,int Value);
 
-int ssp_CosaDmlMTAGetDect(int handleType,int bufferType);
-int ssp_CosaDmlMTAGetDectPIN(int handleType,int bufferType);
+int ssp_CosaDmlMTAGetDect(int handleType,int bufferType, void* DectInfo);
+int ssp_CosaDmlMTAGetDectPIN(int handleType,int bufferType,char *pin);
 int ssp_CosaDmlMTASetDectPIN(int handleType,int bufferType);
 int ssp_CosaDmlMTAGetCALLP(int handleType,int bufferType);
-int ssp_CosaDmlMTAGetDSXLogEnable(int handleType,int Value);
+int ssp_CosaDmlMTAGetDSXLogEnable(int handleType,int Value,int *Bool);
 
 int ssp_CosaDmlMTASetDSXLogEnable(int handleType,int Value);
 int ssp_CosaDmlMTAClearDSXLog(int handleType,int Value);
-int ssp_CosaDmlMTAGetCallSignallingLogEnable(int handleType,int Value);
+int ssp_CosaDmlMTAGetCallSignallingLogEnable(int handleType,int Value, int *Bool);
 int ssp_CosaDmlMTASetCallSignallingLogEnable(int handleType,int Value);
 int ssp_CosaDmlMTAClearCallSignallingLog(int handleType,int Value);
-int ssp_CosaDmlMtaBatteryGetNumberofCycles(int handleType);
-int ssp_CosaDmlMtaBatteryGetRemainingTime(int handleType);
-int ssp_CosaDmlMtaBatteryGetLife(int handleType,int bufferType);
-int ssp_CosaDmlMtaBatteryGetCondition(int handleType,int bufferType);
+int ssp_CosaDmlMtaBatteryGetNumberofCycles(int handleType, unsigned long* Num);
+int ssp_CosaDmlMtaBatteryGetRemainingTime(int handleType,unsigned long* Num);
+int ssp_CosaDmlMtaBatteryGetLife(int handleType,int bufferType,char *Life);
+int ssp_CosaDmlMtaBatteryGetCondition(int handleType,int bufferType, char *Cond);
 #endif

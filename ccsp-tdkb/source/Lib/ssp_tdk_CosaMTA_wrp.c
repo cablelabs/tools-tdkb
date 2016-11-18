@@ -63,7 +63,7 @@
  * @param [in]          : pResetType - reset type can be MTAResetcount, LineResetCount or invalid
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType)
+int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType, unsigned long* ResetCount)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -87,6 +87,7 @@ int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType
     }
 
     printf("ssp_CosaDmlMtaGetResetCount: Reset Type:%d\n",resetType);
+    *ResetCount=(unsigned long)resetCount;
 
     if(bufferType == 0)
     {
@@ -118,7 +119,7 @@ int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_CosaDmlMTAGetDHCPInfo(int handleType, int bufferType)
+int ssp_CosaDmlMTAGetDHCPInfo(int handleType, int bufferType, void* DHCPInfo)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -143,6 +144,7 @@ int ssp_CosaDmlMTAGetDHCPInfo(int handleType, int bufferType)
 
 
     printf("ssp_CosaDmlMTAGetDHCPInfo: DHCP Info:%s\n",dhcp);
+    DHCPInfo=(void*)dhcp;
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -189,7 +191,7 @@ int ssp_CosaDmlMTATriggerDiagnostics()
  * @param [in]          : bufferType - Invalid or NULL pointer
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType)
+int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType, char* BatteryInfo)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -205,6 +207,7 @@ int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType)
     if(bufferType == 0)
     {
         return_status = CosaDmlMtaBatteryGetInfo(mta_handle,&battery);
+	strcpy(BatteryInfo,battery.ModelNumber);
 
         printf("ssp_CosaDmlMtaBatteryGetInfo: BATTERY Info:\n");
         printf("ModelNumber:%s\n",battery.ModelNumber);
@@ -227,7 +230,7 @@ int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType)
  * @param [in]          : bufferType - Invalid or NULL pointer
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType)
+int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType, char* BatteryStatus)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -249,6 +252,7 @@ int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType)
     return_status = CosaDmlMtaBatteryGetStatus(mta_handle,value,&size);
 
     printf("ssp_CosaDmlMtaBatteryGetStatus: Battery Status is:%s\n",value);
+    strcpy(BatteryStatus ,value);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -268,7 +272,7 @@ int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType)
  * @param [in]          : bufferType - Invalid or NULL pointer
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType)
+int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType,char* Power)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -290,6 +294,7 @@ int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType)
     return_status = CosaDmlMtaBatteryGetPowerStatus(mta_handle,value,&size);
 
     printf("ssp_CosaDmlMtaBatteryGetPowerStatus: Battery Power Status is:%s\n",value);
+    strcpy(Power ,value);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -309,7 +314,7 @@ int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType)
  * @param [in]          : bufferType - Invalid or NULL pointer
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-int ssp_CosaDmlMtaLineTableGetNumberOfEntries(int handleType)
+int ssp_CosaDmlMtaLineTableGetNumberOfEntries(int handleType, int* Num)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -320,6 +325,7 @@ int ssp_CosaDmlMtaLineTableGetNumberOfEntries(int handleType)
         return_status = CosaDmlMTALineTableGetNumberOfEntries(mta_handle);
     }
     printf("ssp_CosaDmlMtaLineTableGetNumberOfEntries info:%d\n",return_status);
+    *Num=return_status;
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -338,7 +344,7 @@ int ssp_CosaDmlMtaLineTableGetNumberOfEntries(int handleType)
  * @param [in]          : Value - 0
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-int ssp_CosaDmlMtaLineTableGetEntry(int handleType,int bufferType)
+int ssp_CosaDmlMtaLineTableGetEntry(int handleType,int bufferType, unsigned long* TableEntry)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -354,6 +360,7 @@ int ssp_CosaDmlMtaLineTableGetEntry(int handleType,int bufferType)
     {
         return_status = CosaDmlMTALineTableGetEntry(mta_handle,value,&entry);
         printf("ssp_CosaDmlMtaLineTableGetEntry: Line Table Status:%d\n",entry.Status);
+	*TableEntry=(unsigned long)entry.Status;
     }
 
     if ( return_status != SSP_SUCCESS)
@@ -376,7 +383,7 @@ int ssp_CosaDmlMtaLineTableGetEntry(int handleType,int bufferType)
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_CosaDmlMTAGetServiceClass(int handleType)
+int ssp_CosaDmlMTAGetServiceClass(int handleType, void* SerClass)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -393,6 +400,7 @@ int ssp_CosaDmlMTAGetServiceClass(int handleType)
     }
 
     printf("ssp_CosaDmlMTAGetServiceClass: %s\n",pfg);
+    SerClass=(void*)pfg;
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -567,7 +575,7 @@ int ssp_CosaDmlMTADectGetRegistrationMode(int handleType, int Value)
  * @param [out]         : return status an integer value 0-success and 1-Failure
 ********************************************************************************************/
 
-int ssp_CosaDmlMTAGetDect(int handleType, int bufferType)
+int ssp_CosaDmlMTAGetDect(int handleType, int bufferType,void* DectInfo)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -588,6 +596,7 @@ int ssp_CosaDmlMTAGetDect(int handleType, int bufferType)
     }
 
     printf("ssp_CosaDmlMTAGetDect: Dect Info:%s\n",dect);
+    DectInfo=(void*)dect;
 
     if ( return_status != SSP_SUCCESS)
     
@@ -611,7 +620,7 @@ int ssp_CosaDmlMTAGetDect(int handleType, int bufferType)
 
 
 
-int ssp_CosaDmlMTAGetDectPIN(int handleType, int bufferType)
+int ssp_CosaDmlMTAGetDectPIN(int handleType, int bufferType,char *pin)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -631,6 +640,7 @@ int ssp_CosaDmlMTAGetDectPIN(int handleType, int bufferType)
     }
 
     return_status =     CosaDmlMTAGetDectPIN(mta_handle, &pinstring);
+    strcpy(pin ,pinstring);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -694,7 +704,7 @@ int ssp_CosaDmlMTASetDectPIN(int handleType, int bufferType)
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_CosaDmlMTAGetDSXLogEnable(int handleType, int Value)
+int ssp_CosaDmlMTAGetDSXLogEnable(int handleType, int Value, int *Bool)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -710,6 +720,7 @@ int ssp_CosaDmlMTAGetDSXLogEnable(int handleType, int Value)
     {
         return_status = CosaDmlMTAGetDSXLogEnable(mta_handle,&bValue);
         printf("DSX Log Status is:%d\n",bValue);
+	*Bool=(int)bValue;
     }
 
     if ( return_status != SSP_SUCCESS)
@@ -804,7 +815,7 @@ int ssp_CosaDmlMTAClearDSXLog(int handleType, int Value)
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_CosaDmlMTAGetCallSignallingLogEnable(int handleType, int Value)
+int ssp_CosaDmlMTAGetCallSignallingLogEnable(int handleType, int Value,int *Bool)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -820,6 +831,7 @@ int ssp_CosaDmlMTAGetCallSignallingLogEnable(int handleType, int Value)
     {
         return_status = CosaDmlMTAGetCallSignallingLogEnable(mta_handle,&bValue);
         printf("Call Signalling Log Status:%d\n",bValue);
+	*Bool=(int)bValue;
     }
 
     if ( return_status != SSP_SUCCESS)
@@ -914,7 +926,7 @@ int ssp_CosaDmlMTAClearCallSignallingLog(int handleType, int Value)
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_CosaDmlMtaBatteryGetNumberofCycles(int handleType)
+int ssp_CosaDmlMtaBatteryGetNumberofCycles(int handleType,unsigned long* Num)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -930,6 +942,7 @@ int ssp_CosaDmlMtaBatteryGetNumberofCycles(int handleType)
     return_status = CosaDmlMtaBatteryGetNumberofCycles(mta_handle,&val);
 
     printf("ssp_CosaDmlMtaBatteryGetNumberofCycles: Number of cycles retrieved:%d\n",val);
+    *Num=(unsigned long)val;
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -953,7 +966,7 @@ int ssp_CosaDmlMtaBatteryGetNumberofCycles(int handleType)
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_CosaDmlMtaBatteryGetLife(int handleType, int bufferType)
+int ssp_CosaDmlMtaBatteryGetLife(int handleType, int bufferType,char *Life)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -975,6 +988,7 @@ int ssp_CosaDmlMtaBatteryGetLife(int handleType, int bufferType)
     return_status = CosaDmlMtaBatteryGetLife(mta_handle,value,&size);
 
     printf("ssp_CosaDmlMtaBatteryGetLife: Battery Life is:%s\n",value);
+    strcpy(Life ,value);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -997,7 +1011,7 @@ int ssp_CosaDmlMtaBatteryGetLife(int handleType, int bufferType)
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_CosaDmlMtaBatteryGetCondition(int handleType, int bufferType)
+int ssp_CosaDmlMtaBatteryGetCondition(int handleType, int bufferType,char *Cond)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -1019,6 +1033,7 @@ int ssp_CosaDmlMtaBatteryGetCondition(int handleType, int bufferType)
     return_status = CosaDmlMtaBatteryGetCondition(mta_handle,value,&size);
 
     printf("ssp_CosaDmlMtaBatteryGetCondition: BATTERY Condition is:%s\n",value);
+    strcpy(Cond ,value);
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1040,7 +1055,7 @@ int ssp_CosaDmlMtaBatteryGetCondition(int handleType, int bufferType)
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_CosaDmlMtaBatteryGetRemainingTime(int handleType)
+int ssp_CosaDmlMtaBatteryGetRemainingTime(int handleType,unsigned long* Num)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
@@ -1056,6 +1071,7 @@ int ssp_CosaDmlMtaBatteryGetRemainingTime(int handleType)
     return_status = CosaDmlMtaBatteryGetRemainingTime(mta_handle,&val);
 
     printf("ssp_CosaDmlMtaBatteryGetRemainingTime: Battery Remaining Time is:%d\n",val);
+    *Num=(unsigned long)val;
 
     if ( return_status != SSP_SUCCESS)
     {

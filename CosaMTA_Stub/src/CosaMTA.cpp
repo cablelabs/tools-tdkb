@@ -25,36 +25,36 @@
 extern "C"
 {
     int ssp_register(bool);
-    int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType);
-    int ssp_CosaDmlMTAGetDHCPInfo(int handleType, int bufferType);
+    int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType, unsigned long* ResetCount);
+    int ssp_CosaDmlMTAGetDHCPInfo(int handleType, int bufferType, void* DHCPInfo);
     int ssp_CosaDmlMTATriggerDiagnostics();
     
-    int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType);
-    int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType);
-    int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType);
-    int ssp_CosaDmlMtaLineTableGetNumberOfEntries(int handleType);
-    int ssp_CosaDmlMtaLineTableGetEntry(int handleType, int bufferType);
+    int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType, char* BatteryInfo);
+    int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType, char* BatteryStatus);
+    int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType, char* Power);
+    int ssp_CosaDmlMtaLineTableGetNumberOfEntries(int handleType, int *Num);
+    int ssp_CosaDmlMtaLineTableGetEntry(int handleType, int bufferType, unsigned long* TableEntry);
     
-    int ssp_CosaDmlMTAGetServiceClass(int handleType);
+    int ssp_CosaDmlMTAGetServiceClass(int handleType, void* SerClass);
     int ssp_CosaDmlMTADectGetEnable(int handleType,int Value);
     int ssp_CosaDmlMTADectSetEnable(int handleType,int Value);
     int ssp_CosaDmlMTADectGetRegistrationMode(int handleType,int Value);
     int ssp_CosaDmlMTADectSetRegistrationMode(int handleType,int Value);
     
-    int ssp_CosaDmlMTAGetDect(int handleType,int bufferType);
-    int ssp_CosaDmlMTAGetDectPIN(int handleType,int bufferType);
+    int ssp_CosaDmlMTAGetDect(int handleType,int bufferType, void* DectInfo);
+    int ssp_CosaDmlMTAGetDectPIN(int handleType,int bufferType,char *pin);
     int ssp_CosaDmlMTASetDectPIN(int handleType,int bufferType);
-    int ssp_CosaDmlMTAGetDSXLogEnable(int handleType,int Value);
+    int ssp_CosaDmlMTAGetDSXLogEnable(int handleType,int Value, int *Bool);
     
     int ssp_CosaDmlMTASetDSXLogEnable(int handleType,int Value);
     int ssp_CosaDmlMTAClearDSXLog(int handleType,int Value);
-    int ssp_CosaDmlMTAGetCallSignallingLogEnable(int handleType,int Value);
+    int ssp_CosaDmlMTAGetCallSignallingLogEnable(int handleType,int Value,int *Bool);
     int ssp_CosaDmlMTASetCallSignallingLogEnable(int handleType,int Value);
     int ssp_CosaDmlMTAClearCallSignallingLog(int handleType,int Value);
-    int ssp_CosaDmlMtaBatteryGetNumberofCycles(int handleType);
-    int ssp_CosaDmlMtaBatteryGetRemainingTime(int handleType);
-    int ssp_CosaDmlMtaBatteryGetLife(int handleType, int bufferType);
-    int ssp_CosaDmlMtaBatteryGetCondition(int handleType, int bufferType);
+    int ssp_CosaDmlMtaBatteryGetNumberofCycles(int handleType, unsigned long* Num);
+    int ssp_CosaDmlMtaBatteryGetRemainingTime(int handleType, unsigned long* Num);
+    int ssp_CosaDmlMtaBatteryGetLife(int handleType, int bufferType, char *Life);
+    int ssp_CosaDmlMtaBatteryGetCondition(int handleType, int bufferType, char *Cond);
     int ssp_terminate();
     int ssp_CosaDmlMtaInit(void);
 };
@@ -166,6 +166,8 @@ bool CosaMTA::CosaMTA_GetResetCount(IN const Json::Value& req, OUT Json::Value& 
     int handleType = 0;
     int bufferType = 0;
     char resetType[MAX_PARAM_SIZE];
+    unsigned long ResetCount=0;
+    char Details[64] = {'\0'};
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -192,11 +194,12 @@ bool CosaMTA::CosaMTA_GetResetCount(IN const Json::Value& req, OUT Json::Value& 
     strcpy(resetType,req["resetType"].asCString());
 
     /* Invoke the wrapper function to get the reset count */
-  returnValue = ssp_CosaDmlMtaGetResetCount(handleType,bufferType,resetType);
+  returnValue = ssp_CosaDmlMtaGetResetCount(handleType,bufferType,resetType,&ResetCount);
     if(0 == returnValue)
     {
+	sprintf(Details,"Reset count retrieved is: %lu", ResetCount);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the reset count";
+        response["details"]=Details;
     }
     else
     {
@@ -226,6 +229,8 @@ bool CosaMTA::CosaMTA_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& re
     int returnValue = 0;
     int handleType = 0;
     int bufferType = 0;
+    void* DHCPInfo;
+    char Details[64] = {'\0'};
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -244,11 +249,12 @@ bool CosaMTA::CosaMTA_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& re
 
     handleType = req["handleType"].asInt();
     bufferType = req["bufferType"].asInt();
-    returnValue = ssp_CosaDmlMTAGetDHCPInfo(handleType,bufferType);
+    returnValue = ssp_CosaDmlMTAGetDHCPInfo(handleType,bufferType,DHCPInfo);
     if(0 == returnValue)
     {
+	sprintf(Details,"DHCP Info retrieved is: %s", DHCPInfo);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the DHCP information";
+        response["details"]=Details;
     }
     else
     {
@@ -309,6 +315,8 @@ bool CosaMTA::CosaMTA_BatteryGetInfo(IN const Json::Value& req, OUT Json::Value&
     int returnValue = 0;
     int handleType = 0;
     int bufferType = 0;
+    char BatteryInfo[50]={'\0'};
+    char Details[64] = {'\0'};
 
 
     /* Validate the input arguments */
@@ -330,11 +338,12 @@ bool CosaMTA::CosaMTA_BatteryGetInfo(IN const Json::Value& req, OUT Json::Value&
     bufferType = req["bufferType"].asInt();
 
 
-    returnValue = ssp_CosaDmlMtaBatteryGetInfo(handleType,bufferType);
+    returnValue = ssp_CosaDmlMtaBatteryGetInfo(handleType,bufferType,BatteryInfo);
     if(0 == returnValue)
     {
+	sprintf(Details,"Battery Info is retrieved is: %s", BatteryInfo);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the Battery info";
+        response["details"]=Details;
     }
     else
     {
@@ -363,6 +372,8 @@ bool CosaMTA::CosaMTA_BatteryGetStatus(IN const Json::Value& req, OUT Json::Valu
     int returnValue = 0;
     int handleType = 0;
     int bufferType = 0;
+    char BatteryStatus[50];
+    char Details[64] = {'\0'};
 
     // Validate the input arguments
     if(&req["handleType"]==NULL)
@@ -381,11 +392,12 @@ bool CosaMTA::CosaMTA_BatteryGetStatus(IN const Json::Value& req, OUT Json::Valu
     handleType = req["handleType"].asInt();
     bufferType = req["bufferType"].asInt();
     
-    returnValue = ssp_CosaDmlMtaBatteryGetStatus(handleType,bufferType);
+    returnValue = ssp_CosaDmlMtaBatteryGetStatus(handleType,bufferType,BatteryStatus);
     if(0 == returnValue)
     {
+	sprintf(Details,"Battery Status retrieved is: %s", BatteryStatus);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the Battery Status";
+        response["details"]=Details;
     }
     else
     {
@@ -417,6 +429,8 @@ bool CosaMTA::CosaMTA_BatteryGetPowerStatus(IN const Json::Value& req, OUT Json:
     int returnValue = 0;
     int handleType = 0;
     int bufferType = 0;
+    char Power[20];
+    char Details[64] = {'\0'};
    
 
     // Validate the input arguments
@@ -434,11 +448,12 @@ bool CosaMTA::CosaMTA_BatteryGetPowerStatus(IN const Json::Value& req, OUT Json:
     }
     handleType = req["handleType"].asInt();
     bufferType = req["bufferType"].asInt();
-    returnValue = ssp_CosaDmlMtaBatteryGetPowerStatus(handleType,bufferType);
+    returnValue = ssp_CosaDmlMtaBatteryGetPowerStatus(handleType,bufferType,Power);
     if(0 == returnValue)
     {
+	sprintf(Details,"Power Status retrieved is: %s",Power);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the battery power status";
+        response["details"]=Details;
     }
     else
     {
@@ -465,6 +480,8 @@ bool CosaMTA::CosaMTA_LineTableGetNumberOfEntries(IN const Json::Value& req, OUT
 
     int returnValue = 0;
     int handleType = 0;
+    int Num=0;
+    char Details[64] = {'\0'};
 
     // Validate the input arguments
     if(&req["handleType"]==NULL)
@@ -474,12 +491,13 @@ bool CosaMTA::CosaMTA_LineTableGetNumberOfEntries(IN const Json::Value& req, OUT
         return TEST_FAILURE;
     }
     handleType = req["handleType"].asInt();
-    returnValue = ssp_CosaDmlMtaLineTableGetNumberOfEntries(handleType);
+    returnValue = ssp_CosaDmlMtaLineTableGetNumberOfEntries(handleType, &Num);
     
     if(0 == returnValue)
     {
+	sprintf(Details,"No of Line table entries retrieved is: %lu", Num);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the  Line Table Entries";
+        response["details"]=Details;
     }
     else
     {
@@ -509,6 +527,8 @@ bool CosaMTA::CosaMTA_LineTableGetEntry(IN const Json::Value& req, OUT Json::Val
     int returnValue = 0;
     int handleType = 0;
     int bufferType = 0;
+    unsigned long TableEntry=0;
+    char Details[64] = {'\0'};
     
 
     // Validate the input arguments
@@ -526,11 +546,12 @@ bool CosaMTA::CosaMTA_LineTableGetEntry(IN const Json::Value& req, OUT Json::Val
     }
     handleType = req["handleType"].asInt();
     bufferType = req["bufferType"].asInt();
-    returnValue = ssp_CosaDmlMtaLineTableGetEntry(handleType, bufferType);
+    returnValue = ssp_CosaDmlMtaLineTableGetEntry(handleType, bufferType, &TableEntry);
     if(0 == returnValue)
     {
+	sprintf(Details,"TableEntry retrieved is: %lu", TableEntry);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the  Line Table Entries";
+        response["details"]=Details;
     }
     else
     {
@@ -561,6 +582,8 @@ bool CosaMTA::CosaMTA_GetServiceClass(IN const Json::Value& req, OUT Json::Value
 
     int returnValue = 0;
     int handleType = 0;
+    void *SerClass;
+    char Details[64] = {'\0'};
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -572,11 +595,12 @@ bool CosaMTA::CosaMTA_GetServiceClass(IN const Json::Value& req, OUT Json::Value
 
     handleType = req["handleType"].asInt();
 
-    returnValue = ssp_CosaDmlMTAGetServiceClass(handleType);
+    returnValue = ssp_CosaDmlMTAGetServiceClass(handleType, SerClass);
     if(0 == returnValue)
     {
+	sprintf(Details,"Service Class is retrieved is: %s", SerClass);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the Service class";
+        response["details"]=Details;
     }
     else
     {
@@ -608,6 +632,8 @@ bool CosaMTA::CosaMTA_DectGetEnable(IN const Json::Value& req, OUT Json::Value& 
     int returnValue = 0;
     int handleType = 0;
     int boolValue = 0;
+    char Details[64] = {'\0'};
+
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
     {
@@ -630,8 +656,9 @@ bool CosaMTA::CosaMTA_DectGetEnable(IN const Json::Value& req, OUT Json::Value& 
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {
+	sprintf(Details,"Enable value of Dect is :%d",returnValue);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the Enable value of Dect";
+        response["details"]=Details;
     }
     else
     {
@@ -718,6 +745,7 @@ bool CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Jso
     int returnValue = 0;
     int handleType = 0;
     int boolValue = 0;
+    char Details[64]={'\0'};
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -740,8 +768,9 @@ bool CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Jso
     returnValue = ssp_CosaDmlMTADectGetRegistrationMode(handleType,boolValue);
     if(0 == returnValue)
     {
+	sprintf(Details,"Registration mode is :%d",returnValue);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the dect registration mode";
+        response["details"]=Details;
     }
     else
     {
@@ -829,6 +858,8 @@ bool CosaMTA::CosaMTA_GetDect(IN const Json::Value& req, OUT Json::Value& respon
     int returnValue = 0;
     int handleType = 0;
     int bufferType = 0;
+    void* DectInfo;
+    char Details[64] = {'\0'};
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -849,12 +880,13 @@ bool CosaMTA::CosaMTA_GetDect(IN const Json::Value& req, OUT Json::Value& respon
     bufferType = req["bufferType"].asInt();
     printf("handleType %d\nbufferType %d\n",handleType,bufferType);
 
-    returnValue = ssp_CosaDmlMTAGetDect(handleType,bufferType);
+    returnValue = ssp_CosaDmlMTAGetDect(handleType,bufferType, DectInfo);
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {
+	sprintf(Details,"Dect Info retrieved is: %s", DectInfo);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the Dect information";
+        response["details"]=Details;
     }
     else
     {
@@ -886,6 +918,8 @@ bool CosaMTA::CosaMTA_GetDectPIN(IN const Json::Value& req, OUT Json::Value& res
     int returnValue = 0;
     int handleType = 0;
     int bufferType = 0;
+    char pin[20];
+    char Details[64] = {'\0'};
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -905,11 +939,12 @@ bool CosaMTA::CosaMTA_GetDectPIN(IN const Json::Value& req, OUT Json::Value& res
     handleType = req["handleType"].asInt();
     bufferType = req["bufferType"].asInt();
 
-    returnValue = ssp_CosaDmlMTAGetDectPIN(handleType,bufferType);
+    returnValue = ssp_CosaDmlMTAGetDectPIN(handleType,bufferType,pin);
     if(0 == returnValue)
     {
+	sprintf(Details,"Dect pin retrieved is: %s",pin);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the Dect pin information";
+        response["details"]=Details;
     }
     else
     {
@@ -993,6 +1028,8 @@ bool CosaMTA::CosaMTA_BatteryGetNumberofCycles(IN const Json::Value& req, OUT Js
 
     int returnValue = 0;
     int handleType = 0;
+    unsigned long Num=0;
+    char Details[64] = {'\0'};
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -1005,11 +1042,12 @@ bool CosaMTA::CosaMTA_BatteryGetNumberofCycles(IN const Json::Value& req, OUT Js
 
     handleType = req["handleType"].asInt();
 
-    returnValue = ssp_CosaDmlMtaBatteryGetNumberofCycles(handleType);
+    returnValue = ssp_CosaDmlMtaBatteryGetNumberofCycles(handleType, &Num);
     if(0 == returnValue)
     {
+	sprintf(Details,"Number of cycles retrieved is: %lu", Num);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the number of cycles in battery";
+        response["details"]=Details;
     }
     else
     {
@@ -1041,6 +1079,8 @@ bool CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
     int returnValue = 0;
     int handleType = 0;
     int boolValue = 0;
+    int Bool=0;
+    char Details[64] = {'\0'};
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -1060,12 +1100,13 @@ bool CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
     handleType = req["handleType"].asInt();
     boolValue = req["boolValue"].asInt();
 
-    returnValue = ssp_CosaDmlMTAGetDSXLogEnable(handleType,boolValue);
+    returnValue = ssp_CosaDmlMTAGetDSXLogEnable(handleType,boolValue, &Bool);
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {
+	sprintf(Details,"DSX logs retrieved is: %d", Bool);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the enabled DSX log information ";
+        response["details"]=Details;
     }
     else
     {
@@ -1207,6 +1248,8 @@ bool CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT 
     int returnValue = 0;
     int handleType = 0;
     int boolValue = 0;
+    int Bool=0;
+    char Details[64] = {'\0'};
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -1226,12 +1269,13 @@ bool CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT 
     handleType = req["handleType"].asInt();
     boolValue = req["boolValue"].asInt();
 
-    returnValue = ssp_CosaDmlMTAGetCallSignallingLogEnable(handleType,boolValue);
+    returnValue = ssp_CosaDmlMTAGetCallSignallingLogEnable(handleType,boolValue, &Bool);
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {
+	sprintf(Details,"Call signal log retrieved is: %d", Bool);
         response["result"]="SUCCESS";
-        response["details"]="Successfully retrieved the enable value for call signalling log";
+        response["details"]=Details;
     }
     else
     {
@@ -1374,6 +1418,8 @@ bool CosaMTA::CosaMTA_BatteryGetRemainingTime(IN const Json::Value& req, OUT Jso
         int returnValue = 0;
 
         int handleType = 0;
+	unsigned long Num=0;
+	char Details[64] = {'\0'};
 
                     /* Validate the input arguments */
 
@@ -1387,11 +1433,12 @@ bool CosaMTA::CosaMTA_BatteryGetRemainingTime(IN const Json::Value& req, OUT Jso
 
         handleType = req["handleType"].asInt();
 
-        returnValue = ssp_CosaDmlMtaBatteryGetRemainingTime(handleType);
+        returnValue = ssp_CosaDmlMtaBatteryGetRemainingTime(handleType, &Num);
         if(0 == returnValue)
         {
+	    sprintf(Details,"Remaining time retrieved is: %lu", Num);
             response["result"]="SUCCESS";
-            response["details"]="Successfully retrieved the battery remaining time";
+            response["details"]=Details;
         }
         else
         {
@@ -1422,6 +1469,8 @@ bool CosaMTA::CosaMTA_BatteryGetCondition(IN const Json::Value& req, OUT Json::V
         int returnValue = 0;
         int handleType = 0;
         int bufferType = 0;
+	char Cond[20];
+	char Details[64] = {'\0'};
 
         //Validate the input arguments
             if(&req["handleType"]==NULL)
@@ -1440,11 +1489,12 @@ bool CosaMTA::CosaMTA_BatteryGetCondition(IN const Json::Value& req, OUT Json::V
         handleType = req["handleType"].asInt();
         bufferType = req["bufferType"].asInt();
 
-        returnValue = ssp_CosaDmlMtaBatteryGetCondition(handleType,bufferType);
+        returnValue = ssp_CosaDmlMtaBatteryGetCondition(handleType,bufferType,Cond);
         if(0 == returnValue)
         {
+	    sprintf(Details,"Battery condition retrieved is: %s",Cond);
             response["result"]="SUCCESS";
-            response["details"]="Successfully retrieved the Battery Condition";
+            response["details"]=Details;
         }
         else
         {
@@ -1475,6 +1525,8 @@ bool CosaMTA::CosaMTA_BatteryGetLife(IN const Json::Value& req, OUT Json::Value&
             int returnValue = 0;
             int handleType = 0;
             int bufferType = 0;
+	    char Life[20];
+	    char Details[64] = {'\0'};
 
           //  Validate the input arguments
                 if(&req["handleType"]==NULL)
@@ -1494,11 +1546,12 @@ bool CosaMTA::CosaMTA_BatteryGetLife(IN const Json::Value& req, OUT Json::Value&
             bufferType = req["bufferType"].asInt();
 
            
-            returnValue = ssp_CosaDmlMtaBatteryGetLife(handleType,bufferType);
+            returnValue = ssp_CosaDmlMtaBatteryGetLife(handleType,bufferType,Life);
             if(0 == returnValue)
             {
+		sprintf(Details,"Battery life retrieved is: %s",Life);
                 response["result"]="SUCCESS";         
-                response["details"]="Successfully retrieved the Battery Life";
+                response["details"]=Details;
             }
             else
             {                                                            
