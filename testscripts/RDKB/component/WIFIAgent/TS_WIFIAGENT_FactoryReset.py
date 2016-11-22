@@ -37,7 +37,7 @@
   <!--  -->
   <groups_id />
   <!--  -->
-  <execution_time>4</execution_time>
+  <execution_time>6</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
   <!-- execution_time is the time out time for test execution -->
@@ -114,6 +114,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         	print "ACTUAL RESULT 2: %s" %details;
         	#Get the result of execution
         	print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                time.sleep(60);
         	
         	#Script to get the parameter values of wifi
         	tdkTestObj = obj.createTestStep("WIFIAgent_Get");
