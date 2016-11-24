@@ -87,7 +87,6 @@ int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType
     }
 
     printf("ssp_CosaDmlMtaGetResetCount: Reset Type:%d\n",resetType);
-    *ResetCount=(unsigned long)resetCount;
 
     if(bufferType == 0)
     {
@@ -99,6 +98,7 @@ int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType
     }
 
     printf("ssp_CosaDmlMtaGetResetCount: ResetCount retrieved:%d\n",resetCount);
+    *ResetCount=(unsigned long)resetCount;
 
     if ( return_status != SSP_SUCCESS)
     {
