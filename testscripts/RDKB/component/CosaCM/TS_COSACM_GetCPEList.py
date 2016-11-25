@@ -42,9 +42,9 @@
   <!--  -->
   <long_duration>false</long_duration>
   <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
+  <remarks>The API to be validated is currently dummy function in RDK-B stack and will always returns failure</remarks>
   <!-- Reason for skipping the tests if marked to skip -->
-  <skip>false</skip>
+  <skip>true</skip>
   <!--  -->
   <box_types>
     <box_type>Broadband</box_type>

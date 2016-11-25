@@ -41,9 +41,9 @@
   <!--  -->
   <long_duration>false</long_duration>
   <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
+  <remarks>RDKB-108 Currently there is no support in RDK-B stack for other CCSP components to invoke this API</remarks>
   <!-- Reason for skipping the tests if marked to skip -->
-  <skip>false</skip>
+  <skip>true</skip>
   <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
