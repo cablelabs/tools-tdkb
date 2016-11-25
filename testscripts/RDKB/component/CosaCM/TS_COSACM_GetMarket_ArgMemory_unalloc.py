@@ -77,7 +77,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         obj.setLoadModuleStatus("SUCCESS");
 
         #Script to load the configuration file of the component
-        tdkTestObj = obj.createTestStep("CosaDmlCMGetMarket_ArgMemory_unalloc");                                                                                             
+        tdkTestObj = obj.createTestStep("COSACM_GetMarket_ArgMemory_unalloc");                                                                                             
         expectedresult="FAILURE";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();

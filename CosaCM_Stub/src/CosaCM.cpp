@@ -99,7 +99,7 @@ bool CosaCM::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&CosaCM::COSACM_GetCMCertStatus,"COSACM_GetCMCertStatus");
     ptrAgentObj->RegisterMethod(*this,&CosaCM::COSACM_GetCPEList,"COSACM_GetCPEList");
 
-    ptrAgentObj->RegisterMethod(*this,&CosaCM::COSACM_GetMarket_ArgMemory_unalloc,"COSACM_CMGetMarket_ArgMemory_unalloc");
+    ptrAgentObj->RegisterMethod(*this,&CosaCM::COSACM_GetMarket_ArgMemory_unalloc,"COSACM_GetMarket_ArgMemory_unalloc");
     ptrAgentObj->RegisterMethod(*this,&CosaCM::COSACM_SetMDDIPOverride_ArgMemory_unalloc,"COSACM_SetMDDIPOverride_ArgMemory_unalloc");
     ptrAgentObj->RegisterMethod(*this,&CosaCM::COSACM_GetMDDIPOverride_ArgMemory_unalloc,"COSACM_GetMDDIPOverride_ArgMemory_unalloc");
     ptrAgentObj->RegisterMethod(*this,&CosaCM::COSACM_GetCMCert_ArgMemory_unalloc,"COSACM_GetCMCert_ArgMemory_unalloc");
