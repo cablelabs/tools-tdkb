@@ -17,7 +17,16 @@
 # limitations under the License.
 ##########################################################################
 
-SUBDIRS = agent RDKLogger_stub CMAgent_stub WIFIAgent_stub MBUS_Stub WECB_Stub CosaCM_Stub SNMP_PA_Stub TR069Pa_Stub Mta_agent_Stub AdvancedConfig_stub CosaMTA_Stub pam_stub SysUtil_stub
-DIST_SUBDIRS = @SUBDIRS@
+ACLOCAL_AMFLAGS = -Im4 --install
+AM_CPPFLAGS = ${COPTS} -fPIC -DDEBUG_LEVEL_TRACE
 
-distcleancheck_listfiles = *-libtool
+INCLUDES = -I${top_srcdir}/SysUtil_stub/include -I${top_srcdir}/agent/include
+
+
+AM_CXXFLAGS = -I${top_srcdir}/SysUtil_stub/include -I${top_srcdir}/agent/include
+
+
+lib_LTLIBRARIES = libsysutilstub.la
+libsysutilstub_la_SOURCES = src/SysUtil_stub.cpp
+libsysutilstub_la_includedir = ${includedir}
+libsysutilstub_la_include_HEADERS = ${top_srcdir}/SysUtil_stub/include/SysUtil_stub.h
