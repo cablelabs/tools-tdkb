@@ -23,7 +23,7 @@
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
   <version>5</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
-  <name>TS_PAM_GetPassword</name>
+  <name>TS_PAM_GetPasswordReset</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id> </primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
@@ -66,7 +66,7 @@ obj = tdklib.TDKScriptingLibrary("pam","RDKB");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_PAM_GetPassword');
+obj.configureTestCase(ip,port,'TS_PAM_GetPasswordReset');
 
 #Get the result of connection with test component and STB
 loadmodulestatus =obj.getLoadModuleResult();
@@ -75,47 +75,32 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
-    #Check the box type
-    imagename = tdklib.getImageName (ip, port)
-    print imagename;
-    str="TG1682_"
-    if str in imagename:
-	#box type is xb3
-	print "DUT is ArrisXB3."
-        tdkTestObj = obj.createTestStep('pam_GetParameterValues');
-        tdkTestObj.addParameter("ParamName","Device.UserInterface.PasswordReset");
-        expectedresult="SUCCESS";
-
-        #Execute the test case in STB
-        tdkTestObj.executeTestCase(expectedresult);
-        actualresult = tdkTestObj.getResult();
+    #SetParameterValues internally calls GetParameterValues. So no need to check the value separately
+    tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+    tdkTestObj.addParameter("ParamName","Device.UserInterface.PasswordReset");
+    tdkTestObj.addParameter("ParamValue","true");
+    tdkTestObj.addParameter("Type","boolean");
+    expectedresult="FAILURE";
+    #Execute the test case in Gateway
+    tdkTestObj.executeTestCase(expectedresult);
+    actualresult = tdkTestObj.getResult();
+    details = tdkTestObj.getResultDetails();
+    if expectedresult in actualresult:
+        #Set the result status of execution
+        tdkTestObj.setResultStatus("SUCCESS");
         details = tdkTestObj.getResultDetails();
-		
-        if expectedresult in actualresult:
-	    if "false" in details:
-                #Set the result status of execution
-                tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP 1: Get the password of user interface of the CPE.";
-                print "EXPECTED RESULT 1: Should get the password details as false";
-                print "ACTUAL RESULT 1: Password of user interface of the CPE :%s" %details;
-                #Get the result of execution
-                print "[TEST EXECUTION RESULT] : SUCCESS" 
-            else:
-                tdkTestObj.setResultStatus("FAILURE");	
-                print "TEST STEP 1: Get the password of user interface of the CPE";
-                print "EXPECTED RESULT 1: Should get the password details as false";
-                print "ACTUAL RESULT 1: Password details : %s" %details;
-                print "[TEST EXECUTION RESULT] : FAILURE";
-        else:
-       	    tdkTestObj.setResultStatus("FAILURE");
-   	    print "TEST STEP 1: Get the password of user interface of the CPE";
-	    print "EXPECTED RESULT 1: Should get the password details";
-	    print "ACTUAL RESULT 1: Failed to get Password details : %s" %details;
-	    print "[TEST EXECUTION RESULT] : FAILURE";
+        print "TEST STEP 1: Set PasswordReset as true";
+        print "EXPECTED RESULT 1: Should not set Password Reset as true";
+        print "ACTUAL RESULT 1: %s" %details;
+	print "[TEST EXECUTION RESULT] : SUCCESS";
+     
     else:
-	print "DUT is Emulator"
-	print "Not valid testcase for emulator"
-	print "exiting"
+        tdkTestObj.setResultStatus("FAILURE");
+        details = tdkTestObj.getResultDetails();
+        print "TEST STEP 1: Set PasswordReset as true";
+        print "EXPECTED RESULT 1: Should not set Password Reset as true";
+        print "ACTUAL RESULT 1: %s" %details;
+	print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("pam");
    		 
 else:   
