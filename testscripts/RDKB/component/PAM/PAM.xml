@@ -16,7 +16,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<?xml version="1.0" encoding="UTF-8"?><xml>
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
   <module name="PAM" testGroup="Component">
     <primitiveTests>
       <primitiveTest id=" " name="pam_bridge_GetParamBoolValue" version="2">
@@ -74,6 +75,12 @@
       <primitiveTest id="" name="pam_MTAAgentRestart" version="1">
         <function>pam_MTAAgentRestart</function>
         <parameters/>
+      </primitiveTest>
+      <primitiveTest id=" " name="pam_ExecCmd" version="1">
+        <function>pam_ExecCmd</function>
+        <parameters>
+          <parameter name="command" value="null"/>
+        </parameters>
       </primitiveTest>
       <primitiveTest name="pam_Init" id="" version="1">
         <function>pam_Init</function>

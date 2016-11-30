@@ -27,13 +27,13 @@
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id></primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
-  <primitive_test_name>pam_CRRestart</primitive_test_name>
+  <primitive_test_name>ExecuteCmd</primitive_test_name>
   <!--  -->
   <primitive_test_version>1</primitive_test_version>
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis></synopsis>
+  <synopsis>This test case is to kill the CR process and check if the CR process is restarted</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -56,12 +56,13 @@
   <script_tags />
 </xml>
 '''
-						#import statements
+#import statements
 import tdklib;
 import time;
+from time import sleep;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("pam","RDKB");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -75,41 +76,78 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
 if "SUCCESS" in loadmodulestatus.upper():
         obj.setLoadModuleStatus("SUCCESS");
-
-        #Script to load the configuration file of the component
-        tdkTestObj = obj.createTestStep("pam_CRRestart");
-     
+	#To check whether CR process is running or not
+        tdkTestObj = obj.createTestStep("ExecuteCmd");
+        cmnd = "pidof CcspCrSsp"
+        tdkTestObj.addParameter("command", cmnd);
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
+        #Get the result of execution
         actualresult = tdkTestObj.getResult();
-
-        if expectedresult in actualresult:
-            #Set the result status of execution
+        details = tdkTestObj.getResultDetails();
+        if details:
             tdkTestObj.setResultStatus("SUCCESS");
-            details = tdkTestObj.getResultDetails();
-            print "TEST STEP 1:Kill the CR and wait for the system to reboot";
-            print "EXPECTED RESULT 1: Should Successfully restart the system";
-            print "ACTUAL RESULT 1: %s" %details;
-            #Get the result of execution
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
-        else:
-            tdkTestObj.setResultStatus("FAILURE");
-            details = tdkTestObj.getResultDetails();
-            print "TEST STEP 1: Kill the CR and wait for the system to reboot";
-            print "EXPECTED RESULT 1: Should Successfully restart the system";
-            print "ACTUAL RESULT 1: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
-	    obj.initiateReboot();
+            print "TEST STEP 1:Check whether CR process is running or not"
+            print "EXPECTED RESULT 1:CR process should be running"
+            print "ACTUAL RESULT 1: Process is running. PID is %s" %details;
+            print "[TEST EXECUTION RESULT]: %s" %actualresult;
             
-        obj.unloadModule("pam");
+	    #Going to kill CR process
+            tdkTestObj = obj.createTestStep("ExecuteCmd");
+            print "Killing CR process"
+            cmnd ="kill -9 `pidof CcspCrSsp`"
+            tdkTestObj.addParameter("command", cmnd);
+            expectedresult="SUCCESS";
+            tdkTestObj.executeTestCase(expectedresult);
+            #Get the result of execution
+            actualresult = tdkTestObj.getResult();
+            details = tdkTestObj.getResultDetails();
+	    if expectedresult in actualresult:
+		tdkTestObj.setResultStatus("SUCCESS");
+		print "TEST STEP 2: Kill the CR process"
+		print "EXPECTED RESULT 2: Should kill the CR process"
+		print "ACTUAL RESULT 2: CR process is killed"
+		print "[TEST EXECUTION RESULT]: %s" %actualresult;
+                #Sleeping for 15 minutes
+                sleep(900)
+                #checking process after sleep
+                tdkTestObj = obj.createTestStep("ExecuteCmd");
+                cmnd = "pidof CcspCrSsp"
+                tdkTestObj.addParameter("command", cmnd);
+                expectedresult="SUCCESS";
+                tdkTestObj.executeTestCase(expectedresult);
+                #Get the result of execution
+                actualresult = tdkTestObj.getResult();
+                details = tdkTestObj.getResultDetails();
+                if details:
+                    tdkTestObj.setResultStatus("SUCCESS");
+                    print "TEST STEP 3:Check whether CR process is running or not after killing the process and waiting"
+                    print "EXPECTED RESULT 3:CR process should be running"
+                    print "ACTUAL RESULT 3: Process is running after killing and waiting .PID is %s" %details;
+                    print "[TEST EXECUTION RESULT]: %s" %actualresult;
+                else:
+                    tdkTestObj.setResultStatus("FAILURE");
+                    print "TEST STEP 3:Check whether CR process is running or not after killing the process and waiting"
+                    print "EXPECTED RESULT 3:CR process should be running"
+                    print "ACTUAL RESULT 3: Process is not running after killing and waiting"
+                    print "[TEST EXECUTION RESULT]: FAILURE"
+		    obj.initiateReboot();
+	    else:
+		tdkTestObj.setResultStatus("FAILURE");
+		print "TEST STEP 2: Kill the CR process"
+		print "EXPECTED RESULT 2: Should kill the CR process"
+		print "ACTUAL RESULT 2: CR process is not killed"
+		print "[TEST EXECUTION RESULT]: %s" %actualresult
+	else:
+	    tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP 1:Check whether CR process is running or not"
+            print "EXPECTED RESULT 1:CR process should be running"
+            print "ACTUAL RESULT 1: CR process is not running"
+            print "[TEST EXECUTION RESULT]: FAILURE"
+            obj.initiateReboot();
+	obj.unloadModule("sysutil");
+			
 else:
         print "Failed to load the module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";
-				
-
-					
-
-					
-
-					
