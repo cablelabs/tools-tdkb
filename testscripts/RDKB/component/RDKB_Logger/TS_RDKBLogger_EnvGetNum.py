@@ -82,7 +82,7 @@ if "SUCCESS" in result.upper():
     tdkTestObj = obj.createTestStep('RDKBLogger_EnvGetNum');
 
     expectedRes = "SUCCESS"
-    module = "WIFI"
+    module = "PAM"
     print "Requested module: %s"%module
     tdkTestObj.addParameter("module",module);
    
