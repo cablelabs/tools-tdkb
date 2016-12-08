@@ -16,46 +16,67 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
-##
 '''
-<?xml version='1.0' encoding='utf-8'?>
-<xml>
-  <id></id>
-  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <id/>
   <version>9</version>
-  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_TR069PA_SetParam_Values</name>
-  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
-  <primitive_test_id> </primitive_test_id>
-  <!-- Do not change primitive_test_id if you are editing an existing script. -->
+  <primitive_test_id/>
   <primitive_test_name>TR069Agent_SetParameterValues</primitive_test_name>
-  <!--  -->
   <primitive_test_version>1</primitive_test_version>
-  <!--  -->
   <status>FREE</status>
-  <!--  -->
   <synopsis>TC_TR069_4 - To Validate Set Param Values API for TR069 PA</synopsis>
-  <!--  -->
   <groups_id>4</groups_id>
-  <!--  -->
   <execution_time>1</execution_time>
-  <!--  -->
   <long_duration>false</long_duration>
-  <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
-  <!-- Reason for skipping the tests if marked to skip -->
+  <remarks/>
   <skip>false</skip>
-  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
-    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
-    <!--  -->
   </rdk_versions>
-  <script_tags />
+  <test_cases>
+    <test_case_id>TC_TR069_4</test_case_id>
+    <test_objective>To Validate Set Param Values API for 
+TR069 PA</test_objective>
+    <test_type>Positive</test_type>
+    <test_setup>XB3</test_setup>
+    <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
+2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
+    <api_or_interface_used/>
+    <input_parameters>Json Interface:
+API Name
+TR069Agent_SetParameterValues
+Input
+1.Parameter Path (paramName)( eg: "Device." )
+2.AccessControl (eg. "acs")
+3.Notify (eg. "Active")</input_parameters>
+    <automation_approch>1.Create a function named TR069Agent_SetParameterValues in Test Manager GUI. 
+2.Configure the info of the  function under test in function and create a python script
+3.Execute the generated Script(TS_TR069PA_SetParam_Values.py) using execution page of  Test Manager GUI 
+4.This script will in turn call TR069Agent stub in TDK Agent 
+5.TR069Agent_SetParameterValues function will call CCSP Base Interface Function named "CcspBaseIf_setParameterValues" , that inturn will call TR069PA Agent Library Function "CcspManagementServer_SetParameterValues" 
+6.TR069Agent_SetParameterValues function will call CCSP Base Interface Function named "CcspBaseIf_getParameterValues" with the same inputs , that inturn will call TR069PA Agent Library Function "CcspManagementServer_getParameterValues" to check whether the update is there or not. 
+7.Responses(printf) from TDK Component and TR069 agentstub would be logged in Agent Console log 
+8.Based on the log set the result as SUCCESS or FAILURE</automation_approch>
+    <except_output>CheckPoint 1:
+String compare the set values using a GetParamterValues.Values of Requested Path is updated should be available in Agent Console Log.Also.
+CheckPoint 2:
+TDK agent Test Function will log the test case result as PASS based on API response
+CheckPoint 3:
+TestManager GUI will publish the result as PASS in Execution page</except_output>
+    <priority>High</priority>
+    <test_stub_interface>None</test_stub_interface>
+    <test_script>TS_TR069PA_SetParam_Values</test_script>
+    <skipped>No</skipped>
+    <release_version/>
+    <remarks/>
+  </test_cases>
+  <script_tags/>
 </xml>
+
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 

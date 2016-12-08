@@ -17,43 +17,69 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version='1.0' encoding='utf-8'?>
-<xml>
-  <id></id>
-  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <id/>
   <version>3</version>
-  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_CCSPCOMMON_MBUS_Init</name>
-  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
-  <primitive_test_id></primitive_test_id>
-  <!-- Do not change primitive_test_id if you are editing an existing script. -->
+  <primitive_test_id/>
   <primitive_test_name>CCSPMBUS_Init</primitive_test_name>
-  <!--  -->
   <primitive_test_version>1</primitive_test_version>
-  <!--  -->
   <status>FREE</status>
-  <!--  -->
-  <synopsis></synopsis>
-  <!--  -->
-  <groups_id />
-  <!--  -->
+  <synopsis/>
+  <groups_id/>
   <execution_time>1</execution_time>
-  <!--  -->
   <long_duration>false</long_duration>
-  <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
-  <!-- Reason for skipping the tests if marked to skip -->
+  <remarks/>
   <skip>false</skip>
-  <!--  -->
   <box_types>
+    <box_type>Emulator</box_type>
     <box_type>Broadband</box_type>
-    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
-    <!--  -->
   </rdk_versions>
+  <test_cases>
+    <test_case_id>TC_CCSPMBUS_1</test_case_id>
+    <test_objective>To Validate Message Bus Initialization Function</test_objective>
+    <test_type>Positive</test_type>
+    <test_setup>Emulator, XB3</test_setup>
+    <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component"
+2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
+    <api_or_interface_used>none</api_or_interface_used>
+    <input_parameters>Json Interface:
+API Name
+CCSPMBUS_Init
+Input
+cfgfileName - eg:/opt/TDK/ccsp_msg.cfg
+busName - eg:ccsp.tdkbus
+apitestFlag - eg: 1</input_parameters>
+    <automation_approch>"1.Configure the Function info in Test Manager GUI  which needs to be tested  
+(CCSPMBUS_Init - func name - ""If not exists already""
+ ccspcommon_mbus - module name
+ Necessary I/P args as Mentioned in Input)
+2.Python Script will be generated/overrided automically by Test Manager with provided arguments in configure page (TS_CCSPCOMMON_MBUS_Init.py )
+3.Execute the generated Script(TS_CCSPCOMMON_MBUS_Init.py) using execution page of  Test Manager GUI
+4.mbusstub which is a part of TDK Agent process, will be in listening mode to execute TDK Component function named CCSPMBUS_Init through registered TDK mbusstub function along with necessary Entry Values as arguments
+5.CCSPMBUS_Init function will call ssp_mbus_Init,that inturn will call CCSP Base Interface Function named CCSP_Message_Bus_Init which is under test to initialize Message Bus. apitestFlag argument will decide to call ssp_mbus_exit (if 1) function to deinitialize the message bus handle
+6.Responses(printf) from TDK Component,Ccsp Library function and mbusstub would be logged in Agent Console log based on the debug info redirected to agent console   
+7.mbusstub will validate the available result (from ssp_mbus_Init as zero) with expected result (zero) and the result is updated in agent console log and json output variable
+8.ssp_mbus_exit function is invoked by CCSPMBUS_Init to close the bus handle created by ssp_mbus_Init and returns the updated results to Test Manager 
+9.TestManager will publish the result in GUI as PASS/FAILURE based on the response from CCSPMBUS_Init function"</automation_approch>
+    <except_output>"CheckPoint 1:
+Message Bus Init success log from DUT should be available in Agent Console Log
+CheckPoint 2:
+TDK agent Test Function will log the test case result as PASS based on API response which will be available in Test Manager Result ( XLS)
+CheckPoint 3:
+TestManager GUI will publish the result as PASS in Execution/Console page of Test Manager"</except_output>
+    <priority>High</priority>
+    <test_stub_interface>None</test_stub_interface>
+    <test_script>TS_CCSPCOMMON_MBUS_Init</test_script>
+    <skipped>No</skipped>
+    <release_version/>
+    <remarks/>
+  </test_cases>
 </xml>
+
 '''
 
 #use tdklib library,which provides a wrapper for tdk testcase script

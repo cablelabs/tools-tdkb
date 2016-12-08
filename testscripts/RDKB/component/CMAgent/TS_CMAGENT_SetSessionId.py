@@ -17,44 +17,69 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version='1.0' encoding='utf-8'?>
-<xml>
-  <id></id>
-  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <id/>
   <version>15</version>
-  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_CMAGENT_SetSessionId</name>
-  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
-  <primitive_test_id> </primitive_test_id>
-  <!-- Do not change primitive_test_id if you are editing an existing script. -->
+  <primitive_test_id/>
   <primitive_test_name>CMAgent_SetSessionId</primitive_test_name>
-  <!--  -->
   <primitive_test_version>5</primitive_test_version>
-  <!--  -->
   <status>FREE</status>
-  <!--  -->
   <synopsis>TC_CMAGENT_1 - Set Session ID API Validation</synopsis>
-  <!--  -->
   <groups_id>4</groups_id>
-  <!--  -->
   <execution_time>1</execution_time>
-  <!--  -->
   <long_duration>false</long_duration>
-  <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
-  <!-- Reason for skipping the tests if marked to skip -->
+  <remarks/>
   <skip>false</skip>
-  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
-    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
-    <!--  -->
   </rdk_versions>
-  <script_tags />
+  <test_cases>
+    <test_case_id>TC_CMAGENT_1</test_case_id>
+    <test_objective>To Validate "Set Session ID" Function of CM Agent</test_objective>
+    <test_type>Positive</test_type>
+    <test_setup>XB3</test_setup>
+    <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component"
+2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
+    <api_or_interface_used>None</api_or_interface_used>
+    <input_parameters>Json Interface:
+API Name
+CMAgent_SetSessionId
+Input
+1.sessionId as 0
+2.pathname (Device.X_CISCO_COM_CableModem.)
+3.override as 0 (This parameter will enable the reading of current session id and check set session id api with value read)
+4. priority as 0</input_parameters>
+    <automation_approch>1.Configure the Function info in Test Manager GUI  which needs to be tested  
+(CMAgent_SetSessionId - func name - "If not exists already"
+ cmagent - module name
+ Necessary I/P args as Mentioned in Input)
+2.Python Script will be generated/overrided automically by Test Manager with provided arguments in configure page (TS_CMAGENT_SetSessionId.py)
+3.Execute the generated Script(TS_CMAGENT_SetSessionId.py) using excution page of  Test Manager GUI
+4.cmagentstub which is a part of TDK Agent process, will be in listening mode to execute TDK Component function named CMAgent_SetSessionId through registered TDK cmagentstub function along with necessary Entry Values as arguments
+5.CMAgent_SetSessionId function will call CCSP Base Interface Function named CcspBaseIf_SendcurrentSessionIDSignal, that inturn will call "CcspCcMbi_CurrentSessionIdSignal" along with  provided input arguments to assign session id to global value of CM Agent
+6.Responses(printf) from TDK Component,Ccsp Library function and cmagentstub would be logged in Agent Console log based on the debug info redirected to agent console   
+7.cmagentstub will validate the available result (from agent console log and Pointer to instance as non null ) with expected result (Eg:"Session ID assigned Succesfully") and the same is updated in agent console log
+8.TestManager will publish the result in GUI as PASS/FAILURE based on the response from cmagentstub</automation_approch>
+    <except_output>CheckPoint 1:
+Session ID assigned log from DUT should be available in Agent Console Log
+CheckPoint 2:
+TDK agent Test Function will log the test case result as PASS based on API response 
+CheckPoint 3:
+TestManager GUI will publish the result as PASS in Execution page</except_output>
+    <priority>High</priority>
+    <test_stub_interface>None</test_stub_interface>
+    <test_script>TS_CMAGENT_SetSessionId</test_script>
+    <skipped>No</skipped>
+    <release_version/>
+    <remarks/>
+  </test_cases>
+  <script_tags/>
 </xml>
+
 '''
 
 # use tdklib library,which provides a wrapper for tdk testcase script 

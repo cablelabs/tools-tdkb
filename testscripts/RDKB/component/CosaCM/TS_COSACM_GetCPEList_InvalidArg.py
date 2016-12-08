@@ -16,46 +16,77 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
-##
 '''
-<?xml version='1.0' encoding='utf-8'?>
-<xml>
-  <id></id>
-  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <id/>
   <version>2</version>
-  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_COSACM_GetCPEList_InvalidArg</name>
-  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
-  <primitive_test_id></primitive_test_id>
-  <!-- Do not change primitive_test_id if you are editing an existing script. -->
+  <primitive_test_id/>
   <primitive_test_name>COSACM_GetCPEList_InvalidArg</primitive_test_name>
-  <!--  -->
   <primitive_test_version>1</primitive_test_version>
-  <!--  -->
   <status>FREE</status>
-  <!--  -->
   <synopsis>Test case to verify CosaDmlCmGetCPEList API with invalid parameters</synopsis>
-  <!--  -->
   <groups_id>4</groups_id>
-  <!--  -->
   <execution_time>1</execution_time>
-  <!--  -->
   <long_duration>false</long_duration>
-  <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
-  <!-- Reason for skipping the tests if marked to skip -->
+  <remarks/>
   <skip>false</skip>
-  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
-    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
-    <!--  -->
   </rdk_versions>
-  <script_tags />
+  <test_cases>
+    <test_case_id>TC_COSACM_48</test_case_id>
+    <test_objective>To Validate Cable Modem 
+"CosaDmlCmGetCPEList" API under Negative scenario</test_objective>
+    <test_type>Positive</test_type>
+    <test_setup>Emulator,
+XB3</test_setup>
+    <pre_requisite>1.Ccsp Components  should be in a running state of DUT that includes component under test Cable Modem
+2.TDK Agent should be in running state or invoke it through StartTdk.sh script
+
+
+</pre_requisite>
+    <api_or_interface_used>None</api_or_interface_used>
+    <input_parameters>Json Interface:
+API Name
+COSACM_GetCPEList_InvalidArg
+Input
+N/A
+
+
+
+</input_parameters>
+    <automation_approch>1.Configure the Function info in Test Manager GUI  which needs to be tested  
+(COSACM_GetCPEList_InvalidArg - func name - "If not exists already" ( This is considered as default Primitive test case)
+ cosacm - module name
+ Necessary I/P args if needed as Mentioned in Input)
+2.Create a Python Script in Test Manager with default primitive test case through add new rdkb script option (TS_COSACM_GetCPEList_InvalidArg.py)
+3.Customize the generated script template to handle load/unload and pass/fail scenarios
+3.Execute the generated Script(TS_COSACM_GetCPEList_InvalidArg.py) using execution page of  Test Manager GUI
+4.cosacmstub which is a part of TDK Agent process, will be in listening mode to execute TDK Component function named COSACM_GetCPEList_InvalidArg through registered TDK cosacmstub function along with necessary Entry Values as arguments
+5.COSACM_GetCPEList_InvalidArg function will call ssp_cosacm_getcpelist_invalid_arg with improper input argument say unallocated memory pointer,that inturn will call relevant cm hal Function to get/fetch CM status data model value
+6.Responses(printf) from TDK Component,Ccsp Library function and cosacmstub would be logged in Agent Console log based on the debug info redirected to agent console   
+7.cosacmstub function COSACM_GetCPEList_InvalidArg will validate the available result (return value from ssp_cosacm_getcpelist_invalid_arg as failure) with expected result (failure) and the output argument value is updated in agent console log and json output variable along with return value
+8.TestManager will publish the result in GUI as PASS/FAILURE based on the response from COSACM_GetCPEList_InvalidArg function</automation_approch>
+    <except_output>CheckPoint 1:
+Cosa CM Get CPE List failure log from DUT should be available in Agent Console Log without any crash
+CheckPoint 2:
+TDK agent Test Function will log the test case result as PASS based on API response which will be available in Test Manager Result ( XLS)
+CheckPoint 3:
+TestManager GUI will publish the result as PASS in Execution/Console page of Test Manager</except_output>
+    <priority>High</priority>
+    <test_stub_interface>None</test_stub_interface>
+    <test_script>TS_COSACM_GetCPEList_InvalidArg</test_script>
+    <skipped>No</skipped>
+    <release_version/>
+    <remarks>None</remarks>
+  </test_cases>
+  <script_tags/>
 </xml>
+
 '''
 #use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib;

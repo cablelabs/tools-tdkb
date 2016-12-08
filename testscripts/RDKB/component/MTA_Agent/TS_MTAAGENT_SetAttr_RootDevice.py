@@ -17,44 +17,68 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version='1.0' encoding='utf-8'?>
-<xml>
-  <id></id>
-  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <id/>
   <version>11</version>
-  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_MTAAGENT_SetAttr_RootDevice</name>
-  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
-  <primitive_test_id></primitive_test_id>
-  <!-- Do not change primitive_test_id if you are editing an existing script. -->
+  <primitive_test_id/>
   <primitive_test_name>MTA_agent_SetParameterAttr</primitive_test_name>
-  <!--  -->
   <primitive_test_version>1</primitive_test_version>
-  <!--  -->
   <status>FREE</status>
-  <!--  -->
   <synopsis>TC_MTAAGENT_10 - To set the parameter attributes for all parameters under the root "Device.X_CISCO_COM_MTA.DSXLog."</synopsis>
-  <!--  -->
-  <groups_id />
-  <!--  -->
+  <groups_id/>
   <execution_time>5</execution_time>
-  <!--  -->
   <long_duration>false</long_duration>
-  <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
-  <!-- Reason for skipping the tests if marked to skip -->
+  <remarks/>
   <skip>false</skip>
-  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
-    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
-    <!--  -->
   </rdk_versions>
-  <script_tags />
+  <test_cases>
+    <test_case_id>TC_MTAAGENT_8</test_case_id>
+    <test_objective>To set the paramter attributes for all parametrs under the root "Device."</test_objective>
+    <test_type>Positive</test_type>
+    <test_setup>XB3</test_setup>
+    <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
+4.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
+    <api_or_interface_used/>
+    <input_parameters>Json Interface:
+API Name
+MTA_agent_SetParameterAttr
+Input
+1.PathName ( eg: "Device." )
+2.Notification type 
+("notification") 
+(eg:pasive)
+3.Access Control Change type ("accessControlChanged") 
+(eg:anybody)</input_parameters>
+    <automation_approch>1.Create a function named MTA_agent_SetParameterAttr in Test Manager GUI.
+2.Configure the info of the  function under test in function  and create a python script
+3.Execute the generated Script(TS_MTAAGENT_SetAttr_RootDevice.py) using execution page of  Test Manager GUI 
+4.This script will in turn call mta_agent stub in TDK Agent 
+5.MTA_agent_SetParameterAttr function will call CCSP Base Interface Function named "CcspBaseIf_setParameterAttributes" , that inturn will call MTA Agent Library Function "CcspCcMbi_SetParameterAttributes" along with provided path name and Value
+6.MTA_agent_SetParameterAttr  function will call CCSP Base Interface Function named "CcspBaseIf_getParameterAttributes" for the same inputs to check whether the attributes have been updated .
+7.Responses(printf) from TDK Component and mta agentstub would be logged in Agent Console log 
+8.Based on the log set the result as SUCCESS or FAILURE</automation_approch>
+    <except_output>CheckPoint 1:
+Attributes of Requested Path is compared with the the given input values
+CheckPoint 2:
+TDK agent Test Function will log the test case result as PASS based on API response
+CheckPoint 3:
+TestManager GUI will publish the result as PASS in Execution page</except_output>
+    <priority>High</priority>
+    <test_stub_interface>None</test_stub_interface>
+    <test_script>TS_MTAAGENT_SetAttr_RootDevice</test_script>
+    <skipped>No</skipped>
+    <release_version/>
+    <remarks/>
+  </test_cases>
+  <script_tags/>
 </xml>
+
 '''
 																								# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
