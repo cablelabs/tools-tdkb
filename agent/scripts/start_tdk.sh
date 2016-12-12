@@ -22,11 +22,11 @@
 start_tdk() {
     if [ -d "/opt" ];then
         cp -r /var/TDK /opt
-        sh -c /opt/TDK/StartTDK.sh &
+        sh -c /opt/TDK/StartTDK.sh
     else
         if [ -d "/nvram" ];then
             cp -r /var/TDK /nvram
-            sh -c /nvram/TDK/StartTDK.sh &
+            sh -c /nvram/TDK/StartTDK.sh
         fi
     fi
 }
