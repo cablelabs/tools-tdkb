@@ -16,8 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
-#
-
 package require Expect;
 #Procedure initialize values from Config.txt
 proc Initializer {configFile} {   
@@ -99,6 +97,13 @@ puts "$configFile";
 			set CMip $Vvalue;
 
    		}
+		
+		if { ![string compare $Vname "cmIPAux"] } {
+                        global CMipaux "";
+                        set CMipaux $Vvalue;
+
+                }
+
 
                 if { ![string compare $Vname "cmPassword"] } {
                         global CMpassword "";
@@ -231,6 +236,13 @@ puts "$configFile";
 			set wlanName $Vvalue;
 
    		}
+		
+		if { ![string compare $Vname "WlanNameAuth"] } {
+                        global wlanNameAuth "";
+                        set wlanNameAuth $Vvalue;
+
+                }
+
 
 		if { ![string compare $Vname "WlanPassword"] } {
 			global wlanPassword "";
@@ -250,6 +262,13 @@ puts "$configFile";
                         set wlanAdminName $Vvalue;
 
                 }
+		
+		if { ![string compare $Vname "WlanAdminName2"] } {
+                        global wlanAdminName2 "";
+                        set wlanAdminName2 $Vvalue;
+
+                }
+
 
                 if { ![string compare $Vname "WlanAdminPassword"] } {
                         global wlanAdminPassword "";
@@ -384,6 +403,13 @@ puts "$configFile";
                 }
 	
 		
+		if { ![string compare $Vname "ProfilePath2"] } {
+                        global profilePath2 "";
+                        set profilePath2 $Vvalue;
+
+                }
+		
+
 		if { ![string compare $Vname "Interface"] } {
 			global no "";
 			set no $Vvalue;
@@ -395,6 +421,33 @@ puts "$configFile";
                         set siteKeyword $Vvalue;
 
                 }
+
+		if { ![string compare $Vname "ALUEndPoint1"] } {
+                        global aluEndPoint1 "";
+                        set aluEndPoint1 $Vvalue;
+
+                }
+
+		if { ![string compare $Vname "ALUEndPoint2"] } {
+                        global aluEndPoint2 "";
+                        set aluEndPoint2 $Vvalue;
+
+                }
+
+		if { ![string compare $Vname "BENUEndPoint1"] } {
+                        global benuEndPoint1 "";
+                        set benuEndPoint1 $Vvalue;
+
+                }
+
+		if { ![string compare $Vname "BENUEndPoint2"] } {
+                        global benuEndPoint2 "";
+                        set benuEndPoint2 $Vvalue;
+
+                }
+
+
+
 
 		if { ![string compare $Vname "SiteUrl"] } {
                         global siteUrl "";
@@ -475,6 +528,41 @@ puts "$configFile";
 			set ssid5 $Vvalue;
 
    		}
+
+
+		 if { ![string compare $Vname "XFINITYSSID2"] } {
+                        global xfinityssid2 "";
+                        set xfinityssid2 $Vvalue;
+
+                }
+
+
+                if { ![string compare $Vname "XFINITYSSID5"] } {
+                        global xfinityssid5 "";
+                        set xfinityssid5 $Vvalue;
+
+                }
+		
+		if { ![string compare $Vname "XFINITYSSID2DEVICE2"] } {
+                        global xfinityssid2device2 "";
+                        set xfinityssid2device2 $Vvalue;
+
+                }
+
+
+                if { ![string compare $Vname "XFINITYSSID5DEVICE2"] } {
+                        global xfinityssid5device2 "";
+                        set xfinityssid5device2 $Vvalue;
+
+                }
+		
+		if { ![string compare $Vname "CHANGEDSSID"] } {
+                        global changedssid "";
+                        set changedssid $Vvalue;
+
+                }
+
+
                 if { ![string compare $Vname "RadioIndex2"] } {
                         global ri2 "";
                         set ri2 $Vvalue;

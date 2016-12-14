@@ -16,8 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
-#
-
 package require Expect;
 source proc.tcl;
 
@@ -56,9 +54,11 @@ puts "argument exist";
 } else {
 set dataType "null";
 }
+after 10000;
 set output1 "";
 set output1 [exec java -cp $ClassPath $Class $oui $SNno $deviceType GetParameterValue $parameter $value $dataType];
 puts "$output1"
+after 10000;
 } elseif {[regexp {SetMultipleParameterValues} $set_get_type match] == 1} {
 if { [info exists dataType]} {
 set output1 "";
@@ -215,8 +215,6 @@ expect -re ".*>";
 set outConfig $expect_out(buffer);
 send "exit\r";
 puts "$outConfig";
-
-
 if { [regexp {.*IPv4 Address.*: (\d+\.\d+\.\d+\.\d+).*Subnet.*Default Gateway.*:.*10.0.0.1.*Ethernet.*} $outConfig matcn Ipval] == 1 } {
 puts "Obtained IP : $Ipval";
 } else {
@@ -263,14 +261,6 @@ return $Ipval;
 
 
 proc config_wlan_sec_open {ClassPath Class oui SNno deviceType device_param test_radio ssidName ri si} {
-
-puts {
-################################################################################
-#Step 1 :Configuring the Accesspoint with Open Secuirty mode                                                                        			 
-################################################################################
-}
-
-
 if {[regexp {2.4ghz} $test_radio]} {
 set ssid_param "Device.WiFi.SSID.$si.SSID";
 
@@ -286,6 +276,7 @@ return $result;
 set result "pass";
 set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType SetParameterValue $device_param None string];
 puts "The Result of Setparameter is $response";
+after 10000;
 if {![regexp {pass} $response]} {
 puts "Setparameter fails";
 set result "fail";
@@ -293,6 +284,7 @@ exit 0;
 }
 set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType SetParameterValue $ssid_param $ssidName string];
 puts "The Result of Setparameter is $response";
+after 10000;
 if {![regexp {pass} $response]} {
 puts "Setparameter fails";
 set result "fail";
@@ -302,11 +294,12 @@ exit 0;
 
 puts {
 ################################################################################
-#Step 2 :Get the values of the parameters that have been set                                                                					 
+#Step 2 :Get the values of the parameters that have been set                                                                		
 ################################################################################
 }
 set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType GetParameterValue $device_param null null];
 puts "The Result of Getparameter is $response";
+after 10000;
 if {![regexp {pass} $response]} {
 puts "Setparameter fails";
 set result "fail";
@@ -364,6 +357,7 @@ set multi_param_value "AES,WPA2-Personal";
 ################### Set and Get the Parameter values and Validate the same ######################################
 set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType SetParameterValue $radio_param 1 boolean];
 puts "The Result of Setparameter is $response";
+after 10000;
 if {![regexp {pass} $response]} {
 puts "Setparameter fails";
 set result "fail";
@@ -373,36 +367,35 @@ exit 0;
 
 set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType SetParameterValue $ssid_param $ssidName string];
 puts "The Result of Setparameter is $response";
+after 10000;
 if {![regexp {pass} $response]} {
 puts "Setparameter fails";
 set result "fail";
 exit 0;
 }
-
-
 
 
 set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType SetMultipleParameterValues $security_param $multi_param_value string,string];
 puts "The Result of Setparameter is $response";
+after 10000;
 if {![regexp {pass} $response]} {
 puts "Setparameter fails";
 set result "fail";
 exit 0;
 }
-
-
 
 set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType SetParameterValue $sec_key_param wifitest123 string];
 puts "The Result of Setparameter is $response";
+after 10000;
 if {![regexp {pass} $response]} {
 puts "Setparameter fails";
 set result "fail";
 exit 0;
 }
 
-
 set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType GetParameterValue $ssid_param null null];
 puts "The Result of Getparameter is $response";
+after 10000;
 if {![regexp {pass} $response]} {
 puts "Setparameter fails";
 set result "fail";
@@ -411,14 +404,12 @@ exit 0;
 
 set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType GetParameterValue $dev_param null null];
 puts "The Result of Getparameter is $response";
+after 10000;
 if {![regexp {pass} $response]} {
 puts "Setparameter fails";
 set result "fail";
 exit 0;
 }
-
-
-
 puts "$result";
 return $result;
 }
@@ -427,6 +418,7 @@ return $result;
 
 
 #####################Procedure to configure ethernet client############################
+
 proc config_ethernet_client {ipaddr userName passWord osName} {
 if{[regexp -nocase {windows} $osName match] == 1} {
 spawn telnet $ipaddr;
@@ -461,14 +453,10 @@ return $Ipval;
 }
 
 
-############procedure for interface  enable/disable###############################
+############Procedure for interface  enable/disable###############################
 
 proc config_interface_enable_disable {wlanip wlanAdminName wlanAdminPassword interface_name option} {
 set result "pass";
-
-
-
-
 spawn telnet $wlanip;
 set timeout 100;
 expect -re (.*ogin:);
@@ -476,21 +464,16 @@ send "$wlanAdminName\r";
 expect -re (.*word:);
 send "$wlanAdminPassword\r";
 expect -re ".*>";
-
 send "netsh interface show interface\r";
 expect -re ".*>";
 set output $expect_out(buffer);
-
 send "netsh interface set interface name=\"$interface_name\" admin=$option\r";
 expect -re ".*>";
-
 send "netsh interface show interface\r";
 expect -re ".*>";
 #set output $expect_out(buffer);
 send "exit\r";
-
 close $spawn_id;
-
 return $result;
 }
 
@@ -500,7 +483,7 @@ return $result;
 
 
 
-############procedure for RDK Logs###############################
+############Procedure for RDK Logs###############################
 
 proc delete_rdklogs {cmIp cmPassword logPath backupLogPath logFileName} {
 set result "pass";
@@ -535,8 +518,7 @@ return $result;
 
 
 
-############procedure for Fetching and validating RDK Logs###############################
-
+############Procedure for Fetching and validating RDK Logs###############################
 
 proc fetch_validate_rdklogs {cmIp cmPassword logFilePath backupLogFilePath logFileName parameterName value alternateparameterName} {
 set result "pass";
@@ -548,7 +530,6 @@ send "$cmPassword\r";
 expect -re (.*sole>);
 send "\r\rquit\r";
 expect -re (.*#);
-
 send "cd $logFilePath\r";
 expect -re (.*#);
 send "cat $logFileName\r";
