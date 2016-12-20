@@ -20,15 +20,17 @@
 #!/bin/sh
 
 start_tdk() {
-    if [ -d "/opt" ];then
-        cp -r /var/TDK /opt
-        sh -c /opt/TDK/StartTDK.sh
-    else
-        if [ -d "/nvram" ];then
-            cp -r /var/TDK /nvram
-            sh -c /nvram/TDK/StartTDK.sh
-        fi
+
+TDK_EXECUTION_PATH=`cat /var/TDK/tdk_platform.properties|grep TDK_EXECUTION_PATH|cut -d '=' -f 2`
+echo $TDK_EXECUTION_PATH
+    if [ -d $TDK_EXECUTION_PATH ];then
+         echo "path exists"
+         cp -r /var/TDK $TDK_EXECUTION_PATH/TDK/
+         sh -c $TDK_EXECUTION_PATH/TDK/StartTDK.sh
+     else
+         echo "path not exists"
     fi
+
 }
 
 start_tdk
