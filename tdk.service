@@ -23,7 +23,7 @@ Wants=dbus.service
 
 [Service]
 Type=forking
-ExecStartPre=/bin/sh -c 'sleep 60'
 ExecStart=/bin/sh -c '/var/TDK/start_tdk.sh'
+Restart=always
 [Install]
 WantedBy=multi-user.target
