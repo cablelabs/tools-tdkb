@@ -37,7 +37,7 @@ puts {
 ###########################################################################################################
 }
 
-set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.X_CISCO_COM_CableModem.IPAddress null null {rType output}];
+set response [device_set_get_param $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.X_CISCO_COM_CableModem.IPv6Address null null {rType output}];
 puts "The Result of Setparameter is $response";
 
 if {[regexp -nocase {VALUE:(.*)\s+TYPE} $response m o]} {
