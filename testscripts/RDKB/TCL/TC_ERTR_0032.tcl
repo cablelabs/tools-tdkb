@@ -78,7 +78,7 @@ puts {
 ################################################################################
 }
 puts "Expected: Network name \"$ssid2\" should be broadcasted"; 
-if { [regexp {RDKB-2.4} $outpRad] == 1} {
+if { [regexp "$ssid2" $outpRad] == 1} {
 set passFlag [expr $passFlag + 1];	
 puts "\nObtained: Network name \"$ssid2\" is broadcasted on the network";
 } else {

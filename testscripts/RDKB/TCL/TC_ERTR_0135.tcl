@@ -96,7 +96,7 @@ set passFlag "";
 set failFlag "";
 
 puts "Expected: Network name \"$ssid5\" should not be broadcasted";
-if { [regexp {RDKB-5} $outpRad] == 1} {
+if { [regexp "$ssid5" $outpRad] == 1} {
 set failFlag [expr $failFlag + 1];
 puts "\nObtained: Network name \"$ssid5\" is broadcasted on the network";
 } else {

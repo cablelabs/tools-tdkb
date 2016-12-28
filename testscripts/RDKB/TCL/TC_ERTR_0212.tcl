@@ -205,7 +205,7 @@ send "$wlanName\r";
 expect -re (.*word:);
 send "$wlanPassword\r";
 expect -re ".*>";
-send "netsh wlan delete profile name=\"RDKB-2.4\"\r";
+send "netsh wlan delete profile name=\"$ssid2\"\r";
 expect -re ".*>";
 send "exit\r"
 expect -re ".*>";

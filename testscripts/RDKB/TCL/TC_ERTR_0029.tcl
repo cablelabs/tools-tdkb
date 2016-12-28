@@ -114,7 +114,7 @@ send "$wlanPassword\r";
 expect -re ".*>";
 send "netsh wlan add profile filename=\"$profilePath\\Wireless-5GHz.xml\" interface=\"$interface_name1\"\r";
 expect -re ".*>";
-send "netsh wlan connect RDKB-5\r";
+send "netsh wlan connect $ssid5\r";
 expect -re ".*>";
 set outpCon $expect_out(buffer);
 after 20000;
@@ -124,7 +124,7 @@ set outIp $expect_out(buffer);
 send "netsh wlan show interfaces\r";
 expect -re ".*>";
 set outInt $expect_out(buffer);
-send "netsh wlan delete profile name=\"RDKB-5\"\r";
+send "netsh wlan delete profile name=\"$ssid5\"\r";
 expect -re ".*>";
 send "exit\r"
 expect -re ".*>";
@@ -137,7 +137,7 @@ puts {
 #Step 4 :Verifying the 5GHz Wi-Fi Connection Establishment
 ################################################################################
 }
-if {[regexp {There is no profile "RDKB-5" assigned to the specified interface.} $outpCon match] == 1} {
+if {[regexp {There is no profile "$ssid5" assigned to the specified interface.} $outpCon match] == 1} {
 
 	puts "\nMissing profile. Please ensure that you create a profile and then try connecting";
 	set failFlag [expr $failFlag + 1];
