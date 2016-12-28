@@ -64,4 +64,5 @@ AutomationServerIP XX.XX.XX.XX
 AutomationServerName XXXXX
 AutomationServerPassword YYYYY
 
-
+#DNS Server IP
+DNSServerIP XX.XX.XX.XXX

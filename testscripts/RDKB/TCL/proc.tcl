@@ -657,6 +657,12 @@ puts "$configFile";
 
                 }
 
+                if { ![string compare $Vname "DNSServerIP"] } {
+                        global DnsServerIp "";
+                        set DnsServerIp $Vvalue;
+
+                }
+
 	 }
 close $handle;
 }

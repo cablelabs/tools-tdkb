@@ -113,7 +113,7 @@ if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match i
 }
 send "nslookup\r";
 expect -re ".*>";
-send "server 10.252.139.244\r";
+send "server $DnsServerIp\r";
 expect -re ".*>";
 send "$siteUrl\r";
 expect -re ".*>";
@@ -169,7 +169,7 @@ if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match i
 }
 send "nslookup\r";
 expect -re ".*>";
-send "server 10.252.139.244\r";
+send "server $DnsServerIp\r"
 expect -re ".*>";
 send "$siteUrl\r";
 expect -re ".*>";

@@ -213,13 +213,13 @@ expect -re ".*#";
 
 send "nslookup\r";
 expect -re ".*>";
-send "server 10.252.139.244\r";
+send "server $DnsServerIp\r";
 expect -re ".*>";
 send "$siteUrl\r";
 expect -re ".*>";
 set outUrlResp $expect_out(buffer);
 if {[regexp {.*connection timed out.*} $outUrlResp match] == 1} {
-send "server 10.252.139.247\r";
+send "server $DnsServerIp\r";
 expect -re ".*>";
 send "$siteUrl\r";
 expect -re ".*>";
@@ -236,7 +236,7 @@ send "exit\r";
 expect -re ".*#";
 regexp {.*Name.*?([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*} $outUrlResp match ipFull;
 regexp {(\d+\.\d+).*} $ipFull match ip;
-send "ip route add $ip.0.0/16 via 10.0.0.1\r";
+send "sudo ip route add $ip.0.0/16 via 10.0.0.1\r";
 expect -re ".*#";
 send "wget http://$siteUrl\r";
 expect -re ".*#";
@@ -259,7 +259,7 @@ send "bye\r";
 }
 
 }
-send "ip route delete $ip.0.0/16 via 10.0.0.1\r";
+send "sudo ip route delete $ip.0.0/16 via 10.0.0.1\r";
 expect -re ".*#";
 #wait
 close $spawn_id;

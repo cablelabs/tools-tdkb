@@ -56,7 +56,7 @@ puts {
 }
 
 set output2 "";
-set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.WiFi.Radio.$ri2.OperatingStandards null null } output2];
+set output2 [exec java -cp $ClassPath $Class $oui $SNno $deviceType GetParameterValue Device.WiFi.Radio.$ri2.OperatingStandards null null];
 puts $output2;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output2] == 1 } {
 
