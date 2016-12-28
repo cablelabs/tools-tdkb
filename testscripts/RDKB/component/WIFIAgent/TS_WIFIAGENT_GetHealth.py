@@ -107,7 +107,7 @@ if loadStatusExpected not in loadModuleresult.upper():
 tdkTestObj = obj.createTestStep('WIFIAgent_GetHealth');
 
 #Input Parameters
-tdkTestObj.addParameter("paramName","Device.");
+tdkTestObj.addParameter("paramName","Device.WiFi.");
 
 expectedresult = "SUCCESS";
 
