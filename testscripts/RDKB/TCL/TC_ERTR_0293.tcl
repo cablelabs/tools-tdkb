@@ -76,7 +76,7 @@ send "$Name\r";
 expect -re (.*word:);
 send "$password\r";
 expect -re ".*#";
-send "ip route add $wanIP via 10.0.0.1\r";
+send "sudo ip route add $wanIP via 10.0.0.1\r";
 expect -re ".*#";
 after 30000;
 send "ftp $wanIP\r";
@@ -88,7 +88,7 @@ expect -re (.*>);
 set outFtp $expect_out(buffer);
 send "bye\r";
 expect -re (.*#);
-send "ip route delete $wanIP via 10.0.0.1\r";
+send "sudo ip route delete $wanIP via 10.0.0.1\r";
 expect -re (.*#);
 #wait
 close $spawn_id;

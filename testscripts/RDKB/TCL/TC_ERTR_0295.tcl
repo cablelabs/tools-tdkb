@@ -85,12 +85,12 @@ send "exit\r";
 expect -re ".*#";
 regexp {.*Name.*?([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*} $outUrlResp match ipFull;
 regexp {(\d+\.\d+).*} $ipFull match ip;
-send "ip route add $ip.0.0/16 via 10.0.0.1\r";
+send "sudo ip route add $ip.0.0/16 via 10.0.0.1\r";
 expect -re ".*#";
 send "wget http://$siteUrl\r";
 expect -re ".*#";
 set outHttp $expect_out(buffer);
-send "ip route delete $ip.0.0/16 via 10.0.0.1\r";
+send "sudo ip route delete $ip.0.0/16 via 10.0.0.1\r";
 expect -re ".*#";
 #wait
 close $spawn_id;

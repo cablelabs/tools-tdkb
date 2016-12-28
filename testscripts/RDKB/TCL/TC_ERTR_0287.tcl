@@ -78,7 +78,7 @@ send "$Name\r";
 expect -re (.*word:);
 send "$password\r";
 expect -re ".*#";
-send "ip route add $wanIP via 10.0.0.1\r"; 
+send "sudo ip route add $wanIP via 10.0.0.1\r"; 
 expect -re ".*#";
 send "telnet $wanIP\r";
 set timeout 100;
@@ -104,7 +104,7 @@ send "exit\r";
 }
 } 
 expect -re ".*#";
-send "ip route delete $wanIP via 10.0.0.1\r";
+send "sudo ip route delete $wanIP via 10.0.0.1\r";
 expect -re ".*#";
 #wait
 close $spawn_id;
