@@ -66,5 +66,11 @@ class pam : public RDKTestStubInterface
         bool COSAPAM_DmlMlanGetParamValue(IN const Json::Value& req, OUT Json::Value& response);
         bool COSAPAM_DmlEthGetParamValue(IN const Json::Value& req, OUT Json::Value& response);
         bool COSAPAM_DmlDiGetParamValue(IN const Json::Value& req, OUT Json::Value& response);
+        bool COSAPAM_UpnpEnable(IN const Json::Value& req, OUT Json::Value& response);
+        bool COSAPAM_UpnpGetState(IN const Json::Value& req, OUT Json::Value& response);
+        bool COSAPAM_DhcpGet(IN const Json::Value& req, OUT Json::Value& response);
+        bool COSAPAM_DhcpsEnable(IN const Json::Value& req, OUT Json::Value& response);
+        bool COSAPAM_DnsGet(IN const Json::Value& req, OUT Json::Value& response);
+        bool COSAPAM_DnsEnable(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__PAM_STUB_H__

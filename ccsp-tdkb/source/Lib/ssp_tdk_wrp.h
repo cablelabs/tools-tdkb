@@ -55,5 +55,47 @@ typedef struct GetAttr_Struct
     char *pParamNotify;
 
 }GETPARAMATTR;
+typedef struct _Config
+{
+        unsigned long InstanceNumber;
+        char Alias[20];
+        int bEnabled;
+        char Interface[20];
+        int PassthroughEnable;
+        char PassthroughDHCPPool;
+}CFG;
+
+typedef struct _Info
+{
+         unsigned long Status;
+         unsigned long DHCPStatus;
+         char IPAddress;
+         char SubnetMask;
+         int NumIPRouters;
+         int NumDnsServers;
+}INFO;
+
+typedef struct _Poolcfg
+{
+       unsigned long InstanceNumber;
+       char Alias[20];
+       int bEnabled;
+       char Interface[20];
+       int Order;
+       int VendorClassIDExclude;
+       int ClientIDExclude;
+       int ChaddrExclude;
+       int UserClassIDExclude;
+       int DNSServersEnabled;
+       int LeaseTime;
+}POOLCFG;
+
+typedef struct _Dns
+{
+        unsigned long InstanceNumber;
+        char Alias[20];
+        int bEnabled;
+        char Interface[20];
+}DNS;
 
 #endif

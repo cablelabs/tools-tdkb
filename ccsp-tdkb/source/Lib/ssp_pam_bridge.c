@@ -43,7 +43,10 @@
 #include <dslh_definitions_database.h>
 #include <sys/ucontext.h>
 
-
+#include "cosa_apis.h"
+#include "cosa_dml_api_common.h"
+#include "cosa_dhcpv4_apis.h"
+#include "cosa_dml_api_dns.h"
 #include "cosa_bridging_dml.h"
 #include "cosa_x_cisco_com_multilan_apis.h"
 #include "cosa_ethernet_apis_multilan.h"
@@ -434,6 +437,433 @@ int ssp_DmlDiGetParamValue(char* MethodName, char* pValue, PULONG size)
     }
         printf("ssp_DmlDiGetParamValue: retrieved Di information \n");
     return return_status;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CosaDmlUpnpInit
+ * Description          : This function will initialize the DML UPNP of Pam
+ *
+ * @param [in]          : None
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CosaDmlUpnpInit(void)
+{
+
+    int return_status = 0;
+    ANSC_HANDLE pam_handle = NULL;
+
+    printf("\n Entering ssp_CosaDmlUpnpInit function\n\n");
+
+    pam_handle = bus_handle_client;
+
+    return_status = CosaDmlUpnpInit(NULL,(PANSC_HANDLE)pam_handle);
+
+    if ( return_status != 0)
+    {
+        printf("ssp_CosaDmlUpnpInit:Failed to Initialize the upnp of pam\n");
+        return 1;
+    }
+    return 0;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CosaDmlUpnpEnable
+ * Description          : This function will invoke the cosa api of PAM to retrieve the
+ *                        Set Enable of Upnp
+ *
+ * @param [in]          : Value - holds the booleanvalue
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+
+int ssp_CosaDmlUpnpEnable(char* MethodName,int boolValue)
+{
+    int return_status = 0;
+    ANSC_HANDLE pam_handle = NULL;
+
+    printf("\n Entering ssp_CosaDmlUpnpDevEnable function\n\n");
+
+    BOOLEAN value = (boolValue == 0)?FALSE:TRUE;
+    pam_handle = bus_handle_client;
+
+    if( !(strcmp(MethodName, "UpnpDev")) )
+    {
+        return_status = CosaDmlUpnpDevEnable(pam_handle,value);
+    }
+    else if( !(strcmp(MethodName, "UpnpMediaServer")) )
+    {
+       return_status = CosaDmlUpnpDevEnableMediaServer(pam_handle,value);
+    }
+    else if( !(strcmp(MethodName, "UpnpIgd")) )
+    {
+       return_status = CosaDmlUpnpDevEnableIgd(pam_handle,value);
+    }
+
+    if ( return_status != 1)
+    {
+        printf("ssp_CosaDmlUpnpEnable:Upnp is enabled\n");
+        return 0;
+    }
+    printf("ssp_CosaDmlUpnpEnable:Upnp is disabled\n");
+    return 1;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CosaDmlUpnpGetState
+ * Description          : This function will invoke the cosa api of MTA to retrieve the
+ *                        state of upnpdev Igd
+ *
+ * @param [in]          : Value - 0
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+
+int ssp_CosaDmlUpnpGetState(char* MethodName)
+{
+    int return_status = 0;
+    ANSC_HANDLE pam_handle = NULL;
+
+    printf("\n Entering ssp_CosaDmlUpnpGetState function\n\n");
+
+    pam_handle = bus_handle_client;
+
+    if( !(strcmp(MethodName, "UpnpIgd")) )
+    {
+        return_status = CosaDmlUpnpDevGetIgdState(pam_handle);
+    }
+    if( !(strcmp(MethodName, "UpnpDev")) )
+    {
+           return_status = CosaDmlUpnpDevGetState(pam_handle);
+    }
+    if( !(strcmp(MethodName, "UpnpMediaServer")) )
+    {
+           return_status = CosaDmlUpnpDevGetMediaServerState(pam_handle);
+    }
+    printf("return_status is %d",return_status);
+    if ( return_status != 0)
+    {
+        printf("ssp_CosaDmlUpnpGetState: state of upnp is enabled\n");
+    }
+    printf("ssp_CosaDmlUpnpGetState: state of upnp is disabled");
+    return 0;
+
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CosaDmlDhcpInit
+ * Description          : This function will initialize the DML DHCP of Pam
+ *
+ * @param [in]          : None
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CosaDmlDhcpInit(void)
+{
+
+    int return_status = 0;
+    ANSC_HANDLE pam_handle = NULL;
+
+    printf("\n Entering ssp_CosaDmlDhcpInit function\n\n");
+
+    pam_handle = bus_handle_client;
+
+    return_status = CosaDmlDhcpInit(NULL,(PANSC_HANDLE)pam_handle);
+
+    if ( return_status != 0)
+    {
+        printf("ssp_CosaDmlDhcpInit:Failed to Initialize the Dhcp of pam\n");
+        return 1;
+    }
+
+    return 0;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CosaDmlDhcpGet
+ * Description          : This function will invoke the cosa api of PAM to retrieve the DHCP config
+ *
+ *
+ * @param [in]          : handleType - message bus handle
+ * @param [in]          : bufferType - Valid or NULL pointer
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CosaDmlDhcpGet(char* MethodName, void* cfg)
+{
+    int return_status = 0;
+    ANSC_HANDLE pam_handle = NULL;
+    COSA_DML_DHCPC_CFG DhcpCfg;
+    COSA_DML_DHCPC_INFO DhcpInfo;
+    int instnum=1;
+
+    printf("\n Entering ssp_CosaDmlDhcpGet function\n\n");
+
+    pam_handle = bus_handle_client;
+
+    if( !(strcmp(MethodName, "DhcpcConf")) )
+    {
+       CFG* temp = cfg;
+        return_status = CosaDmlDhcpcGetCfg(pam_handle,&DhcpCfg);
+
+        printf("ssp_CosaDmlDhcpcGetCfg: Instance Number  retrieved:%d\n",DhcpCfg.InstanceNumber);
+        printf("ssp_CosaDmlDhcpcGetCfg: Alias retrieved:%s\n",DhcpCfg.Alias);
+        printf("ssp_CosaDmlDhcpcGetCfg: Status retrieved:%d\n",DhcpCfg.bEnabled);
+        printf("ssp_CosaDmlDhcpcGetCfg: Interface retrieved:%s\n",DhcpCfg.Interface);
+        printf("ssp_CosaDmlDhcpcGetCfg: PassthroughEnable retrieved:%d\n",DhcpCfg.PassthroughEnable);
+
+        temp->InstanceNumber =(unsigned long)DhcpCfg.InstanceNumber;
+        strcpy(temp->Alias ,DhcpCfg.Alias);
+        temp->bEnabled = (int)DhcpCfg.bEnabled;
+        strcpy(temp->Interface,DhcpCfg.Interface);
+        temp->PassthroughEnable = (int)DhcpCfg.PassthroughEnable;
+    }
+
+    else if( !(strcmp(MethodName, "DhcpcInfo")) )
+    {
+       INFO* temp = cfg;
+       return_status = CosaDmlDhcpcGetInfo(pam_handle,instnum,&DhcpInfo);
+
+        printf("ssp_CosaDmlDhcpcGetInfo: Status retrieved:%d\n",DhcpInfo.Status);
+        printf("ssp_CosaDmlDhcpcGetInfo: DHCP status retrieved:%d\n",DhcpInfo.DHCPStatus);
+        printf("ssp_CosaDmlDhcpcGetInfo: DhcpInfo of IP routers retrieved:%d\n",DhcpInfo.NumIPRouters);
+        printf("ssp_CosaDmlDhcpcGetInfo: DhcpInfo of Dns servers retrieved:%d\n",DhcpInfo.NumDnsServers);
+
+        temp->Status=(unsigned long)DhcpInfo.Status;
+        temp->DHCPStatus =(unsigned long)DhcpInfo.DHCPStatus;
+        temp->NumIPRouters=(int)DhcpInfo.NumIPRouters;
+        temp->NumDnsServers=(int)DhcpInfo.NumDnsServers;
+    }
+    else if ( !(strcmp(MethodName, "DhcpcNumberOfEntries")) )
+    {
+       int* temp =cfg;
+       return_status = CosaDmlDhcpcGetNumberOfEntries(pam_handle);
+       if (return_status ==1)
+       {
+           printf("ssp_CosaDmlDhcpcGetNumberOfEntries info:%d\n",return_status);
+           *temp=return_status;
+          return_status=0;
+       }
+    }
+
+    else if ( !(strcmp(MethodName, "DhcpcInstanceNumber")) )
+    {
+       CFG* temp =cfg;
+       return_status = CosaDmlDhcpcGetCfg(pam_handle,&DhcpCfg);
+       printf("ssp_CosaDmlDhcpcGetCfg: Instance Number  retrieved:%d\n",DhcpCfg.InstanceNumber);
+       temp->InstanceNumber =(unsigned long)DhcpCfg.InstanceNumber;
+    }
+
+    else if ( !(strcmp(MethodName, "DhcpsNumberOfPools")) )
+    {
+       int* temp =cfg;
+       return_status = CosaDmlDhcpsGetNumberOfPools(pam_handle);
+       if (return_status !=0)
+       {
+            printf("ssp_CosaDmlDhcpcGetNumberOfEntries info:%d\n",return_status);
+            *temp=return_status;
+           return_status=0;
+       }
+    }
+
+    else if ( !(strcmp(MethodName, "DhcpsState")) )
+    {
+       int* temp = cfg;
+       return_status = CosaDmlDhcpsGetState(pam_handle);
+       if ( return_status != 0)
+        {
+           printf("ssp_CosaDmlDhcpsGetState: DhcpsGetState is enabled\n");*temp=return_status;
+           return_status=0;
+        }
+        printf("ssp_CosaDmlDhcpsGetState: DhcpsGetState is disabled");*temp=return_status;
+        return_status=0;
+
+    }
+
+    if ( return_status != 0)
+    {
+        printf("ssp_CosaDmlDhcpcGetCfg:Failed to retrieve the Config\n");
+        return 1;
+    }
+    return 0;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CosaDmlDhcpsEnable
+ * Description          : This function will invoke the cosa api of PAM to retrieve the Set Enable of DHCP server
+ *
+ * @param [in]          : handleType - Message bus handle
+ * @param [in]          : Value - 0
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+
+int ssp_CosaDmlDhcpsEnable(int boolValue)
+{
+    int return_status = 0;
+    ANSC_HANDLE pam_handle = NULL;
+    printf("\n Entering ssp_CosaDmlDhcpsEnable function\n\n");
+    BOOLEAN value = (boolValue == 0)?FALSE:TRUE;
+    pam_handle = bus_handle_client;
+
+    return_status = CosaDmlDhcpsEnable(pam_handle,value);
+    if ( return_status != 1)
+    {
+        printf("ssp_CosaDmlDhcpsEnable:DHCP server is enabled\n");
+        return 0;
+    }
+    printf("ssp_CosaDmlDhcpsEnable:DHCP server is disabled\n");
+    return 1;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CosaDmlDnsInit
+ * Description          : This function will initialize the DML DNS of Pam
+ *
+ * @param [in]          : None
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CosaDmlDnsInit(void)
+{
+
+    int return_status = 0;
+    ANSC_HANDLE pam_handle = NULL;
+
+    printf("\n Entering ssp_CosaDmlDnsInit function\n\n");
+
+    pam_handle = bus_handle_client;
+
+    return_status = CosaDmlDnsInit(NULL,(PANSC_HANDLE)pam_handle);
+
+    if ( return_status != 0)
+    {
+        printf("ssp_CosaDmlDnsInit:Failed to Initialize the Dns of pam\n");
+        return 1;
+    }
+
+    return 0;
+}
+
+/********************************************************************************************
+ *Parameter Name        : ssp_CosaDmlDnsGet
+ * Description          : This function will invoke the cosa api of PAM to retrieve the value of DNS apis
+ *
+ * @param [in]          : MethodName - name of api
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CosaDmlDnsGet(char* MethodName, void* cfg)
+{
+    int return_status = 0;
+    ANSC_HANDLE pam_handle = NULL;
+    COSA_DML_DNS_CLIENT_SERVER DnsCfg;
+    unsigned long DNSServers=0;
+    pam_handle = bus_handle_client;
+
+    printf("\n Entering ssp_CosaDmlDnsGet function\n\n");
+    if( !(strcmp(MethodName, "DnsClientServerCfg")) )
+    {
+       DNS* temp= cfg;
+       return_status = CosaDmlDnsClientGetServer(pam_handle,&DnsCfg);
+
+       printf("ssp_CosaDmlDnsClientGetServer: Instance Number  retrieved:%d\n",DnsCfg.InstanceNumber);
+       printf("ssp_CosaDmlDnsGet: Alias retrieved:%s\n",DnsCfg.Alias);
+       printf("ssp_CosaDmlDnsGet: Status retrieved:%d\n",DnsCfg.bEnabled);
+       printf("ssp_CosaDmlDnsGet: Interface retrieved:%s\n",DnsCfg.Interface);
+
+       temp->InstanceNumber =(unsigned long)DnsCfg.InstanceNumber;
+       strcpy(temp->Alias ,DnsCfg.Alias);
+       temp->bEnabled = (int)DnsCfg.bEnabled;
+       strcpy(temp->Interface,DnsCfg.Interface);
+    }
+
+    else if ( !(strcmp(MethodName, "DnsClientStatus")) )
+    {
+       int* temp =cfg;
+       return_status = CosaDmlIpDnsGetClientStatus(pam_handle);
+       if ( return_status != 0)
+       {
+       printf("ssp_CosaDmlDnsGet: IpDnsGetClientStatus is enabled\n");
+       *temp = return_status;
+       return_status=0;
+       }
+       printf("ssp_CosaDmlIpDnsGetClientStatus: IpDnsGetClientStatus is disabled");
+       *temp = return_status;
+       return_status=0;
+    }
+    else if( !(strcmp(MethodName, "DnsClientServers")) )
+    {
+       int* temp =cfg;
+       return_status = CosaDmlDnsClientGetServers(pam_handle,&DNSServers);
+       if (return_status != 0)
+       {
+       printf("ssp_CosaDmlDnsGet: number of servers is %d\n",DNSServers);
+       *temp = (int)DNSServers;
+       return_status =0;
+       }
+    }
+    else if ( !(strcmp(MethodName, "DnsRelayStatus")) )
+    {
+       int* temp =cfg;
+       return_status = CosaDmlIpDnsGetRelayStatus(pam_handle);
+       if ( return_status != 0)
+       {
+        printf("ssp_CosaDmlDnsGet: IpDnsGetRelayStatus is enabled\n");
+        *temp = return_status;
+        return_status=0;
+       }
+       printf("ssp_CosaDmlDnsGet: IpDnsGetRelayStatus is disabled");
+       *temp = return_status;
+       return_status=0;
+    }
+    else if( !(strcmp(MethodName, "DnsRelayServers")) )
+    {
+       int* temp =cfg;
+       return_status = CosaDmlDnsRelayGetServers(pam_handle,&DNSServers);
+       if (return_status != 0)
+       {
+       printf("ssp_CosaDmlDnsGet: number of servers is %d\n",DNSServers);
+       *temp = (int)DNSServers;
+       return_status =0;
+        }
+    }
+    if ( return_status != 0)
+    {
+        printf("ssp_CosaDmlDnsGet:Failed to retrieve the information \n");
+        return 1;
+    }
+
+    return 0;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CosaDmlDnsEnable
+ * Description          : This function will invoke the cosa api of PAM to retrieve the
+ *                        Set Enable of Dns
+ *
+ * @param [in]          : handleType - Message bus handle
+ * @param [in]          : Value - 0
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+
+int ssp_CosaDmlDnsEnable(char* MethodName, int boolValue)
+{
+    int return_status = 0;
+    ANSC_HANDLE pam_handle = NULL;
+    printf("\n Entering ssp_CosaDmlDnsEnable function\n\n");
+    BOOLEAN value = (boolValue == 0)?FALSE:TRUE;
+
+    pam_handle = bus_handle_client;
+    if( !(strcmp(MethodName, "DnsClient")) )
+    {
+               return_status = CosaDmlDnsEnableClient(pam_handle,value);
+       }
+        else if( !(strcmp(MethodName, "DnsRelay")) )
+    {
+               return_status = CosaDmlDnsEnableRelay(pam_handle,value);
+       }
+
+    if ( return_status != 1)
+    {
+        printf("ssp_CosaDmlDnsEnable:Dns is enabled\n");
+        return 0;
+    }
+    printf("ssp_CosaDmlDnsEnableClient:Dns is disabled\n");
+    return 1;
 }
 
 #endif

@@ -40,6 +40,15 @@ int ssp_DmlMlanInit();
 int ssp_DmlMlanGetParamValue(char*, char*, unsigned long*);
 int ssp_DmlEthGetParamValue(char*);
 int ssp_DmlDiGetParamValue(char*, char*, unsigned long*);
+int ssp_CosaDmlUpnpInit();
+int ssp_CosaDmlDhcpInit();
+int ssp_CosaDmlDnsInit();
+int ssp_CosaDmlUpnpEnable(char*, int);
+int ssp_CosaDmlUpnpGetState(char*);
+int ssp_CosaDmlDhcpGet(char*, void*);
+int ssp_CosaDmlDhcpsEnable(int);
+int ssp_CosaDmlDnsGet(char*, void*);
+int ssp_CosaDmlDnsEnable(char*, int);
 };
 
 /*This is a constructor function for pam class*/
@@ -69,6 +78,13 @@ bool pam::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DmlMlanGetParamValue, "COSAPAM_DmlMlanGetParamValue");
     ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DmlEthGetParamValue, "COSAPAM_DmlEthGetParamValue");
     ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DmlDiGetParamValue, "COSAPAM_DmlDiGetParamValue");
+    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_UpnpEnable,"COSAPAM_UpnpEnable");
+    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_UpnpGetState,"COSAPAM_UpnpGetState");
+    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DhcpGet,"COSAPAM_DhcpGet");
+    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DhcpsEnable,"COSAPAM_DhcpsEnable");
+    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DnsGet,"COSAPAM_DnsGet");
+    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DnsEnable,"COSAPAM_DnsEnable");
+
 
 
     return TEST_SUCCESS;
@@ -97,6 +113,24 @@ std::string pam::testmodulepre_requisites()
         DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites: Failed to initialize the COSA PAM DML\n");
         return "TEST_FAILURE";
     }
+     returnValue = ssp_CosaDmlUpnpInit();
+     if(0 != returnValue)
+     {
+         DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites: Failed to initialize the COSA UPNP DML\n");
+         return "TEST_FAILURE";
+     }
+     returnValue = ssp_CosaDmlDhcpInit();
+     if(0 != returnValue)
+     {
+         DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites: Failed to initialize the COSA DHCP DML\n");
+         return "TEST_FAILURE";
+     }
+     returnValue = ssp_CosaDmlDnsInit();
+     if(0 != returnValue)
+     {
+         DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites: Failed to initialize the COSA DNS DML\n");
+         return "TEST_FAILURE";
+     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites:initialized the COSA PAM DML\n");
 
@@ -530,6 +564,330 @@ bool pam::COSAPAM_DmlDiGetParamValue(IN const Json::Value& req, OUT Json::Value&
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue ---->Exit\n");
     return TEST_SUCCESS;
 }
+/*******************************************************************************************
+ *
+ * Function Name    : COSAPAM_UpnpEnable
+ * Description      : This function will set the Upnp Enable value
+ *
+ * @param [in]  req - methodName :  Holds the name of the api
+ * @param [in]  req - boolType : Holds whether boolvalue is 0 or 1
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+
+
+bool pam::COSAPAM_UpnpEnable(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_UpnpEnable --->Entry \n");
+    int returnValue = 0;
+    int boolValue = 0;
+    char paramName[100] = {'\0'};
+
+    /* Validate the input arguments */
+
+    if(&req["Value"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+    if(&req["MethodName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
+    boolValue = req["Value"].asInt();
+    strcpy(paramName,req["MethodName"].asCString());
+    printf("paramName received as %s %d\n", paramName,boolValue);
+    returnValue = ssp_CosaDmlUpnpEnable(paramName,boolValue);
+    if(0 == returnValue)
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Successfully set the Upnp enable";
+    }
+    else
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Successfully set the Upnp disable";
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_UpnpEnable  --->Exit\n");
+    return TEST_SUCCESS;
+}
+/*******************************************************************************************
+ *
+ * Function Name    : COSAPAM_UpnpGetState
+ * Description      : This function will get the upnp state
+ *
+ * @param [in]  req - MethodName : Holds the names of api
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+
+
+bool pam::COSAPAM_UpnpGetState(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_UpnpDevGetIgdState --->Entry \n");
+
+    int returnValue = 0;
+    char paramName[100] = {'\0'};
+    char Details[100] = {'\0'};
+
+    /* Validate the input arguments*/
+    if(&req["MethodName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
+    strcpy(paramName,req["MethodName"].asCString());
+    printf("paramName received as %s\n", paramName);
+
+    returnValue = ssp_CosaDmlUpnpGetState(paramName);
+    printf("return value is %d\n",returnValue);
+    if(0 == returnValue)
+    {
+        sprintf(Details,"Upnp state is enabled" );
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Upnp state is disabled";
+        DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_UpnpGetState --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_UpnpGetState  --->Exit\n");
+    return TEST_SUCCESS;
+}
+/*******************************************************************************************
+ *
+ * Function Name    : COSAPAM_DhcpGet
+ * Description      : This function is used to retrieve value of DHCP get apis
+ *
+ * @param [in]  req - MethodName : Holds the name of api
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+bool pam::COSAPAM_DhcpGet(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DhcpGet --->Entry \n");
+
+    int returnValue = 0;
+    CFG cf = {0};
+    INFO retInfo = {0};
+    int value = 0;
+    char Details[200]= {'\0'};
+    char paramName[100] = {'\0'};
+
+    if(&req["MethodName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
+    strcpy(paramName,req["MethodName"].asCString());
+    printf("paramName received as %s\n", paramName);
+
+    /* Invoke the wrapper function to get the config */
+    if( !(strcmp(paramName, "DhcpcConf")) )
+    {
+        returnValue = ssp_CosaDmlDhcpGet(paramName,&cf);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"Interface is:%s Passthrough enable :%d Inst num retrieved is:%d Alias retrieved is: %s  Enabled or not:%d",cf.Interface,cf.PassthroughEnable,cf.InstanceNumber,cf.Alias,cf.bEnabled);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "DhcpcInfo")) )
+    {
+        returnValue = ssp_CosaDmlDhcpGet(paramName,&retInfo);
+       if(0 == returnValue)
+        {
+        sprintf(Details,"Status is:%d, DHCP Status:%d, Num of IPRouters:%d, Num of Dns Serves:%d\n",retInfo.Status,retInfo.DHCPStatus,retInfo.NumIPRouters,retInfo.NumDnsServers);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else
+    {
+        returnValue = ssp_CosaDmlDhcpGet(paramName,&value);
+       if(0 == returnValue)
+        {
+        sprintf(Details,"The value retrieved is: %lu", value);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+
+    if (0 != returnValue)
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to retrieve the value";
+        DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DhcpGet --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DhcpGet --->Exit\n");
+    return TEST_SUCCESS;
+}
+/*******************************************************************************************
+ *
+ * Function Name    : COSAPAM_DhcpsEnable
+ * Description      : This function will set the DHCP server Enable value
+ *
+ * @param [in]  req - boolType : Holds whether boolvalue is 0 or 1
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+
+
+bool pam::COSAPAM_DhcpsEnable(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DhcpsEnable --->Entry \n");
+    int returnValue = 0;
+    int  boolValue =0;
+     /* Validate the input arguments */
+    if(&req["Value"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
+    boolValue = req["Value"].asInt();
+
+    returnValue = ssp_CosaDmlDhcpsEnable(boolValue);
+    if(0 == returnValue)
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Successfully set the DHCP server enable";
+    }
+    else
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Successfully set the DHCP server disable";
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DhcpsEnable  --->Exit\n");
+    return TEST_SUCCESS;
+}
+/*******************************************************************************************
+ *
+ * Function Name    : COSAPAM_DnsGet
+ * Description      : This function is used to retrieve the number of DnsClientServers in the system
+ * @param [in]  req - handleType : Holds the message bus handle
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+bool pam::COSAPAM_DnsGet(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DnsGet --->Entry \n");
+
+    int returnValue = 0;
+    int value=0;
+       DNS cfg = {0};
+    char Details[64] = {'\0'};
+       char paramName[100] = {'\0'};
+       if(&req["MethodName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+    strcpy(paramName,req["MethodName"].asCString());
+    printf("paramName received as %s\n", paramName);
+
+    if( !(strcmp(paramName, "DnsClientServerCfg")) )
+       {
+        returnValue = ssp_CosaDmlDnsGet(paramName,&cfg);
+               if(0 == returnValue)
+        {
+        DEBUG_PRINT(DEBUG_TRACE,"\n print\n");
+        sprintf(Details,"Interface is:%s Inst num retrieved is:%d Alias retrieved is: %s  Enabled or not:%d",cfg.Interface,cfg.InstanceNumber,cfg.Alias,cfg.bEnabled);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+
+       }
+       else
+       {
+               returnValue = ssp_CosaDmlDnsGet(paramName,&value);
+               if(0 == returnValue)
+        {
+        sprintf(Details,"The value retrieved is: %d", value);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+
+       }
+
+
+     if (0 != returnValue)
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to retrieve the value";
+        DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DnsGet --->Exit\n");
+        return  TEST_FAILURE;
+    }
+
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DnsGet  --->Exit\n");
+    return TEST_SUCCESS;
+}
+/*******************************************************************************************
+ *
+ * Function Name    : COSAPAM_DnsEnable
+ * Description      : This function will set the Dns client Enable value
+ *
+ * @param [in]  req - handleType : Holds the message bus handle
+ * @param [in]  req - boolType : Holds whether boolvalue is 0 or 1
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+
+
+bool pam::COSAPAM_DnsEnable(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DnsEnableClient --->Entry \n");
+    int returnValue = 0;
+    int boolValue = 0;
+       char paramName[100] = {'\0'};
+
+    /* Validate the input arguments */
+
+    if(&req["Value"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+       if(&req["MethodName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
+    boolValue = req["Value"].asInt();
+       strcpy(paramName,req["MethodName"].asCString());
+    printf("paramName received as %s %d\n", paramName,boolValue);
+    returnValue = ssp_CosaDmlDnsEnable(paramName,boolValue);
+    if(0 == returnValue)
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Successfully set the Dns enable";
+    }
+    else
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Successfully set the Dns disable";
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DnsEnable --->Exit\n");
+    return TEST_SUCCESS;
+}
 
 /**************************************************************************
  * Function Name	: CreateObject
@@ -568,6 +926,12 @@ bool pam::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("COSAPAM_DmlMlanGetParamValue");
     ptrAgentObj->UnregisterMethod("COSAPAM_DmlEthGetParamValue");
     ptrAgentObj->UnregisterMethod("COSAPAM_DmlDiGetParamValue");
+    ptrAgentObj->UnregisterMethod("COSAPAM_UpnpEnable");
+    ptrAgentObj->UnregisterMethod("COSAPAM_UpnpGetState");
+    ptrAgentObj->UnregisterMethod("COSAPAM_DhcpGet");
+    ptrAgentObj->UnregisterMethod("COSAPAM_DhcpsEnable");
+    ptrAgentObj->UnregisterMethod("COSAPAM_DnsGet");
+    ptrAgentObj->UnregisterMethod("COSAPAM_DnsEnable");
 
     return TEST_SUCCESS;
 }
