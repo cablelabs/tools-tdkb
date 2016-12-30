@@ -36,6 +36,10 @@ void free_Memory_Names(int size,GETPARAMNAMES *Freestruct);
 void free_Memory_val(int size,GETPARAMVALUES *Freestruct);
 void free_Memory_Attr(int size,GETPARAMATTR *Freestruct);
 int ssp_pam_Bridging_GetParamUlongValue(char* paramName,unsigned long* ulongValue, char* module);
+int ssp_DmlMlanInit();
+int ssp_DmlMlanGetParamValue(char*, char*, unsigned long*);
+int ssp_DmlEthGetParamValue(char*);
+int ssp_DmlDiGetParamValue(char*, char*, unsigned long*);
 };
 
 /*This is a constructor function for pam class*/
@@ -62,6 +66,10 @@ bool pam::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&pam::pam_MTAAgentRestart,"pam_MTAAgentRestart");
     ptrAgentObj->RegisterMethod(*this,&pam::pam_CRRestart,"pam_CRRestart");
     ptrAgentObj->RegisterMethod(*this,&pam::pam_Init,"pam_Init");
+    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DmlMlanGetParamValue, "COSAPAM_DmlMlanGetParamValue");
+    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DmlEthGetParamValue, "COSAPAM_DmlEthGetParamValue");
+    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DmlDiGetParamValue, "COSAPAM_DmlDiGetParamValue");
+
 
     return TEST_SUCCESS;
 }
@@ -82,6 +90,15 @@ std::string pam::testmodulepre_requisites()
         DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites: Failed to initialize \n");
         return "TEST_FAILURE";
     }
+
+    returnValue = ssp_DmlMlanInit();
+    if(0 != returnValue)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites: Failed to initialize the COSA PAM DML\n");
+        return "TEST_FAILURE";
+    }
+
+    DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites:initialized the COSA PAM DML\n");
 
     return "SUCCESS";
 }
@@ -385,6 +402,135 @@ bool pam::pam_CRRestart(IN const Json::Value& req, OUT Json::Value& response)
 
 }
 
+/***************************************************************************
+ *Function name : COSAPAM_DmlMlanGetParamValue
+ *Descrption    : Invokes the get APIs of multi lan
+ * @param [in]  req - MethodName : Holds the name of the get api
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+bool pam::COSAPAM_DmlMlanGetParamValue(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetPrimaryLanIpIf --->Entry \n");
+
+    int returnValue = 0;
+    char pValue[100] = {'\0'};
+    char paramName[100] = {'\0'};
+    unsigned long size = sizeof(pValue);
+    char details[100] = {'\0'};
+
+    if(&req["MethodName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
+    strcpy(paramName,req["MethodName"].asCString());
+    printf("paramName received as %s\n", paramName);
+    returnValue = ssp_DmlMlanGetParamValue(paramName, pValue, &size);
+    if(0 == returnValue)
+    {
+       sprintf(details, "value: %s size: %lu", pValue, size);
+        response["result"]="SUCCESS";
+        response["details"]=details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to get value";
+        DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue ---->Exit\n");
+    return TEST_SUCCESS;
+}
+
+/***************************************************************************
+ *Function name : COSAPAM_DmlEthGetParamValue
+ *Descrption    : Invokes the get APIs of ethernet port's attributes
+ * @param [in]  req - MethodName : Holds the name of the get api
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+bool pam::COSAPAM_DmlEthGetParamValue(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetPrimaryLanIpIf --->Entry \n");
+
+    int returnValue = 0;
+    char paramName[100] = {'\0'};
+
+    if(&req["MethodName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
+    strcpy(paramName,req["MethodName"].asCString());
+    printf("paramName received as %s\n", paramName);
+    returnValue = ssp_DmlEthGetParamValue(paramName);
+    if(0 == returnValue)
+    {
+        response["result"]="SUCCESS";
+        response["details"]="successfully received";
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to get value";
+        DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue ---->Exit\n");
+    return TEST_SUCCESS;
+}
+
+
+/***************************************************************************
+ *Function name : COSAPAM_DmlDiGetParamValue
+ *Descrption    : Invokes the get APIs of device info attributes
+ * @param [in]  req - MethodName : Holds the name of the get api
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+bool pam::COSAPAM_DmlDiGetParamValue(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetPrimaryLanIpIf --->Entry \n");
+
+    int returnValue = 0;
+    char pValue[100] = {'\0'};
+    char paramName[100] = {'\0'};
+    unsigned long size = 0;
+    char details[100] = {'\0'};
+
+    if(&req["MethodName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
+    strcpy(paramName,req["MethodName"].asCString());
+    printf("paramName received as %s\n", paramName);
+    returnValue = ssp_DmlDiGetParamValue(paramName, pValue, &size);
+    if(0 == returnValue)
+    {
+       sprintf(details, "value: %s size: %lu", pValue, size);
+        response["result"]="SUCCESS";
+        response["details"]=details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to get value";
+        DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue ---->Exit\n");
+    return TEST_SUCCESS;
+}
+
 /**************************************************************************
  * Function Name	: CreateObject
  * Description	: This function will be used to create a new object for the
@@ -419,6 +565,9 @@ bool pam::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("pam_CRRestart");
     ptrAgentObj->UnregisterMethod("pam_GetParameterNames");
     ptrAgentObj->UnregisterMethod("pam_Init");
+    ptrAgentObj->UnregisterMethod("COSAPAM_DmlMlanGetParamValue");
+    ptrAgentObj->UnregisterMethod("COSAPAM_DmlEthGetParamValue");
+    ptrAgentObj->UnregisterMethod("COSAPAM_DmlDiGetParamValue");
 
     return TEST_SUCCESS;
 }
