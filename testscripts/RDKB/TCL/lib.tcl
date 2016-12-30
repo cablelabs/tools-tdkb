@@ -119,9 +119,9 @@ send "$wlanName\r";
 expect -re (.*word:); 
 send "$wlanPassword\r";
 expect -re ".*>";
-send "netsh wlan set profileparameter name=RDKB-2.4 connectionmode=manual\r";
+send "netsh wlan set profileparameter name=$ssidName connectionmode=manual\r";
 expect -re ".*>";
-send "netsh wlan set profileparameter name=RDKB-5 connectionmode=manual\r";
+send "netsh wlan set profileparameter name=$ssidName connectionmode=manual\r";
 expect -re ".*>";
 send "netsh wlan add profile filename=\"$profilePath\\$profileType\" interface=\"$no\"\r";
 expect -re ".*>";
@@ -244,8 +244,8 @@ send "exit\r";
 close $spawn_id; 
 
 #if { [regexp {.*eth0.*inet addr:([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*eth1.*} $outIp match Ipval] == 1 } {}
-if { [regexp {.*inet addr:(\d+\.\d+\.\d+\.\d+)  Bcast:10.0.0.255.*} $outIp match Ipval] == 1 } {
-puts "Obtained I P : $Ipval";
+if { [regexp {.*inet addr:(\d+\.\d+\.\d+\.\d+).*Bcast:10.0.0.255.*} $outIp match Ipval] == 1 } {
+puts "Obtained IP : $Ipval";
 } else {
 puts "IP has not been obtained due to technical reasons."
 set result "Error"
