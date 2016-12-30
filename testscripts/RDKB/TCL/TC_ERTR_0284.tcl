@@ -84,13 +84,13 @@ send "service httpd stop\r";
 expect -re ".*#";
 send "sudo /opt/lampp/lampp start\r";
 expect -re ".*#";
-send "ip route add $wanIP via 10.0.0.1\r"
+send "sudo ip route add $wanIP via 10.0.0.1\r"
 expect -re ".*#";
 after 10000;
 send "ping -c 4 $wanIP\r";
 expect -re ".*#";
 set outPing $expect_out(buffer);
-send "ip route delete $wanIP via 10.0.0.1\r"
+send "sudo ip route delete $wanIP via 10.0.0.1\r"
 expect -re ".*#";
 #wait 
 close $spawn_id 

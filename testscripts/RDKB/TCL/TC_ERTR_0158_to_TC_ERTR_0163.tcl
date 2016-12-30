@@ -192,7 +192,7 @@ send "$Name\r";
 expect -re (.*word:);
 send "$password\r";
 expect -re ".*#";
-send "ip route add $wireless_pc_ip via 10.0.0.1\r";
+send "sudo ip route add $wireless_pc_ip via 10.0.0.1\r";
 expect -re ".*#";
 send "ping -c 4 -s 500 $wireless_pc_ip\r";
 expect -re ".*#";
@@ -210,7 +210,7 @@ send "ping -c 4 -s 1500 $wireless_pc_ip\r";
 expect -re ".*#";
 set outPing2 $expect_out(buffer);
 expect -re ".*#";
-send "ip route delete $wireless_pc_ip via 10.0.0.1\r";
+send "sudo ip route delete $wireless_pc_ip via 10.0.0.1\r";
 expect -re ".*#";
 
 #wait
