@@ -81,13 +81,13 @@ puts {
 #Step 3 :Checking the availability of the Network names                                                    
 ################################################################################
 } 
-puts "Expected: Network name \"RDKB-2.4\" and \"RDKB-5\"  should be broadcasted";
-if { [regexp {RDKB-2.4} $outpRad] == 1 && [regexp {RDKB-5} $outpRad] == 1 } { 
+puts "Expected: Network name \"$ssid2\" and \"$$ssid5\"  should be broadcasted";
+if { [regexp "$ssid2" $outpRad] == 1 && [regexp "$ssid5" $outpRad] == 1 } { 
 set passFlag [expr $passFlag + 1];       
-puts "\nObtained: Network name \"RDKB-2.4\" and \"RDKB-5\" is broadcasted on the network";
+puts "\nObtained: Network name \"$ssid2\" and \"$ssid5\" is broadcasted on the network";
 } else { 
 set failFlag [expr $failFlag + 1];
-puts "\nObtained: Network name \"RDKB-2.4\" and \"RDKB-5\" is not broadcasted on the network";
+puts "\nObtained: Network name \"$ssid2\" and \"$ssid5\" is not broadcasted on the network";
 }         
 
 if {$passFlag == 1} { 
