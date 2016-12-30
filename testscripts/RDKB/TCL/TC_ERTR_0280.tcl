@@ -107,11 +107,11 @@ puts {
 #Step 4 :Verifying the DNS Server address.                                                 
 ############################################################################################
 } 
-puts "Expected DNS server: 10.252.139.244"
+puts "Expected DNS server: $DnsServerIp"
 if {[regexp {.*fixed-address.*option domain-name-servers ([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*} $outIp match dnsAddr] == 1 } {
 
 
-if {[string compare $dnsAddr 10.252.139.244] == 0} {
+if {[string compare $dnsAddr $DnsServerIp] == 0} {
 puts "Obtained DNS server: $dnsAddr";
 puts "DNS Address matching";
         set passFlag [expr $passFlag + 1];
@@ -136,7 +136,7 @@ set result "PASSED";
 ##########################################################################################################
 }
 set output3 "";
-set output3 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.DHCPv4.Server.Pool.1.DNSServers 10.252.139.244 string];
+set output3 [exec java -cp $ClassPath $Class $oui $SNno $deviceType SetParameterValue Device.DHCPv4.Server.Pool.1.DNSServers $DnsServerIp string];
 puts $output3;
 if {[regexp {.*Time limit has crossed 2 minutes.*} $output3] == 1 } {
 

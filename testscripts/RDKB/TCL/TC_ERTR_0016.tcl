@@ -112,7 +112,7 @@ expect -re ".*>";
 set outInt $expect_out(buffer);
 send "netsh wlan delete profile name=\"$ssid5\"\r";
 expect -re ".*>";
-send "exit\r"
+send "exit\r";
 expect -re ".*>";
 #wait
 close $spawn_id

@@ -192,7 +192,7 @@ send "$wlanAdminPassword\r";
 expect -re ".*>";
 send "nslookup\r";
 expect -re ".*>";
-send "server 10.252.139.244\r";
+send "server $DnsServerIp\r";
 expect -re ".*>";
 send "$siteHttps\r";
 expect -re ".*>";

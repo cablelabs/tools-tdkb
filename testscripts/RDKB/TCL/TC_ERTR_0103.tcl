@@ -174,13 +174,13 @@ send "$wlanAdminPassword\r";
 expect -re ".*>";
 send "nslookup\r";
 expect -re ".*>";
-send "server 10.252.139.244\r";
+send "server $DnsServerIp\r";
 expect -re ".*>";
 send "www.$siteKeyword.com\r";
 expect -re ".*>";
 set outUrlResp $expect_out(buffer);
 if {[regexp {.*connection timed out.*} $outUrlResp match] == 1} {
-send "server 10.252.139.247\r";
+send "server $DnsServerIp\r";
 expect -re ".*>";
 send "www.$siteKeyword.com\r";
 expect -re ".*>";
