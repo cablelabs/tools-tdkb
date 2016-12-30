@@ -16,8 +16,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<?xml version="1.0" encoding="UTF-8"?>
-<xml>
+<?xml version="1.0" encoding="UTF-8"?><xml>
   <module name="PAM" testGroup="Component">
     <primitiveTests>
       <primitiveTest id=" " name="pam_bridge_GetParamBoolValue" version="2">
@@ -92,13 +91,6 @@
           <parameter name="MethodName" value=""/>
         </parameters>
       </primitiveTest>
-      <primitiveTest id=" " name="COSAPAM_DhcpsEnable" version="1">
-        <function>COSAPAM_DhcpsEnable</function>
-        <parameters>
-          <parameter name="handleType" value="0"/>
-          <parameter name="Value" value="0"/>
-        </parameters>
-      </primitiveTest>
       <primitiveTest id=" " name="COSAPAM_DmlEthGetParamValue" version="1">
         <function>COSAPAM_DmlEthGetParamValue</function>
         <parameters>
@@ -124,12 +116,6 @@
           <parameter name="MethodName" value="null"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest id=" " name="COSAPAM_DhcpGet" version="1">
-        <function>COSAPAM_DhcpGet</function>
-        <parameters>
-          <parameter name="MethodName" value="null"/>
-        </parameters>
-      </primitiveTest>
       <primitiveTest id=" " name="COSAPAM_DnsGet" version="1">
         <function>COSAPAM_DnsGet</function>
         <parameters>
@@ -140,6 +126,18 @@
         <function>COSAPAM_DnsEnable</function>
         <parameters>
           <parameter name="MethodName" value="null"/>
+          <parameter name="Value" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="COSAPAM_DhcpGet" version="1">
+        <function>COSAPAM_DhcpGet</function>
+        <parameters>
+          <parameter name="MethodName" value="null"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="COSAPAM_DhcpsEnable" id=" " version="1">
+        <function>COSAPAM_DhcpsEnable</function>
+        <parameters>
           <parameter name="Value" value="0"/>
         </parameters>
       </primitiveTest>
