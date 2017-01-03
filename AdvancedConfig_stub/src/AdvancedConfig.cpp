@@ -36,6 +36,7 @@ extern "C"
     int ssp_setCommit(char *pObjTbl);
     int ssp_getHealth(char *pComponentName);
     int ssp_setSessionId(int priority, int sessionId);
+    int ssp_setMultipleParameterValue(char **paramList, int size);
 };
 
 /*This is a constructor function for AdvancedConfig class*/
@@ -69,6 +70,7 @@ bool AdvancedConfig::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAge
 	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_SetSessionId, "AdvancedConfig_SetSessionId");
 	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_Set_Get, "AdvancedConfig_Set_Get");
 	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_Stop, "AdvancedConfig_Stop");
+        ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_SetMultiple, "AdvancedConfig_SetMultiple");
 		
 	return TEST_SUCCESS;
 
@@ -780,6 +782,79 @@ bool AdvancedConfig::AdvancedConfig_Stop(IN const Json::Value& req, OUT Json::Va
     return TEST_SUCCESS;
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : AdvancedConfig_SetMultiple
+ * Description          : This function will set multiple parameter value at one shot
+ *
+ * @param [in] req-        ParamList will hold the entire list to be set.
+ *                         
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
+ *                         ssp_setMultipleParameterValue
+********************************************************************************************/
+bool AdvancedConfig::AdvancedConfig_SetMultiple(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_SetMultiple --->Entry\n");
+
+    int returnValue = 0;
+    char params[1000] = {'\0'};
+    char **paramlist  = NULL;
+    int num_spaces = 0;
+    int index = 0;
+    int size = 0;
+
+    strcpy(params,req["paramList"].asCString());
+
+    DEBUG_PRINT(DEBUG_TRACE,"\nAdvancedConfig_Set:: ParamList input is %s\n",params);
+
+    char *list = strtok (params, " ");
+    while (list) {
+    paramlist = (char **) realloc (paramlist, ++num_spaces * sizeof(char *));
+    if (paramlist == NULL)
+    return 0; /* memory allocation failed */
+
+    paramlist[num_spaces-1] = list;
+    list = strtok (NULL, " ");
+   }
+
+   /* realloc one extra element for the last NULL */
+   paramlist = (char **) realloc (paramlist, (num_spaces+1) * sizeof(char *));
+   paramlist[num_spaces] = 0;
+
+   for (index = 0; index < (num_spaces); index++)
+   {
+     printf ("\nparamlist[%d] = %s\n", index, paramlist[index]);
+   }
+
+   printf("Index Count:%d\n",index);
+   size = index/3;
+
+   printf("ParamCount:%d\n",size);
+
+   printf("Invoking ssp_setMultipleParameterValue function\n");
+   returnValue = ssp_setMultipleParameterValue(paramlist,size);
+   if(0 == returnValue)
+   {
+       response["result"]="SUCCESS";
+       response["details"]="SET API Validation is Success";
+   }
+   else
+   {
+       response["result"]="FAILURE";
+       response["details"]="AdvancedConfigStub::SET API Validation is Failure";
+       DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_SetMultiple: Failed to set multiple parameters !!! \n");
+   }
+
+    /* free the memory allocated */
+   free(paramlist);
+
+   DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_SetMultiple --->Exit\n");
+
+   return TEST_SUCCESS;
+}
+
+
+
 /**************************************************************************
  * Function Name	: CreateObject
  * Description	: This function will be used to create a new object for the
@@ -814,14 +889,13 @@ bool AdvancedConfig::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentO
     ptrAgentObj->UnregisterMethod("AdvancedConfig_SetAttr");
     ptrAgentObj->UnregisterMethod("AdvancedConfig_Set");
     ptrAgentObj->UnregisterMethod("AdvancedConfig_Set_Get");
-
     ptrAgentObj->UnregisterMethod("AdvancedConfig_AddObject");
     ptrAgentObj->UnregisterMethod("AdvancedConfig_DelObject");
     ptrAgentObj->UnregisterMethod("AdvancedConfig_SetCommit");
     ptrAgentObj->UnregisterMethod("AdvancedConfig_GetHealth");
     ptrAgentObj->UnregisterMethod("AdvancedConfig_SetSessionId");
-
     ptrAgentObj->UnregisterMethod("AdvancedConfig_Stop");	
+    ptrAgentObj->UnregisterMethod("AdvancedConfig_SetMultiple");
     return TEST_SUCCESS;
 }
 

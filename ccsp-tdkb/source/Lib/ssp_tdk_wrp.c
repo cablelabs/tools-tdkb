@@ -1242,3 +1242,161 @@ void free_Memory_Attr(int size,GETPARAMATTR *Freestruct)
     Freestruct=NULL;
 }
 
+int ssp_setMultipleParameterValue(char **paramList, int size)
+{
+    char        dst_pathname_cr[64] =  {0};
+    componentStruct_t ** ppComponents = NULL;
+    int         size2 = 0;
+    int         ret ;
+    char *      dst_componentid         =  NULL;
+    char *      dst_pathname            =  NULL;
+    parameterValStruct_t **parameterVal = NULL;
+    int         j, i = 0;
+    unsigned char bTmp = 0;
+    char * pFaultParameter = NULL;
+    parameterValStruct_t val[MAX_COMP_ARRAY] = {{NULL},{NULL},{NULL}};
+    int index = 0;
+    char *pParamName = NULL;
+    char* pParamType = NULL;
+
+    strcat(dst_pathname_cr,subsystem_prefix);
+    strcat(dst_pathname_cr, CCSP_DBUS_INTERFACE_CR);
+
+    printf("dst_pathname_cr:%s\n",dst_pathname_cr);
+
+    bTmp = 1;
+
+    /*This function will identify Component path through Component Registrar (CR)
+     pParam Name is used to as input and CR will return back the respective component
+     dbus path */
+    ret = CcspBaseIf_discComponentSupportingNamespace
+          (
+            bus_handle_client,
+            dst_pathname_cr,
+            paramList[i],
+            subsystem_prefix,
+            &ppComponents,
+            &size2
+          );
+
+    if ( ret == CCSP_SUCCESS )
+    {
+        if ( size2 == 0 )
+        {
+            printf("\nssp_setParameterValue::Can't find destination component.\n");
+            return 1;
+        }
+    }
+    else
+    {
+        printf("\nssp_setParameterValue::Can't find destination component.\n");
+        return 1;
+    }
+
+    dst_componentid = ppComponents[0]->componentName;
+    printf("\nssp_setParameterValue::Destination Component ID is %s\n",dst_componentid);
+    dst_pathname    = ppComponents[0]->dbusPath;
+    printf("\nssp_setParameterValue::Destination Component Name is %s\n",dst_pathname);
+
+    while( paramList[i]!=NULL )
+    {
+        val[j].parameterName  = paramList[i];
+        i++;
+        val[j].parameterValue = paramList[i];
+        i++;
+        pParamType = paramList[i];
+
+        if(strcmp(pParamType,"string")==0)
+        {
+            val[j].type = ccsp_string;
+        }
+        else if (strcmp(pParamType,"int")==0)
+        {
+            val[j].type = ccsp_int;
+        }
+        else if (strcmp(pParamType,"unsignedint")==0)
+        {
+            val[j].type = ccsp_unsignedInt;
+        }
+        else if (strcmp(pParamType,"unsignedInt")==0)
+        {
+            val[j].type = ccsp_unsignedInt;
+        }
+        else if (strcmp(pParamType,"boolean")==0)
+        {
+            val[j].type = ccsp_boolean;
+        }
+        else if (strcmp(pParamType,"bool")==0)
+        {
+            val[j].type = ccsp_boolean;
+        }
+        else if (strcmp(pParamType,"datetime")==0)
+        {
+            val[j].type = ccsp_dateTime;
+        }
+        else if (strcmp(pParamType,"base64")==0)
+        {
+            val[j].type = ccsp_base64;
+        }
+        else if (strcmp(pParamType,"long")==0)
+        {
+            val[j].type = ccsp_long;
+        }
+        else if (strcmp(pParamType,"unsignedlong")==0)
+        {
+            val[j].type = ccsp_unsignedLong;
+        }
+        else if (strcmp(pParamType,"float")==0)
+        {
+            val[j].type = ccsp_float;
+        }
+        else if (strcmp(pParamType,"double")==0)
+        {
+            val[j].type = ccsp_double;
+        }
+        else if (strcmp(pParamType,"byte")==0)
+        {
+            val[j].type = ccsp_byte;
+        }
+        else if (strcmp(pParamType,"none")==0)
+        {
+           val[j].type = ccsp_none;
+        }
+
+        printf("\nssp_setParameterValue:: val%d param name is %s",j, val[j].parameterName);
+        printf("\nssp_setParameterValue:: val%d param value is %s",j, val[j].parameterValue);
+        printf("\nssp_setParameterValue:: val%d param type is %d",j, val[j].type);
+        i++;
+        j++;
+
+    }
+
+    ret = CcspBaseIf_setParameterValues(
+            bus_handle_client,
+            dst_componentid,
+            dst_pathname,
+            0,
+            DSLH_MPA_ACCESS_CONTROL_CLIENTTOOL,
+            val,
+            size,
+            bTmp,
+            &pFaultParameter
+            );
+
+    free_componentStruct_t(bus_handle_client, size2, ppComponents);
+
+    if ( ret == CCSP_SUCCESS )
+    {
+        printf("\nssp_setParameterValue::Execution succeed.\n");
+    }
+    else
+    {
+        printf("\nssp_setParameterValue::Execution fail(error code:(%d)).\n",ret);
+        return 1;
+    }
+
+ if ( pFaultParameter != NULL )
+        AnscFreeMemory(pFaultParameter);
+
+    return 0;
+}

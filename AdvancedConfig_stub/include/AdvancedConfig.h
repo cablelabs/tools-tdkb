@@ -49,10 +49,10 @@ class AdvancedConfig : public RDKTestStubInterface
 
 		/*inherited functions*/
 		bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-        bool cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj);
+                bool cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj);
 		std::string testmodulepre_requisites();
-        bool testmodulepost_requisites();
-		/*CM Agent Stub Wrapper functions*/
+                bool testmodulepost_requisites();
+		/*Advance Config Stub Wrapper functions*/
 		bool AdvancedConfig_Start(IN const Json::Value& req, OUT Json::Value& response);
 		bool AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Value& response);
 		bool AdvancedConfig_GetAttr(IN const Json::Value& req, OUT Json::Value& response);
@@ -66,7 +66,7 @@ class AdvancedConfig : public RDKTestStubInterface
 		bool AdvancedConfig_GetHealth(IN const Json::Value& req, OUT Json::Value& response);
 		bool AdvancedConfig_SetSessionId(IN const Json::Value& req, OUT Json::Value& response);
 		bool AdvancedConfig_Stop(IN const Json::Value& req, OUT Json::Value& response);
-
+                bool AdvancedConfig_SetMultiple(IN const Json::Value& req, OUT Json::Value& response);
 };
 extern "C" AdvancedConfig* CreateObject();
 #endif //
