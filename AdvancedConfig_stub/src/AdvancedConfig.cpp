@@ -486,6 +486,7 @@ bool AdvancedConfig::AdvancedConfig_AddObject(IN const Json::Value& req, OUT Jso
     int returnValue = 0;
     char paramName[MAX_PARAM_SIZE];
     int instanceNumber = 0;
+    char Details[80] = {'\0'};
 
     if(&req["paramName"]==NULL)
     {
@@ -504,9 +505,10 @@ bool AdvancedConfig::AdvancedConfig_AddObject(IN const Json::Value& req, OUT Jso
 
     if(0 == returnValue)
     {
+	sprintf(Details,"ADD OBJECT API Validation is Success.Instance Number is :%d", instanceNumber);
         DEBUG_PRINT(DEBUG_TRACE,"\nAdvancedConfig_AddObject::instance added is %d",instanceNumber);
         response["result"]="SUCCESS";
-        response["details"]="ADD OBJECT API Validation is Success";
+        response["details"]=Details;
     }
     else
     {

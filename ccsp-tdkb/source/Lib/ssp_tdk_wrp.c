@@ -555,7 +555,6 @@ int ssp_deleteTableRow(char *pObjTbl)
 {
 
     char        dst_pathname_cr[64] =  {0};
-    char        subsystem_prefix[32] = "";
     componentStruct_t ** ppComponents = NULL;
     int         size2 = 0;
     int         ret ;
