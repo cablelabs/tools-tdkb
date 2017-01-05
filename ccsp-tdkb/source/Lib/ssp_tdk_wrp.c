@@ -35,10 +35,7 @@
 #include "pthread.h"
 #include "ssp_tdk_wrp.h"
 #include "cosa_apis.h"
-#include "cosa_wifi_apis.h"
-#include "cosa_wifi_internal.h"
 #include "plugin_main_apis.h"
-#include "wifi_hal.h"
 
 char subsystem_prefix[32]={0};
 extern  PDSLH_CPE_CONTROLLER_OBJECT     pDslhCpeController;
@@ -1162,25 +1159,6 @@ int ssp_setParameterAttr(char *pParamName,char *pAttrNotify,char *pAttrAccess)
 
     return 0;
 }
-
-/*******************************************************************************************
- *
- * Function Name        : ssp_demo_cosa_wifi_init
- * Description          : This function will call cosa wifi init function and validate the
- same
- ********************************************************************************************/
-int ssp_demo_cosa_wifi_init()
-{
-    printf("\n Entering ssp_demo_cosa_wifi_init ");
-    printf("\n ssp_demo_cosa_wifi_init::Bus handle is %x",bus_handle_client);
-    int return_status;
-
-
-    printf("\n Return status of CosaDmlWiFiInit is %d",return_status);
-
-    return  return_status;
-}
-
 
 /*******************************************************************************************
  *
