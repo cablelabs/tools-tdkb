@@ -121,8 +121,10 @@ if "SUCCESS" in loadModuleresult.upper():
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
                 details = tdkTestObj.getResultDetails();
-                print "ACTUAL RESULT 1: %s" %details;
-                print "[TEST EXECUTION RESULT 1] : %s" %actualresult;
+		print "[TEST STEP 1]: Enabling DMZ";
+                print "[EXPECTED RESULT 1]: Should enable DMZ";
+                print "[ACTUAL RESULT 1]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "DMZ is Enabled\n"
                 tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
                 tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_DMZ.InternalIP");
@@ -135,13 +137,17 @@ if "SUCCESS" in loadModuleresult.upper():
                         #Set the result status of execution
                         tdkTestObj.setResultStatus("SUCCESS");
                         details = tdkTestObj.getResultDetails();
-		        print "ACTUAL RESULT 2: %s" %details;
-                        print "[TEST EXECUTION RESULT 2] : %s" %actualresult;
+                        print "[TEST STEP 2]: Setting DMZ internalIP";
+                        print "[EXPECTED RESULT 2]: Should not set the DMZ internal IP";
+                        print "[ACTUAL RESULT 2]: %s" %details;
+                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "DMZ host ip cannot be set as the gateway ip 10.0.0.1\n"
                 else:
                         tdkTestObj.setResultStatus("FAILURE");
                         details = tdkTestObj.getResultDetails();
-                        print "ACTUAL RESULT 2: %s" %details;
+                        print "[TEST STEP 2]: Setting DMZ internalIP";
+                        print "[EXPECTED RESULT 2]: Should not set the DMZ internal IP";
+                        print "[ACTUAL RESULT 2]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "DMZ host should not be set as gateway ip, but it is set and hence a failure\n"
 
@@ -149,7 +155,9 @@ if "SUCCESS" in loadModuleresult.upper():
         else:
                 tdkTestObj.setResultStatus("FAILURE");
                 details = tdkTestObj.getResultDetails();
-                print "ACTUAL RESULT 1: %s" %details;
+                print "[TEST STEP 1]: Enabling DMZ";
+                print "[EXPECTED RESULT 1]: Should enable DMZ";
+                print "[ACTUAL RESULT 1]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Failure in setting the DMZ as true\n "
 

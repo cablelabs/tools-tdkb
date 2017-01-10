@@ -107,6 +107,7 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
 if "SUCCESS" in loadmodulestatus.upper():
 	obj.setLoadModuleStatus("SUCCESS");
+	instance ="";
 	## Enable Port Trigger Feature ## 
 	tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
 	tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Enable");
@@ -119,8 +120,11 @@ if "SUCCESS" in loadmodulestatus.upper():
 	        #Set the result status of execution
 		tdkTestObj.setResultStatus("SUCCESS");
 	        details = tdkTestObj.getResultDetails();
-	        #Get the result of execution
-	        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                print "[TEST STEP 1]: Enabling Port Trigger";
+                print "[EXPECTED RESULT 1]: Should enable Port Trigger";
+                print "[ACTUAL RESULT 1]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                print "Port triggering is enabled\n"
  
 	        ## Add table new table in Port Trigger ##
 	        tdkTestObj = obj.createTestStep("AdvancedConfig_AddObject");
@@ -132,105 +136,83 @@ if "SUCCESS" in loadmodulestatus.upper():
 			#Set the result status of execution
 			tdkTestObj.setResultStatus("SUCCESS");
 			details = tdkTestObj.getResultDetails();
-			#Get the result of execution
-			print "[TEST EXECUTION RESULT] : %s" %actualresult ;   
-			tdkTestObj = obj.createTestStep("AdvancedConfig_GetNames");
-                        tdkTestObj.addParameter("pathname","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
-                        tdkTestObj.addParameter("brecursive",1);
-                        expectedresult = "SUCCESS";
-                        tdkTestObj.executeTestCase(expectedresult);
-                        actualresult = tdkTestObj.getResult();
-                        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-                        if expectedresult in actualresult:
+                        print "[TEST STEP 2]: Adding new rule to Port Trigger";
+                        print "[EXPECTED RESULT 2]: Should add new rule to Port Trigger";
+                        print "[ACTUAL RESULT 2]: %s" %details;
+                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                        print "Add service option is selected and a new table is created\n"
+                        temp = details.split(':');
+                        instance = temp[1];
+                        if (instance > 0):
+                            print "INSTANCE VALUE: %s" %instance
+			    # Setting the external port
+                            tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
+			    alias = " ";
+                            tdkTestObj.addParameter("paramList","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Description|Myservice|string|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Alias|%s|string|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerProtocol|TCP|string|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortStart|8080|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortEnd|8090|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortStart|3000|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortEnd|4000|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Enable|bool|true" %(instance, instance, alias, instance, instance, instance, instance, instance, instance));
+                            expectedresult="FAILURE";
+                            tdkTestObj.executeTestCase(expectedresult);
+                            actualresult = tdkTestObj.getResult();
+                            if expectedresult in actualresult:
                                 #Set the result status of execution
                                 tdkTestObj.setResultStatus("SUCCESS");
                                 details = tdkTestObj.getResultDetails();
-                                print "ACTUAL RESULT 1: %s" %details;
+                                print "[TEST STEP 3]: Setting external port with whitespace as value";
+                                print "[EXPECTED RESULT 3]: Should not set external port with whitespace as value";
+                                print "[ACTUAL RESULT 3]: %s" %details;
                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                index = 4;
-                                instance = tdkutility.getInstanceNumber(details,index);
-                                print "INSTANCE VALUE: %s" %instance
-                                if (instance > 0):
-                                    print "INSTANCE VALUE: %s" %instance
-                                    tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
-                                    tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Description" %instance);		    
-                                    tdkTestObj.addParameter("paramValue","Myservice1");
-                                    tdkTestObj.addParameter("paramType","string");
-                                    expectedresult="SUCCESS";
-                                    tdkTestObj.executeTestCase(expectedresult);
-                                    actualresult = tdkTestObj.getResult();
-                                    if expectedresult in actualresult:
-                                        #Set the result status of execution
-                                        tdkTestObj.setResultStatus("SUCCESS");
-                                        details = tdkTestObj.getResultDetails();
-                                        #Get the result of execution
-                                        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-                                        ## server name with blank and spaces ##
-                                        tdkTestObj = obj.createTestStep("AdvancedConfig_Set"); 
-                                        tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Alias" %instance);		    
-                                        tdkTestObj.addParameter("paramValue","   ");
-                                        tdkTestObj.addParameter("paramType","string");
-                                        expectedresult="SUCCESS";
-                                        tdkTestObj.executeTestCase(expectedresult);
-                                        actualresult = tdkTestObj.getResult();
-                                        if expectedresult in actualresult:
-                                            #Set the result status of execution
-                                            tdkTestObj.setResultStatus("SUCCESS");
-                                            details = tdkTestObj.getResultDetails();
-                                            #Get the result of execution
-                                            print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-                                        else:
-                                            tdkTestObj.setResultStatus("FAILURE");
-                                            details = tdkTestObj.getResultDetails();
-                                            print "ACTUAL RESULT 3: %s" %details;
-                                            print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                            print "Failed to add string for server name \n "
-                                    else:
-                                        tdkTestObj.setResultStatus("FAILURE");
-                                        details = tdkTestObj.getResultDetails();
-                                        print "ACTUAL RESULT 3: %s" %details;
-                                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                        print "Failed to add description for trigger protocol \n "
-                                else:
-                                    print "Instance value should be greater than 0\n"
-                                    print "Wrong instance value\n"
-                   
-                        else:
+                                print "Whitespace value cannot be set to port mapping rule\n"
+                            else:
                                 tdkTestObj.setResultStatus("FAILURE");
                                 details = tdkTestObj.getResultDetails();
-                                print "ACTUAL RESULT 1: %s" %details;
+                                print "[TEST STEP 3]: Setting external port with whitespace as value";
+                                print "[EXPECTED RESULT 3]: Should not set external port with whitespace as value";
+                                print "[ACTUAL RESULT 3]: %s" %details;
                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                print "Failed to getnames\n "               	    
-			
+                                print "Failed to validate whitespace value set \n "
+                        else:
+                            print "Instance value should be greater than 0\n"
+                            print "Wrong instance value\n"
+                   
 			
 	        else:   	    
 			tdkTestObj.setResultStatus("FAILURE");
 			details = tdkTestObj.getResultDetails();
-			print "ACTUAL RESULT 2: %s" %details;
-			print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                        print "[TEST STEP 2]: Adding new rule to Port Trigger";
+                        print "[EXPECTED RESULT 2]: Should add new rule to Port Trigger";
+                        print "[ACTUAL RESULT 2]: %s" %details;
+                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
 			print "Failed to add new table \n "
 	else:
 		tdkTestObj.setResultStatus("FAILURE");
 		details = tdkTestObj.getResultDetails();
-		print "ACTUAL RESULT 1: %s" %details;
-		print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                print "[TEST STEP 1]: Enabling Port Trigger";
+                print "[EXPECTED RESULT 1]: Should enable Port Trigger";
+                print "[ACTUAL RESULT 1]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
 		print "Failed to enable port trigger \n "
 	#To delete the added table
-        tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
-        tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s." %instance);
-        expectedresult = "SUCCESS";
-        tdkTestObj.executeTestCase(expectedresult);
-        actualresult = tdkTestObj.getResult();
-        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-        if expectedresult in actualresult:
-            #Set the result status of execution
-            tdkTestObj.setResultStatus("SUCCESS");
-            details = tdkTestObj.getResultDetails();
-            print "ACTUAL RESULT: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult;
-            print "Added table is deleted successfully\n"
-        else:
-            print "Added table could not be deleted\n"
+        if instance:
+            tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
+            tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s." %instance);
+            expectedresult = "SUCCESS";
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+            if expectedresult in actualresult:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("SUCCESS");
+                details = tdkTestObj.getResultDetails();
+                print "[TEST STEP ]: Deleting the added rule";
+                print "[EXPECTED RESULT ]: Should delete the added rule";
+                print "[ACTUAL RESULT]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                print "Added table is deleted successfully\n"
+            else:
+                print "[TEST STEP ]: Deleting the added rule";
+                print "[EXPECTED RESULT ]: Should delete the added rule";
+                print "[ACTUAL RESULT]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                print "Added table could not be deleted\n"
 	obj.unloadModule("advancedconfig");
 else:
 	print "FAILURE to load Advancedconfig module";

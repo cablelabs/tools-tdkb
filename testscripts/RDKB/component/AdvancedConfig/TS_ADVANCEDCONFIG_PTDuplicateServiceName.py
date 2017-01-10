@@ -19,8 +19,8 @@
 '''
 <?xml version="1.0" encoding="UTF-8"?><xml>
   <id/>
-  <version>9</version>
-  <name>TS_ADVANCEDCONFIG_PFAddRuleOptions</name>
+  <version>3</version>
+  <name>TS_ADVANCEDCONFIG_PTDuplicateServiceName</name>
   <primitive_test_id/>
   <primitive_test_name>AdvancedConfig_Set</primitive_test_name>
   <primitive_test_version>1</primitive_test_version>
@@ -39,8 +39,8 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_ADVANCEDCONFIG_5</test_case_id>
-    <test_objective>To Validate "Parental Control &gt; ADD rule must have options to configure port forwarding" functionality</test_objective>
+    <test_case_id>TC_ADVANCEDCONFIG_10</test_case_id>
+    <test_objective>To validate "Advanced -&gt; Port Triggering -&gt; Service name option for port Triggering rule" functionality.</test_objective>
     <test_type>Possitive</test_type>
     <test_setup>Emulator,
 XB3</test_setup>
@@ -51,46 +51,49 @@ XB3</test_setup>
 API Name
 AdvancedConfig_Set
 AdvancedConfig_AddObject
-AdvancedConfig_Get
 AdvancedConfig_GetNames
 
 Input
 1.PathName ("paramName")
-( eg: "Device.NAT.X_Comcast_com_EnablePortMapping" )
-Type: bool  Value : true
+( eg: "Device.NAT.X_CISCO_COM_PortTriggers.Enable" )
+Type: bool, Value: true
 
 2.PathName ("paramName")
-( eg: "Device.NAT.PortMapping." )
+( eg: "Device.NAT.X_CISCO_COM_PortTriggers.Trigger." )
 
 3. PathName ("paramName")
-( eg: "Device.NAT.PortMapping.1.Alias" )
+( eg: "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.7.Alias" )
+Type: string, Value: new service
 
 4. PathName ("paramName")
-( eg: "Device.NAT.PortMapping.1.Protocol" )
+( eg: "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.7.TriggerPortStart" )
+Type: unsignedint, Value: 1000
 
 5. PathName ("paramName")
-( eg: "Device.NAT.PortMapping.1.ExternalPort" )
+( eg: "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.7.TriggerPortEnd" )
+Type: unsignedint, Value: 2000
 
 6. PathName ("paramName")
-( eg: "Device.NAT.PortMapping.1.ExternalPortEndRange" )
+( eg: "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.7.ForwardPortStart" )
+Type: unsignedint, Value: 3000
 
 7. PathName ("paramName")
-( eg: "Device.NAT.PortMapping.1.InternalClient" )</input_parameters>
+( eg: "Device.NAT.X_CISCO_COM_PortTriggers.Trigger.7.ForwardPortEnd" )
+Type: unsignedint, Value: 4000</input_parameters>
     <automation_approch>1.Configure the Function info in Test Manager GUI  which needs to be tested  
-(AdvancedConfig_Set, AdvancedConfig_AddObject, AdvancedConfig_Get  - func name - "If not exists already"
+(AdvancedConfig_Set, AdvancedConfig_AddObject - func name - "If not exists already"
  advancedconfig - module name
  Necessary I/P args as Mentioned in Input)
-2.Python Script will be generated/overrided automically by Test Manager with provided arguments in configure page (TS_ADVANCEDCONFIG_PFAddRuleOptions.py)
-3.Execute the generated Script(TS_ADVANCEDCONFIG_PFAddRuleOptions.py) using execution page of  Test Manager GUI
-4.advancedconfigstub which is a part of TDK Agent process, will be in listening mode to execute TDK Component function named AdvancedConfig_Set,AdvancedConfig_AddObject and AdvancedConfig_Get  through registered TDK advancedconfigstub function along with necessary Entry Values as arguments
+2.Python Script will be generated/overrided automically by Test Manager with provided arguments in configure page (TS_ADVANCEDCONFIG_PTDuplicateServiceName.py)
+3.Execute the generated Script(TS_ADVANCEDCONFIG_PTDuplicateServiceName.py) using execution page of  Test Manager GUI
+4.advancedconfigstub which is a part of TDK Agent process, will be in listening mode to execute TDK Component function named AdvancedConfig_Set,AdvancedConfig_AddObject through registered TDK advancedconfigstub function along with necessary Entry Values as arguments
 5.AdvancedConfig_Set function will call ssp_setParameterValue,that inturn will call CCSP Base Interface Function named CcspBaseIf_setParameterValues.
 6. AdvancedConfig_AddObject function will call ssp_addTableRow, that inturn will call CCSP Base Interface Function named CcspBaseIf_AddTblRow and AdvancedConfig_GetNames Will find the instance number of the row added and will process the function for the instance number generated.
-7. AdvancedConfig_Get function will call ssp_getParameterValue, that inturn will call CCSP Base Interface Function named CcspBaseIf_getParameterValues.
-8.Responses(printf) from TDK Component,Ccsp Library function and advancedcongifstub would be logged in Agent Console log based on the debug info redirected to agent console   
-9.advancedconfigstub will validate the available result (from ssp_setParameterValue as zero) with expected result (zero) and the result is updated in agent console log and json output variable
-10.TestManager will publish the result in GUI as SUCCESS/FAILURE based on the response from AdvancedConfig_Set, AdvancedConfig_Get and AdvancedConfig_Addbject functions.</automation_approch>
+7.Responses(printf) from TDK Component,Ccsp Library function and advancedcongifstub would be logged in Agent Console log based on the debug info redirected to agent console   
+8.advancedconfigstub will validate the available result (from ssp_setParameterValue as zero) with expected result (zero) and the result is updated in agent console log and json output variable
+9.TestManager will publish the result in GUI as SUCCESS/FAILURE based on the response from AdvancedConfig_Set and AdvancedConfig_AddObject functions.</automation_approch>
     <except_output>Checkpoint 1:
-Check if ADD rule have options to configure port forwarding
+Check if Advanced -&gt; Port Triggering -&gt; Service name option for port Triggering rule functionality works.
 CheckPoint 2:
 Success log should be available in Agent Console Log
 CheckPoint 3:
@@ -99,7 +102,7 @@ CheckPoint 4:
 TestManager GUI will publish the result as SUCCESS in Execution page</except_output>
     <priority>High</priority>
     <test_stub_interface>none</test_stub_interface>
-    <test_script>TS_ADVANCEDCONFIG_PFAddRuleOptions</test_script>
+    <test_script>TS_ADVANCEDCONFIG_PTDuplicateServiceName</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>
@@ -108,7 +111,7 @@ TestManager GUI will publish the result as SUCCESS in Execution page</except_out
 </xml>
 
 '''
-#use tdklib library,which provides a wrapper for tdk testcase script
+						#use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import tdkutility;
 
@@ -119,7 +122,7 @@ obj = tdklib.TDKScriptingLibrary("advancedconfig","RDKB");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_ADVANCEDCONFIG_PFAddRuleOptions');
+obj.configureTestCase(ip,port,'TS_ADVANCEDCONFIG_PTDuplicateServiceName');
 
 #Get the result of connection with test component and STB
 loadModuleresult =obj.getLoadModuleResult();
@@ -127,15 +130,17 @@ print "[LIB LOAD STATUS]  :  %s" %loadModuleresult;
 
 if "SUCCESS" in loadModuleresult.upper():
         obj.setLoadModuleStatus("SUCCESS");
-	instance ="";
-        #Enabling port forwarding - setting the port mapping as true
+	instance1 ="";
+	instance2 ="";
+        #Enabling port triggering - setting the port triggering as true
         tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
-        tdkTestObj.addParameter("paramName","Device.NAT.X_Comcast_com_EnablePortMapping");
+        tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Enable");
         tdkTestObj.addParameter("paramValue","true");
         tdkTestObj.addParameter("paramType","boolean");
         expectedresult = "SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
+        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
         if expectedresult in actualresult:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
@@ -146,12 +151,12 @@ if "SUCCESS" in loadModuleresult.upper():
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Port triggering is enabled\n"
 
-                # Adding a new row to the port forwarding table
+                # Adding a new row to the port triggering table
                 tdkTestObj = obj.createTestStep("AdvancedConfig_AddObject");
-                tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.");
+                tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
                 expectedresult="SUCCESS";
                 tdkTestObj.executeTestCase(expectedresult);
-                actualresult = tdkTestObj.getResult();
+                actualresult = tdkTestObj.getResult();	
                 if expectedresult in actualresult:
                 #Set the result status of execution
                         tdkTestObj.setResultStatus("SUCCESS");
@@ -161,134 +166,84 @@ if "SUCCESS" in loadModuleresult.upper():
                         print "[ACTUAL RESULT 2]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "Add service option is selected and a new table is created\n"
-			temp = details.split(':');
-                        instance = temp[1];
-
-                        if (instance > 0):
-                            print "INSTANCE VALUE: %s" %instance
-                            # Getting the service name
-                            tdkTestObj = obj.createTestStep("AdvancedConfig_Get");
-                            tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.Alias" %instance);
+                        temp = details.split(':');
+                        instance1 = temp[1];
+                        if (instance1 > 0):
+                            print "INSTANCE VALUE: %s" %instance1
+                            # Setting the service name
+                            tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
+                            tdkTestObj.addParameter("paramList","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Description|Myservice|string|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerProtocol|TCP|string|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortStart|8080|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortEnd|8090|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortStart|3000|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortEnd|4000|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Enable|true|bool" %(instance1, instance1, instance1, instance1, instance1, instance1, instance1));
                             expectedresult="SUCCESS";
                             tdkTestObj.executeTestCase(expectedresult);
                             actualresult = tdkTestObj.getResult();
                             if expectedresult in actualresult:
-                                #Set the result status of execution
                                 tdkTestObj.setResultStatus("SUCCESS");
                                 details = tdkTestObj.getResultDetails();
-                                print "[TEST STEP 3]: Getting external port values";
-                                print "[EXPECTED RESULT 3]: Should get external port value successfully";
+                                print "[TEST STEP 3]: Setting external port";
+                                print "[EXPECTED RESULT 3]: Should set external port successfully";
                                 print "[ACTUAL RESULT 3]: %s" %details;
                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                print "Retrieved port mapping rule value successfully\n"
-
-                                # Getting the protocol type
-                                tdkTestObj = obj.createTestStep("AdvancedConfig_Get");
-                                tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.Protocol"%instance);
+                                print "Added port mapping rule successfully\n"
+                                ## Add New Table ##
+                                tdkTestObj = obj.createTestStep("AdvancedConfig_AddObject");
+                                tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
                                 expectedresult="SUCCESS";
                                 tdkTestObj.executeTestCase(expectedresult);
                                 actualresult = tdkTestObj.getResult();
                                 if expectedresult in actualresult:
-                                    #Set the result status of execution
                                     tdkTestObj.setResultStatus("SUCCESS");
                                     details = tdkTestObj.getResultDetails();
-                                    print "[TEST STEP 4]: Getting external port values";
-                                    print "[EXPECTED RESULT 4]: Should get external port values successfully";
+                                    print "[TEST STEP 4]: Adding new rule to Port Trigger";
+                                    print "[EXPECTED RESULT 4]: Should add new rule to Port Trigger";
                                     print "[ACTUAL RESULT 4]: %s" %details;
                                     print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                    print "Retrieved port mapping rule value successfully\n"
-                                    #getting the start port
-                                    tdkTestObj = obj.createTestStep("AdvancedConfig_Get");
-                                    tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.ExternalPort"%instance);
-                                    expectedresult="SUCCESS";
+                                    print "Add service option is selected and a new table is created\n"
+                                    temp = details.split(':');
+                                    instance2 = temp[1];
+                                    # Setting the external port
+                                    tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
+                                    tdkTestObj.addParameter("paramList","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Description|Myservice|string|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerProtocol|TCP|string|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortStart|8|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortEnd|80|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortStart|2000|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortEnd|2000|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Enable|true|bool" %(instance2, instance2, instance2, instance2, instance2, instance2, instance2));
+                                    expectedresult="FAILURE";
                                     tdkTestObj.executeTestCase(expectedresult);
                                     actualresult = tdkTestObj.getResult();
+                                    print "Different rules with same service name must not be allowed"
                                     if expectedresult in actualresult:
-                                        #Set the result status of execution
                                         tdkTestObj.setResultStatus("SUCCESS");
                                         details = tdkTestObj.getResultDetails();
-	                                print "[TEST STEP 5]: Getting external port values";
-        	                        print "[EXPECTED RESULT 5]: Should get external port value successfully";
-                	                print "[ACTUAL RESULT 5]: %s" %details;
-                        	        print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                	print "Retrieved port mapping rule value successfully\n"
-                                        #getting the end port
-                                        tdkTestObj = obj.createTestStep("AdvancedConfig_Get");
-                                        tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.ExternalPortEndRange" %instance) ;
-                                        expectedresult="SUCCESS";
-                                        tdkTestObj.executeTestCase(expectedresult);
-                                        actualresult = tdkTestObj.getResult();
-                                        if expectedresult in actualresult:
-                                            #Set the result status of execution
-                                            tdkTestObj.setResultStatus("SUCCESS");
-                                            details = tdkTestObj.getResultDetails();
-	                                    print "[TEST STEP 6: Getting external port values";
-        	                            print "[EXPECTED RESULT 6: Should get external port values successfully";
-                	                    print "[ACTUAL RESULT 6: %s" %details;
-                        	            print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                	    print "Retrieved port mapping rule value successfully\n"
-                                            #getting the ip
-                                            tdkTestObj = obj.createTestStep("AdvancedConfig_Get");
-                                            tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.InternalClient" %instance);
-                                            expectedresult="SUCCESS";
-                                            tdkTestObj.executeTestCase(expectedresult);
-                                            actualresult = tdkTestObj.getResult();
-                                            if expectedresult in actualresult:
+                                        print "[TEST STEP 5]: Setting external port with duplicate value";
+                                        print "[EXPECTED RESULT 5]: Should not set external port with duplicate value";
+                                        print "[ACTUAL RESULT 5]: %s" %details;
+                                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                                        print "Port mapping rule is not added\n"
 
-                                                #Set the result status of execution
-                                                tdkTestObj.setResultStatus("SUCCESS");
-                                                details = tdkTestObj.getResultDetails();
-	                                        print "[TEST STEP 7]: Getting external port values";
-        	                                print "[EXPECTED RESULT 7]: Should get external port value successfully";
-                	                        print "[ACTUAL RESULT 7]: %s" %details;
-                        	                print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                	        print "Retrieved port mapping rule value successfully\n"
-                                            else:
-                                                tdkTestObj.setResultStatus("FAILURE");
-                                                details = tdkTestObj.getResultDetails();
-                                                print "[TEST STEP 7]: Getting external port values";
-                                                print "[EXPECTED RESULT 7]: Should get external port value successfully";
-                                                print "[ACTUAL RESULT 7]: %s" %details;
-                                                print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                                print "Failure in getting the IP option\n"
-
-                                        else:
-                                            tdkTestObj.setResultStatus("FAILURE");
-                                            details = tdkTestObj.getResultDetails();
-                                            print "[TEST STEP 6: Getting external port values";
-                                            print "[EXPECTED RESULT 6: Should get external port values successfully";
-                                            print "[ACTUAL RESULT 6: %s" %details;
-                                            print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                            print "Failure in getting the end port\n"
                                     else:
                                         tdkTestObj.setResultStatus("FAILURE");
                                         details = tdkTestObj.getResultDetails();
-                                        print "[TEST STEP 5]: Getting external port values";
-                                        print "[EXPECTED RESULT 5]: Should get external port value successfully";
+                                        print "[TEST STEP 5]: Setting external port with duplicate value";
+                                        print "[EXPECTED RESULT 5]: Should not set external port with duplicate value";
                                         print "[ACTUAL RESULT 5]: %s" %details;
                                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                        print "Failure in getting the start port\n"
+                                        print "Port mapping rule is added\n"
                                 else:
                                     tdkTestObj.setResultStatus("FAILURE");
                                     details = tdkTestObj.getResultDetails();
-                                    print "[TEST STEP 4]: Getting external port values";
-                                    print "[EXPECTED RESULT 4]: Should get external port values successfully";
+                                    print "[TEST STEP 4]: Adding new rule to Port Trigger";
+                                    print "[EXPECTED RESULT 4]: Should add new rule to Port Trigger";
                                     print "[ACTUAL RESULT 4]: %s" %details;
                                     print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                    print "Failure in getting the protocol type\n"
+                                    print "Failed to add new table \n"
                             else:
                                 tdkTestObj.setResultStatus("FAILURE");
                                 details = tdkTestObj.getResultDetails();
-                                print "[TEST STEP 3]: Getting external port values";
-                                print "[EXPECTED RESULT 3]: Should get external port value successfully";
+                                print "[TEST STEP 3]: Setting external port";
+                                print "[EXPECTED RESULT 3]: Should set external port successfully";
                                 print "[ACTUAL RESULT 3]: %s" %details;
                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                print "Failure in getting the service name\n"
-                                
+                                print "Failed to set Trigger Port\n"
                         else:
                             print "Instance value should be greater than 0\n"
                             print "Wrong instance value\n"
-               
+
                 else:
                         tdkTestObj.setResultStatus("FAILURE");
                         details = tdkTestObj.getResultDetails();
@@ -296,7 +251,7 @@ if "SUCCESS" in loadModuleresult.upper():
                         print "[EXPECTED RESULT 2]: Should add new rule to Port Trigger";
                         print "[ACTUAL RESULT 2]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                        print "Failure in adding the new port forwarding row\n"
+                        print "Failed to add table \n"
         else:
                 tdkTestObj.setResultStatus("FAILURE");
                 details = tdkTestObj.getResultDetails();
@@ -304,17 +259,23 @@ if "SUCCESS" in loadModuleresult.upper():
                 print "[EXPECTED RESULT 1]: Should enable Port Trigger";
                 print "[ACTUAL RESULT 1]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                print "Failure in setting the port forwarding as true\n "
+                print "Failed to enable port trigger \n "
 
         #To delete the added table
-        if instance:
+        if instance1:
             tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
-            tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s." %instance);
+            tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s." %instance1);
             expectedresult = "SUCCESS";
             tdkTestObj.executeTestCase(expectedresult);
-            actualresult = tdkTestObj.getResult();
+	    actualresult = tdkTestObj.getResult();
             print "[TEST EXECUTION RESULT] : %s" %actualresult ;
             if expectedresult in actualresult:
+                if instance2:
+                    tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
+                    tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s." %instance2);
+                    expectedresult = "SUCCESS";
+                    tdkTestObj.executeTestCase(expectedresult);
+                    actualresult = tdkTestObj.getResult();
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
                 details = tdkTestObj.getResultDetails();
@@ -329,7 +290,6 @@ if "SUCCESS" in loadModuleresult.upper():
                 print "[ACTUAL RESULT]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Added table could not be deleted\n"
-            
         obj.unloadModule("advancedconfig");
 else:
         print "FAILURE to load Advancedconfig module";

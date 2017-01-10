@@ -118,7 +118,9 @@ if "SUCCESS" in loadModuleresult.upper():
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
                 details = tdkTestObj.getResultDetails();
-                print "ACTUAL RESULT 1: %s" %details;
+                print "[TEST STEP 1]: Enabling Port Mapping";
+                print "[EXPECTED RESULT 1]: Should enable Port Mapping";
+                print "[ACTUAL RESULT 1]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Port forwarding is enabled\n"
 
@@ -130,25 +132,29 @@ if "SUCCESS" in loadModuleresult.upper():
                 expectedresult = "SUCCESS";
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
-                print "[TEST EXECUTION RESULT] : %s" %actualresult ;
                 if expectedresult in actualresult:
                 #Set the result status of execution
                         tdkTestObj.setResultStatus("SUCCESS");
                         details = tdkTestObj.getResultDetails();
-                        print "ACTUAL RESULT 2: %s" %details;
-                        #Get the result of execution
-                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+	                print "[TEST STEP 1]: Disabling Port Mapping";
+        	        print "[EXPECTED RESULT 1]: Should disable Port Mapping";
+                	print "[ACTUAL RESULT 1]: %s" %details;
+	                print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "Port forwading is disabled\n"
                 else:
                         tdkTestObj.setResultStatus("FAILURE");
                         details = tdkTestObj.getResultDetails();
-                        print "ACTUAL RESULT 2: %s" %details;
+                        print "[TEST STEP 1]: Disabling Port Mapping";
+                        print "[EXPECTED RESULT 1]: Should disable Port Mapping";
+                        print "[ACTUAL RESULT 1]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "Failure in setting the port forwarding as false\n"
         else:
                 tdkTestObj.setResultStatus("FAILURE");
                 details = tdkTestObj.getResultDetails();
-                print "ACTUAL RESULT 1: %s" %details;
+                print "[TEST STEP 1]: Enabling Port Mapping";
+                print "[EXPECTED RESULT 1]: Should enable Port Mapping";
+                print "[ACTUAL RESULT 1]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Failure in setting the port forwarding as true\n "
 

@@ -19,8 +19,8 @@
 '''
 <?xml version="1.0" encoding="UTF-8"?><xml>
   <id/>
-  <version>5</version>
-  <name>TS_ADVANCEDCONFIG_RuleforHTTPDownloadWithInvalidIPAddress10.1.10.255</name>
+  <version>4</version>
+  <name>TS_ADVANCEDCONFIG_RuleforHTTPDownloadOutOfRangeIPBeforeStart</name>
   <primitive_test_id/>
   <primitive_test_name>AdvancedConfig_Set</primitive_test_name>
   <primitive_test_version>1</primitive_test_version>
@@ -39,8 +39,8 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_ADVANCEDCONFIG_17</test_case_id>
-    <test_objective>To verify, WEB ADMIN:  LAN CPE:  Rule for HTTP Download with invalid IP Address 10.1.10.255</test_objective>
+    <test_case_id>TC_ADVANCEDCONFIG_15</test_case_id>
+    <test_objective>To verify, WEB ADMIN: LAN CPE: Rule for HTTP Download with invalid IP Address 10.0.0.0</test_objective>
     <test_type>Possitive</test_type>
     <test_setup>Emulator,
 XB3</test_setup>
@@ -60,8 +60,8 @@ Input:
 (AdvancedConfig_Set, AdvancedConfig_AddObject - func name - "If not exists already"
  advancedconfig - module name
  Necessary I/P args as Mentioned in Input)
-2.Python Script will be generated/overrided automically by Test Manager with provided arguments in configure page (TS_ADVANCEDCONFIG_RuleforHTTPDownloadWithInvalidIPAddress10.1.10.255.py)
-3.Execute the generated Script(TS_ADVANCEDCONFIG_RuleforHTTPDownloadWithInvalidIPAddress10.1.10.255.py) using execution page of  Test Manager GUI
+2.Python Script will be generated/overrided automically by Test Manager with provided arguments in configure page (TS_ADVANCEDCONFIG_RuleforHTTPDownloadOutOfRangeIPBeforeStart.py)
+3.Execute the generated Script(TS_ADVANCEDCONFIG_RuleforHTTPDownloadOutOfRangeIPBeforeStart.py) using execution page of  Test Manager GUI
 4.advancedconfigstub which is a part of TDK Agent process, will be in listening mode to execute TDK Component function named AdvancedConfig_Set, AdvancedConfig_AddObject through registered TDK advancedconfigstub function along with necessary Entry Values as arguments
 5.AdvancedConfig_Set function will call ssp_setParameterValue,that inturn will call CCSP Base Interface Function named CcspBaseIf_setParameterValues.
 6. AdvancedConfig_AddObject function will call ssp_addTableRow, that inturn will call CCSP Base Interface Function named CcspBaseIf_AddTblRow and AdvancedConfig_GetNames Will find the instance number of the row added and will process the function for the instance number generated.
@@ -69,7 +69,7 @@ Input:
 8.advancedconfigstub will validate the available result (from ssp_setParameterValue as zero) with expected result (zero) and the result is updated in agent console log and json output variable
 9.TestManager will publish the result in GUI as SUCCESS/FAILURE based on the response from AdvancedConfig_Set and AdvancedConfig_AddObject functions.</automation_approch>
     <except_output>Checkpoint 1:
-Check if "WEB ADMIN:  LAN CPE:  Rule for HTTP Download with invalid IP Address 10.1.10.255" functionality works.
+Check if WEB ADMIN: LAN CPE: "Rule for HTTP Download with invalid IP Address 10.0.0.0" functionality works.
 CheckPoint 2:
 Success log should be available in Agent Console Log
 CheckPoint 3:
@@ -78,7 +78,7 @@ CheckPoint 4:
 TestManager GUI will publish the result as SUCCESS in Execution page</except_output>
     <priority>High</priority>
     <test_stub_interface>none</test_stub_interface>
-    <test_script>TS_ADVANCEDCONFIG_RuleforHTTPDownloadWithInvalidIPAddress10.1.10.255</test_script>
+    <test_script>TS_ADVANCEDCONFIG_RuleforHTTPDownloadOutOfRangeIPBeforeStart</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>
@@ -87,7 +87,7 @@ TestManager GUI will publish the result as SUCCESS in Execution page</except_out
 </xml>
 
 '''
-						#use tdklib library,which provides a wrapper for tdk testcase script
+#use tdklib library,which provides a wrapper for tdk testcase script0
 import tdklib;
 import tdkutility;
 
@@ -98,7 +98,7 @@ obj = tdklib.TDKScriptingLibrary("advancedconfig","RDKB");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_ADVANCEDCONFIG_RuleforHTTPDownloadWithInvalidIPAddress10.1.10.255');
+obj.configureTestCase(ip,port,'TS_ADVANCEDCONFIG_RuleforHTTPDownloadOutOfRangeIPBeforeStart');
 
 #Get the result of connection with test component and STB
 loadModuleresult =obj.getLoadModuleResult();
@@ -141,12 +141,13 @@ if "SUCCESS" in loadModuleresult.upper():
                         print "[ACTUAL RESULT 2]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "Add service option is selected and a new table is created\n"
-                        temp = details.split(':');
+		        temp = details.split(':');
                         instance = temp[1];
                         if (instance > 0):
                             print "INSTANCE VALUE: %s" %instance
-			    tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
-                            tdkTestObj.addParameter("paramList","Device.NAT.PortMapping.%s.Enable|true|bool|Device.NAT.PortMapping.%s.ExternalPort|1|unsignedint|Device.NAT.PortMapping.%s.InternalPort|22|unsignedint|Device.NAT.PortMapping.%s.Protocol|TCP|string|Device.NAT.PortMapping.%s.InternalClient|10.1.10.255|string|Device.NAT.PortMapping.%s.Description|NEW_RULE|string" %(instance, instance, instance, instance, instance, instance));
+                            # Enable Port Triggering
+                            tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
+                            tdkTestObj.addParameter("paramList","Device.NAT.PortMapping.%s.Enable|true|bool|Device.NAT.PortMapping.%s.ExternalPort|1|unsignedint|Device.NAT.PortMapping.%s.InternalPort|22|unsignedint|Device.NAT.PortMapping.%s.Protocol|TCP|string|Device.NAT.PortMapping.%s.InternalClient|10.0.0.0|string|Device.NAT.PortMapping.%s.Description|NEW_RULE|string|Device.NAT.PortMapping.%s.ExternalPortEndRange|8050|unsignedint" %(instance, instance, instance, instance, instance, instance, instance));
                             expectedresult="FAILURE";
                             tdkTestObj.executeTestCase(expectedresult);
                             actualresult = tdkTestObj.getResult();
@@ -171,7 +172,7 @@ if "SUCCESS" in loadModuleresult.upper():
                         else:
                             print "Instance value should be greater than 0\n"
                             print "Wrong instance value\n"
-                        
+
                 else:
                         tdkTestObj.setResultStatus("FAILURE");
                         details = tdkTestObj.getResultDetails();
@@ -212,7 +213,6 @@ if "SUCCESS" in loadModuleresult.upper():
                 print "[ACTUAL RESULT]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Added table could not be deleted\n"
-
         obj.unloadModule("advancedconfig");
 else:
         print "FAILURE to load Advancedconfig module";

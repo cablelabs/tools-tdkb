@@ -114,12 +114,9 @@ tdkTestObj = obj.createTestStep('AdvancedConfig_Set');
 tdkTestObj.addParameter("paramName","Device.UserInterface.X_CISCO_COM_RemoteAccess.Enable");
 tdkTestObj.addParameter("paramValue","true");
 tdkTestObj.addParameter("paramType","boolean");
-
-#Execute the test case in STB
-tdkTestObj.executeTestCase("");
-
 expectedresult = "SUCCESS";
-
+#Execute the test case in STB
+tdkTestObj.executeTestCase(expectedresult);
 #Get the result of execution
 actualresult = tdkTestObj.getResult();
 print "[TEST EXECUTION RESULT] : %s" %actualresult ;
@@ -129,10 +126,16 @@ resultDetails = tdkTestObj.getResultDetails();
 if expectedresult in actualresult:
 	#Set the result status of execution as success
 	tdkTestObj.setResultStatus("SUCCESS");
+        print "[STEP 1]: Set the boolean value to true ";
+        print "[EXPECTED RESLUT 1]: Should set the boolean value to true ";
+        print "[ACTUAL RESULT 1]: Successfully set the boolean value, %s" %resultDetails;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;
 else:
 	#Set the result status of execution as failure
 	tdkTestObj.setResultStatus("FAILURE");
-
-print "[TEST EXECUTION RESULT] : %s" %resultDetails ;
+	print "[STEP 1]: Set the boolean value to true";
+	print "[EXPECTED RESLUT 1]: Should set the boolean value to true ";
+        print "[ACTUAL RESULT 1]: Failed to set the boolean value, %s" %resultDetails;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;
 
 obj.unloadModule("advancedconfig");

@@ -117,8 +117,10 @@ if "SUCCESS" in loadModuleresult.upper():
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
                 details = tdkTestObj.getResultDetails();
-                print "ACTUAL RESULT 1: %s" %details;
-                print "[TEST EXECUTION RESULT 1] : %s" %actualresult;
+                print "[TEST STEP 1]: Enabling DMZ";
+                print "[EXPECTED RESULT 1]: Should enable DMZ";
+                print "[ACTUAL RESULT 1]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "DMZ is Enabled\n"
                 tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
                 tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_DMZ.Enable");
@@ -131,13 +133,17 @@ if "SUCCESS" in loadModuleresult.upper():
                         #Set the result status of execution
                         tdkTestObj.setResultStatus("SUCCESS");
                         details = tdkTestObj.getResultDetails();
-			print "ACTUAL RESULT 2: %s" %details;
-                        print "[TEST EXECUTION RESULT 2] : %s" %actualresult;
+	                print "[TEST STEP 2]: Disabling DMZ";
+        	        print "[EXPECTED RESULT 2]: Should disable DMZ";
+                	print "[ACTUAL RESULT 2]: %s" %details;
+	                print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "DMZ is Disabled\n"
                 else:
                         tdkTestObj.setResultStatus("FAILURE");
                         details = tdkTestObj.getResultDetails();
-                        print "ACTUAL RESULT 2: %s" %details;
+                        print "[TEST STEP 2]: Disabling DMZ";
+                        print "[EXPECTED RESULT 2]: Should disable DMZ";
+                        print "[ACTUAL RESULT 2]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "Failure in setting the DMZ as false\n"
 
@@ -145,7 +151,9 @@ if "SUCCESS" in loadModuleresult.upper():
         else:
                 tdkTestObj.setResultStatus("FAILURE");
                 details = tdkTestObj.getResultDetails();
-                print "ACTUAL RESULT 1: %s" %details;
+                print "[TEST STEP 1]: Enabling DMZ";
+                print "[EXPECTED RESULT 1]: Should enable DMZ";
+                print "[ACTUAL RESULT 1]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Failure in setting the DMZ as true\n "
 

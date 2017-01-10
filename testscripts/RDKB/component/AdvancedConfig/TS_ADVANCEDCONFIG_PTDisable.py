@@ -108,7 +108,7 @@ TestManager GUI will publish the result as SUCCESS in Execution page</except_out
 </xml>
 
 '''
-						#use tdklib library,which provides a wrapper for tdk testcase script
+#use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import tdkutility;
 
@@ -128,7 +128,7 @@ print "[LIB LOAD STATUS]  :  %s" %loadModuleresult;
 
 if "SUCCESS" in loadModuleresult.upper():
         obj.setLoadModuleStatus("SUCCESS");
-
+	instance ="";
         #Enabling port triggering - setting the port triggering as true
         tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
         tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Enable");
@@ -142,7 +142,9 @@ if "SUCCESS" in loadModuleresult.upper():
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
                 details = tdkTestObj.getResultDetails();
-                print "ACTUAL RESULT 1: %s" %details;
+                print "[TEST STEP 1]: Enabling Port Trigger";
+                print "[EXPECTED RESULT 1]: Should enable Port Trigger";
+                print "[ACTUAL RESULT 1]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Port triggering is enabled\n"
 
@@ -157,123 +159,116 @@ if "SUCCESS" in loadModuleresult.upper():
                         #Set the result status of execution
                         tdkTestObj.setResultStatus("SUCCESS");
                         details = tdkTestObj.getResultDetails();
-                        print "ACTUAL RESULT 2: %s" %details;
-                        #Get the result of execution
+                        print "[TEST STEP 2]: Adding new rule to Port Trigger";
+                        print "[EXPECTED RESULT 2]: Should add new rule to Port Trigger";
+                        print "[ACTUAL RESULT 2]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                        print "Added a new rule to port triggering\n"
+                        print "Add service option is selected and a new table is created\n"
+                        temp = details.split(':');
+                        instance = temp[1];
 
-                        #Enabling port forwarding - setting the port mapping as true
-                        tdkTestObj = obj.createTestStep("AdvancedConfig_GetNames");
-                        tdkTestObj.addParameter("pathname","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.");
-                        tdkTestObj.addParameter("brecursive",1);
-                        expectedresult = "SUCCESS";
-                        tdkTestObj.executeTestCase(expectedresult);
-                        actualresult = tdkTestObj.getResult();
-                        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-                        if expectedresult in actualresult:
-				#Set the result status of execution
+                        if (instance > 0):
+                            print "INSTANCE VALUE: %s" %instance
+                            # Getting the parameters
+                            tdkTestObj = obj.createTestStep("AdvancedConfig_Get");
+                            tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Alias" %instance);
+                            tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortStart" %instance);
+                            tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortEnd" %instance);
+                            tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortStart" %instance);
+                            tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortEnd" %instance);
+                            expectedresult = "SUCCESS";
+                            tdkTestObj.executeTestCase(expectedresult);
+                            actualresult = tdkTestObj.getResult();
+                            print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+                            if expectedresult in actualresult:
+                                #Set the result status of execution
                                 tdkTestObj.setResultStatus("SUCCESS");
                                 details = tdkTestObj.getResultDetails();
-                                print "ACTUAL RESULT 1: %s" %details;
+                                print "[TEST STEP 3]: Getting external port values";
+                                print "[EXPECTED RESULT 3]: Should get external port value successfully";
+                                print "[ACTUAL RESULT 3]: %s" %details;
                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                index = 4;
-                                instance = tdkutility.getInstanceNumber(details,index);
-                                print "INSTANCE VALUE: %s" %instance
-                                if (instance > 0):
-                                    print "INSTANCE VALUE: %s" %instance
-                                    # Getting the parameters
-                                    tdkTestObj = obj.createTestStep("AdvancedConfig_Get");
-                                    tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Alias" %instance);
-                                    tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortStart" %instance);
-                                    tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortEnd" %instance);
-                                    tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortStart" %instance);
-                                    tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortEnd" %instance);
-                                    expectedresult = "SUCCESS";
-                                    tdkTestObj.executeTestCase(expectedresult);
-                                    actualresult = tdkTestObj.getResult();
-                                    print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-                                    if expectedresult in actualresult:
-                                        #Set the result status of execution
-                                        tdkTestObj.setResultStatus("SUCCESS");
-                                        details = tdkTestObj.getResultDetails();
-                                        print "ACTUAL RESULT 3: %s" %details;
-                                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                        print "All the parameters are available in port triggering\n"
-                                        
-                                        # Disabling port triggering
-                                        tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
-                                        tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Enable");
-                                        tdkTestObj.addParameter("paramValue","false");
-                                        tdkTestObj.addParameter("paramType","boolean");
-
-                                        expectedresult = "SUCCESS";
-                                        tdkTestObj.executeTestCase(expectedresult);
-                                        actualresult = tdkTestObj.getResult();
-                                        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-                                        if expectedresult in actualresult:
-                                            #Set the result status of execution
-                                            tdkTestObj.setResultStatus("SUCCESS");
-                                            details = tdkTestObj.getResultDetails();
-                                            print "ACTUAL RESULT 4: %s" %details;
-                                            #Get the result of execution
-                                            print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                            print "Port triggering is disabled\n"
-                                        else:
-                                            tdkTestObj.setResultStatus("FAILURE");
-                                            details = tdkTestObj.getResultDetails();
-                                            print "ACTUAL RESULT 4: %s" %details;
-                                            print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                            print "Failure in disabling port triggering\n"
-                                    else:
-                                        tdkTestObj.setResultStatus("FAILURE");
-                                        details = tdkTestObj.getResultDetails();
-                                        print "ACTUAL RESULT 3: %s" %details;
-                                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                        print "Failure in getting the parameters in port triggering\n"
-
-
+                                print "All the parameters are available in port triggering\n"
                                     
+                                # Disabling port triggering
+                                tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
+                                tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Enable");
+                                tdkTestObj.addParameter("paramValue","false");
+                                tdkTestObj.addParameter("paramType","boolean");
+                                expectedresult = "SUCCESS";
+                                tdkTestObj.executeTestCase(expectedresult);
+                                actualresult = tdkTestObj.getResult();
+                                print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+                                if expectedresult in actualresult:
+                                    #Set the result status of execution
+                                    tdkTestObj.setResultStatus("SUCCESS");
+                                    details = tdkTestObj.getResultDetails();
+		                    print "[TEST STEP 4]: Disabling Port Trigger";
+		                    print "[EXPECTED RESULT 4]: Should disable Port Trigger";
+		                    print "[ACTUAL RESULT 4]: %s" %details;
+		                    print "[TEST EXECUTION RESULT] : %s" %actualresult;
+		                    print "Port triggering is disabled\n"
                                 else:
-                                    print "Instance value should be greater than 0\n"
-                                    print "Wrong instance value\n"
-               
-                        else:
+                                    tdkTestObj.setResultStatus("FAILURE");
+                                    details = tdkTestObj.getResultDetails();
+                                    print "[TEST STEP 4]: Disabling Port Trigger";
+                                    print "[EXPECTED RESULT 4]: Should disable Port Trigger";
+                                    print "[ACTUAL RESULT 4]: %s" %details;
+                                    print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                                    print "Failure in disabling port triggering\n"
+                            else:
                                 tdkTestObj.setResultStatus("FAILURE");
                                 details = tdkTestObj.getResultDetails();
-                                print "ACTUAL RESULT 1: %s" %details;
+                                print "[TEST STEP 3]: Getting external port values";
+                                print "[EXPECTED RESULT 3]: Should get external port value successfully";
+                                print "[ACTUAL RESULT 3]: %s" %details;
                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                                print "Failed to getnames\n "
-                        
-
+                                print "Failure in getting the parameters in port triggering\n"
+                        else:
+                            print "Instance value should be greater than 0\n"
+                            print "Wrong instance value\n"
+               
                 else:
                         tdkTestObj.setResultStatus("FAILURE");
                         details = tdkTestObj.getResultDetails();
-                        print "ACTUAL RESULT 2: %s" %details;
+                        details = tdkTestObj.getResultDetails();
+                        print "[TEST STEP 2]: Adding new rule to Port Trigger";
+                        print "[EXPECTED RESULT 2]: Should add new rule to Port Trigger";
+                        print "[ACTUAL RESULT 2]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "Failure in adding new rule to port triggering\n"
         else:
                 tdkTestObj.setResultStatus("FAILURE");
                 details = tdkTestObj.getResultDetails();
-                print "ACTUAL RESULT 1: %s" %details;
+                print "[TEST STEP 1]: Enabling Port Trigger";
+                print "[EXPECTED RESULT 1]: Should enable Port Trigger";
+                print "[ACTUAL RESULT 1]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Failure in setting the port forwarding as true\n "
                 
         #To delete the added table
-        tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
-        tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s." %instance);
-        expectedresult = "SUCCESS";
-        tdkTestObj.executeTestCase(expectedresult);
-        actualresult = tdkTestObj.getResult();
-        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-        if expectedresult in actualresult:
-            #Set the result status of execution
-            tdkTestObj.setResultStatus("SUCCESS");
-            details = tdkTestObj.getResultDetails();
-            print "ACTUAL RESULT: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult;
-            print "Added table is deleted successfully\n"
-        else:
-            print "Added table could not be deleted\n"
+        if instance:
+            tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
+            tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s." %instance);
+            expectedresult = "SUCCESS";
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+            if expectedresult in actualresult:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("SUCCESS");
+                details = tdkTestObj.getResultDetails();
+                print "[TEST STEP ]: Deleting the added rule";
+                print "[EXPECTED RESULT ]: Should delete the added rule";
+                print "[ACTUAL RESULT]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                print "Added table is deleted successfully\n"
+            else:
+                print "[TEST STEP ]: Deleting the added rule";
+                print "[EXPECTED RESULT ]: Should delete the added rule";
+                print "[ACTUAL RESULT]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                print "Added table could not be deleted\n"
 
         obj.unloadModule("advancedconfig");
 else:

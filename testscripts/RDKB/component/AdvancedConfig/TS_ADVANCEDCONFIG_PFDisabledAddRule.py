@@ -109,7 +109,7 @@ print "[LIB LOAD STATUS]  :  %s" %loadModuleresult;
 
 if "SUCCESS" in loadModuleresult.upper():
         obj.setLoadModuleStatus("SUCCESS");
-
+	instance ="";
         #Disabling port forwarding - setting the port mapping as false
         tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
         tdkTestObj.addParameter("paramName","Device.NAT.X_Comcast_com_EnablePortMapping");
@@ -118,19 +118,20 @@ if "SUCCESS" in loadModuleresult.upper():
         expectedresult = "SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
-        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
         if expectedresult in actualresult:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
                 details = tdkTestObj.getResultDetails();
-                print "ACTUAL RESULT 1: %s" %details;
+		print "[TEST STEP 1]: Disabling Port Mapping";
+                print "[EXPECTED RESULT 1]: Should disable Port Mapping";
+                print "[ACTUAL RESULT 1]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Port forwarding is disabled\n"
 
                 # Adding a new row when port forwarding is disabled
                 tdkTestObj = obj.createTestStep("AdvancedConfig_AddObject");
                 tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.");
-                expectedresult = "FAILURE";
+                expectedresult = "SUCCESS"
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 print "[TEST EXECUTION RESULT] : %s" %actualresult ;
@@ -138,23 +139,82 @@ if "SUCCESS" in loadModuleresult.upper():
                         #Set the result status of execution
                         tdkTestObj.setResultStatus("SUCCESS");
                         details = tdkTestObj.getResultDetails();
-                        print "ACTUAL RESULT 2: %s" %details;
-                        #Get the result of execution
+                        print "[TEST STEP 2]: Adding new rule to Port Mapping";
+                        print "[EXPECTED RESULT 2]: Should add new rule when port forwarding is disabled";
+                        print "[ACTUAL RESULT 2]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                        print "Cannot add a new rule when port forwarding is disabled\n"
+                        temp = details.split(':');
+                        instance = temp[1];
+
+                        if (instance > 0):
+                                print "INSTANCE VALUE: %s" %instance
+	                       	 ## Enable Trigger 1 ##
+        	                tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
+                	        tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s.Enable" %instance);
+                                tdkTestObj.addParameter("paramValue","true");
+                                tdkTestObj.addParameter("paramType","boolean");
+                                expectedresult="FAILURE";
+                                tdkTestObj.executeTestCase(expectedresult);
+                                actualresult = tdkTestObj.getResult();
+                                if expectedresult in actualresult:
+                                    tdkTestObj.setResultStatus("SUCCESS");
+                                    details = tdkTestObj.getResultDetails();
+                                    print "[TEST STEP 4]: Enabling the rule added";
+                                    print "[EXPECTED RESULT 4]: Should not enable the rule added successfully";
+                                    print "[ACTUAL RESULT 4]: %s" %details;
+                                    print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                                    print "Cannot enable the rule added after disabling the port mapping\n"
+                                else:
+                                    tdkTestObj.setResultStatus("FAILURE");
+                                    details = tdkTestObj.getResultDetails();
+                                    print "[TEST STEP 4]: Enabling the rule added";
+                                    print "[EXPECTED RESULT 4]: Should not enable the rule added successfully";
+                                    print "[ACTUAL RESULT 4]: %s" %details;
+                                    print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                                    print "Enabled the new rule added\n"
+			else:
+				print "Instance value should be greater than 0\n"
+                                print "Wrong instance value\n"
+
                 else:
                         tdkTestObj.setResultStatus("FAILURE");
                         details = tdkTestObj.getResultDetails();
-                        print "ACTUAL RESULT 2: %s" %details;
+                        print "[TEST STEP 2]: Adding new rule to Port Mapping";
+                        print "[EXPECTED RESULT 2]: Should add new rule when port forwarding is disabled";
+                        print "[ACTUAL RESULT 2]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                        print "Failure, new rule is added though the port forwarding is disbled\n"
+                        print "Failure in adding new table\n"
         else:
                 tdkTestObj.setResultStatus("FAILURE");
                 details = tdkTestObj.getResultDetails();
-                print "ACTUAL RESULT 1: %s" %details;
+                print "[TEST STEP 1]: Disabling Port Mapping";
+                print "[EXPECTED RESULT 1]: Should disable Port Mapping";
+                print "[ACTUAL RESULT 1]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 print "Failure in setting the port forwarding as false\n "
-        
+        #To delete the added table
+        if instance:
+            tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
+            tdkTestObj.addParameter("paramName","Device.NAT.PortMapping.%s." %instance);
+            expectedresult = "SUCCESS";
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+            if expectedresult in actualresult:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("SUCCESS");
+                details = tdkTestObj.getResultDetails();
+                print "[TEST STEP ]: Deleting the added rule";
+                print "[EXPECTED RESULT ]: Should delete the added rule";
+                print "[ACTUAL RESULT]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                print "Added table is deleted successfully\n"
+            else:
+                print "[TEST STEP ]: Deleting the added rule";
+                print "[EXPECTED RESULT ]: Should delete the added rule";
+                print "[ACTUAL RESULT]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+                print "Added table could not be deleted\n"
         obj.unloadModule("advancedconfig");
 else:
         print "FAILURE to load Advancedconfig module";

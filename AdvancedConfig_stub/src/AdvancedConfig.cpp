@@ -163,12 +163,14 @@ bool AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Val
 	char ParamNames[MAX_PARAM_SIZE];
 	GETPARAMVALUES *resultDetails;
 	int	paramsize=0;
-	
+	char details[100] = {'\0'};	
 	strcpy(ParamNames,req["paramName"].asCString());
 
 	DEBUG_PRINT(DEBUG_TRACE,"\n ParamNames input is %s",ParamNames);	
 
 	resultDetails = ssp_getParameterValue(&ParamNames[0],&paramsize);
+	DEBUG_PRINT(DEBUG_TRACE,"\nresultDetails is %s",resultDetails[0].pParamValues);
+	sprintf(details, "Get Parameter Value API Validation is Succeeded,Value: %s",resultDetails[0].pParamValues);
 
 	if(resultDetails == NULL)
 	{
@@ -178,7 +180,7 @@ bool AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Val
 	else
 	{
 	    response["result"]="SUCCESS";
-        response["details"]="Get Parameter Value API Validation is Succeeded";
+        response["details"]=details;
 
 	    for(int i=0; i < paramsize; i++)
 	    {
@@ -809,14 +811,14 @@ bool AdvancedConfig::AdvancedConfig_SetMultiple(IN const Json::Value& req, OUT J
 
     DEBUG_PRINT(DEBUG_TRACE,"\nAdvancedConfig_Set:: ParamList input is %s\n",params);
 
-    char *list = strtok (params, " ");
+    char *list = strtok (params, "|");
     while (list) {
     paramlist = (char **) realloc (paramlist, ++num_spaces * sizeof(char *));
     if (paramlist == NULL)
     return 0; /* memory allocation failed */
 
     paramlist[num_spaces-1] = list;
-    list = strtok (NULL, " ");
+    list = strtok (NULL, "|");
    }
 
    /* realloc one extra element for the last NULL */
