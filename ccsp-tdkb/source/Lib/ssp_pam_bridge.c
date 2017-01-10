@@ -327,10 +327,22 @@ int ssp_DmlEthGetParamValue(char* MethodName)
     if( !(strcmp(MethodName, "GetStats")) )
     {
         COSA_DML_ETH_STATS stats = {0};
-        return_status = CosaDmlEthPortGetStats(hContext, 1, &stats);
-        printf("In ssp CosaDmlEthGetParamVal() stats.BytesReceived %lu %lu %lu %lu %lu\n", stats.BytesReceived, stats.BytesSent, stats.PacketsSent, stats.PacketsReceived, stats.BroadcastPacketsSent);
-        if ( stats.BytesReceived == 0 )
-           return_status = SSP_FAILURE;
+        int i = 0;
+
+        count = CosaDmlEthPortGetNumberOfEntries(hContext);
+        for(i = 1; i<=count; i++)
+        {
+            return_status = CosaDmlEthPortGetStats(hContext, i, &stats);
+            printf("In ssp CosaDmlEthGetParamVal() stats.BytesReceived, stats.BytesSent, stats.PacketsSent, stats.PacketsReceived, stats.BroadcastPacketsSent %lu %lu %lu %lu %lu\n", stats.BytesReceived, stats.BytesSent, stats.PacketsSent, stats.PacketsReceived, stats.BroadcastPacketsSent);
+
+            if ( stats.BytesSent != 0 )
+            {
+                return_status = SSP_SUCCESS;
+                break;
+            }
+            else
+                return_status = SSP_FAILURE;
+	}
     }
 
     else if( !(strcmp(MethodName, "GetDinfo")) )
@@ -356,7 +368,7 @@ int ssp_DmlEthGetParamValue(char* MethodName)
     {
        count = CosaDmlEthPortGetNumberOfEntries(hContext);
        printf("In ssp CosaDmlEthPortGetNumberOfEntries() returned %lu\n", count);
-        if( count ==0 )
+       if( count ==0 )
            return_status = SSP_FAILURE;
        else
            return_status = SSP_SUCCESS;
@@ -365,10 +377,12 @@ int ssp_DmlEthGetParamValue(char* MethodName)
     else if( !(strcmp(MethodName, "GetEntry")) )
     {
         COSA_DML_ETH_PORT_FULL entry = {0};
+
         return_status = CosaDmlEthPortGetEntry(hContext, 1, &entry);
-        printf("In ssp CosaDmlEthGetParamVal() entry.cfg.instno %lu\n", entry.Cfg.InstanceNumber);
-        if( entry.Cfg.InstanceNumber == 0 )
-           return_status = SSP_FAILURE;
+        printf("In ssp CosaDmlEthGetParamVal() entry name %s\n", entry.StaticInfo.Name);
+
+        if( strlen(entry.StaticInfo.Name)==0 )
+            return_status = SSP_FAILURE;
     }
 
     else if( !(strcmp(MethodName, "Init")) )
