@@ -107,30 +107,96 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-		
     if expectedresult in actualresult:
+        #Set the result status of execution
+        tdkTestObj.setResultStatus("SUCCESS");
+        #Get the result of execution
+        print "STEP 1: Get the boolean value whether remote access via ssh is enabled or not";
+        print "EXPECTED RESULT 1 : Should get the boolean value whether remote access via ssh is enabled or not";
+        print "ACTUAL RESULT 1: Successfully get the boolean value, %s" %details;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	if "true" in details:
-            #Set the result status of execution
-            tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 1: Check if remote access via ssh is enabled or not";
-            print "EXPECTED RESULT 1: Should get the status of remote access via ssh as true";
-            print "ACTUAL RESULT 1: The status of remote access via ssh :%s" %details;
-            #Get the result of execution
-            print "[TEST EXECUTION RESULT] : SUCCESS" 
+	    org = "true";
 	else:
-	    #Set the result status of execution
+	    org = "false";
+	print "default value is %s " %org;
+        tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+        tdkTestObj.addParameter("ParamName","Device.UserInterface.X_CISCO_COM_RemoteAccess.SSHEnable");
+        tdkTestObj.addParameter("Type","boolean");
+	tdkTestObj.addParameter("ParamValue","true");
+	tdkTestObj.executeTestCase(expectedresult);
+	actualresult = tdkTestObj.getResult();
+	details = tdkTestObj.getResultDetails();
+	if expectedresult in actualresult:
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "STEP 2: Set the boolean value to true ";
+            print "EXPECTED RESLUT 2: Should set the boolean value to true ";
+            print "ACTUAL RESULT 2: Successfully set the boolean value, %s" %details;
+            print "[TEST EXECUTION RESULT] :%s" %actualresult;
+	    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+	    tdkTestObj.addParameter("ParamName","Device.UserInterface.X_CISCO_COM_RemoteAccess.SSHEnable");
+	    expectedresult="SUCCESS";
+
+	    #Execute the test case in STB
+	    tdkTestObj.executeTestCase(expectedresult);
+	    actualresult = tdkTestObj.getResult();
+	    details = tdkTestObj.getResultDetails();
+	    if expectedresult in actualresult:
+		if "true" in details:
+	            #Set the result status of execution
+        	    tdkTestObj.setResultStatus("SUCCESS");
+	            print "TEST STEP 3: Check if remote access via ssh is enabled or not";
+        	    print "EXPECTED RESULT 3: Should get the status of remote access via ssh as true";
+	            print "ACTUAL RESULT 3: The status of remote access via ssh :%s" %details;
+        	    #Get the result of execution
+	            print "[TEST EXECUTION RESULT] : SUCCESS"
+		    #setting default value
+		    tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+		    tdkTestObj.addParameter("ParamName","Device.UserInterface.X_CISCO_COM_RemoteAccess.SSHEnable");
+	            tdkTestObj.addParameter("Type","boolean");
+ 	            tdkTestObj.addParameter("ParamValue",org);
+		    tdkTestObj.executeTestCase(expectedresult);
+		    actualresult = tdkTestObj.getResult();
+		    details = tdkTestObj.getResultDetails();
+	            if expectedresult in actualresult:
+	                tdkTestObj.setResultStatus("SUCCESS");
+            		print "STEP 4: Set the boolean value to default value ";
+	                print "EXPECTED RESLUT 4: Should set the boolean value to default value ";
+            		print "ACTUAL RESULT 4: Successfully set the boolean value, %s" %details;
+	                print "[TEST EXECUTION RESULT] :%s" %actualresult; 
+		    else:
+			tdkTestObj.setResultStatus("SUCCESS");
+                        print "STEP 3: Set the boolean value to default value";
+                        print "EXPECTED RESLUT 3: Should set the boolean value to default value ";
+                        print "ACTUAL RESULT 3: Successfully set the boolean value, %s" %details;
+                        print "[TEST EXECUTION RESULT] :%s" %actualresult;
+		else:
+		    #Set the result status of execution
+		    tdkTestObj.setResultStatus("FAILURE");
+		    print "TEST STEP 2: Check if remote access via ssh is enabled or not";
+		    print "EXPECTED RESULT 2: Should get the status of remote access via ssh as true";
+		    print "ACTUAL RESULT 2: The status of remote access via ssh :%s" %details;
+		    #Get the result of execution
+		    print "[TEST EXECUTION RESULT] : FAILURE"
+            else:
+	        tdkTestObj.setResultStatus("FAILURE");	
+	        print "TEST STEP 2: Check if remote access via ssh is enabled or not";
+        	print "EXPECTED RESULT 2: Should get the status of remote access via ssh";
+	        print "ACTUAL RESULT 2: Failure in getting the status of remote access via ssh. Details : %s" %details;
+        	print "[TEST EXECUTION RESULT] : FAILURE";
+        else:
 	    tdkTestObj.setResultStatus("FAILURE");
-	    print "TEST STEP 1: Check if remote access via ssh is enabled or not";
-	    print "EXPECTED RESULT 1: Should get the status of remote access via ssh as true";
-	    print "ACTUAL RESULT 1: The status of remote access via ssh :%s" %details;
-	    #Get the result of execution
-	    print "[TEST EXECUTION RESULT] : FAILURE"
+	    print "STEP 1: Set the boolean value to true ";
+            print "EXPECTED RESLUT 1: Should set the boolean value to true ";
+            print "ACTUAL RESULT 1: Failed to set the boolean value, %s" %details;
+            print "[TEST EXECUTION RESULT] :%s" %actualresult;	    
     else:
-        tdkTestObj.setResultStatus("FAILURE");	
-        print "TEST STEP 2: Check if remote access via ssh is enabled or not";
-        print "EXPECTED RESULT 2: Should get the status of remote access via ssh";
-        print "ACTUAL RESULT 2: Failure in getting the status of remote access via ssh. Details : %s" %details;
-        print "[TEST EXECUTION RESULT] : FAILURE";
+        tdkTestObj.setResultStatus("FAILURE");
+        print "STEP 1: Get the boolean value whether remote access via ssh is enabled or not";
+        print "EXPECTED RESULT : Should get the boolean value whether remote access via ssh is enabled or not";
+        print "ACTUAL RESULT: Successfully get the boolean value, %s" %details;
+        print "[TEST EXECUTION RESULT] :%s" %actualresult;
+       	    
     obj.unloadModule("pam");
    		 
 else:   
