@@ -16,21 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
-
 ACLOCAL_AMFLAGS = -Im4 --install
-
-AM_CPPFLAGS = -c ${COPTS} -fPIC 
-AM_LDFLAGS = -ltdkagentssp
-INCLUDES = -I${top_srcdir}/TR069_Pa_Stub/include -I${top_srcdir}/agent/include
-
-
-AM_CXXFLAGS = -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)/json \
-              -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)/jsonrpc \
-              -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)/curl \
-              -I${top_srcdir}/TR069Pa_Stub/include -I${top_srcdir}/agent/include \
-	      -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)
-
+AM_CPPFLAGS = -c ${COPTS} -fPIC
+AM_CXXFLAGS = -I${top_srcdir}/TR069Pa_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
 lib_LTLIBRARIES = libTR069Pastub.la
 libTR069Pastub_la_SOURCES = src/TR069Agent.cpp
-libTR069Pastub_la_LDFLAGS = -ltdkagentssp
-
+libTR069Pastub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la
+libTR069Pastub_la_LIBADD =  $(libTR069Pastub_la_DEPENDENCIES)

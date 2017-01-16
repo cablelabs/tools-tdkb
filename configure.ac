@@ -68,7 +68,30 @@ RDK_VERSION="RDKB"
 SUBDIR_HYBRID=" "
 SUBDIR_CLIENT=" "
 
+ERT_VALUE=0
 
+AC_ARG_ENABLE([ert],
+        AS_HELP_STRING([--enable-ert],[enable ert]),
+        [
+          case "${enableval}" in
+             yes) ERT_VALUE=1 ;;
+           no) ERT_VALUE=0 ;;
+          *) AC_MSG_ERROR([bad value ${enableval} for --enable-ert ]) ;;
+           esac
+           ],
+         [echo "ert is enabled"])
+
+
+AC_SUBST(ERT_VALUE)
+
+AC_ARG_ENABLE([platform],
+[  --enable-platform    Enable platform],
+[case "${enableval}" in
+  yes) platform=true ;;
+  no)  platform=false ;;
+  *) AC_MSG_ERROR([bad value ${enableval} for --enable-platform]) ;;
+esac],[platform=false])
+AM_CONDITIONAL([PLATFORM_ENABLED], [test x$platform = xtrue])
 
 AC_SUBST(COPTS)
 AC_SUBST(AGENT_FLAGS)
@@ -79,6 +102,7 @@ AC_SUBST(SUBDIR_CLIENT)
 AC_CONFIG_FILES([Makefile
          cfg/Makefile
 	 agent/Makefile
+         tdkb_lib/Makefile
          CMAgent_stub/Makefile
 	 WIFIAgent_stub/Makefile
 	 MBUS_Stub/Makefile

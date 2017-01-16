@@ -17,16 +17,9 @@
 # limitations under the License.
 ##########################################################################
 ACLOCAL_AMFLAGS = -Im4 --install
-AM_LDFLAGS = -ltdkagentssp
 AM_CPPFLAGS = ${COPTS} -fPIC -DDEBUG_LEVEL_TRACE
-
-INCLUDES = -I${top_srcdir}/WECB_Stub/include -I${top_srcdir}/agent/include
-
-
-AM_CXXFLAGS = -I${top_srcdir}/WECB_Stub/include -I${top_srcdir}/tdk/agent/include
-
-
+AM_CXXFLAGS = -I${top_srcdir}/WECB_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
 lib_LTLIBRARIES = libwecbstub.la
 libwecbstub_la_SOURCES = src/wecb.cpp
-libwecbstub_la_LDFLAGS = -ltdkagentssp
-libwecb_la_includedir = ${includedir}
+libwecbstub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la
+libwecbstub_la_LIBADD =  $(libwecbstub_la_DEPENDENCIES)

@@ -33,11 +33,11 @@ AM_CPPFLAGS = -Wall
 ACLOCAL_AMFLAGS = -I m4
 hardware_platform = i686-linux-gnu
 lib_LTLIBRARIES = libtdkagentssp.la
-libtdkagentssp_la_CPPFLAGS = -I/var/tmp/pc-rdkb/include/dbus-1.0 -I$(top_srcdir)/source/Custom $(CPPFLAGS)
+libtdkagentssp_la_CPPFLAGS = -I$(top_srcdir)/tdkb_lib/include
 if PLATFORM_ENABLED
-libtdkagentssp_la_SOURCES = ssp_messagebus_interface.c ssp_tdk_mbus_wrp.c ssp_tdk_mbus_lib.c ssp_action.c ssp_main.c ssp_tdk_CosaCM_wrp.c ssp_tdk_wrp.c ssp_tdk_CosaMTA_wrp.c ssp_pam_bridge.c
+libtdkagentssp_la_SOURCES = src/ssp_messagebus_interface.c src/ssp_tdk_mbus_wrp.c src/ssp_tdk_mbus_lib.c src/ssp_action.c src/ssp_main.c src/ssp_tdk_CosaCM_wrp.c src/ssp_tdk_wrp.c src/ssp_tdk_CosaMTA_wrp.c src/ssp_pam_bridge.c
 else
-libtdkagentssp_la_SOURCES = ssp_messagebus_interface.c ssp_tdk_mbus_wrp.c ssp_tdk_mbus_lib.c ssp_action.c ssp_main.c ssp_tdk_CosaCM_wrp.c ssp_tdk_wrp.c ssp_tdk_CosaMTA_wrp.c
+libtdkagentssp_la_SOURCES = src/ssp_messagebus_interface.c src/ssp_tdk_mbus_wrp.c src/ssp_tdk_mbus_lib.c src/ssp_action.c src/ssp_main.c src/ssp_tdk_CosaCM_wrp.c src/ssp_tdk_wrp.c src/ssp_tdk_CosaMTA_wrp.c
 endif
 if PLATFORM_ENABLED
 libtdkagentssp_la_LDFLAGS =  -lccsp_common -lcm_mgnt -lcm_tr181 -lmta_tr181 -ltr181

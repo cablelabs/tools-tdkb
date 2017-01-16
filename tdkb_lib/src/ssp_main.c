@@ -392,10 +392,10 @@ int ssp_register(bool bexecVal)
         daemonize();
 
     /*This is used for ccsp recovery manager */
-    fd = fopen("/var/tmp/CcspTDKAgentSsp.pid", "w+");
+    fd = fopen("/var/tmp/TDKB.pid", "w+");
     if ( !fd )
     {
-        CcspTraceWarning(("Create /var/tmp/CcspTDKAgentSsp.pid error. \n"));
+        CcspTraceWarning(("Create /var/tmp/TDKB.pid error. \n"));
         return 1;
     }
     sprintf(cmd, "%d", getpid());

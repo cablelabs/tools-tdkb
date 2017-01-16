@@ -16,17 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
-
 ACLOCAL_AMFLAGS = -Im4 --install
-AM_LDFLAGS = -ltdkagentssp
 AM_CPPFLAGS = ${COPTS} -fPIC -DDEBUG_LEVEL_TRACE
-
-INCLUDES = -I${top_srcdir}/pam_stub/include -I${top_srcdir}/agent/include
-
-
-AM_CXXFLAGS = -I${top_srcdir}/pam_stub/include -I${top_srcdir}/agent/include
-
-
+AM_CXXFLAGS = -I${top_srcdir}/pam_stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
 lib_LTLIBRARIES = libpamstub.la
 libpamstub_la_SOURCES = src/pam_bridge.cpp
-libpamstub_la_LDFLAGS = -ltdkagentssp
+libpamstub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la
+libpamstub_la_LIBADD =  $(libpamstub_la_DEPENDENCIES)

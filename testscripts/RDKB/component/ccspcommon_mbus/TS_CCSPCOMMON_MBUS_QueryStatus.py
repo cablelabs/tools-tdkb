@@ -108,7 +108,7 @@ if loadStatusExpected not in loadModuleresult.upper():
 tdkTestObj = obj.createTestStep('CCSPMBUS_LoadCfg');
 
 #Input Parameters
-tdkTestObj.addParameter("cmpCfgFile","/var/TDK/CcspTDKB.cfg");
+tdkTestObj.addParameter("cmpCfgFile","/var/TDK/TDKB.cfg");
 
 expectedresult = "SUCCESS";
 #Execute the test case in STB

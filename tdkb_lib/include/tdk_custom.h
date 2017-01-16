@@ -76,6 +76,6 @@
 
 #define  MESSAGE_BUS_CONFIG_FILE                    "msg_daemon.cfg"
 
-#define  CCSP_PNM_TDK_START_CFG_FILE                    "CcspTDK.cfg"
+#define  CCSP_PNM_TDK_START_CFG_FILE                "CcspTDK.cfg"
 
 #endif   /*_TDK_CUSTOM_H_*/

@@ -16,23 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
-
 ACLOCAL_AMFLAGS = -Im4 --install
-
-AM_CPPFLAGS = -c ${COPTS} -fPIC 
-AM_LDFLAGS = -ltdkagentssp
-INCLUDES = -I${PKG_CONFIG_SYSROOT_DIR}$(includedir) \
-           -I${top_srcdir}/Mta_agent_Stub/include -I${top_srcdir}/tdk/agent/include
-
-AM_CXXFLAGS = -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)/json \
-              -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)/jsonrpc \
-              -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)/curl \
-              -I${top_srcdir}/Mta_agent_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdk/agent/include \
-              -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)
-
+AM_CPPFLAGS = -c ${COPTS} -fPIC
+AM_CXXFLAGS = -I${top_srcdir}/Mta_agent_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
 lib_LTLIBRARIES = libMta_agentstub.la
 libMta_agentstub_la_SOURCES = src/MTA_Agent.cpp
-libMta_agentstub_la_LDFLAGS = -ltdkagentssp
+libMta_agentstub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la
+libMta_agentstub_la_LIBADD =  $(libMta_agentstub_la_DEPENDENCIES)
 libMta_agentstub_la_includedir = ${includedir}
 libMta_agentstub_la_include_HEADERS = ${top_srcdir}/Mta_agent_Stub/include/MTA_Agent.h
-

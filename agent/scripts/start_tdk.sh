@@ -25,7 +25,7 @@ TDK_EXECUTION_PATH=`cat /var/TDK/tdk_platform.properties|grep TDK_EXECUTION_PATH
 echo $TDK_EXECUTION_PATH
     if [ -d $TDK_EXECUTION_PATH ];then
          echo "path exists"
-         cp -r /var/TDK $TDK_EXECUTION_PATH/TDK/
+         cp -r /var/TDK $TDK_EXECUTION_PATH/
          sh -c $TDK_EXECUTION_PATH/TDK/StartTDK.sh
      else
          echo "path not exists"
