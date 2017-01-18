@@ -189,13 +189,14 @@ if "SUCCESS" in loadmodulestatus.upper():
                     			print "EXPECTED RESULT 5: Should retrieve the SSID Name";
                     			print "ACTUAL RESULT 5: %s" %details3;
                     			#Get the result of execution
-                    			print "[TEST EXECUTION RESULT] : %s" %actualresult ;
                     			if details1 in details3:
-                        			print "SSID Name retrieved is matching with the name before Wifi factory reset";
+                        			print "ERROR:SSID Name retrieved is matching with the name before Wifi factory reset. SSID name should not match";
+                                            	print "[TEST EXECUTION RESULT] : FAILURE";
                         			tdkTestObj.setResultStatus("FAILURE");
 
                     			else:
                         			print "SSID Name retrieved is not matching with the name before Wifi factory reset";
+                                              	print "[TEST EXECUTION RESULT] : SUCCESS";
                         			tdkTestObj.setResultStatus("SUCCESS");
                 		else:
                     			tdkTestObj.setResultStatus("FAILURE");
