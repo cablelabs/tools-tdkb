@@ -27,7 +27,7 @@ extern "C"
 {
     int ssp_register(bool);
     GETPARAMVALUES* ssp_getParameterValue(char *pParamName,int *pParamsize);
-    int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType);
+    int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType, int commit);
     GETPARAMATTR* ssp_getParameterAttr(char *pParamAttr,int *pParamAttrSize);
     int ssp_setParameterAttr(char *pParamName,char *pAttrNotify,char *pAttrAccess);
     GETPARAMNAMES* ssp_getParameterNames(char *pPathName,int recursive,int *pParamSize);
@@ -206,12 +206,13 @@ bool AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Val
 
 bool AdvancedConfig::AdvancedConfig_Set(IN const Json::Value& req, OUT Json::Value& response)
 {
-	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set --->Entry\n");
+    DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set --->Entry\n");
 
-	int returnValue = 0;
-    char ParamName[MAX_PARAM_SIZE];
-    char ParamValue[MAX_PARAM_SIZE];
-	char ParamType[MAX_PARAM_SIZE];
+    int returnValue = 0;
+    char ParamName[MAX_PARAM_SIZE] = {0};
+    char ParamValue[MAX_PARAM_SIZE] = {0};
+    char ParamType[MAX_PARAM_SIZE] = {0};
+    int commit = 1;
 
     strcpy(ParamName,req["paramName"].asCString());
     strcpy(ParamValue,req["paramValue"].asCString());
@@ -221,22 +222,21 @@ bool AdvancedConfig::AdvancedConfig_Set(IN const Json::Value& req, OUT Json::Val
     DEBUG_PRINT(DEBUG_TRACE,"\nAdvancedConfig_Set:: ParamValue input is %s",ParamValue);
     DEBUG_PRINT(DEBUG_TRACE,"\nAdvancedConfig_Set:: ParamType input is %s",ParamType);
 
-	returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0]);
-	
-	if(0 == returnValue)
-	{
-		response["result"]="SUCCESS";
-	    response["details"]="SET API Validation is Success";
-	}
-	else
-	{
-		response["result"]="FAILURE";
-	    response["details"]="AdvancedConfigStub::SET API Validation is Failure";
-	    DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set --->Error in Set API Validation of Advanced config in DUT !!! \n");
-	}
+    returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0],commit);
+    if(0 == returnValue)
+    {
+ 	response["result"]="SUCCESS";
+        response["details"]="SET API Validation is Success";
+    }
+    else
+    {
+ 	response["result"]="FAILURE";
+        response["details"]="AdvancedConfigStub::SET API Validation is Failure";
+        DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set --->Error in Set API Validation of Advanced config in DUT !!! \n");
+    }
 
-	DEBUG_PRINT(DEBUG_TRACE,"\n tdk_AdvancedConfig_set --->Exit\n");
-	return TEST_SUCCESS;
+    DEBUG_PRINT(DEBUG_TRACE,"\n tdk_AdvancedConfig_set --->Exit\n");
+    return TEST_SUCCESS;
 }
 
 
@@ -265,6 +265,7 @@ bool AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json:
     char ParamNames[MAX_PARAM_SIZE];
     GETPARAMVALUES *resultDetails;
     int	paramsize=0;
+    int commit = 1;
 
     //Set Param
     strcpy(ParamName,req["paramName"].asCString());
@@ -280,7 +281,7 @@ bool AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json:
 
 
 
-	returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0]);
+	returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0],commit);
 	
 	if(0 != returnValue)
 	{
