@@ -170,10 +170,8 @@ if "SUCCESS" in loadmodulestatus.upper():
                     if (instance > 0):
                         print "INSTANCE VALUE: %s" %instance
                         #Enabling the added rule
-                        tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
-                        tdkTestObj.addParameter("paramName","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Enable" %instance);
-                        tdkTestObj.addParameter("paramValue","true");
-                        tdkTestObj.addParameter("paramType","boolean");
+                        tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
+                        tdkTestObj.addParameter("paramList","Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Enable|true|bool|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.Description|Myservice%s|string|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerProtocol|TCP|string|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortStart|8080|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.TriggerPortEnd|8090|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortStart|3000|unsignedint|Device.NAT.X_CISCO_COM_PortTriggers.Trigger.%s.ForwardPortEnd|4000|unsignedint" %(instance, instance, instance, instance, instance, instance, instance, instance));
                         expectedresult="SUCCESS";
                         tdkTestObj.executeTestCase(expectedresult);
                         actualresult = tdkTestObj.getResult();
