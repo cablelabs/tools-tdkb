@@ -96,7 +96,7 @@ if "SUCCESS" in loadmodulestatus1.upper() and loadmodulestatus2.upper:
     sysObj.setLoadModuleStatus("SUCCESS");
     pamObj.setLoadModuleStatus("SUCCESS");
     tdkTestObj = sysObj.createTestStep('ExecuteCmd');
-    tdkTestObj.addParameter("command", "ifconfig | grep -A 2 \"wan0\" | grep \"inet6 addr\" | tail -1 | cut -f13 -d ' ' |  cut -f1 -d '/' | tr \"\n\" \" \"");
+    tdkTestObj.addParameter("command", "ifconfig | grep -A 2 wan0 | grep \"Scope:Global\" | cut -f13 -d ' ' |  cut -f1 -d '/' | tr \"\n\" \" \"");
     expectedresult="SUCCESS";
 
     #Execute the test case in STB
