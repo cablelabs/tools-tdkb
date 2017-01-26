@@ -21,5 +21,5 @@ AM_CPPFLAGS = ${COPTS} -fPIC -DDEBUG_LEVEL_TRACE
 AM_CXXFLAGS = -I${top_srcdir}/MBUS_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
 lib_LTLIBRARIES = libccspcommon_mbusstub.la
 libccspcommon_mbusstub_la_SOURCES = src/CCSPMBUS_Stub.cpp
-libccspcommon_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la
-libccspcommon_la_LIBADD =  $(libccspcommon_la_DEPENDENCIES)
+libccspcommon_mbusstub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la
+libccspcommon_mbusstub_la_LIBADD =  $(libccspcommon_mbusstub_la_DEPENDENCIES)
