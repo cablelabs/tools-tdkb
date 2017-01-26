@@ -114,7 +114,6 @@ bool CCSPMBUS::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_BusCheck, "CCSPMBUS_BusCheck");
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_CheckNamespaceDataType, "CCSPMBUS_CheckNamespaceDataType");
 
-    ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_CosaWifiInit, "CCSPMBUS_CosaWifiInit");
     return TEST_SUCCESS;
 }
 
@@ -1294,46 +1293,6 @@ bool CCSPMBUS::CCSPMBUS_BusCheck(IN const Json::Value& req, OUT Json::Value& res
 
 /*******************************************************************************************
  *
- * Function Name	: CCSPMBUS_CosaWifiInit
- * Description		: This function will invoke Cosa init that will init wifi
- * 	        		  dml init function
- *
- * @param [in]  req- 
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
- * 			               ssp_mbus_init
- ********************************************************************************************/
-
-bool CCSPMBUS::CCSPMBUS_CosaWifiInit(IN const Json::Value& req, OUT Json::Value& response)
-{
-    DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_CosaWifiInit --->Entry \n");
-
-    int returnValue = 0;
-
-    ssp_register(1);
-#if 1
-    returnValue = ssp_MBUS_Stub_cosa_wifi_init();
-
-    printf("\n CCSPMBUS_CosaWifiInit :: Status of WIFI DML Init %s",returnValue);
-
-    if(SSP_TDK_SUCCESS == returnValue)
-    {
-        response["result"]="SUCCESS";
-        response["details"]="CCSPMBUS_CosaWifiInit:: Cosa DML WIFI Initialization Success";
-    }
-    else
-    {
-        response["result"]="FAILURE";
-        response["details"]="CCSPMBUS_CosaWifiInit:: Cosa DML WIFI Initialization Failure";
-        DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_CosaWifiInit Error --->Exit\n");
-        return	TEST_FAILURE;
-    }
-    ssp_terminate();
-#endif
-    return TEST_SUCCESS;
-}
-
-/*******************************************************************************************
- *
  * Function Name        : CCSPMBUS_CheckNamespaceDataType
  * Description          : This function will invoke ssp function that inturn will
  *                                call ccsp base functions to get/check datatype of a given
@@ -1427,8 +1386,6 @@ bool CCSPMBUS::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("CCSPMBUS_InformEndSession");
     ptrAgentObj->UnregisterMethod("CCSPMBUS_BusCheck");
     ptrAgentObj->UnregisterMethod("CCSPMBUS_CheckNamespaceDataType");
-
-    ptrAgentObj->UnregisterMethod("CCSPMBUS_CosaWifiInit");
 
     DEBUG_PRINT(DEBUG_LOG,"CCSPMBUS cleanup --> Exit \n");
 

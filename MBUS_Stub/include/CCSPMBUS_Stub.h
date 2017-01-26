@@ -78,6 +78,5 @@ class CCSPMBUS : public RDKTestStubInterface
         bool CCSPMBUS_BusCheck(const Json::Value&, Json::Value&);
         bool CCSPMBUS_CheckNamespaceDataType(const Json::Value&, Json::Value&);
         bool CCSPMBUS_RegisterBase(IN const Json::Value& req, OUT Json::Value& response);
-        bool CCSPMBUS_CosaWifiInit(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__CCSPMBUS_STUB_H__
