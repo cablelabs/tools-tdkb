@@ -35,7 +35,7 @@ void free_Memory_Attr(int size,GETPARAMATTR *Freestruct);
 int ssp_setCommit(char *pObjTbl);
 int ssp_addTableRow(char *pObjTbl);
 int ssp_deleteTableRow(char *pObjTbl);
-int ssp_setSessionId(int priority, int sessionId);
+int ssp_setSessionId(int priority, int sessionId,char *pComponentName,int override);
 int ssp_getHealth(char *pComponentName);
 }
 /*************************************************************************
@@ -655,26 +655,58 @@ bool MTA_Agent::MTA_agent_GetHealth(IN const Json::Value& req, OUT Json::Value& 
  *****************************************************************************/
 bool MTA_Agent::MTA_agent_SetSessionId(IN const Json::Value& req, OUT Json::Value& response)
 {
-    DEBUG_PRINT(DEBUG_TRACE,"Inside Function Set Session ID functionality \n");
-    int size_ret=0;
-    int priority=0,sessionId=0;
+    DEBUG_PRINT(DEBUG_TRACE,"\n MTA_agent_SetSessionId --->Entry\n");
+    bool bReturn = TEST_FAILURE;
+    int returnValue = 0;
+    int priority = 0;
+    int sessionId = 0;
+    int override = 0;
+    char pathname[MAX_PARAM_SIZE];
+
+    strcpy(pathname,req["pathname"].asCString());
+
+    if(&req["priority"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL";
+        return TEST_FAILURE;
+    }
+
+    if(&req["sessionId"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL";
+        return TEST_FAILURE;
+    }
+
     priority = req["priority"].asInt();
     sessionId = req["sessionId"].asInt();
-    size_ret=ssp_setSessionId(priority,sessionId);
+    override = req["override"].asInt();
 
-    if(0 == size_ret)
+    DEBUG_PRINT(DEBUG_TRACE,"\nMtaAgent_SetSessionId:: priority is %d",priority);
+    DEBUG_PRINT(DEBUG_TRACE,"\nMtaAgent_SetSessionId:: sessionId is %d",sessionId);
+    DEBUG_PRINT(DEBUG_TRACE,"\nMtaAgent_SetSessionId:: override is %d",override);
+    DEBUG_PRINT(DEBUG_TRACE,"\nMtaAgent_SetSessionId:: pathname is %s",pathname);
+
+
+    returnValue = ssp_setSessionId(priority,sessionId,&pathname[0],override);
+
+    if(0 == returnValue)
     {
+        bReturn = TEST_SUCCESS;
         response["result"]="SUCCESS";
         response["details"]="SET SESSION ID API Validation is Success";
     }
     else
     {
         response["result"]="FAILURE";
-        response["details"]="MTA_Stub::SET SESSION ID API Validation failed";
+        response["details"]="MtaAgent_Stub::SET SESSION ID API Validation is Failure";
+        DEBUG_PRINT(DEBUG_TRACE,"\n MtaAgent_SetSessionId --->Error in setting the session Id !!! \n");
     }
 
-    DEBUG_PRINT(DEBUG_TRACE,"\n MTA_agent_SetSessionId--->Exit\n");
-    return TEST_SUCCESS;
+    DEBUG_PRINT(DEBUG_TRACE,"\n MtaAgent_SetSessionId --->Exit\n");
+    return bReturn;
+
 }
 
 /**************************************************************************

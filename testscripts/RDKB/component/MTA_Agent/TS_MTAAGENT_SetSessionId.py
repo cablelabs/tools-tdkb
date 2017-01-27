@@ -17,25 +17,41 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>6</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>10</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_MTAAGENT_SetSessionId</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id> </primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>MTA_agent_SetSessionId</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>TC_MTAAGENT_14 - To Validate "Set Session ID" API of MTA Agent</synopsis>
-  <groups_id>4</groups_id>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>5</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_MTAAGENT_12</test_case_id>
@@ -44,7 +60,7 @@
     <test_setup>XB3</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
-    <api_or_interface_used/>
+    <api_or_interface_used></api_or_interface_used>
     <input_parameters>Json Interface:
 API Name
 MTA_agent_SetSessionId
@@ -68,13 +84,13 @@ TestManager GUI will publish the result as PASS in Execution page</except_output
     <test_stub_interface>None</test_stub_interface>
     <test_script>TS_MTAAGENT_SetSessionId</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
-  <script_tags/>
+  <script_tags />
 </xml>
-
 '''
+																		
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 
@@ -88,60 +104,45 @@ port = <port>
 obj.configureTestCase(ip,port,'TS_MTAAGENT_SetSessionId');
 
 #Get the result of connection with test component and STB
-loadmodulestatus =obj.getLoadModuleResult();
-print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
+loadModuleresult =obj.getLoadModuleResult();
+print "[LIB LOAD STATUS]  :  %s" %loadModuleresult;
 
-if "SUCCESS" in loadmodulestatus.upper():
-    #Set the result status of execution
-    obj.setLoadModuleStatus("SUCCESS");
-		
-    tdkTestObj = obj.createTestStep('MTA_agent_SetSessionId');  
-    tdkTestObj.addParameter("priority",1);
-    tdkTestObj.addParameter("sessionId",1);
-		
-    expectedresult="SUCCESS";
+loadStatusExpected = "SUCCESS"
 
-    #Execute the test case in STB
-    tdkTestObj.executeTestCase(expectedresult);
+if loadStatusExpected not in loadModuleresult.upper():
+        print "[Failed To Load Mta Agent Stub from env TDK Path]"
+        print "[Exiting the Script]"
+        exit();
 
-    actualresult = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails();
-		
-    if expectedresult in actualresult:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
+#Primitive test case which associated to this Script
+tdkTestObj = obj.createTestStep('MTA_agent_SetSessionId');
 
-        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-	print "%s" %details;
-	 
-	
-    else:   
-        tdkTestObj.setResultStatus("FAILURE"); 
-	print "[TEST EXECUTION RESULT] : %s" %actualresult ;	
-        print "%s" %details;
-		 
+#Input Parameters
+tdkTestObj.addParameter("pathname","Device.X_CISCO_COM_MTA.");
+tdkTestObj.addParameter("priority",0);
+tdkTestObj.addParameter("sessionId",0);
+tdkTestObj.addParameter("override",0);
 
-    tdkTestObj = obj.createTestStep('MTA_agent_SetSessionId');  
-    tdkTestObj.addParameter("priority",1);
-    tdkTestObj.addParameter("sessionId",0);
-    expectedresult="SUCCESS";	
-    #Execute the test case in STB
-    tdkTestObj.executeTestCase(expectedresult);
-    if expectedresult in actualresult:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
+expectedresult = "SUCCESS";
 
-        print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-        print "%s" %details;
-    else:
-        tdkTestObj.setResultStatus("FAILURE");
-        print "[TEST EXECUTION RESULT] : %s" %actualresult ;	
-        print "%s" %details;
-    obj.unloadModule("Mta_agent");
+#Execute the test case in STB
+tdkTestObj.executeTestCase(expectedresult);
 
-else:   
-        print "Failed to load MTA module";
-        obj.setLoadModuleStatus("FAILURE");
-        print "Module loading failed";
-				
-				
+#Get the result of execution
+actualresult = tdkTestObj.getResult();
+print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+
+resultDetails = tdkTestObj.getResultDetails();
+
+if expectedresult in actualresult:
+	#Set the result status of execution as success
+	tdkTestObj.setResultStatus("SUCCESS");
+	print "Successfully set the component session Id"
+else:
+	#Set the result status of execution as failure
+	tdkTestObj.setResultStatus("FAILURE");
+	print "Failed to set the component session Id"	
+
+print "[TEST EXECUTION RESULT] : %s" %resultDetails ;
+
+obj.unloadModule("Mta_agent");
