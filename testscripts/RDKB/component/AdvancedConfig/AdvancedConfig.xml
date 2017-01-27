@@ -54,6 +54,12 @@
           <parameter name="pathname" value="Device.NAT.PortMapping."/>
         </parameters>
       </primitiveTest>
+      <primitiveTest name="AdvancedConfig_SetMultiple" id=" " version="3">
+        <function>AdvancedConfig_SetMultiple</function>
+        <parameters>
+          <parameter name="paramList" value="[null]"/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>
