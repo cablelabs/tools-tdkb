@@ -120,7 +120,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails().strip();
 		
-    if expectedresult in actualresult and details == "Sleeping" or details == "Running":
+    if expectedresult in actualresult and "Sleeping" in details or "Running" in details:
 	pid = details;
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");

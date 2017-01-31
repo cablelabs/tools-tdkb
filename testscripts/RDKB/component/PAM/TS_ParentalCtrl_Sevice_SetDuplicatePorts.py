@@ -175,7 +175,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                 if (instance1 > 0):
                     print "INSTANCE VALUE: %s" %instance1
                     tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
-                    tdkTestObj.addParameter("paramList","Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.Description|TCP|string|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.Protocol|BOTH|string|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.StartPort|21|unsignedint|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.EndPort|24|unsignedint|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.AlwaysBlock|true|bool" %(instance, instance, instance, instance, instance));
+                    tdkTestObj.addParameter("paramList","Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.Description|TCP|string|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.Protocol|BOTH|string|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.StartPort|21|unsignedint|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.EndPort|24|unsignedint|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.AlwaysBlock|true|bool" %(instance1, instance1, instance1, instance1, instance1));
 		    expectedresult="SUCCESS";
 	            tdkTestObj.executeTestCase(expectedresult);
             	    actualresult = tdkTestObj.getResult();
@@ -206,7 +206,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         	                print "INSTANCE VALUE: %s" %instance2
                 	        #Set the same ports as above to create duplicate
                                 tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
-        	                tdkTestObj.addParameter("paramList","Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.Description|TCP|string|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.Protocol|BOTH|string|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.StartPort|21|unsignedint|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.EndPort|24|unsignedint|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.AlwaysBlock|true|bool" %(instance, instance, instance, instance, instance));
+        	                tdkTestObj.addParameter("paramList","Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.Description|TCP|string|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.Protocol|BOTH|string|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.StartPort|21|unsignedint|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.EndPort|24|unsignedint|Device.X_Comcast_com_ParentalControl.ManagedServices.Service.%s.AlwaysBlock|true|bool" %(instance2, instance2, instance2, instance2, instance2));
                 	        expectedresult="FAILURE";
 	                        tdkTestObj.executeTestCase(expectedresult);
         	                actualresult = tdkTestObj.getResult();

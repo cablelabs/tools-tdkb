@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>2</version>
+  <version>4</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_Get_ParentalCtrl_ServicesEnable</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -41,9 +41,9 @@
   <!--  -->
   <long_duration>false</long_duration>
   <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
+  <remarks>box going to undefined state randomly</remarks>
   <!-- Reason for skipping the tests if marked to skip -->
-  <skip>false</skip>
+  <skip>true</skip>
   <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
@@ -91,7 +91,7 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-						# use tdklib library,which provides a wrapper for tdk testcase script 
+																		# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib;
 import time; 
 
@@ -172,5 +172,9 @@ else:
         pamObj.setLoadModuleStatus("FAILURE");
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";   
+
+					
+
+					
 
 					
