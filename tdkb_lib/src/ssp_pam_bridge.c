@@ -613,6 +613,7 @@ int ssp_CosaDmlDhcpGet(char* MethodName, void* cfg)
     if( !(strcmp(MethodName, "DhcpcConf")) )
     {
        CFG* temp = cfg;
+	DhcpCfg.InstanceNumber =1;
         return_status = CosaDmlDhcpcGetCfg(pam_handle,&DhcpCfg);
 
         printf("ssp_CosaDmlDhcpcGetCfg: Instance Number  retrieved:%d\n",DhcpCfg.InstanceNumber);
@@ -658,6 +659,7 @@ int ssp_CosaDmlDhcpGet(char* MethodName, void* cfg)
     else if ( !(strcmp(MethodName, "DhcpcInstanceNumber")) )
     {
        CFG* temp =cfg;
+       DhcpCfg.InstanceNumber =1;
        return_status = CosaDmlDhcpcGetCfg(pam_handle,&DhcpCfg);
        printf("ssp_CosaDmlDhcpcGetCfg: Instance Number  retrieved:%d\n",DhcpCfg.InstanceNumber);
        temp->InstanceNumber =(unsigned long)DhcpCfg.InstanceNumber;
