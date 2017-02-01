@@ -22,4 +22,4 @@ PORT=69
 SRC="$(dirname $1)"
 cd $SRC
 CMND="$4/execution/uploadLogs?fileName=$2 -F logFile=@$(basename $1)"
-curl -g --interface erouter0 $CMND
+curl --connect-timeout 30 -g --interface erouter0 $CMND
