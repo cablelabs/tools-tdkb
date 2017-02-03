@@ -248,7 +248,7 @@ bool pam::pam_GetParameterNames(IN const Json::Value& req, OUT Json::Value& resp
                     free_Memory_Names(size,DataValue1);
                     printf("Parameter Name has been fetched successfully and it matched with parameter List\n");
                     response["result"] = "SUCCESS";
-                    response["details"] = "Parameter Name has been fetched successfully and it matched with parameter List";
+		    response["details"] = DataValue[0].pParamNames;
                     return TEST_SUCCESS;
                 }
                 else
