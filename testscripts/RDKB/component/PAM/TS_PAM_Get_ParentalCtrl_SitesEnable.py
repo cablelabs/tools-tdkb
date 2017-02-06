@@ -37,13 +37,13 @@
   <!--  -->
   <groups_id />
   <!--  -->
-  <execution_time>8</execution_time>
+  <execution_time>15</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
   <!-- execution_time is the time out time for test execution -->
-  <remarks>box going to undefined state randomly</remarks>
+  <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
-  <skip>true</skip>
+  <skip>false</skip>
   <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
@@ -134,8 +134,8 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         print "ACTUAL RESULT 2: %s" %details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
-
-	time.sleep(180);
+        pamObj.initiateReboot()
+        obj.resetConnectionAfterReboot();
 
         tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
         tdkTestObj.addParameter("ParamName","Device.X_Comcast_com_ParentalControl.ManagedSites.Enable");
