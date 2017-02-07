@@ -110,7 +110,7 @@ expectedresult = "SUCCESS";
 tdkTestObj = obj.createTestStep('CCSPMBUS_LoadCfg');
 
 #Input Parameters
-tdkTestObj.addParameter("cmpCfgFile","/var/TDK/TDKB.cfg");
+tdkTestObj.addParameter("cmpCfgFile","TDKB.cfg");
 
 #Execute the test case in STB
 tdkTestObj.executeTestCase(expectedresult);

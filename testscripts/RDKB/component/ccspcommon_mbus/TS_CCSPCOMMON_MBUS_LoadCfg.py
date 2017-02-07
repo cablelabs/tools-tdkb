@@ -52,7 +52,7 @@ API Name
 CCSPMBUS_LoadCfg
 Input
 Filename with absolute path
-(/var/TDK/CcspCM.cfg)</input_parameters>
+(CcspCM.cfg)</input_parameters>
     <automation_approch>1.Configure the Function info in Test Manager GUI  which needs to be tested  
 (CCSPMBUS_LoadCfg - func name - "If not exists already"
  ccspcommon_mbus - module name
@@ -108,7 +108,7 @@ if loadStatusExpected not in loadModuleresult.upper():
 tdkTestObj = obj.createTestStep('CCSPMBUS_LoadCfg');
 
 #Input Parameters
-tdkTestObj.addParameter("cmpCfgFile","/var/TDK/TDKB.cfg");
+tdkTestObj.addParameter("cmpCfgFile","TDKB.cfg");
 
 expectedresult = "SUCCESS";
 

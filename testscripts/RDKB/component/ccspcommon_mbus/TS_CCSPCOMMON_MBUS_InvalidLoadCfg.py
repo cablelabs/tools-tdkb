@@ -52,7 +52,7 @@ API Name
 CCSPMBUS_LoadCfg
 Input
 Invalid Filename 
-(/var/TDK/ccsp_xxx.cfg)</input_parameters>
+(ccsp_xxx.cfg)</input_parameters>
     <automation_approch>1.Configure the Function info in Test Manager GUI  which needs to be tested  
 (CCSPMBUS_LoadCfg - func name - "If not exists already"
  ccspcommon_mbus - module name
@@ -108,7 +108,7 @@ if loadStatusExpected not in loadModuleresult.upper():
 tdkTestObj = obj.createTestStep('CCSPMBUS_LoadCfg');
 
 #Input Parameters
-tdkTestObj.addParameter("cmpCfgFile","/var/TDK/TDKBInvalid.cfg");
+tdkTestObj.addParameter("cmpCfgFile","TDKBInvalid.cfg");
 
 expectedresult = "FAILURE";
 #Execute the test case in STB

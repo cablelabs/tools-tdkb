@@ -556,9 +556,19 @@ bool CCSPMBUS::CCSPMBUS_LoadCfg(IN const Json::Value& req, OUT Json::Value& resp
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_LoadCfg --->Entry \n");
 
     int returnValue = SSP_MBUS_FAILURE;
-    char configFile[MAX_PARAM_SIZE];	
+    char configFile[MAX_PARAM_SIZE] = {0};
 
-    strcpy(configFile,req["cmpCfgFile"].asCString());
+    /* Retrieve the current TDK path */
+    string cfgFilePath = getenv("TDK_PATH");
+
+    string cfgfileName = req["cmpCfgFile"].asString();
+
+    /* concatenate the path and file name of the cfg */
+    cfgFilePath = cfgFilePath + cfgfileName;
+
+    strcpy(configFile,cfgFilePath.c_str());
+
+    printf("Cfg file to be loaded:%s\n",configFile);
 
     returnValue = ssp_mbus_loadcfg(configFile);
 
@@ -596,12 +606,21 @@ bool CCSPMBUS::CCSPMBUS_LoadDmXml(IN const Json::Value& req, OUT Json::Value& re
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_LoadDmXml --->Entry \n");
 
     int returnValue = SSP_MBUS_FAILURE;
-    char dmlxml[MAX_PARAM_SIZE];	
+    char dmlXmlFile[MAX_PARAM_SIZE] = {0};
 
-    strcpy(dmlxml,req["xmlfileName"].asCString());
+    /* Retrieve the current TDK path */
+    string xmlFilePath = getenv("TDK_PATH");
 
-    returnValue = ssp_mbus_load_dmlxml(dmlxml);
+    string xmlfileName = req["xmlfileName"].asString();
 
+    /* string concatenate the path and file name */
+    xmlFilePath = xmlFilePath + xmlfileName;
+
+    strcpy(dmlXmlFile,xmlFilePath.c_str());
+
+    printf("DataModel XML file to be loaded:%s\n",dmlXmlFile);
+
+    returnValue = ssp_mbus_load_dmlxml(dmlXmlFile);
     if(SSP_MBUS_SUCCESS == returnValue)
     {
         response["result"]="SUCCESS";

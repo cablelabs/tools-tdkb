@@ -37,6 +37,7 @@
 #define MAX_PARAM_SIZE	100
 #define MAX_PARAM_NAMES_ARRAY	1000
 
+using namespace std;
 class RDKTestAgent;
 
 class CCSPMBUS : public RDKTestStubInterface

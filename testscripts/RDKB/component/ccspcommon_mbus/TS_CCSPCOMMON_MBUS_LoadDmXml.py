@@ -52,7 +52,7 @@ API Name
 CCSPMBUS_LoadDmXml
 Input
 Filename with absolute path
-(/var/TDK/TR181-CM.xml)</input_parameters>
+(TR181-CM.xml)</input_parameters>
     <automation_approch>1.Configure the Function info in Test Manager GUI  which needs to be tested  
 (CCSPMBUS_LoadDmXml - func name - "If not exists already"
  ccspcommon_mbus - module name
@@ -108,7 +108,7 @@ if loadStatusExpected not in loadModuleresult.upper():
 tdkTestObj = obj.createTestStep('CCSPMBUS_LoadDmXml');
 
 #Input Parameters
-tdkTestObj.addParameter("xmlfileName","/var/TDK/TR181-TDKB.XML");
+tdkTestObj.addParameter("xmlfileName","TR181-TDKB.XML");
 
 expectedresult = "SUCCESS";
 
