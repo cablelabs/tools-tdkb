@@ -35,6 +35,7 @@ extern "C"
     int ssp_setCommit(char *pObjTbl);
     int ssp_getHealth(char *pComponentName);
     int ssp_setSessionId(int priority, int sessionId,char *pComponentName,int override);
+    int ssp_setMultipleParameterValue(char **paramList, int size);
 };
 
 /*This is a constructor function for WIFIAgent class*/
@@ -68,6 +69,7 @@ bool WIFIAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj
     ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_GetHealth, "WIFIAgent_GetHealth");
     ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_SetSessionId, "WIFIAgent_SetSessionId");
     ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_Stop, "WIFIAgent_Stop");
+    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_SetMultiple, "WIFIAgent_SetMultiple");
 
     return TEST_SUCCESS;
 
@@ -250,13 +252,14 @@ bool WIFIAgent::WIFIAgent_Set(IN const Json::Value& req, OUT Json::Value& respon
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_wifiagent_set --->Error in Set API Validation of WIFI Agent in DUT !!! \n");
     }
 
-    printf("Apply the wifi settings\n");
     if ((!strncmp(ParamName, "Device.WiFi.Radio.1.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.1.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.1.", 19)))
     {
+        printf("Apply the wifi settings for 2.4GHZ\n");
         retVal = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySetting","true","boolean");
     }
     else if ((!strncmp(ParamName, "Device.WiFi.Radio.2.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.2.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.2.", 19)))
     {
+        printf("Apply the wifi settings for 5GHZ\n");
         retVal = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting","true","boolean");
     }
 
@@ -275,6 +278,104 @@ bool WIFIAgent::WIFIAgent_Set(IN const Json::Value& req, OUT Json::Value& respon
 
     DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_set --->Exit\n");
     return bReturn;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIAgent_SetMultiple
+ * Description          : This function will set multiple parameter value at one shot
+ *
+ * @param [in] req-        ParamList will hold the entire list to be set.
+ *
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
+ *                         ssp_setMultipleParameterValue
+********************************************************************************************/
+bool WIFIAgent::WIFIAgent_SetMultiple(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_SetMultiple --->Entry\n");
+
+    int returnValue = 0;
+    int retVal = 0;
+    char params[1000] = {'\0'};
+    char **paramlist  = NULL;
+    int num_spaces = 0;
+    int index = 0;
+    int size = 0;
+
+    strcpy(params,req["paramList"].asCString());
+
+    DEBUG_PRINT(DEBUG_TRACE,"\nWIFIAgent_SetMultiple:: ParamList input is %s\n",params);
+
+    char *list = strtok (params, "|");
+    while (list) {
+    paramlist = (char **) realloc (paramlist, ++num_spaces * sizeof(char *));
+    if (paramlist == NULL)
+    {
+       return 0; /* memory allocation failed */
+    }
+
+    paramlist[num_spaces-1] = list;
+    list = strtok (NULL, "|");
+   }
+
+   /* realloc one extra element for the last NULL */
+   paramlist = (char **) realloc (paramlist, (num_spaces+1) * sizeof(char *));
+   paramlist[num_spaces] = 0;
+
+   for (index = 0; index < (num_spaces); index++)
+   {
+     printf ("\nparamlist[%d] = %s\n", index, paramlist[index]);
+   }
+
+   printf("Index Count:%d\n",index);
+   size = index/3;
+
+   printf("ParamCount:%d\n",size);
+
+   printf("Invoking ssp_setMultipleParameterValue function\n");
+
+   returnValue = ssp_setMultipleParameterValue(paramlist,size);
+   if(0 == returnValue)
+   {
+       response["result"]="SUCCESS";
+       response["details"]="SET API Validation is Success";
+   }
+   else
+   {
+       response["result"]="FAILURE";
+       response["details"]="WIFIAgent_SetMultiple::SET API Validation is Failure";
+       DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_SetMultiple: Failed to set multiple parameters !!! \n");
+   }
+
+   if ((!strncmp(paramlist[0], "Device.WiFi.Radio.1.", 20)) || (!strncmp(paramlist[0], "Device.WiFi.AccessPoint.1.", 26)) || (!strncmp(paramlist[0], "Device.WiFi.SSID.1.", 19)))
+    {
+        printf("Apply the wifi settings for 2.4GHZ\n");
+        retVal = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySetting","true","boolean");
+    }
+    else if ((!strncmp(paramlist[0], "Device.WiFi.Radio.2.", 20)) || (!strncmp(paramlist[0], "Device.WiFi.AccessPoint.2.", 26)) || (!strncmp(paramlist[0], "Device.WiFi.SSID.2.", 19)))
+    {
+        printf("Apply the wifi settings for 5GHZ\n");
+        retVal = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting","true","boolean");
+    }
+
+    if((0 == returnValue) && (0 == retVal))
+    {
+        response["result"]="SUCCESS";
+        response["details"]="SET API Validation is Success";
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="WIFIAgent_SetMultiple::SET API Validation is Failure";
+        DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_SetMultiple --->Error in Set API Validation in DUT !!! \n");
+    }
+
+    /* free the memory allocated */
+   free(paramlist);
+
+   DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_SetMultiple --->Exit\n");
+
+   return TEST_SUCCESS;
 }
 
 /*******************************************************************************************
@@ -873,6 +974,7 @@ bool WIFIAgent::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("WIFIAgent_GetHealth");
     ptrAgentObj->UnregisterMethod("WIFIAgent_SetSessionId");
     ptrAgentObj->UnregisterMethod("WIFIAgent_Stop");
+    ptrAgentObj->UnregisterMethod("WIFIAgent_SetMultiple");
 
     return TEST_SUCCESS;
 }
