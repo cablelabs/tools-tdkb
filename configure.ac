@@ -22,9 +22,8 @@ dnl Process this file with autoconf to produce a configure script.
 dnl AC_PREREQ([2.69])
 AC_INIT(tdk-b, 1.0, praveensnair@tataelxsi.co.in,tdk-b)
 AC_CONFIG_SRCDIR([agent/src/agentmain.cpp])
-AM_CONFIG_HEADER(cfg/config.h)
-AC_CONFIG_MACRO_DIR([cfg])
-AC_CONFIG_AUX_DIR([cfg])
+AM_CONFIG_HEADER(config.h)
+AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-bzip2 subdir-objects 1.9])
 LT_INIT
 
@@ -100,7 +99,6 @@ AC_SUBST(RDK_VERSION)
 AC_SUBST(SUBDIR_HYBRID)
 AC_SUBST(SUBDIR_CLIENT)
 AC_CONFIG_FILES([Makefile
-         cfg/Makefile
 	 agent/Makefile
          tdkb_lib/Makefile
          CMAgent_stub/Makefile
