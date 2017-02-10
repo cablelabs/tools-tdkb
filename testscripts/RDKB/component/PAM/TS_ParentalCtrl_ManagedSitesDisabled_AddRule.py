@@ -131,7 +131,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
             print "[TEST EXECUTION RESULT] : SUCCESS";
             tdkTestObj = obj.createTestStep("AdvancedConfig_AddObject");
             tdkTestObj.addParameter("paramName","Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.");
-            expectedresult="FAILURE";
+            expectedresult="SUCCESS";
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
@@ -139,20 +139,32 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
                 print "[TEST STEP 3]: Adding new rule for sitee blocking";
-                print "[EXPECTED RESULT 3]: Should not add new rule";
+                print "[EXPECTED RESULT 3]: Should add new rule";
                 print "[ACTUAL RESULT 3]:  %s" %details;
-                print "[TEST EXECUTION RESULT] : %s" %actualresult;
-            else:
-                #Set the result status of execution
-                tdkTestObj.setResultStatus("FAILURE");
-                print "[TEST STEP 3]: Adding new rule for site blocking";
-                print "[EXPECTED RESULT 3]: Should not add new rule";
-                print "[ACTUAL RESULT 3]: %s" %details;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 temp = details.split(':');
                 instance1 = temp[1];
                 if (instance1 > 0):
                     print "INSTANCE VALUE: %s" %instance1
+		    tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
+                    tdkTestObj.addParameter("paramList","Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.%s.BlockMethod|URL|string|Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.%s.Site|http://www.google.com|string|Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.%s.AlwaysBlock|true|bool" %(instance1, instance1, instance1));
+                    expectedresult="FAILURE";
+                    tdkTestObj.executeTestCase(expectedresult);
+                    actualresult = tdkTestObj.getResult();
+                    details = tdkTestObj.getResultDetails();
+                    if expectedresult in actualresult:
+                        tdkTestObj.setResultStatus("SUCCESS");
+                        print "[TEST STEP 4]: Setting a valid url as url to be blocked"
+                        print "[EXPECTED RESULT 4]: Should set the url"
+                        print "[ACTUAL RESULT 4]: SUCESS: %s" %details;
+                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+		    else:
+			tdkTestObj.setResultStatus("FAILURE");
+                        print "[TEST STEP 4]: Setting a valid url as url to be blocked"
+                        print "[EXPECTED RESULT 4]: Should set the url"
+                        print "[ACTUAL RESULT 4]: SUCESS: %s" %details;
+                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+
                     #Delete the created table entry
                     tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
                     tdkTestObj.addParameter("paramName","Device.X_Comcast_com_ParentalControl.ManagedSites.BlockedSite.%s." %instance1);
@@ -176,31 +188,36 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                         print "[ACTUAL RESULT]: %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
                         print "Added table could not be deleted\n"
-                else:
-                    print "Wrong instance number";
-                #set enable status to its original value
-                tdkTestObj = obj.createTestStep('AdvancedConfig_Set');
-                tdkTestObj.addParameter("paramName","Device.X_Comcast_com_ParentalControl.ManagedSites.Enable");
-                tdkTestObj.addParameter("paramValue",org_status.strip());
-                tdkTestObj.addParameter("paramType","boolean");
-                tdkTestObj.executeTestCase(expectedresult);
-                actualresult = tdkTestObj.getResult();
-                details = tdkTestObj.getResultDetails();
-                print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-                if expectedresult in actualresult:
-                    tdkTestObj.setResultStatus("SUCCESS");
-                    print "TEST STEP : Set ManagedSites Enable status as its initial value";
-                    print "EXPECTED RESULT : Should set the Enable status as its initial value";
-                    print "ACTUAL RESULT : ManagedSites Enable status set success"
-                    #Get the result of execution
-                    print "[TEST EXECUTION RESULT] : SUCCESS";
-                else:
-                    tdkTestObj.setResultStatus("FAILURE");
-                    print "TEST STEP : Set ManagedSites Enable status as its initial value";
-                    print "EXPECTED RESULT : Should set the Enable status as its initial value";
-                    print "ACTUAL RESULT : ManagedSites Enable status set failed";
-                    #Get the result of execution
-                    print "[TEST EXECUTION RESULT] : FAILURE";
+            else:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("FAILURE");
+                print "[TEST STEP 3]: Adding new rule for site blocking";
+                print "[EXPECTED RESULT 3]: Should add new rule";
+                print "[ACTUAL RESULT 3]: %s" %details;
+                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+            #set enable status to its original value
+            tdkTestObj = obj.createTestStep('AdvancedConfig_Set');
+            tdkTestObj.addParameter("paramName","Device.X_Comcast_com_ParentalControl.ManagedSites.Enable");
+            tdkTestObj.addParameter("paramValue",org_status.strip());
+            tdkTestObj.addParameter("paramType","boolean");
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            details = tdkTestObj.getResultDetails();
+            print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+            if expectedresult in actualresult:
+                tdkTestObj.setResultStatus("SUCCESS");
+                print "TEST STEP : Set ManagedSites Enable status as its initial value";
+                print "EXPECTED RESULT : Should set the Enable status as its initial value";
+                print "ACTUAL RESULT : ManagedSites Enable status set success"
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : SUCCESS";
+            else:
+                tdkTestObj.setResultStatus("FAILURE");
+                print "TEST STEP : Set ManagedSites Enable status as its initial value";
+                print "EXPECTED RESULT : Should set the Enable status as its initial value";
+                print "ACTUAL RESULT : ManagedSites Enable status set failed";
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : FAILURE";
         else:
             tdkTestObj.setResultStatus("FAILURE");
             print "TEST STEP 2: Set Manageddevice Enable status as true";

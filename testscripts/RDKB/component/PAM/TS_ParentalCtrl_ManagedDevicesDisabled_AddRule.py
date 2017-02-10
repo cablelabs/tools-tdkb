@@ -163,7 +163,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                     #add a new device to be blocked
                     tdkTestObj = obj.createTestStep("AdvancedConfig_AddObject");
                     tdkTestObj.addParameter("paramName","Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.");
-		    expectedresult="FAILURE";
+		    expectedresult="SUCCESS";
                     tdkTestObj.executeTestCase(expectedresult);
                     actualresult = tdkTestObj.getResult();
                     details = tdkTestObj.getResultDetails();
@@ -171,20 +171,32 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                         #Set the result status of execution
                         tdkTestObj.setResultStatus("SUCCESS");
                         print "[TEST STEP 5]: Adding new rule for device blocking";
-                        print "[EXPECTED RESULT 5]: Should not add new rule";
+                        print "[EXPECTED RESULT 5]: Should add new rule";
                         print "[ACTUAL RESULT 5]:  %s" %details;
                         print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                    else:
-                        #Set the result status of execution
-                        tdkTestObj.setResultStatus("FAILURE");
-                        print "[TEST STEP 5]: Adding new rule for site blocking";
-                        print "[EXPECTED RESULT 5]: Should not add new rule";
-                        print "[ACTUAL RESULT 5]: %s" %details;
-                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
-			temp = details.split(':');
+                        temp = details.split(':');
                         instance1 = temp[1];
                         if (instance1 > 0):
                             print "INSTANCE VALUE: %s" %instance1
+			    tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
+                            tdkTestObj.addParameter("paramList","Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.%s.Type|Allow|string|Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.%s.Description|Comcast|string|Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.%s.MACAddress|BC:30:5B:BF:98:23|string|Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.%s.AlwaysBlock|false|bool" %(instance1, instance1, instance1, instance1));
+			    expectedresult="FAILURE";
+                            tdkTestObj.executeTestCase(expectedresult);
+                            actualresult = tdkTestObj.getResult();
+                            details = tdkTestObj.getResultDetails();
+                            if expectedresult in actualresult:
+                                tdkTestObj.setResultStatus("SUCCESS");
+                                print "[TEST STEP 6]: Setting a valid device as device to be blocked"
+                                print "[EXPECTED RESULT 6]: Should not set the device"
+                                print "[ACTUAL RESULT 6]: SUCCESS: %s" %details;
+                                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+			    else:
+                                tdkTestObj.setResultStatus("FAILURE");
+                                print "[TEST STEP 6]: Setting a valid device as device to be blocked"
+                                print "[EXPECTED RESULT 6]: Should not set the device"
+                                print "[ACTUAL RESULT 6]: SUCCESS: %s" %details;
+                                print "[TEST EXECUTION RESULT] : %s" %actualresult;
+
                             #Delete the created table entry
                             tdkTestObj = obj.createTestStep("AdvancedConfig_DelObject");
                             tdkTestObj.addParameter("paramName","Device.X_Comcast_com_ParentalControl.ManagedDevices.Device.%s." %instance1);
@@ -209,7 +221,15 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                                 print "Added table could not be deleted\n"
 			else:
-			    print "Wrong instance number";
+                            print "Wrong instance number";
+                    else:
+                        #Set the result status of execution
+                        tdkTestObj.setResultStatus("FAILURE");
+                        print "[TEST STEP 5]: Adding new rule for site blocking";
+                        print "[EXPECTED RESULT 5]: Should add new rule";
+                        print "[ACTUAL RESULT 5]: %s" %details;
+                        print "[TEST EXECUTION RESULT] : %s" %actualresult;
+
 
                     #set enable status to its original value
                     tdkTestObj = obj.createTestStep('AdvancedConfig_Set');
