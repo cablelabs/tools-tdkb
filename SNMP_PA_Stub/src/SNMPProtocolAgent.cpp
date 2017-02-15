@@ -68,182 +68,44 @@ bool SNMPProtocolAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptr
 {
 	DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialize----->Entry\n");
 
-	ptrAgentObj->RegisterMethod(*this,&SNMPProtocolAgent::ExecuteSNMPCommand, "ExecuteSNMPCommand");
-	ptrAgentObj->RegisterMethod(*this,&SNMPProtocolAgent::LogValidation, "LogValidation");
+	ptrAgentObj->RegisterMethod(*this,&SNMPProtocolAgent::GetCommString, "GetCommString");
 	DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialize----->Exit\n");
 
 	return TEST_SUCCESS;
 }
 
-/*******************************************************************************
- *
- * Function Name      : SNMPTrigger
- * @param SnmpMethod  : This parameter contains Snmp Method - snmpget, snmpset, snmpwalk.
- * @param SnmpCommStr : This parameter contains Snmp Community String - private, public.
- * @param SnmpIP      : This parameter contains IP Address.
- * @param SnmpOID     : This parameter contains Snmp Object Identifier.
- * Description        : SNMPTrigger function will be called by ExecuteSNMPCommand
- *                 to execute Snmp command.
- *
- *******************************************************************************/
-int SNMPTrigger(string SnmpMethod, string SnmpCommStr, string SnmpIP, string SnmpOID)
-{
-	DEBUG_PRINT(DEBUG_TRACE,"\n SNMPTrigger --->Entry\n");
-	std::string Command;
-	try
-	{
-		//concatenate strings
-		Command.append(SnmpMethod);
-		Command.append(" ");
-		Command.append(SnmpCommStr);
-		Command.append(" ");
-		Command.append(SnmpIP);
-		Command.append(" ");
-		Command.append(SnmpOID);
-		DEBUG_PRINT(DEBUG_TRACE,"\nSNMP COMMAND : %s\n", Command.c_str());
-
-		system(Command.c_str());
-		DEBUG_PRINT(DEBUG_TRACE,"\nExecuted SNMP COMMAND Successfully\n");
-		return TEST_SUCCESS;
-	}
-	catch(...)
-	{
-		DEBUG_PRINT(DEBUG_TRACE,"\n SNMP COMMAND not executed\n");
-		return TEST_FAILURE;
-	}
-	DEBUG_PRINT(DEBUG_TRACE,"\n SNMPTrigger --->Exit\n");
-	return TEST_SUCCESS;
-}
 /**************************************************************************
  *
- * Function Name : SNMPProtocolAgent::ExecuteSNMPCommand
- * Descrption    : This command is used to execute the snmp command.
+ * Function Name : SNMPProtocolAgent::GetCommString
+ * Descrption    : This api is to retrieve the community string value
  *
- * @param [in] req- has "SnmpMethod"  which is input to ExecuteSNMPCommand
- * @param [in] req- has "SnmpCommStr" which is input to ExecuteSNMPCommand
- * @param [in] req- has "SnmpIP"      which is input to ExecuteSNMPCommand
- * @param [in] req- has "SnmpOID"     which is input to ExecuteSNMPCommand
- * @param [out] response- filled with SUCCESS or FAILURE based on the return value of SNMPCommand.
+ * @param [out] response- filled with SUCCESS or FAILURE and community string.
  ***************************************************************************/
-bool SNMPProtocolAgent::ExecuteSNMPCommand(IN const Json::Value& req, OUT Json::Value& response)
+bool SNMPProtocolAgent::GetCommString(IN const Json::Value& req, OUT Json::Value& response)
 {
-    DEBUG_PRINT(DEBUG_TRACE,"\n ExecuteSNMPCommand --->Entry\n");
-    int retval=0;
-    char *SnmpMethod;
-    char *SnmpCommStr;
-    char *SnmpIP;
-    char *SnmpOID;
-    if((&req["SnmpMethod"]==NULL) && (&req["SnmpCommStr"]==NULL) && (&req["SnmpIP"]==NULL) && (&req["SnmpOID"]==NULL))
+    DEBUG_PRINT(DEBUG_TRACE,"GetCommString ------> Entry");
+    char comm_string[50] = {'\0'};
+    FILE *fp = NULL;
+
+    fp = popen("cat /var/TDK/tdk_platform.properties | grep COMMUNITY | cut -d = -f2", "r");
+    if (fp == NULL)
     {
+        response["result"] = "FAILURE";
+        response["details"] = "popen() failure";
+        DEBUG_PRINT(DEBUG_ERROR, "popen() failure\n");
+
         return TEST_FAILURE;
     }
-
-    SnmpMethod  = (char *)req["SnmpMethod"].asCString();
-    SnmpCommStr = (char *)req["SnmpCommStr"].asCString();
-    SnmpIP      = (char *)req["SnmpIP"].asCString();
-    SnmpOID     = (char *)req["SnmpOID"].asCString();
-    retval = SNMPTrigger(SnmpMethod, SnmpCommStr, SnmpIP, SnmpOID);
-    if(retval == TEST_SUCCESS)
+    /*copy the response to a buffer */
+    while (fgets(comm_string, sizeof(comm_string)-1, fp) != NULL)
     {
-		response["result"]="SUCCESS";
-		response["details"]="Successfully Executed SNMP Command";
+       strtok(comm_string, "\n");
+       printf("community string is %s \n",comm_string);
     }
-    else
-    {
-		response["result"]="FAILURE";
-		response["details"]="Invalid SNMP Command";
+    response["result"] = "SUCCESS";
+    response["details"] = comm_string;
 
-    }
-    DEBUG_PRINT(DEBUG_TRACE,"\n ExecuteSNMPCommand --->Exit\n");
-    return TEST_SUCCESS;
-}
-
-/**************************************************************************************
- *
- * Function Name : ValidateSNMPLog
- * @param FindStr: This parameter contains find string in log file.
- * Description   : ValidateSNMPLog function will be called by LogValidation function
- *                 to execute verify snmp logs.
- *
- **************************************************************************************/
-
-int ValidateSNMPLog(char *FindStr)
-{
-	try
-        {
-		DEBUG_PRINT(DEBUG_TRACE,"Entering ValidateSNMPLog function ------> Entry");
-		const char *LogFile = "/opt/TDK/logs/AgentConsole.log";
-		FILE *fp;
-		char tempBuf[512];
-		int line_num = 1;
-		int find_result = 0;
-		fp = fopen("/opt/TDK/logs/AgentConsole.log","r");
-		DEBUG_PRINT(DEBUG_TRACE,"\n Log file Name :: %s", LogFile);
-		if(NULL == fp)
-		{
-			DEBUG_PRINT(DEBUG_TRACE,"\n Error opening files!\n");
-			DEBUG_PRINT(DEBUG_TRACE,"\n Exiting from SNMP Log Validation on Failure------->exit\n");
-			return TEST_FAILURE;
-		}
-		while(fgets(tempBuf, BUFFERMEMSIZE, fp) != NULL) {
-			if((strstr(tempBuf, FindStr)) != NULL) {
-				DEBUG_PRINT(DEBUG_TRACE,"A match found on line: %d\n", line_num);
-				find_result ++;
-			}
-			line_num++;
-		}
-
-		if(find_result == 0) {
-			DEBUG_PRINT(DEBUG_TRACE,"\nSorry, couldn't find a match.\n");
-			return TEST_FAILURE;
-		}
-		//Close the file if still open.
-	        if(fp) {
-        	      fclose(fp);
-	        }
-		DEBUG_PRINT(DEBUG_TRACE,"\n Log Validation performed successfully \n");
-                return TEST_SUCCESS;
-	}
-	catch(...)
-        {
-			DEBUG_PRINT(DEBUG_TRACE,"\n Log Validation not performed \n");
-			return TEST_FAILURE;
-        }
-        DEBUG_PRINT(DEBUG_TRACE,"ValidateSNMPLog ------> Exit");
-	return TEST_SUCCESS;
-}
-
-/**************************************************************************
- * Function Name : LogValidation
- * Descrption    : This function is used to validate the SNMP log
- *
- * @param [in] req- has "FindStr"  which is input to LogValidation
- * @param [out] response- filled with SUCCESS or FAILURE based on the return value of LogValidation.
- ***************************************************************************/
-bool SNMPProtocolAgent::LogValidation(IN const Json::Value& req, OUT Json::Value& response)
-{
-    DEBUG_PRINT(DEBUG_TRACE,"\n  --->Entry\n");
-    int retval=0;
-    char *FindStr;
-    if(&req["FindStr"]==NULL)
-    {
-        return TEST_FAILURE;
-    }
-    FindStr = (char *)req["FindStr"].asCString();;
-
-    retval = ValidateSNMPLog(FindStr);
-    DEBUG_PRINT(DEBUG_TRACE,"\n retval ===================== %d\n", retval);
-    if(retval != TEST_SUCCESS)
-    {
-        response["result"]="FAILURE";
-        response["details"]="Failed to find the expected string in log file";
-    }
-    else
-    {
-        response["result"]="SUCCESS";
-        response["details"]="Found the expected string in the log file";
-    }
-    DEBUG_PRINT(DEBUG_TRACE,"\n LogValidation --->Exit\n");
+    DEBUG_PRINT(DEBUG_TRACE,"GetCommString ------> Exit");
     return TEST_SUCCESS;
 }
 
@@ -278,8 +140,7 @@ bool SNMPProtocolAgent::cleanup(IN const char* szVersion, IN RDKTestAgent *ptrAg
 		return TEST_FAILURE;
 	}
 
-	ptrAgentObj->UnregisterMethod("ExecuteSNMPCommand");
-	ptrAgentObj->UnregisterMethod("LogValidation");
+	ptrAgentObj->UnregisterMethod("GetCommString");
 
 	DEBUG_PRINT(DEBUG_TRACE, "cleaningup done\n");
 

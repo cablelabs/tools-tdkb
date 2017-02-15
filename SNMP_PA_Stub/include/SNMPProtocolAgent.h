@@ -56,10 +56,8 @@ class SNMPProtocolAgent : public RDKTestStubInterface
 		std::string testmodulepre_requisites();
 		bool testmodulepost_requisites();
 
-		/*Execute snmp command */
-		bool ExecuteSNMPCommand(IN const Json::Value& req, OUT Json::Value& response);
-		/*Verify SNMP Logs*/
-		bool LogValidation(IN const Json::Value& req, OUT Json::Value& response);
+                /*Retreive community string*/
+                bool GetCommString(IN const Json::Value& req, OUT Json::Value& response);
 };
 
 extern "C" SNMPProtocolAgent* CreateObject();
