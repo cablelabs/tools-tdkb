@@ -101,29 +101,6 @@ int ssp_mbus_loadcfg(char *pCmpCfg)
 
 /*******************************************************************************************
  *
- * Function Name        : ssp_mbus_unloadcfg
- * Description          : This function will call base interface funtion which is defined
- *                        on top of dbus calls to load Component specific base config file
- *
- * @param [in]          : N/A
- * @param [out]         : N/A
- ********************************************************************************************/
-
-void ssp_mbus_unloadcfg()
-{
-
-    if(gpTDKStartCfg != NULL)
-    {
-        AnscFreeMemory(gpTDKStartCfg);
-    }
-
-    gpTDKStartCfg = NULL;        
-
-    return;
-}
-
-/*******************************************************************************************
- *
  * Function Name        : ssp_mbus_load_dmlxml
  * Description          : This function will call base interface funtion which is defined
  *                        on top of dbus calls to load Component specific DataModel XML file
@@ -218,12 +195,13 @@ int ssp_mbus_exit()
 
     if(tdk_bus_handle == NULL)
     {
-        printf("\n ssp_mbus_exit :: CCSP_Message_Bus_Exit has close the bus handle successfully");
+        printf("\n ssp_mbus_exit :: CCSP_Message_Bus_Exit has close the bus handle successfully\n");
+        ssp_mbus_unloadcfg();
         return SSP_MBUS_SUCCESS;
     }
     else
     {
-        printf("\n ssp_mbus_exit :: CCSP_Message_Bus_Exit FAILURE. Existing bus handle %x is not closed",tdk_bus_handle);
+        printf("\n ssp_mbus_exit :: CCSP_Message_Bus_Exit FAILURE. Existing bus handle %x is not closed\n",tdk_bus_handle);
     }
 
     return SSP_MBUS_FAILURE;
@@ -1037,5 +1015,31 @@ int ssp_mbus_inform_end_session()
         return_status = SSP_MBUS_FAILURE;
     }
     return return_status;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_mbus_unloadcfg
+ * Description          : This function will call base interface funtion which is defined
+ *                        on top of dbus calls to unload Component specific base config file
+ *
+ * @param [in]          : N/A
+ * @param [out]         : N/A
+ ********************************************************************************************/
+
+int ssp_mbus_unloadcfg()
+{
+
+    printf("Entering ssp_mbus_unloadcfg function\n");
+    if(gpTDKStartCfg != NULL)
+    {
+        AnscFreeMemory(gpTDKStartCfg);
+    }
+
+    gpTDKStartCfg = NULL;
+
+    printf("Exiting ssp_mbus_unloadcfg function\n");
+
+    return 0;
 }
 #endif

@@ -115,6 +115,10 @@
       <primitiveTest id="" name="CCSPMBUS_UnRegisterNamespace" version="1">
         <function>CCSPMBUS_UnRegisterNamespace</function>
       </primitiveTest>
+      <primitiveTest name="CCSPMBUS_UnloadCfg" id="" version="1">
+        <function>CCSPMBUS_UnloadCfg</function>
+        <parameters/>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>

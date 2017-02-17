@@ -162,4 +162,26 @@ else:
 
 print "\n[TEST EXECUTION RESULT] : %s\n" %resultDetails ;
 
+tdkTestObj = obj.createTestStep('CCSPMBUS_Exit');
+
+#Execute the test case in DUT
+tdkTestObj.executeTestCase(expectedresult);
+
+#Get the result of execution
+actualresult = tdkTestObj.getResult();
+print "\n[TEST ACTUAL RESULT] : %s" %actualresult ;
+
+resultDetails = tdkTestObj.getResultDetails();
+
+if expectedresult in actualresult:
+        #Set the result status of execution as success
+        tdkTestObj.setResultStatus("SUCCESS");
+        print "\nMessage Bus De-Initialization/Exit is SUCCESS"
+else:
+        #Set the result status of execution as failure
+        tdkTestObj.setResultStatus("FAILURE");
+        print "\nMessage Bus De-Initialization/Exit is FAILURE"
+
+print "\n[TEST EXECUTION RESULT] : %s\n" %resultDetails ;
+
 obj.unloadModule("ccspcommon_mbus");
