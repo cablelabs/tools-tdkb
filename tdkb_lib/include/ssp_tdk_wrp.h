@@ -28,6 +28,8 @@
 
 #define SSP_TDK_SUCCESS     0
 #define SSP_TDK_FAILURE     -1
+#define SSP_SUCCESS       0
+#define SSP_FAILURE       1
 
 enum
 {

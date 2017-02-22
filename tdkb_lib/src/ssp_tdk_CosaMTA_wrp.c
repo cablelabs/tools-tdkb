@@ -32,7 +32,6 @@
 #include <netdb.h>
 #include "pthread.h"
 #include "ssp_tdk_wrp.h"
-#include "ssp_tdk_CosaMTA_wrp.h"
 #include <pthread.h>
 #include <ccsp_message_bus.h>
 #include <ccsp_base_api.h>
@@ -617,73 +616,66 @@ int ssp_CosaDmlMTAGetDect(int handleType, int bufferType,void* DectInfo)
  * @param [in]          : bufferType - Invalid or NULL pointer
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-
-
-
 int ssp_CosaDmlMTAGetDectPIN(int handleType, int bufferType,char *pin)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    char *pinstring = NULL;
 
     printf("\n Entering ssp_CosaDmlMTAGetDectPIN function\n\n");
 
     if(handleType == 0)
     {
         mta_handle = bus_handle_client;
-
     }
     
-    if (bufferType == 0)
+    if(pin == NULL)
     {
-        pinstring = ((char *) malloc(20));
+       printf("Pointer passed is NULL\n");
+       return SSP_FAILURE;
     }
 
-    return_status =     CosaDmlMTAGetDectPIN(mta_handle, &pinstring);
-    strcpy(pin ,pinstring);
-
+    printf("Invoking CosaDmlMTAGetDectPIN function\n");
+    return_status = CosaDmlMTAGetDectPIN(mta_handle, pin);
     if ( return_status != SSP_SUCCESS)
     {
         printf("ssp_CosaDmlMTAGetDectPIN:Failed to retrieve the Dect pin information \n");
         return SSP_FAILURE;
     }
 
+    printf("value retrieved from CosaDmlMTAGetDectPIN:%s\n",pin);
     return SSP_SUCCESS;
 }
-
 
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlMTASetDectPIN
- * Description          : This function will invoke the cosa api of MTA to retrieve the 
+ * Description          : This function will invoke the cosa api of MTA to set the 
  *                        dect pin
  *
  * @param [in]          : handleType - Message bus handle
  * @param [in]          : bufferType - Invalid or NULL pointer
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-
-int ssp_CosaDmlMTASetDectPIN(int handleType, int bufferType)
+int ssp_CosaDmlMTASetDectPIN(int handleType, int bufferType, char *pin)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    char *pinstring = NULL;
 
     printf("\n Entering ssp_CosaDmlMTASetDectPIN function\n\n");
 
     if(handleType == 0)
     {
         mta_handle = bus_handle_client;
-
     }
 
-    if (bufferType == 0)
+    if(pin == NULL)
     {
-        pinstring = ((char *) malloc(20));
+       printf("Pointer passed is NULL\n");
+       return SSP_FAILURE;
     }
 
-    return_status =     CosaDmlMTASetDectPIN(mta_handle, &pinstring);
-
+    printf("Dect Pin to be set:%s\n",pin);
+    return_status = CosaDmlMTASetDectPIN(mta_handle, pin);
     if ( return_status != SSP_SUCCESS)
     {
         printf("ssp_CosaDmlMTASetDectPIN:Failed to retrieve the Dect pin information \n");

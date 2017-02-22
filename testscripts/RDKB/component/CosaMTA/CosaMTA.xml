@@ -123,11 +123,12 @@
           <parameter name="handleType" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest id=" " name="CosaMTA_SetDectPIN" version="1">
+      <primitiveTest name="CosaMTA_SetDectPIN" id=" " version="3">
         <function>CosaMTA_SetDectPIN</function>
         <parameters>
-          <parameter name="bufferType" value="0"/>
           <parameter name="handleType" value="0"/>
+          <parameter name="bufferType" value="0"/>
+          <parameter name="value" value="DectPin"/>
         </parameters>
       </primitiveTest>
       <primitiveTest id=" " name="CosaMTA_GetDSXLogEnable" version="1">

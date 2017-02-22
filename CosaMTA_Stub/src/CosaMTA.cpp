@@ -43,7 +43,7 @@ extern "C"
     
     int ssp_CosaDmlMTAGetDect(int handleType,int bufferType, void* DectInfo);
     int ssp_CosaDmlMTAGetDectPIN(int handleType,int bufferType,char *pin);
-    int ssp_CosaDmlMTASetDectPIN(int handleType,int bufferType);
+    int ssp_CosaDmlMTASetDectPIN(int handleType,int bufferType, char *pin);
     int ssp_CosaDmlMTAGetDSXLogEnable(int handleType,int Value, int *Bool);
     
     int ssp_CosaDmlMTASetDSXLogEnable(int handleType,int Value);
@@ -909,8 +909,6 @@ bool CosaMTA::CosaMTA_GetDect(IN const Json::Value& req, OUT Json::Value& respon
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-
-
 bool CosaMTA::CosaMTA_GetDectPIN(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDectPIN --->Entry \n");
@@ -918,7 +916,7 @@ bool CosaMTA::CosaMTA_GetDectPIN(IN const Json::Value& req, OUT Json::Value& res
     int returnValue = 0;
     int handleType = 0;
     int bufferType = 0;
-    char pin[20];
+    char pin[64] = {0};
     char Details[64] = {'\0'};
 
     /* Validate the input arguments */
@@ -967,8 +965,6 @@ bool CosaMTA::CosaMTA_GetDectPIN(IN const Json::Value& req, OUT Json::Value& res
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-
-
 bool CosaMTA::CosaMTA_SetDectPIN(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_SetDectPIN --->Entry \n");
@@ -976,6 +972,7 @@ bool CosaMTA::CosaMTA_SetDectPIN(IN const Json::Value& req, OUT Json::Value& res
     int returnValue = 0;
     int handleType = 0;
     int bufferType = 0;
+    char pin[64] = {0};
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -992,10 +989,18 @@ bool CosaMTA::CosaMTA_SetDectPIN(IN const Json::Value& req, OUT Json::Value& res
         return TEST_FAILURE;
     }
 
+    if(&req["value"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+
     handleType = req["handleType"].asInt();
     bufferType = req["bufferType"].asInt();
+    strcpy(pin,req["value"].asCString());
 
-    returnValue = ssp_CosaDmlMTASetDectPIN(handleType,bufferType);
+    returnValue = ssp_CosaDmlMTASetDectPIN(handleType,bufferType,pin);
     if(0 == returnValue)
     {
         response["result"]="SUCCESS";
