@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>5</version>
+  <version>6</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_GetSysDescrVendor</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -40,6 +40,8 @@
   <execution_time>1</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
+  <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
   <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
@@ -61,17 +63,17 @@
     <pre_requisite>1.Ccsp Components in DUT should be in a running state that includes component under test Cable Modem
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>GetCommString
-ExecuteCmd</api_or_interface_used>
+pam_GetParameterValues</api_or_interface_used>
     <input_parameters>SnmpMethod : snmpget
 SnmpVersion : v2c
 OID : 1.3.6.1.2.1.1.1.0
 
-"cat /etc/device.properties | grep MFG_NAME | cut -d \"=\" -f2 | tr \"\n\" \" \""</input_parameters>
-    <automation_approch>1.TM will load the snmp_pa and sysutil library via Test agent
+Device.DeviceInfo.Manufacturer</input_parameters>
+    <automation_approch>1.TM will load the snmp_pa and pam library via Test agent
 2.From python script, invoke SnmpExecuteCmd function in snmplib to get the value of given OID 
 3. GetCommString function in the SNMP_PA stub  will be called from snmplib to get the community string. 
-4. Get vendor type using executecmd and compare with snmpget output
-4.Responses from the snmplib and executecmd will be logged in Script log.
+4. Get vendor type using pam_GetParameterValues and compare with snmpget output
+4.Responses from the snmplib and pam_GetParameterValues will be logged in Script log.
 6. Validation of  the result is done within the python script and send the result status to Test Manager.
 7.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from pam stub.</automation_approch>
     <except_output>CheckPoint 1:
@@ -84,7 +86,7 @@ CheckPoint 3:
 TestManager GUI will publish the result as PASS in Execution/Console page of Test Manager</except_output>
     <priority>High</priority>
     <test_stub_interface>snmp_pa
-sysutil</test_stub_interface>
+pam</test_stub_interface>
     <test_script>TS_SNMP_GetSysDescrVendor</test_script>
     <skipped>No</skipped>
     <release_version></release_version>
@@ -93,24 +95,24 @@ sysutil</test_stub_interface>
   <script_tags />
 </xml>
 '''
-																								# use tdklib library,which provides a wrapper for tdk testcase script 
+																														# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 import snmplib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
-sysObj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
+pamObj = tdklib.TDKScriptingLibrary("pam","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_GetSysDescrVendor');
-sysObj.configureTestCase(ip,port,'TS_SNMP_GetSysDescrVendor');
+pamObj.configureTestCase(ip,port,'TS_SNMP_GetSysDescrVendor');
 
 #Get the result of connection with test component and STB
 loadmodulestatus1=obj.getLoadModuleResult();
-loadmodulestatus2=sysObj.getLoadModuleResult();
+loadmodulestatus2=pamObj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus1;
 
 if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upper():
@@ -119,36 +121,36 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
     actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.2.1.1.1.0", ip);
 
     if "SNMPv2-MIB" in actResponse:
-        vendor = actResponse.split("VENDOR:")[1].split(';')[0]
+        vendor = actResponse.split("VENDOR:")[1].split(';')[0].strip()
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1:Execute snmpget for VENDOR in system description";
         print "EXPECTED RESULT 1: snmpget should get the VENDOR system description values";
         print "ACTUAL RESULT 1: VENDOR is %s" %vendor;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : %s" %vendor ;
-        tdkTestObj = sysObj.createTestStep('ExecuteCmd');
-        tdkTestObj.addParameter("command", "cat /etc/device.properties | grep MFG_NAME | cut -d \"=\" -f2 | tr \"\n\" \" \"");
+        tdkTestObj = pamObj.createTestStep('pam_GetParameterValues')
+	tdkTestObj.addParameter("ParamName","Device.DeviceInfo.Manufacturer");
         expectedresult="SUCCESS";
 
         #Execute the test case in STB
         tdkTestObj.executeTestCase("expectedresult");
         actualresult = tdkTestObj.getResult();
-        details = tdkTestObj.getResultDetails().strip().upper();
+        details = tdkTestObj.getResultDetails().strip();
         if expectedresult in actualresult and details:
-            print "TEST STEP 1:Get VENDOR from properties file";
-            print "EXPECTED RESULT 1: VENDOR details from properties file and snmpget should be same"
+            print "TEST STEP 1:Get VENDOR from getparams";
+            print "EXPECTED RESULT 1: VENDOR details from getparams and snmpget should be same"
             if details in vendor:
-                print "ACTUAL RESULT 1: VENDOR details from properties file and snmpget are same"
+                print "ACTUAL RESULT 1: VENDOR details from getparams and snmpget are same "
                 tdkTestObj.setResultStatus("SUCCESS");
             else:
-                print "ACTUAL RESULT 1: VENDOR details from properties file and snmpget are not same"
+                print "ACTUAL RESULT 1: VENDOR details from getparams and snmpget are not same"
                 tdkTestObj.setResultStatus("FAILURE");
             print "[TEST EXECUTION RESULT] : %s" %details
         else:
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 1:Get VENDOR from properties file";
-            print "EXPECTED RESULT 1: VENDOR details from properties file and snmpget should be same";
-            print "ACTUAL RESULT 1: Couldn't get VENDOR from properties file"
+            print "TEST STEP 1:Get VENDOR from getparams";
+            print "EXPECTED RESULT 1: VENDOR details from getparams and snmpget should be same";
+            print "ACTUAL RESULT 1: Couldn't get VENDOR from getparams"
 
     else:
         tdkTestObj.setResultStatus("FAILURE");
@@ -162,9 +164,5 @@ else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
-
-					
-
-					
 
 					
