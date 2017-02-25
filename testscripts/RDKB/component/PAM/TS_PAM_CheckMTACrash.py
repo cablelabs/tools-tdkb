@@ -17,25 +17,43 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>4</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>14</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_CheckMTACrash</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>pam_MTAAgentRestart</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
-  <synopsis/>
-  <groups_id/>
+  <!--  -->
+  <synopsis>This test case will kill the MTA agent process forcefully and check whether the process is getting restarted automatically</synopsis>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>30</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
+  <!--  -->
+  <advanced_script>false</advanced_script>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_PAM_42</test_case_id>
@@ -68,19 +86,18 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
     <test_stub_interface>None</test_stub_interface>
     <test_script>TS_PAM_CheckMTACrash</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
-  <script_tags/>
+  <script_tags />
 </xml>
-
 '''
-						#import statements
+																		#import statements
 import tdklib;
 import time;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("pam","RDKB");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -94,36 +111,79 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
 if "SUCCESS" in loadmodulestatus.upper():
         obj.setLoadModuleStatus("SUCCESS");
-
-        #Script to load the configuration file of the component
-        tdkTestObj = obj.createTestStep("pam_MTAAgentRestart");
-     
+        
+        tdkTestObj = obj.createTestStep('ExecuteCmd');
+        tdkTestObj.addParameter("command", "pidof CcspMtaAgentSsp");
         expectedresult="SUCCESS";
-        tdkTestObj.executeTestCase(expectedresult);
+        
+        tdkTestObj.executeTestCase("expectedresult");
         actualresult = tdkTestObj.getResult();
+        details = tdkTestObj.getResultDetails().strip();
 
-        if expectedresult in actualresult:
+        if expectedresult in actualresult and "" != details:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
-            details = tdkTestObj.getResultDetails();
-            print "TEST STEP 1:Should kill the MTA agent";
-            print "EXPECTED RESULT 1: Should Successfully restart the MTA agent after kill";
-            print "ACTUAL RESULT 1: %s" %details;
-            #Get the result of execution
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
+            print "TEST STEP 1: Check CcspMtaAgentSsp is up and running";
+            print "EXPECTED RESULT 1: CcspMtaAgentSsp should be running"
+            print "ACTUAL RESULT 1: PID of CcspMtaAgentSsp: %s" %details;
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+            
+            tdkTestObj = obj.createTestStep('ExecuteCmd');
+            tdkTestObj.addParameter("command", "kill -9 `pidof CcspMtaAgentSsp`");
+            tdkTestObj.executeTestCase("expectedresult");
+            actualresult = tdkTestObj.getResult();
+            details = tdkTestObj.getResultDetails().strip();
+
+            if expectedresult in actualresult and "" == details:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("SUCCESS");
+                print "TEST STEP 2: Kill CcspMtaAgentSsp process";
+                print "EXPECTED RESULT 2: Should kill CcspMtaAgentSsp process"
+                print "ACTUAL RESULT 2: CcspMtaAgentSsp status: %s" %details;
+                print "[TEST EXECUTION RESULT] : SUCCESS";
+
+                #Wait for 15 mins to check whether process is restarted
+                time.sleep(900);
+                tdkTestObj = obj.createTestStep('ExecuteCmd');
+                tdkTestObj.addParameter("command", "pidof CcspMtaAgentSsp");
+                tdkTestObj.executeTestCase("expectedresult");
+                actualresult = tdkTestObj.getResult();
+                details = tdkTestObj.getResultDetails().strip();
+
+                if expectedresult in actualresult and "" != details:
+                    #Set the result status of execution
+                    tdkTestObj.setResultStatus("SUCCESS");
+                    print "TEST STEP 1: Check CcspMtaAgentSsp is up and running";
+                    print "EXPECTED RESULT 1: CcspMtaAgentSsp should be running"
+                    print "ACTUAL RESULT 1: PID of CcspMtaAgentSsp: %s" %details;
+                    print "[TEST EXECUTION RESULT] : SUCCESS";
+                else:
+                    tdkTestObj.setResultStatus("FAILURE");
+                    print "TEST STEP 1: Check CcspMtaAgentSsp is up and running"
+                    print "EXPECTED RESULT 1: CcspMtaAgentSsp should be running"
+                    print "ACTUAL RESULT 1: PID of CcspMtaAgentSsp: %s" %details;
+                    print "[TEST EXECUTION RESULT] : FAILURE";
+                    obj.initiateReboot();
+	            obj.resetConnectionAfterReboot();
+            else:
+                tdkTestObj.setResultStatus("FAILURE");
+                print "TEST STEP 2: Kill CcspMtaAgentSsp process"
+                print "EXPECTED RESULT 2: Should kill CcspMtaAgentSsp process"
+                print "ACTUAL RESULT 2: CcspMtaAgentSsp status: %s" %details;
+                print "[TEST EXECUTION RESULT] : FAILURE";
+
         else:
             tdkTestObj.setResultStatus("FAILURE");
-            details = tdkTestObj.getResultDetails();
-            print "TEST STEP 1: Should kill the MTA agent";
-            print "EXPECTED RESULT 1: Should Successfully restart the MTA agent after kill";
-            print "ACTUAL RESULT 1: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
+            print "TEST STEP 1: Check CcspMtaAgentSsp is up and running"
+            print "EXPECTED RESULT 1: CcspMtaAgentSsp should be running"
+            print "ACTUAL RESULT 1: PID of CcspMtaAgentSsp: %s" %details;
+            print "[TEST EXECUTION RESULT] : FAILURE";              
             
-        obj.unloadModule("pam");
+        obj.unloadModule("sysutil");
 else:
         print "Failed to load the module";
         obj.setLoadModuleStatus("FAILURE");
-        print "Module loading failed";				
+        print "Module loading failed";			    				
 
 					
 

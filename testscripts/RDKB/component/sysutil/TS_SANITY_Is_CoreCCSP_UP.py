@@ -21,11 +21,11 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>3</version>
+  <version>8</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SANITY_Is_CoreCCSP_UP</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
-  <primitive_test_id> </primitive_test_id>
+  <primitive_test_id></primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>ExecuteCmd</primitive_test_name>
   <!--  -->
@@ -40,6 +40,8 @@
   <execution_time>1</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
+  <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
   <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
@@ -91,7 +93,7 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-import tdklib; 
+import tdklib;
 
 #Test component to be tested
 sysObj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
@@ -109,75 +111,80 @@ if "SUCCESS" in loadmodulestatus.upper():
     sysObj.setLoadModuleStatus("SUCCESS");
 
     #Check the box type
-    imagename = tdklib.getImageName (ip, port)
-    print imagename;
-    pattern = "TG1682_"
+    imagename = sysObj.getDeviceBoxType()
+    pattern = "Emulator"
     if pattern in imagename:
-        tdkTestObj = sysObj.createTestStep('ExecuteCmd');
-        tdkTestObj.addParameter("command", "( sleep 3; echo \"root\"; echo \"ps -ef | grep CcspCrSsp\"; sleep 2; echo \"exit\" ) | telnet \"192.168.101.3\"| grep eRT");
-        expectedresult="SUCCESS";
+	print "Box Type is Emulator"
+	prefix = "simu"
+    else:
+	prefix = "eRT"
 
-        #Execute the test case in STB
+    #Check whether Core CCSP component are running
+    tdkTestObj = sysObj.createTestStep('ExecuteCmd');
+    tdkTestObj.addParameter("command", "dmcli %s getvalues com.cisco.spvtg.ccsp.CR.Name | grep -A 1 value: | cut -f3 -d ':' | tr '\r\n' ' '" %prefix);
+    expectedresult="SUCCESS";
+
+    #Execute the test case in STB
+    tdkTestObj.executeTestCase("expectedresult");
+    actualresult = tdkTestObj.getResult();
+    details = tdkTestObj.getResultDetails().strip();
+
+    if expectedresult in actualresult and "Can't find destination component" not in details:
+        #Set the result status of execution
+        tdkTestObj.setResultStatus("SUCCESS");
+        print "TEST STEP 1: Check if CR is up and running"
+        print "EXPECTED RESULT 1: CR should be running"
+        print "ACTUAL RESULT 1: CR status is: %s" %details;
+        print "[TEST EXECUTION RESULT] : SUCCESS";
+
+        tdkTestObj = sysObj.createTestStep('ExecuteCmd');
+        tdkTestObj.addParameter("command",  "pidof CcspPandMSsp");
         tdkTestObj.executeTestCase("expectedresult");
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip();
 
-        if expectedresult in actualresult and "CcspCrSsp" in details:
+        if expectedresult in actualresult and "" != details:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 1: Check if CR is up"
-            print "EXPECTED RESULT 1: CR should be up"
-            print "ACTUAL RESULT 1: CR is up %s" %details;
+            print "TEST STEP 2: Check CcspPandMSsp is up and running";
+            print "EXPECTED RESULT 2: CcspPandMSsp should be running"
+            print "ACTUAL RESULT 2: PID of CcspPandMSsp: %s" %details;
             print "[TEST EXECUTION RESULT] : SUCCESS";
 
-	    tdkTestObj.addParameter("command",  "ps -ef | grep 'CcspPandMSsp\|PsmSsp' | grep -v grep | tr \"\n\" \" \"");
+            tdkTestObj = sysObj.createTestStep('ExecuteCmd');
+            tdkTestObj.addParameter("command",  "pidof PsmSsp");
             tdkTestObj.executeTestCase("expectedresult");
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails().strip();
 
-	    if expectedresult in actualresult and "CcspPandMSsp" in details and "PsmSsp" in details:
+            if expectedresult in actualresult and "" != details:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP 1: Check if CR, CcspPandMSsp and PsmSsp is running";
-                print "EXPECTED RESULT 1: CR, CcspPandMSsp and PsmSsp should be running"
-                print "ACTUAL RESULT 1: CR, PandM and PSM are up: %s" %details;
+                print "TEST STEP 3: Check PsmSsp is up and running";
+                print "EXPECTED RESULT 3: PsmSsp should be running"
+                print "ACTUAL RESULT 3: PID of PsmSsp: %s" %details;
                 print "[TEST EXECUTION RESULT] : SUCCESS";
 
             else:
                 tdkTestObj.setResultStatus("FAILURE");
-                print "TEST STEP 1: Check if CcspPandMSsp and PsmSsp is running"
-                print "EXPECTED RESULT 1: CcspPandMSsp and PsmSsp should be running"
-                print "ACTUAL RESULT 1: PandM or PSM are not up: %s" %details;
+                print "TEST STEP 3: Check PsmSsp is up and running"
+                print "EXPECTED RESULT 3: PsmSsp should be running"
+                print "ACTUAL RESULT 3: PID of PsmSsp: %s" %details;
                 print "[TEST EXECUTION RESULT] : FAILURE";
-	else:
-    	    tdkTestObj.setResultStatus("FAILURE");
-	    print "TEST STEP 1: Check if CR is up"
-	    print "EXPECTED RESULT 1: CR should be up"
- 	    print "ACTUAL RESULT 1: CR is not up %s" %details;
-    	    print "[TEST EXECUTION RESULT] : FAILURE";
 
-    else:
-        tdkTestObj = sysObj.createTestStep('ExecuteCmd');
-        expectedresult="SUCCESS";
-        tdkTestObj.addParameter("command",  "ps -ef | grep 'CcspCrSsp\|CcspPandMSsp\|PsmSsp' | grep -v grep | tr \"\n\" \" \"");		
-
-        tdkTestObj.executeTestCase("expectedresult");
-        actualresult = tdkTestObj.getResult();
-        details = tdkTestObj.getResultDetails().strip();
-
-        if expectedresult in actualresult and "CcspCrSsp" in details and "CcspPandMSsp" in details and "PsmSsp" in details:
-            #Set the result status of execution
-            tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 1: Check if CR, CcspPandMSsp and PsmSsp are up"
-            print "EXPECTED RESULT 1: CR, CcspPandMSsp and PsmSsp should be up"
-            print "ACTUAL RESULT 1: CR, CcspPandMSsp and PsmSsp are up %s" %details;
-            print "[TEST EXECUTION RESULT] : SUCCESS";
-	else:
+        else:
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 1: Check if CR , CcspPandMSsp and PsmSsp are up"
-            print "EXPECTED RESULT 1: CR, CcspPandMSsp and PsmSsp should be up"
-            print "ACTUAL RESULT 1: CR , CcspPandMSsp or PsmSsp are not up %s" %details;
+            print "TEST STEP 2: Check CcspPandMSsp is up and running"
+            print "EXPECTED RESULT 2: CcspPandMSsp should be running"
+            print "ACTUAL RESULT 2: PID of CcspPandMSsp: %s" %details;
             print "[TEST EXECUTION RESULT] : FAILURE";
+    else:
+        tdkTestObj.setResultStatus("FAILURE");
+        print "TEST STEP 1: Check if CR is up and running"
+        print "EXPECTED RESULT 1: CR should be running"
+        print "ACTUAL RESULT 1: CR status is: %s" %details;
+        print "[TEST EXECUTION RESULT] : FAILURE";
+        
     sysObj.unloadModule("sysutil");
 
 else:

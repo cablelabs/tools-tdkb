@@ -17,26 +17,45 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>5</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>6</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_CheckSerialNumberWithProductClass</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id> </primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>pam_GetParameterValues</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>This test is to check if the serial number obtained from DeviceInfo and GatewayInfo tables are the same</synopsis>
-  <groups_id/>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
+  <!--  -->
+  <advanced_script>false</advanced_script>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
-    <box_type>Emulator</box_type>
     <box_type>Broadband</box_type>
+    <!--  -->
+    <box_type>Emulator</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_PAM_85</test_case_id>
@@ -73,12 +92,11 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
     <test_stub_interface>None</test_stub_interface>
     <test_script>TS_PAM_CheckSerialNumberWithProductClass</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
-  <script_tags/>
+  <script_tags />
 </xml>
-
 '''
 #import statement
 import tdklib;
@@ -92,7 +110,7 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_PAM_CheckSerialNumberWithProductClass');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
@@ -103,7 +121,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.addParameter("ParamName","Device.DeviceInfo.ProductClass");
     expectedresult="SUCCESS";
 
-    #Execute the test case in STB
+    #Execute the test case in DUT
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
@@ -115,42 +133,35 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT 1: ProductClass is %s" %details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
-	if "XB3" or "XF3" in details:
-	    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
-	    tdkTestObj.addParameter("ParamName","Device.DeviceInfo.SerialNumber");
-	    #Execute the test case in STB
-	    tdkTestObj.executeTestCase(expectedresult);
-	    actualresult = tdkTestObj.getResult();
-	    SerialNo = tdkTestObj.getResultDetails();
-	    print "Serial number obtained by deviceinfo :%s" %SerialNo;
-	    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
-	    tdkTestObj.addParameter("ParamName","Device.GatewayInfo.SerialNumber");
-            #Execute the test case in STB
-            tdkTestObj.executeTestCase(expectedresult);
-            actualresult = tdkTestObj.getResult();
-            GWSerialNo = tdkTestObj.getResultDetails();
-	    print "Serial number obtained by gateway info : %s" %GWSerialNo;
-	    #check if serial number is correct or not
-	    if SerialNo == GWSerialNo:
-		#Set the result status of execution
-		tdkTestObj.setResultStatus("SUCCESS");
-		print "TEST STEP 2: Checking whether the serial number is correct or not";
-		print "EXPECTED RESULT 2: Serial number obtained by deviceinfo and gateway info should be same";
-		print "ACTUAL RESULT 2:Serial number obtained is correct";
-	    else:
-		tdkTestObj.setResultStatus("FAILURE");
-		print "TEST STEP 2: Checking whether the serial number is correct or not";
-                print "EXPECTED RESULT 2: Serial number obtained by deviceinfo and gateway info should be same";
-                print "ACTUAL RESULT 2:Serial number obtained are not same";
-	else:
-	    print "Not a gateway device";
-	    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
-            tdkTestObj.addParameter("ParamName","Device.DeviceInfo.SerialNumber");
-            #Execute the test case in STB
-            tdkTestObj.executeTestCase(expectedresult);
-            actualresult = tdkTestObj.getResult();
-            SerialNo = tdkTestObj.getResultDetails();
-            print "Serial number obtained by deviceinfo :%s" %SerialNo;
+
+        tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+        tdkTestObj.addParameter("ParamName","Device.DeviceInfo.SerialNumber");
+        #Execute the test case in DUT
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        SerialNo = tdkTestObj.getResultDetails();
+        print "Serial number obtained by deviceinfo :%s" %SerialNo;
+        
+        tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+        tdkTestObj.addParameter("ParamName","Device.GatewayInfo.SerialNumber");
+        #Execute the test case in DUT
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        GWSerialNo = tdkTestObj.getResultDetails();
+        print "Serial number obtained by gateway info : %s" %GWSerialNo;
+        
+        #check if serial number is correct or not
+        if SerialNo == GWSerialNo:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP 2: Checking whether the serial number is correct or not";
+            print "EXPECTED RESULT 2: Serial number obtained by deviceinfo and gateway info should be same";
+            print "ACTUAL RESULT 2:Serial number obtained is correct";
+        else:
+            tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP 2: Checking whether the serial number is correct or not";
+            print "EXPECTED RESULT 2: Serial number obtained by deviceinfo and gateway info should be same";
+            print "ACTUAL RESULT 2:Serial number obtained are not same";
     else:
 	tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the ProductClass";
@@ -162,4 +173,3 @@ else:
     print "Failed to load pam module";
     obj.setLoadModuleStatus("FAILURE");
     print "Module loading failed";
-	    
