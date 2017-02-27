@@ -83,11 +83,20 @@ bool SNMPProtocolAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptr
  ***************************************************************************/
 bool SNMPProtocolAgent::GetCommString(IN const Json::Value& req, OUT Json::Value& response)
 {
-    DEBUG_PRINT(DEBUG_TRACE,"GetCommString ------> Entry");
+    DEBUG_PRINT(DEBUG_TRACE,"GetCommString ------> Entry\n");
     char comm_string[50] = {'\0'};
+    std::string folder_path;
+    std::string TDKPath;
+    char command[200]={'\0'};
     FILE *fp = NULL;
-
-    fp = popen("cat /var/TDK/tdk_platform.properties | grep COMMUNITY | cut -d = -f2", "r");
+    /* Extracting TDK path*/
+    TDKPath = getenv ("TDK_PATH");
+    folder_path.append(TDKPath);
+    folder_path.append("/");
+    folder_path.append("tdk_platform.properties");
+    printf("Folder path is %s\n",folder_path.c_str());
+    sprintf(command,"cat %s | grep COMMUNITY | cut -d = -f2",folder_path.c_str());
+    fp = popen(command, "r");
     if (fp == NULL)
     {
         response["result"] = "FAILURE";
