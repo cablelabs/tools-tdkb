@@ -33,6 +33,7 @@
   <skip>false</skip>
   <box_types>
     <box_type>Broadband</box_type>
+    <box_type>Emulator</box_type>
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
@@ -74,78 +75,131 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
 </xml>
 
 '''
+
 # use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import snmplib;
 from time import sleep;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
-sysobj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
+obj = tdklib.TDKScriptingLibrary("snmp_pa","RDKB");
+pamobj = tdklib.TDKScriptingLibrary("pam","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_ResetWifiOnly');
-sysobj.configureTestCase(ip,port,'TS_SNMP_ResetWifiOnly');
+pamobj.configureTestCase(ip,port,'TS_SNMP_ResetWifiOnly');
 
 #Get the result of connection with test component and STB
 loadmodulestatus=obj.getLoadModuleResult();
-sysloadmodulestatus =sysobj.getLoadModuleResult();
+pamloadmodulestatus =pamobj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
-if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in sysloadmodulestatus.upper():
+if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
     ########## Script to Execute the snmp command ###########
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1003.0", ip);
-    act_value=actResponse.rsplit(None, 1)[-1];
-
-    if "=" in actResponse and act_value == "0":
+    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+    tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
+    expectedresult="SUCCESS";
+    tdkTestObj.executeTestCase(expectedresult);
+    actualresult = tdkTestObj.getResult();
+    details = tdkTestObj.getResultDetails();
+    if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: snmpget request to get Reboot status";
-        print "EXPECTED RESULT 1: Command should return Reboot status as false";
-        print "ACTUAL RESULT 1: %s" %actResponse;
+        print "TEST STEP 1: Get the current SSID password";
+        print "EXPECTED RESULT 1: Should get the current SSID password";
+        print "ACTUAL RESULT 1: %s" %details;
+	org_status=details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS"
-        actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1003.0 i 3", ip);
-        tdkTestObj = obj.createTestStep('ExecuteCmd');
-        string = "CosaDmlWiFiGetFactoryResetPsmData : Returning Success";
-        tdkTestObj.addParameter("command", "( sleep 3; echo \"root\"; sleep 5; echo \"grep -nr 'CosaDmlWiFiGetFactoryResetPsmData : Returning Success' /rdklogs/logs/WiFilog.txt.0\"; sleep 2; echo \"exit\" ) | telnet \"192.168.101.3\"| grep mod=WIFI");
+        tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+	tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
+        tdkTestObj.addParameter("ParamValue","wifipassword");
+        tdkTestObj.addParameter("Type","string");
         expectedresult="SUCCESS";
 
-        #Execute the test case in STB
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
-        details = tdkTestObj.getResultDetails().strip();
-        if expectedresult in actualresult and string in details:
+        details = tdkTestObj.getResultDetails();
+        if expectedresult in actualresult:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 2: Find if wifi is resetted through logs";
-            print "EXPECTED RESULT 2: wifi must reset";
+            print "TEST STEP 2:  Change the SSID password";
+            print "EXPECTED RESULT 2: Should change the SSID password";
             print "ACTUAL RESULT 2: %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS"
+	    # Resetting wifi using snmp command
+	    tdkTestObj = obj.createTestStep('GetCommString');
+	    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1002.0 i 3", ip);
+	    sleep(180);
+	    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+	    tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            details = tdkTestObj.getResultDetails();
+            if expectedresult in actualresult and "wifipassword" not in details:
+		#Set the result status of execution
+		tdkTestObj.setResultStatus("SUCCESS");
+		print "TEST STEP 3: Get the current SSID password after wifi reset";
+		print "EXPECTED RESULT 3: SSID password should be reset to default after wifi reset";
+		print "ACTUAL RESULT 3: %s" %details;
+		#Get the result of execution
+		print "[TEST EXECUTION RESULT] : SUCCESS"
+	    else:
+		#Set the result status of execution
+                tdkTestObj.setResultStatus("FAILURE");
+                print "TEST STEP 3: Get the current SSID password after wifi reset";
+                print "EXPECTED RESULT 3: SSID password should be reset to default after wifi reset";
+                print "ACTUAL RESULT 3: %s" %details;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : FAILURE"
+            #set the previous value to WiFi.SSID if wifi reset is failed
+            tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+            tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
+            tdkTestObj.addParameter("ParamValue",org_status);
+            tdkTestObj.addParameter("Type","string");
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            details = tdkTestObj.getResultDetails();
+            if expectedresult in actualresult:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("SUCCESS");
+                print "TEST STEP 4: Set SSID password to original value";
+                print "EXPECTED RESULT 4:Should SSID password to original value";
+                print "ACTUAL RESULT 4: %s" %details;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : SUCCESS"
+            else:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("FAILURE");
+                print "TEST STEP 4: Set SSID password to original value";
+                print "EXPECTED RESULT 4:Should set SSID password to original value";
+                print "ACTUAL RESULT 4: %s" %details;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : FAILURE"
+
         else:
             #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 2: Find if wifi is resetted through logs";
-            print "EXPECTED RESULT 2: wifi must reset";
+            print "TEST STEP 2: Change the SSID password";
+            print "EXPECTED RESULT 2: Should Change the SSID password";
             print "ACTUAL RESULT 2: %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE"
     else:
         #Set the result status of execution
         tdkTestObj.setResultStatus("FAILURE");
-        print "TEST STEP 1: snmpget request to get Reboot status";
-        print "EXPECTED RESULT 1: Command should return Reboot status as false";
+        print "TEST STEP 1: Get the current SSID password";
+        print "EXPECTED RESULT 1: Should get the current SSID password";
         print "ACTUAL RESULT 1: %s" %actResponse;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE"
     obj.unloadModule("snmp_pa");
-    sysobj.unloadModule("sysutil");
+    pamobj.unloadModule("pam");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");

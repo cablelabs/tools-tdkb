@@ -17,30 +17,49 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>1</version>
-  <name>TS_SNMP_GetSSIDAfterDisableXfinityWifi</name>
-  <primitive_test_id/>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>2</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
+  <name>TS_SNMP_Get5.0SSIDWithDisableXfinityWifi</name>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>GetCommString</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
-  <synopsis>To check whether the SSID name is "OutOfService"	when XfinityWifi is disabled</synopsis>
-  <groups_id/>
+  <!--  -->
+  <synopsis>To check whether the SSID name of 5GHZ is "OutOfService" when XfinityWifi is disabled</synopsis>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
-  <skip>false</skip>
+  <!--  -->
+  <advanced_script>false</advanced_script>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks>Disabling xfinity wifi is causing snmp agent crash and subsequent failure of the rest of snmp scripts</remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
+  <skip>true</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
     <box_type>Emulator</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_SNMP_PA_17</test_case_id>
-    <test_objective>To check if SSID is "outof service" when xfinity wifi is disabled</test_objective>
+    <test_objective>To check if SSID name for 5GHZ is "outof service" when xfinity wifi is disabled</test_objective>
     <test_type>Negative</test_type>
     <test_setup>Emulator,XB3</test_setup>
     <pre_requisite>1.Ccsp Components in DUT should be in a running state that includes component under test Cable Modem
@@ -67,14 +86,15 @@ CheckPoint 3:
 TestManager GUI will publish the result as PASS in Execution/Console page of Test Manager</except_output>
     <priority>High</priority>
     <test_stub_interface>SNMP_PA_Stub</test_stub_interface>
-    <test_script>TS_SNMP_GetSSIDAfterDisableXfinityWifi</test_script>
+    <test_script>TS_SNMP_Get5.0SSIDWithDisableXfinityWifi</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
+
 # use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import snmplib;
@@ -87,7 +107,7 @@ obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_SNMP_GetSSIDAfterDisableXfinityWifi');
+obj.configureTestCase(ip,port,'TS_SNMP_Get5.0SSIDWithDisableXfinityWifi');
 
 #Get the result of connection with test component and STB
 loadmodulestatus=obj.getLoadModuleResult();
@@ -171,3 +191,5 @@ else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
+
+					
