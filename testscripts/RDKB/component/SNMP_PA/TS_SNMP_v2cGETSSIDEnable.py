@@ -112,7 +112,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj = obj.createTestStep('GetCommString');
     actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.2.2.1.1.2.10001", ip);
 
-    if "SNMPv2-SMI" in actResponse and "=" in actResponse:
+    if "=" in actResponse:
         print "TEST STEP 1:Execute snmpget query";
         print "EXPECTED RESULT 1: snmpget should retreive the oid's value"
         print "ACTUAL RESULT 1 SUCCESS: %s" %actResponse;
