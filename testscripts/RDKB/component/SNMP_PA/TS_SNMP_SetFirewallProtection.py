@@ -110,15 +110,15 @@ if "SUCCESS" in loadmodulestatus.upper():
         org_value = actResponse.rsplit(None, 1)[-1];
         print "Current firewall protection level is %s " %org_value;
         #Set the status of MocaDevice as true
-        actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0 i 3", ip);
+        actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0 i 2", ip);
         sleep(5);
         actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0", ip);
         act_value=actResponse.rsplit(None, 1)[-1];
-        if act_value and "3" in act_value:
+        if act_value and "2" in act_value:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 2: snmpget request to get firewall protection level";
-            print "EXPECTED RESULT 2: Command should return firewall protection level as 3";
+            print "EXPECTED RESULT 2: Command should return firewall protection level as 2";
             print "ACTUAL RESULT 2: %s" %actResponse;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS"
