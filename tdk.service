@@ -25,5 +25,6 @@ Wants=dbus.service
 Type=forking
 ExecStart=/bin/sh -c '/var/TDK/start_tdk.sh'
 Restart=always
+RestartSec=3
 [Install]
 WantedBy=multi-user.target
