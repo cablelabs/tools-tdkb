@@ -35,7 +35,7 @@ puts {
 #Step 1:Trying to Telnet to WLAN Client
 ################################################################################
 }
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";
@@ -179,7 +179,7 @@ puts {
 #Step 4:Telneting to a WAN Client and sending HTTP request through WAN IP of Gateway                                        
 ####################################################################################
 } 
-spawn telnet $wanIP;
+spawn telnet $wanIP $wanTelnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wanName\r";

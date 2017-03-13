@@ -54,7 +54,7 @@ puts "Time is: $Time"
 }
 
 
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";
@@ -274,7 +274,7 @@ puts {
 ################################################################################
 }
 
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";

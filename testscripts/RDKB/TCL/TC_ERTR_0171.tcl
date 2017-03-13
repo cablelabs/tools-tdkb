@@ -83,7 +83,7 @@ puts {
 #step 3: :Trying to connect to WG telnet-ing to a WLAN client and associate wirelessly for wpawpa2-psk security 
 #####################################################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";

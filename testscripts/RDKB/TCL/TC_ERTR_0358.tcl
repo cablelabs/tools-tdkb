@@ -53,7 +53,7 @@ puts {
 #Step 2 : Telnet to WLAN Client and get the MAC address
 ################################################################################
 }
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";
@@ -96,7 +96,7 @@ set g1 [string compare $f $g];
         puts "MAC ADDRESS VALUE matching";
         set passFlag [expr $passFlag + 1];
         } else {
-		spawn telnet $wlanIP2
+		spawn telnet $wlanIP $telnetPort2
 		set timeout 100;
 		expect -re (.*ogin:);
 		send "$wlanName2\r";

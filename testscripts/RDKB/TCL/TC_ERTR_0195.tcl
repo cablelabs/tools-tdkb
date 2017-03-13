@@ -54,7 +54,7 @@ exit 0;
 }
 
 
-spawn telnet $Telnetip
+spawn telnet $Telnetip $telnetPort1
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";

@@ -37,7 +37,7 @@ puts {
 ##########################################################################################################
 }
 
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";
@@ -77,7 +77,7 @@ puts {
 #Step 3 :Trying to disconnect WLAN Client from WG
 ################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";

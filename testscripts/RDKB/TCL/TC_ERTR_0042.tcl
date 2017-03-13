@@ -56,7 +56,7 @@ puts {
 ############################################################################################################
 }
 #telnet-ing to a WLAN server
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r"; 

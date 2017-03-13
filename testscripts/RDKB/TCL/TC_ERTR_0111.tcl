@@ -172,7 +172,7 @@ set profileType "Wireless.xml";
 set wlan_sec_type "wpawpa2-psk";
 set ssidName "$ssid2";
 
-set response [Configure_Client_open $wlanIP $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
+set response [Configure_Client_open $wlanIP $telnetPort $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
 
 set wireless_pc_ip "$response";
 puts "The Result of Configure client proc is $response";
@@ -186,7 +186,7 @@ puts {
 #Step 5 :Telneting to WLAN Client and trying to access other Services when HTTPs is blocked
 ########################################################################################### 
 } 
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanAdminName\r";
@@ -226,7 +226,7 @@ expect -re ".*>";
 send "wget --tries=1 -T 60 http://$siteUrl\r";
 expect -re ".*>";
 set outHttps $expect_out(buffer);
-send "ftp $wanIP\r";
+send "ftp $wanIP $wanFtpPort\r";
 expect -re (.*:);
 send "$wanFtpName\r";
 expect -re (.*:);

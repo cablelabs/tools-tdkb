@@ -39,7 +39,7 @@ puts {
 }
 
 
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";
@@ -251,14 +251,14 @@ puts {
 #Step 4:Telneting to a WAN Client and sending FTP request through WAN IP of Gateway
 ####################################################################################
 }
-spawn telnet $wanIP;
+spawn telnet $wanIP $wanTelnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wanName\r";
 expect -re (.*word:);
 send "$wanPassword\r";
 expect -re ".*>";
-send "ftp $wanIPWG\r";
+send "ftp $wanIP $wanFtpPortWG\r";
 expect -re (.*:);
 send "$ftpName\r";
 expect -re (.*:);

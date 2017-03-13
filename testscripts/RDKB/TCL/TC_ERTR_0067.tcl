@@ -74,7 +74,7 @@ puts {
 #Step 3 :Trying to Telnet to WLAN Client
 ################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanAdminName\r";
@@ -130,7 +130,7 @@ set outHttp $expect_out(buffer);
 send "route delete $ip.0.0\r";
 expect -re ".*>";
 send "exit\r";
-expect -re ".*>";spawn telnet $wlanIP;
+expect -re ".*>";spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanAdminName\r";

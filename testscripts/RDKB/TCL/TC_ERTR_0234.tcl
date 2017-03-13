@@ -82,7 +82,7 @@ set profileType "Wireless-5GHz.xml";
 set wlan_sec_type "wpawpa2-psk";
 set ssidName "$ssid5";
 
-set response [Configure_Client_open $wlanIP $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
+set response [Configure_Client_open $wlanIP $telnetPort $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
 
 set wireless_pc_ip "$response";
 puts "The Result of Configure client proc is $response";
@@ -97,7 +97,7 @@ puts {
 #step 3: Telnetting to LAN Clinet and get its ip address
 ###############################################################################
 }
-set response [connect_lan_pc $Telnetip $Name $password $osName1];
+set response [connect_lan_pc $Telnetip $telnetPort1 $Name $password $osName1];
 set wired_pc_ip "$response";
 puts "The Result of connect_lan_pc is $response";
 if {![regexp {(\d+)\.(\d+)\.(\d+)\.(\d+)} $response m o] == 1} {
@@ -128,7 +128,7 @@ puts {
 ################################################################################
 }
 
-spawn telnet $Telnetip
+spawn telnet $Telnetip $telnetPort1
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";
@@ -152,7 +152,7 @@ puts {
 ################################################################################
 }
 
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";

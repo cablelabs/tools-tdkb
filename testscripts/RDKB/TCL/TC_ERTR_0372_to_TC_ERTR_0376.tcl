@@ -107,7 +107,7 @@ puts {
 #Step 2 :Telnet to WLAN Client and associate wirelessly for open security mode       
 #########################################################################################################
 }
-set response [Configure_Client_open $wlanIP $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
+set response [Configure_Client_open $wlanIP $telnetPort $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
 set wireless_pc_ip "$response";
 puts "The Result of Configure client proc is $response";
 set g [regexp {(\d+)\.(\d+)\.(\d+)\.(\d+)} $response m o];
@@ -129,7 +129,7 @@ puts {
 ##############################################################################################################
 }
 
-set response [Configure_Client_open $wlanIP $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
+set response [Configure_Client_open $wlanIP $telnetPort $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
 set wireless_pc_ip "$response";
 puts "The Result of Configure client proc is $response";
 if {![regexp {(\d+)\.(\d+)\.(\d+)\.(\d+)} $response m o] == 1} {
@@ -148,7 +148,7 @@ puts {
 #################################################################################################################
 } 
 
-set response [Configure_Client_open $wlanIP $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
+set response [Configure_Client_open $wlanIP $telnetPort $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
 
 set wireless_pc_ip "$response";
 puts "The Result of Configure client proc is $response";
@@ -161,7 +161,7 @@ puts "$wireless_pc_ip";
 ###############################################################################
 #step 5: Telnetting to LAN Client and get its IP address
 ###############################################################################
-set response [connect_lan_pc $Telnetip $Name $password $osName1];
+set response [connect_lan_pc $Telnetip $telnetPort1 $Name $password $osName1];
 set wired_pc_ip "$response";
 puts "The Result of connect_lan_pc is $response";  
 if {![regexp {(\d+)\.(\d+)\.(\d+)\.(\d+)} $response m o] == 1} {
@@ -173,7 +173,7 @@ puts {
 #step 6: Send Telnet traffic between Wired and Wireless Client
 ###################################################################################
 }
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";

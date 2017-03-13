@@ -73,7 +73,7 @@ puts {
 #Step 3 :Telnet-int to LAN Client and trying to telnet to client in WAN side                                                               
 ################################################################################
 }
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";
@@ -82,7 +82,7 @@ send "$password\r";
 expect -re ".*#";
 send "sudo ip route add $wanIP via 10.0.0.1\r";
 expect -re ".*#";
-send "telnet $wanIP\r";
+send "telnet $wanIP $wanTelnetPort\r";
 set timeout 100;
 expect\
 {

@@ -36,7 +36,7 @@ puts {
 #Step 1 :Trying to connect to WG telnet-ing to a WLAN client                                                                
 ################################################################################
 }
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";
@@ -247,14 +247,14 @@ puts {
 #Step 4 :Telneting to a WAN client and sending FTP access to a WLAN Client   
 ################################################################################
 }
-spawn telnet $wanIP;
+spawn telnet $wanIP $wanTelnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wanName\r";
 expect -re (.*word:);
 send "$wanPassword\r";
 expect -re ".*>";
-send "ftp $wanIPWG\r";
+send "ftp $wanIP $wanFtpPortWG\r";
 expect -re (.*:);
 send "$ftpName\r";
 expect -re (.*:);
@@ -305,14 +305,14 @@ puts {
 #Step 7 :Telneting to a WAN client and checking FTP access again after disabling Port Forwarding                 
 ############################################################################################################
 }
-spawn telnet $wanIP;
+spawn telnet $wanIP $wanTelnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wanName\r";
 expect -re (.*word:);
 send "$wanPassword\r";
 expect -re ".*>";
-send "ftp $wanIPWG\r";
+send "ftp $wanIP $wanFtpPortWG\r";
 expect -re (.*:);
 send "$ftpName\r";
 expect -re (.*:);

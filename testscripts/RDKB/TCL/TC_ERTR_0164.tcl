@@ -54,7 +54,7 @@ puts {
 #Step 2 :Trying to connect to WLAN Client and disable the connect automatic option
 ###################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";
@@ -102,7 +102,7 @@ puts {
 #Step 4 :Trying to connect to WG telnet-ing to a WLAN client
 ################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";
@@ -149,7 +149,7 @@ puts {
 #Step 5 :Disconnecting a WLAN client from the WG
 ##########################################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";

@@ -154,7 +154,7 @@ puts {
 #Step 3: Telnet-ing to a WLAN client
 ################################################################################
 }
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r"; 

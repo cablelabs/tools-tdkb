@@ -56,7 +56,7 @@ puts {
 #step 2: :Telnet to WLAN Client and connect to the SSID
 #####################################################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";

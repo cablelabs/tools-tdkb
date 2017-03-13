@@ -69,7 +69,7 @@ puts {
 #Step 3 :Telnet-ing to LAN Client and sending HTTPs request to WAN server
 ################################################################################
 } 
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";

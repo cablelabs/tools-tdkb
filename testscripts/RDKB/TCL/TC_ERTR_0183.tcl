@@ -247,7 +247,7 @@ puts {
 #Step 4 :Telneting to a WAN client and sending HTTP request to a WLAN Client                                   
 ################################################################################
 } 
-spawn telnet $wanIP;
+spawn telnet $wanIP $wanTelnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wanName\r";
@@ -299,7 +299,7 @@ puts {
 #Step 7 :Telneting to a WAN client and sending HTTP request again after disabling Port Forwarding          
 ############################################################################################################
 }
-spawn telnet $wanIP;
+spawn telnet $wanIP $wanTelnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wanName\r";

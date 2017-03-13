@@ -71,7 +71,7 @@ puts {
 #Step 3 :Trying to Telnet to LAN Client
 ################################################################################ 
 } 
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";
@@ -84,7 +84,7 @@ set outConfig $expect_out(buffer);
 send "exit\r";
 regexp {.*inet addr:([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*Bcast:10.0.0.255.*} $outConfig match Ipval;
 puts "$Ipval";
-spawn telnet $wlanIP 
+spawn telnet $wlanIP $telnetPort 
 set timeout 100; 
 expect -re (.*ogin:); 
 send "$wlanName\r";  

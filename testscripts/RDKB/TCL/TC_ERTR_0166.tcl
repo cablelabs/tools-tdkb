@@ -54,7 +54,7 @@ puts {
 #Step 2 :Trying to connect to WG telnet-ing to a WLAN client
 ################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";
@@ -119,7 +119,7 @@ puts {
 #Step 5 :Reverting the WiFi client back to its initial state
 ##########################################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";

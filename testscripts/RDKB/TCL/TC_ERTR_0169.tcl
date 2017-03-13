@@ -61,7 +61,7 @@ set wlan_sec_type "wpawpa2-psk";
 set ssidName "$ssid5";
 
 
-set response [Configure_Client_open $wlanIP $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
+set response [Configure_Client_open $wlanIP $telnetPort $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
 
 set wireless_pc_ip "$response";
 puts "The Result of Configure client proc is $response";
@@ -95,7 +95,7 @@ puts {
 #Step 4 :Trying to disconnect from WG telnet-ing to a WLAN client
 ################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";

@@ -111,7 +111,7 @@ puts {
 #Step 2 :Trying to connect to CM telnet-ing to a WLAN Client and associate wirelessly for open security                                                              					 
 #########################################################################################################
 }
-set response [Configure_Client_open $wlanIP $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
+set response [Configure_Client_open $wlanIP $telnetPort $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
 set wireless_pc_ip "$response";
 puts "The Result of Configure client proc is $response";
 set g [regexp {(\d+)\.(\d+)\.(\d+)\.(\d+)} $response m o];
@@ -133,7 +133,7 @@ puts {
 ##############################################################################################################
 }
 
-set response [Configure_Client_open $wlanIP $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
+set response [Configure_Client_open $wlanIP $telnetPort $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
 set wireless_pc_ip "$response";
 puts "The Result of Configure client proc is $response";
 if {![regexp {(\d+)\.(\d+)\.(\d+)\.(\d+)} $response m o] == 1} {
@@ -152,7 +152,7 @@ puts {
 #################################################################################################################
 } 
 
-set response [Configure_Client_open $wlanIP $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
+set response [Configure_Client_open $wlanIP $telnetPort $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
 
 set wireless_pc_ip "$response";
 puts "The Result of Configure client proc is $response";
@@ -166,7 +166,7 @@ puts {
 #step 5: Telnetting to LAN Client and get its ip address
 ###############################################################################
 }
-set response [connect_lan_pc $Telnetip $Name $password $osName1];
+set response [connect_lan_pc $Telnetip $telnetPort1 $Name $password $osName1];
 set wired_pc_ip "$response";
 puts "The Result of connect_lan_pc is $response";  
 if {![regexp {(\d+)\.(\d+)\.(\d+)\.(\d+)} $response m o] == 1} {

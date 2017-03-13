@@ -65,7 +65,7 @@ displayProc $passContent;
 exit 0;
 }
 after 5000;
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";
@@ -157,7 +157,7 @@ puts {
 #Step 3 : Trying to Telnet WLAN Client
 #########################################################################################################################
 }
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r"; 

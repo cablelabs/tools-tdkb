@@ -202,7 +202,7 @@ puts {
 ################################################################################
 }
 
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";
@@ -239,7 +239,7 @@ expect -re ".*#";
 send "wget https://$siteHttps --no-check-certificate\r";
 expect -re ".*#";
 set outHttps $expect_out(buffer);
-send "ftp $wanIP\r";
+send "ftp $wanIP $wanFtpPort\r";
 expect\
 {
 ".*ftp:"

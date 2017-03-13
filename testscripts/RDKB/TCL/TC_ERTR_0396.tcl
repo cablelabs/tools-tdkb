@@ -54,7 +54,7 @@ puts "Time is: $Time"
 }
 
 
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";
@@ -321,7 +321,7 @@ puts {
 #Step 4 :Telnet to Ethernet Client and trying to access the blocked HTTP service                              
 ##################################################################################
 }
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";

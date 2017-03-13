@@ -40,6 +40,13 @@ puts "$configFile";
 
 	   	}
 
+		 if { ![string compare $Vname "TelnetPort1"] } {
+                        global telnetPort1 "";
+                        set telnetPort1 $Vvalue;
+
+                }
+		
+
 
 		if { ![string compare $Vname "UserName"] } {
 			global Name "";
@@ -225,11 +232,26 @@ puts "$configFile";
 
    		}
 
+		if { ![string compare $Vname "WanTelnetPort"] } {
+                        global wanTelnetPort "";
+                        set wanTelnetPort $Vvalue;
+
+                }
+
+
 		if { ![string compare $Vname "WlanIP"] } {
 			global wlanIP "";
 			set wlanIP $Vvalue;
+			set wlanIP "$wlanIP";
 
    		}
+
+		if { ![string compare $Vname "TelnetPort"] } {
+                        global telnetPort "";
+                        set telnetPort $Vvalue;
+
+                }
+
 
 		if { ![string compare $Vname "WlanName"] } {
 			global wlanName "";
@@ -282,6 +304,13 @@ puts "$configFile";
 			set wlanIP2 $Vvalue;
 
    		}
+		
+		 if { ![string compare $Vname "TelnetPort2"] } {
+                        global telnetPort2 "";
+                        set telnetPort2 $Vvalue;
+
+                }
+
 
 		if { ![string compare $Vname "WlanName2"] } {
 			global wlanName2 "";

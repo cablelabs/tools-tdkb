@@ -97,7 +97,7 @@ puts {
 #Step 3 :Telneting to the LAN client and obtaining its subnet mask and gateway IP address                                                                 					 
 ############################################################################################
 }
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r"; 

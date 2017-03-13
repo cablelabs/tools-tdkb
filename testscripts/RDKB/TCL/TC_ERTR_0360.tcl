@@ -84,7 +84,7 @@ set profileType "Wireless-open-2.4.xml";
 set wlan_sec_type "wpawpa2-psk";
 set ssidName "$ssid2";
 
-set response [Configure_Client_open $wlanIP $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
+set response [Configure_Client_open $wlanIP $telnetPort $wlanName $wlanPassword $profilePath $no $profileType $ssidName];
 
 set wireless_pc_ip "$response";
 puts "The Result of Configure client proc is $response";
@@ -100,7 +100,7 @@ puts {
 ##########################################################################################################
 }
 
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";
@@ -137,7 +137,7 @@ puts {
 #Step 5 :Telnet to WLAN Client and send HTTP request to LAN Client
 ################################################################################
 }
-spawn telnet $wlanIP;
+spawn telnet $wlanIP $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r";

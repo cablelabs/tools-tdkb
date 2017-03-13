@@ -107,12 +107,12 @@ return $result;
 
 ####Configure_Client $profilePath $no $profileType $ssidName
 
-proc Configure_Client_open {wlanip wlanName wlanPassword profilePath no profileType ssidName} {
+proc Configure_Client_open {wlanip telnetPort wlanName wlanPassword profilePath no profileType ssidName} {
 
 ####################proc argument mandatory check###########################
 if {[info exists profilePath] && [info exists no] && [info exists profileType] && [info exists wlanip]} {
 set passFlag "";
-spawn telnet $wlanip;
+spawn telnet $wlanip $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r"; 
@@ -198,12 +198,12 @@ return $result;
 }
 
 #################Procedure to get ip address from lan pc############################
-proc connect_lan_pc {Telnetip Name password osName} {
+proc connect_lan_pc {Telnetip telnetPort1 Name password osName} {
  
 if {[info exists Telnetip] && [info exists Name] && [info exists password]} {
 
 if {[regexp -nocase {windows} $osName match] == 1} {
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";
@@ -227,7 +227,7 @@ return $Ipval;
 puts "$Ipval";
 } else {
 puts "$password";
-spawn telnet $Telnetip; 
+spawn telnet $Telnetip $telnetPort1; 
 set timeout 100; 
 expect -re (.*ogin:); 
 send "$Name\r";  
@@ -455,9 +455,9 @@ return $Ipval;
 
 ############Procedure for interface  enable/disable###############################
 
-proc config_interface_enable_disable {wlanip wlanAdminName wlanAdminPassword interface_name option} {
+proc config_interface_enable_disable {wlanip telnetPort wlanAdminName wlanAdminPassword interface_name option} {
 set result "pass";
-spawn telnet $wlanip;
+spawn telnet $wlanip $telnetPort;
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanAdminName\r";

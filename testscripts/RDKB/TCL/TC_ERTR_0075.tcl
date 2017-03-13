@@ -71,7 +71,7 @@ puts {
 #Step 3 :Trying to Telnet to WLAN Client
 ################################################################################
 }
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanAdminName\r";
@@ -110,7 +110,7 @@ if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match i
 }
 }
 }
-send "ftp $wanIP\r";
+send "ftp $wanIP $wanFtpPort\r";
 expect\
 {
 ".*ftp:"

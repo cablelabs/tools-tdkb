@@ -107,7 +107,7 @@ puts {
 
 
 after 80000; 
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r"; 

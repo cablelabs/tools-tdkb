@@ -94,7 +94,7 @@ puts {
 ##############################################################################################
 }
 
-spawn telnet $wanIP
+spawn telnet $wanIP $wanTelnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wanName\r";

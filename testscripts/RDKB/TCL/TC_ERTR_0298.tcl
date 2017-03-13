@@ -72,7 +72,7 @@ puts {
 ################################################################################
 }
 
-spawn telnet $Telnetip;
+spawn telnet $Telnetip $telnetPort1;
 set timeout 100;
 expect -re (.*ogin:);
 send "$Name\r";
@@ -82,7 +82,7 @@ expect -re ".*#";
 send "sudo ip route add $wanIP via 10.0.0.1\r";
 expect -re ".*#";
 after 30000;
-send "ftp $wanIP\r";
+send "ftp $wanIP $wanFtpPort\r";
 expect -re (.*:);
 send "$wanFtpName\r";
 expect -re (.*:);

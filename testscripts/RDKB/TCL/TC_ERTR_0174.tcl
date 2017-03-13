@@ -149,7 +149,7 @@ puts {
 #Step 3 Telnet-ing to a WLAN client and obtaining the subnet mask                                         
 ################################################################################
 }
-spawn telnet $wlanIP
+spawn telnet $wlanIP $telnetPort
 set timeout 100;
 expect -re (.*ogin:);
 send "$wlanName\r"; 
