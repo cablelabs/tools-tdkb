@@ -20,7 +20,7 @@
 <?xml version="1.0" encoding="UTF-8"?><xml>
   <id/>
   <version>5</version>
-  <name>TS_PAM_GetProductClass</name>
+  <name>TS_PAM_GetGatewayProductClass</name>
   <primitive_test_id/>
   <primitive_test_name>pam_GetParameterValues</primitive_test_name>
   <primitive_test_version>1</primitive_test_version>

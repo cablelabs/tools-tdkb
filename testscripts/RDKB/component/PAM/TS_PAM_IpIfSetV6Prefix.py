@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>7</version>
+  <version>8</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_IpIfSetV6Prefix</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -40,13 +40,14 @@
   <execution_time>1</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
+  <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
   <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
   <!--  -->
   <box_types>
-    <box_type>RPI</box_type>
     <box_type>Broadband</box_type>
     <!--  -->
   </box_types>
@@ -94,7 +95,7 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-						#import statement
+												#import statement
 import tdklib; 
 
 #Test component to be tested
@@ -232,5 +233,7 @@ else:
         print "Failed to load pam module";
         pamObj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";
+
+					
 
 					
