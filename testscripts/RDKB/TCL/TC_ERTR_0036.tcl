@@ -152,7 +152,7 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 	if {[regexp {Connection request was completed successfully.} $outpCon match] == 1} {
 	set passFlag1 [expr $passFlag1 + 1];
 	puts "IP address has not been obtained as the 2.4GHz WiFi radio has been disabled."
-	if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match ip] == 1 } {
+	if { [regexp {Wireless\s*LAN\s*[^\:]*:[^\:]*:[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*\W*\w*\s*IPv4\s*Address[^\:]*:\s*(\d+.\d+.\d+.\d+)} $outIp match ip] == 1 } {
 		
 	if {[regexp {169\.254\..*\..*} $ip] == 1 || [regexp {127\.0\.0\.0} $ip] == 1 } {
 	puts " Unable to obtain IP\n";
@@ -161,7 +161,7 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
         puts "Connection Successful";
         puts "IP obtained is: $ip\n";
         puts "IP address obtained within the Default DHCP server range";
-        set passFlag [expr $passFlag + 1];
+        set passFlag1 [expr $passFlag1 + 1];
         } else {
         puts "IP obtained is: $ip\n";
         puts "IP address not obtained within the Default DHCP server range";
@@ -224,7 +224,7 @@ if {[regexp {There is no profile "$ssid5" assigned to the specified interface.} 
 	if {[regexp {Connection request was completed successfully.} $outpCon match] == 1} {
 	set passFlag2 [expr $passFlag2 + 1];
 	puts "IP address has not been obtained as the 5GHz WiFi radio has been disabled."
-	if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match ip] == 1 } {
+	if { [regexp {Wireless\s*LAN\s*[^\:]*:[^\:]*:[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*\W*\w*\s*IPv4\s*Address[^\:]*:\s*(\d+.\d+.\d+.\d+)} $outIp match ip] == 1 } {
 		
 	if {[regexp {169\.254\..*\..*} $ip] == 1 || [regexp {127\.0\.0\.0} $ip] == 1 } {
 	puts " Unable to obtain IP\n";

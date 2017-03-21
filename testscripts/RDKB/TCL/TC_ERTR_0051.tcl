@@ -80,9 +80,9 @@ send "$Name\r";
 expect -re (.*word:);
 send "$password\r";
 expect -re ".*#";
-send "service vsftpd stop\r";
+send "sudo service vsftpd stop\r";
 expect -re ".*#";
-send "service httpd stop\r";
+send "sudo service httpd stop\r";
 expect -re ".*#";
 send "sudo /opt/lampp/lampp start\r";
 expect -re ".*#";
@@ -139,7 +139,7 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
  }  
         if {[regexp {Connection request was completed successfully.} $outpCon match] == 1} { 
         set passFlag [expr $passFlag + 1]; 
-        if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match ip] == 1 } { 
+        if { [regexp {Wireless\s*LAN\s*[^\:]*:[^\:]*:[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*\W*\w*\s*IPv4\s*Address[^\:]*:\s*(\d+.\d+.\d+.\d+)} $outIp match ip] == 1 } { 
         set passFlag [expr $passFlag + 1];       
         if {[regexp {169\.254\..*\..*} $ip] == 1 || [regexp {127\.0\.0\.0} $ip] == 1 } { 
          
