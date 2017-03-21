@@ -17,27 +17,47 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>26</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>27</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_WIFIAGENT_DelObject</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id> </primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>WIFIAgent_DelObject</primitive_test_name>
+  <!--  -->
   <primitive_test_version>2</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>Delete Table Row API Validation</synopsis>
-  <groups_id/>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
-  <skip>false</skip>
+  <!--  -->
+  <advanced_script>false</advanced_script>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks>As per developers, this scenario need not be tested at the moment</remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
+  <skip>true</skip>
+  <!--  -->
   <box_types>
-    <box_type>Emulator</box_type>
     <box_type>Broadband</box_type>
+    <!--  -->
+    <box_type>Emulator</box_type>
+    <!--  -->
     <box_type>RPI</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_WIFIAGENT_3</test_case_id>
@@ -75,13 +95,13 @@ Test Manager GUI will publish the result as SUCCESS in Execution page</except_ou
     <test_stub_interface>None</test_stub_interface>
     <test_script>TS_WIFIAGENT_DelObject</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
-				
+										
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 
@@ -135,3 +155,5 @@ else:
 	print "Failure:Cannot delete a row of a table object"	
 
 obj.unloadModule("wifiagent");
+
+					

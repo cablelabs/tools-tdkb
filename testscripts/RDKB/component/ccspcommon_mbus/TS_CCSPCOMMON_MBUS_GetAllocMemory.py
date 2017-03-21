@@ -17,27 +17,47 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>4</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>5</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_CCSPCOMMON_MBUS_GetAllocMemory</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>CCSPMBUS_GetAllocMemory</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
-  <synopsis/>
-  <groups_id/>
+  <!--  -->
+  <synopsis></synopsis>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
-  <skip>false</skip>
+  <!--  -->
+  <advanced_script>false</advanced_script>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks>Needs more analysis</remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
+  <skip>true</skip>
+  <!--  -->
   <box_types>
-    <box_type>Emulator</box_type>
     <box_type>Broadband</box_type>
+    <!--  -->
+    <box_type>Emulator</box_type>
+    <!--  -->
     <box_type>RPI</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_CCSPMBUS_11</test_case_id>
@@ -74,13 +94,13 @@ TestManager GUI will publish the result as PASS in Execution page</except_output
     <test_stub_interface>None</test_stub_interface>
     <test_script>TS_CCSPCOMMON_MBUS_GetAllocMemory</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
-
+						
 #use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib; 
 
@@ -270,3 +290,5 @@ else:
 print "\n[TEST EXECUTION RESULT] : %s\n" %resultDetails ;
 
 obj.unloadModule("ccspcommon_mbus");
+
+					
