@@ -235,7 +235,7 @@ if {[regexp {There is no profile "$ssid2" assigned to the specified interface.} 
 puts "*********Validating the 1st Wi-Fi Connection Establishment****************\n";
         if {[regexp {Connection request was completed successfully.} $outpCon match] == 1} {
         #set passFlag [expr $passFlag + 1];
-        if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp match ip] == 1 } {
+        if { [regexp {Wireless\s*LAN\s*[^\:]*:[^\:]*:[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*\W*\w*\s*IPv4\s*Address[^\:]*:\s*(\d+.\d+.\d+.\d+)} $outIp match ip] == 1} {
         #set passFlag [expr $passFlag + 1];
         if {[regexp {169\.254\..*\..*} $ip] == 1 || [regexp {127\.0\.0\.0} $ip] == 1 } {
         puts "Test case failed; Unable to obtain IP for 1st Connection\n";
@@ -259,7 +259,7 @@ puts "*********Validating the 1st Wi-Fi Connection Establishment****************
 puts "*********Validating the 2nd Wi-Fi Connection Establishment****************\n";
         if {[regexp {Connection request was completed successfully.} $outpCon1 match] == 1} {
         #set passFlag [expr $passFlag + 1];
-        if { [regexp {.*Wireless LAN.*IPv4 Address.*: (.*) Sub.*Ethernet} $outIp1 match ip1] == 1 } {
+        if { [regexp {Wireless\s*LAN\s*[^\:]*:[^\:]*:[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*\W*\w*\s*IPv4\s*Address[^\:]*:\s*(\d+.\d+.\d+.\d+)} $outIp1 match ip1] == 1} {
         #set passFlag [expr $passFlag + 1];
         if {[regexp {169\.254\..*\..*} $ip1] == 1 || [regexp {127\.0\.0\.0} $ip1] == 1 } {
         puts "Test case failed; Unable to obtain IP for 2nd Connection\n";
