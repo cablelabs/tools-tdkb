@@ -42,7 +42,7 @@
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_TAD_07</test_case_id>
-    <test_objective>To set all the parameters of trace route and check whether the result is success or not</test_objective>
+    <test_objective>To check if the average response time is greater than zero after a successful trace route test</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3,Emulator</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components.
