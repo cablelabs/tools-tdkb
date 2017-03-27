@@ -347,11 +347,27 @@ int ssp_DmlEthGetParamValue(char* MethodName)
 
     else if( !(strcmp(MethodName, "GetDinfo")) )
     {
+	char status[20]="";
         COSA_DML_ETH_PORT_DINFO dinfo = {0};
         return_status = CosaDmlEthPortGetDinfo(hContext, 1, &dinfo);
-        printf("In ssp CosaDmlEthGetParamVal() dinfo.LastChange %lu\n", dinfo.LastChange);
-        if( dinfo.LastChange == 0 )
+	printf("In ssp CosaDmlEthGetParamVal() dinfo.Status %lu\n", dinfo.Status);
+	if( dinfo.Status == 1)
+          sprintf(status,"Up");
+        else if( dinfo.Status == 2)
+          sprintf(status,"Down");
+        else if( dinfo.Status == 3)
+          sprintf(status,"Unknown");
+        else if( dinfo.Status == 4)
+          sprintf(status,"Dormant");
+        else if( dinfo.Status == 5)
+          sprintf(status,"NotPresent");
+        else if(dinfo.Status == 6)
+          sprintf(status,"LowerLayerDown");
+        else if( dinfo.Status == 7)
+          sprintf(status,"Error");
+        else
           return_status = SSP_FAILURE;
+	printf("Status is %s\n", status);
     }
 
     else if( !(strcmp(MethodName, "GetCfg")) )
@@ -359,8 +375,8 @@ int ssp_DmlEthGetParamValue(char* MethodName)
         COSA_DML_ETH_PORT_CFG cfg = {0};
         cfg.InstanceNumber = 1;
         return_status = CosaDmlEthPortGetCfg(hContext, &cfg);
-        printf("In ssp CosaDmlEthGetParamVal() cfg.Alias %s\n", cfg.Alias);
-        if( strlen(cfg.Alias)==0 )
+	printf("In ssp CosaDmlEthGetParamVal() cfg.bEnabled %d\n", cfg.bEnabled);
+	if(cfg.bEnabled !=0 && cfg.bEnabled !=1)
            return_status = SSP_FAILURE;
     }
 
