@@ -397,6 +397,11 @@ puts "$configFile";
 
    		}
 
+                if { ![string compare $Vname "WanFtpPort"] } {
+                        global wanFtpPort "";
+                        set wanFtpPort $Vvalue;
+                }
+
 		if { ![string compare $Vname "WanFtpName"] } {
 			global wanFtpName "";
 			set wanFtpName $Vvalue;

@@ -59,7 +59,7 @@ send "exit\r"
 expect -re ".*>";
 #wait
 close $spawn_id
-regexp {.*Wireless.*IPv4 Address.*:.*(10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*10.0.0.1.*} $outIp match Ipval;
+regexp {Wireless\s*LAN\s*[^\:]*:[^\:]*:[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*[^\:]*:\s*[\w*:]*\W*\w*\s*IPv4\s*Address[^\:]*:\s*(\d+.\d+.\d+.\d+)} $outIp match Ipval;
 puts $Ipval;
 
 
