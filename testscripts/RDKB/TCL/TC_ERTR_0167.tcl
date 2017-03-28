@@ -48,7 +48,7 @@ send "netsh wlan add profile filename=\"$profilePath\\Wireless.xml\" interface=\
 expect -re ".*>";
 send "netsh wlan connect $ssid2\r";
 expect -re ".*>";
-after 30000;
+after 100000;
 send "exit\r";
 wait
 close $spawn_id;
@@ -86,7 +86,7 @@ send "$wlanPassword\r";
 expect -re ".*>";
 send "netsh wlan delete profile name=\"$ssid2\"\r";
 expect -re ".*>";
-after 30000;
+after 100000;
 send "exit\r";
 wait
 close $spawn_id;
