@@ -26,7 +26,7 @@
   <primitive_test_name>TADstub_Set</primitive_test_name>
   <primitive_test_version>1</primitive_test_version>
   <status>FREE</status>
-  <synopsis>To set invalid interface in TraceRoute and validate it.</synopsis>
+  <synopsis>To set invalid interface in TraceRoute and check whether CPE use the interface as directed by its bridging or routing policy to determine the appropriate interface.</synopsis>
   <groups_id/>
   <execution_time>2</execution_time>
   <long_duration>false</long_duration>
@@ -42,8 +42,8 @@
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_TAD_13</test_case_id>
-    <test_objective>To set invalid interface in TraceRoute and validate it.</test_objective>
-    <test_type>Negative</test_type>
+    <test_objective>To set invalid interface in TraceRoute and check whether CPE use the interface as directed by its bridging or routing policy to determine the appropriate interface.</test_objective>
+    <test_type>Positive</test_type>
     <test_setup>XB3,Emulator</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components.
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
@@ -54,7 +54,7 @@ Device.IP.Diagnostics.TraceRoute.DiagnosticsState
 Device.IP.Diagnostics.TraceRoute.RouteHopsNumberOfEntries</input_parameters>
     <automation_approch>1. Load TAD modules
 2. From script invoke TADstub_Set to set an invalid interface name
-3. Check if the set returning failure
+3. Check if the set returns success by automatically set the proper interface name.
 4. Validation of  the result is done within the python script and send the result status to Test Manager.
 5.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from TAD stub.</automation_approch>
     <except_output>CheckPoint 1:
@@ -152,19 +152,19 @@ if "SUCCESS" in loadmodulestatus.upper():
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details = tdkTestObj.getResultDetails();
-                if expectedresult in actualresult and int(details)==0:
+                if expectedresult in actualresult and int(details)>0:
 		    #Set the result status of execution
 		    tdkTestObj.setResultStatus("SUCCESS");
-                    print "TEST STEP 4: Check if the invalid interface is set successfully";
-                    print "EXPECTED RESULT 4: Should not get the routehops with invalid interface name";
+                    print "TEST STEP 4: Check if the interface is set successfully";
+                    print "EXPECTED RESULT 4: Should get the routehops greater than zero";
                     print "ACTUAL RESULT 4: %s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS";
 		else:
 		    #Set the result status of execution
                     tdkTestObj.setResultStatus("FAILURE");
-                    print "TEST STEP 4: Check if the invalid interface is set successfully";
-                    print "EXPECTED RESULT 4: Should not get the routehops with invalid interface name";
+                    print "TEST STEP 4: Check if the interface is set successfully";
+                    print "EXPECTED RESULT 4: Should get the routehops greater than zero";
                     print "ACTUAL RESULT 4: %s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : FAILURE";
