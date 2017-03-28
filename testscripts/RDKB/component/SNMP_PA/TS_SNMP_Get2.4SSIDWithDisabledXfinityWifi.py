@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>3</version>
+  <version>4</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_Get2.4SSIDWithDisabledXfinityWifi</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -43,9 +43,9 @@
   <!--  -->
   <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
-  <remarks>Disabling xfinity wifi is causing snmp agent crash and subsequent failure of the rest of snmp scripts</remarks>
+  <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
-  <skip>true</skip>
+  <skip>false</skip>
   <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
@@ -96,7 +96,7 @@ pam</test_stub_interface>
   <script_tags />
 </xml>
 '''
-												# use tdklib library,which provides a wrapper for tdk testcase script 
+# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 import snmplib;
 from time import sleep;
@@ -209,6 +209,8 @@ else:
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
 
+
+					
 
 					
 
