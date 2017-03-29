@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>Retrieves Time in seconds after rebooting the device</synopsis>
   <groups_id/>
-  <execution_time>15</execution_time>
+  <execution_time>25</execution_time>
   <long_duration>false</long_duration>
   <remarks/>
   <skip>false</skip>
@@ -81,6 +81,7 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
+from time import sleep;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("pam","1");
@@ -115,6 +116,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT :UpTime before reboot is %s" %details;
         #rebooting the device
 	obj.initiateReboot();
+	sleep(300)
 	#checking the uptime after reboot
 	tdkTestObj = obj.createTestStep('pam_GetParameterValues');
 	tdkTestObj.addParameter("ParamName","Device.DeviceInfo.UpTime");

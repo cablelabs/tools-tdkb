@@ -91,8 +91,8 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-						import tdklib; 
 
+import tdklib; 
 #Test component to be tested
 sysObj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 pamObj = tdklib.TDKScriptingLibrary("pam","RDKB");
