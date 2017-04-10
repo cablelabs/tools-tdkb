@@ -158,7 +158,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.setResultStatus("SUCCESS");
                     print "TEST STEP 4: Check if the avg response time is greater than zero";
                     print "EXPECTED RESULT 4: Should get the avg response time greater than zero";
-                    print "ACTUAL RESULT 4: %s" %details;
+                    print "ACTUAL RESULT 4: Avg response time is %s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS";
 		else:
@@ -166,7 +166,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.setResultStatus("FAILURE");
                     print "TEST STEP 4: Check if the avg response time is greater than zero";
                     print "EXPECTED RESULT 4: Should get the avg response time greater than zero";
-                    print "ACTUAL RESULT 4: %s" %details;
+                    print "ACTUAL RESULT 4: Avg response time is %s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : FAILURE";
 	    else:

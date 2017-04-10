@@ -25,7 +25,7 @@
   <primitive_test_name>GetCommString</primitive_test_name>
   <primitive_test_version>1</primitive_test_version>
   <status>FREE</status>
-  <synopsis>To verify that the XHS Wifi password is not accessible.</synopsis>
+  <synopsis>To verify that the XHS Wifi password is not accessible via snmp.Getting the password should return "No Such Instance currently exists at this OID"</synopsis>
   <groups_id/>
   <execution_time>1</execution_time>
   <long_duration>false</long_duration>

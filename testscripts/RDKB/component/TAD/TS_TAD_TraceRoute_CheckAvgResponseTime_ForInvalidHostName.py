@@ -76,7 +76,7 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
 </xml>
 
 '''
-												# use tdklib library,which provides a wrapper for tdk testcase script
+# use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import time;
 
@@ -157,7 +157,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.setResultStatus("SUCCESS");
                     print "TEST STEP 3: Get avg response time";
                     print "EXPECTED RESULT 3: Avg response time must be zero";
-                    print "ACTUAL RESULT 3: %s" %details;
+                    print "ACTUAL RESULT 3: Avg response time is %s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS";
 		else:
@@ -165,7 +165,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.setResultStatus("SUCCESS");
                     print "TEST STEP 3: Get avg response time";
                     print "EXPECTED RESULT 3: Avg response time must be zero";
-                    print "ACTUAL RESULT 3: %s" %details;
+                    print "ACTUAL RESULT 3: Avg response time is %s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS";
 	    else:

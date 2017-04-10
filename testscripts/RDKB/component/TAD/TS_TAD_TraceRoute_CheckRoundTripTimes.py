@@ -88,7 +88,7 @@ obj = tdklib.TDKScriptingLibrary("tad","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_TAD_SetTraceRoute');
+obj.configureTestCase(ip,port,'TS_TAD_TraceRoute_CheckRoundTripTimes');
 #Get the result of connection with test component and STB
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
@@ -158,7 +158,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.setResultStatus("SUCCESS");
                     print "TEST STEP 4: Check if the request is set successfully";
                     print "EXPECTED RESULT 4: Should get the routehops greater than zero";
-                    print "ACTUAL RESULT 4: %s" %details;
+                    print "ACTUAL RESULT 4: Route hops count is :%s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS";
 
@@ -175,7 +175,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         tdkTestObj.setResultStatus("SUCCESS");
                         print "TEST STEP 5: Check if the list conatains more than 3 items";
                         print "EXPECTED RESULT 5: The list should contain less than  or equal to 3 items";
-                        print "ACTUAL RESULT 5: %s" %details;
+                        print "ACTUAL RESULT 5: The number of items in the list :%s" %NumberofItems;
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : SUCCESS";
 		    else:
@@ -183,7 +183,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         tdkTestObj.setResultStatus("FAILURE");
                         print "TEST STEP 5: Check if the list conatains more than 3 items";
                         print "EXPECTED RESULT 5: The list should contain less than  or equal to 3 items";
-                        print "ACTUAL RESULT 5: %s" %details;
+                        print "ACTUAL RESULT 5: The number of items in the list :%s" %NumberofItems;
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : FAILURE";
                 else:
@@ -191,7 +191,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.setResultStatus("FAILURE");
                     print "TEST STEP 4: Check if the request is set successfully";
                     print "EXPECTED RESULT 4: Should get the routehops greater than zero";
-                    print "ACTUAL RESULT 4: %s" %details;
+                    print "ACTUAL RESULT 4: Route hops count is :%s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : FAILURE";
             else:

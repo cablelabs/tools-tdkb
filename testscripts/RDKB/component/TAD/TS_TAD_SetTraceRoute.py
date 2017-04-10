@@ -157,7 +157,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.setResultStatus("SUCCESS");
                     print "TEST STEP 4: Check if the request is set successfully";
                     print "EXPECTED RESULT 4: Should get the routehops greater than zero";
-                    print "ACTUAL RESULT 4: %s" %details;
+                    print "ACTUAL RESULT 4: Route hops count is :%s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS";
                 else:
@@ -165,7 +165,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.setResultStatus("FAILURE");
                     print "TEST STEP 4: Check if the request is set successfully";
                     print "EXPECTED RESULT 4: Should get the routehops greater than zero";
-                    print "ACTUAL RESULT 4: %s" %details;
+                    print "ACTUAL RESULT 4: Route hops count is :%s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : FAILURE";
             else:

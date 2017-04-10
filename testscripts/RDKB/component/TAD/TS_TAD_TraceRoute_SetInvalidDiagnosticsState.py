@@ -93,21 +93,6 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
-    tdkTestObj = obj.createTestStep('TADstub_Get');
-    tdkTestObj.addParameter("paramName","Device.IP.Diagnostics.TraceRoute.DiagnosticsState");
-    expectedresult="SUCCESS";
-    tdkTestObj.executeTestCase(expectedresult);
-    actualresult = tdkTestObj.getResult();
-    diag_state = tdkTestObj.getResultDetails();
-    if expectedresult in actualresult:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
-	print "TEST STEP 1: Get the DiagnosticsState of TraceRoute";
-        print "EXPECTED RESULT 1: Should get the DiagnosticsState of TraceRoute";
-        print "ACTUAL RESULT 1: DiagnosticsState of TraceRoute is %s" %diag_state;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS";
-	#set an invalid diagnostic state
 	tdkTestObj = obj.createTestStep('TADstub_Set');
 	tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.TraceRoute.DiagnosticsState");
 	tdkTestObj.addParameter("ParamValue","Completed");
@@ -132,40 +117,6 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT 2: DiagnosticsState of TraceRoute is set as completed, details : %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
-
-	    #setting the default value
-	    tdkTestObj = obj.createTestStep('TADstub_Set');
-            tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.TraceRoute.DiagnosticsState");
-            tdkTestObj.addParameter("ParamValue",diag_state);
-            tdkTestObj.addParameter("Type","string");
-            expectedresult="SUCCESS";
-            tdkTestObj.executeTestCase(expectedresult);
-            actualresult = tdkTestObj.getResult();
-            details = tdkTestObj.getResultDetails();
-            if expectedresult in actualresult:
-		#Set the result status of execution
-                tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP :Set DiagnosticsState of TraceRoute to default value";
-                print "EXPECTED RESULT : DiagnosticsState of TraceRoute must be Requested or Canceled";
-                print "ACTUAL RESULT : Default value is set to DiagnosticsState of TraceRoute, details : %s" %details;
-                #Get the result of execution
-                print "[TEST EXECUTION RESULT] : SUCCESS";
-            else:
-                #Set the result status of execution
-                tdkTestObj.setResultStatus("FAILURE");
-                print "TEST STEP :Set DiagnosticsState of TraceRoute to default value";
-                print "EXPECTED RESULT 2: DiagnosticsState of TraceRoute must be Requested or Canceled";
-                print "ACTUAL RESULT 2: Set default value to DiagnosticsState of TraceRoute is failed, details : %s" %details;
-                #Get the result of execution
-                print "[TEST EXECUTION RESULT] : FAILURE";
-    else:
-	#Set the result status of execution
-        tdkTestObj.setResultStatus("FAILURE");
-        print "TEST STEP 1: Get the DiagnosticsState of TraceRoute";
-        print "EXPECTED RESULT 1: Should get the DiagnosticsState of TraceRoute";
-        print "ACTUAL RESULT 1: DiagnosticsState of TraceRoute is %s" %diag_state;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("tad");
 
 else:
