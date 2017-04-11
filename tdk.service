@@ -23,7 +23,7 @@ Wants=dbus.service
 
 [Service]
 Type=forking
-ExecStart=/bin/sh -c '/var/TDK/start_tdk.sh'
+ExecStart=/bin/sh -c '/usr/ccsp/tdk/StartTDK.sh'
 Restart=always
 RestartSec=3
 [Install]

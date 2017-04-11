@@ -1201,7 +1201,7 @@ int main(int argc, char **argv)
     }
 
     /* Extracting path to logs folder */
-    strEnvPath = getenv ("TDK_PATH");
+    strEnvPath = getenv ("TDK_LOGGER_PATH");
     strFolderPath.append(strEnvPath);
     strFolderPath.append("/");
     RpcMethods::sm_strTDKPath = strFolderPath;

@@ -18,7 +18,7 @@
 */
 #include "RDKLoggerAgent.h"
 bool b_rdk_logger_enabled = false;
-string g_tdkPath = getenv("TDK_PATH");
+string g_tdkPath = getenv("TDK_LOGGER_PATH");
 string tdkDebugIniFile = g_tdkPath + "/" + DEBUG_CONF;
 string log_path = getenv("LOG_PATH");
 /* Helper functions */

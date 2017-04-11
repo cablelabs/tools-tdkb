@@ -90,7 +90,7 @@ bool SNMPProtocolAgent::GetCommString(IN const Json::Value& req, OUT Json::Value
     char command[200]={'\0'};
     FILE *fp = NULL;
     /* Extracting TDK path*/
-    TDKPath = getenv ("TDK_PATH");
+    TDKPath = getenv ("TDK_PROPERTIES_PATH");
     folder_path.append(TDKPath);
     folder_path.append("/");
     folder_path.append("tdk_platform.properties");
