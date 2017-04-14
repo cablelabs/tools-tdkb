@@ -44,7 +44,7 @@ set ssidName "$ssid5";
 set test_radio "5ghz";
 set ri "$ri5";
 set si "$si5";
-
+set no [split $wlanInterfaceName "_"];
 
 puts {
 ################################################################################

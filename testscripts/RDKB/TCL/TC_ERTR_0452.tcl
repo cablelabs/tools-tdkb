@@ -45,6 +45,7 @@ set ssidName "$ssid2";
 set test_radio "2.4ghz";
 set ri "$ri2";
 set si "$si2";
+set no [split $wlanInterfaceName "_"];
 
 puts {
 ################################################################################
