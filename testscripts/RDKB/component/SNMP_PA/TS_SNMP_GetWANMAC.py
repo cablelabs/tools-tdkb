@@ -133,16 +133,24 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
         tdkTestObj.executeTestCase("expectedresult");
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip().lower();
-        if expectedresult in actualresult and details:
+        mac_new=details.split(":");
+        index=len(mac_new);
+        mac_list = [];
+        for num in range(0,index):
+            mac_int=int(mac_new[num],16);
+            mac_hex=hex(mac_int)[2:];
+            mac_list.append(mac_hex);
+            final_mac=":".join(mac_list);
+        if expectedresult in actualresult and final_mac:
             print "TEST STEP 1:Execute ifconfig for wan mac";
             print "EXPECTED RESULT 1: ifconfig should return wan mac";
-            if mac==details:
+            if mac==final_mac:
                 print "ACTUAL RESULT 1: wan MAC from snmpget and ifconfig are same"
                 tdkTestObj.setResultStatus("SUCCESS");
             else:
                 print "ACTUAL RESULT 1: wan MAC from snmpget and ifconfig are not same"
                 tdkTestObj.setResultStatus("FAILURE");
-            print "[TEST EXECUTION RESULT] : %s" %details
+            print "[TEST EXECUTION RESULT] : %s" %final_mac
         else:
             tdkTestObj.setResultStatus("FAILURE");
             print "TEST STEP 1:Execute ifconfig for wan mac";

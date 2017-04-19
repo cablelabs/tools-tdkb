@@ -135,21 +135,29 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
         tdkTestObj.executeTestCase("expectedresult");
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip().lower();
-        if expectedresult in actualresult and details:
-            print "TEST STEP 1:Execute ifconfig for erouter0 mac";
-            print "EXPECTED RESULT 1: ifconfig should return erouter0 mac";
-            if mac==details:
-                print "ACTUAL RESULT 1: erouter0 MAC from snmpget and ifconfig are same"
+        mac_new=details.split(":");
+        index=len(mac_new);
+        mac_list = [];
+        for num in range(0,index):
+            mac_int=int(mac_new[num],16);
+            mac_hex=hex(mac_int)[2:];
+            mac_list.append(mac_hex);
+            final_mac=":".join(mac_list);
+        if expectedresult in actualresult and final_mac:
+            print "TEST STEP 2:Execute ifconfig for erouter0 mac";
+            print "EXPECTED RESULT 2: ifconfig should return erouter0 mac";
+            if mac==final_mac:
+                print "ACTUAL RESULT 2: erouter0 MAC from snmpget and ifconfig are same"
                 tdkTestObj.setResultStatus("SUCCESS");
             else:
-                print "ACTUAL RESULT 1: erouter0 MAC from snmpget and ifconfig are not same"
+                print "ACTUAL RESULT 2: erouter0 MAC from snmpget and ifconfig are not same"
                 tdkTestObj.setResultStatus("FAILURE");
-            print "[TEST EXECUTION RESULT] : %s" %details
+            print "[TEST EXECUTION RESULT] : %s" %final_mac
         else:
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 1:Execute ifconfig for erouter0 mac";
-            print "EXPECTED RESULT 1: ifconfig should return erouter0 mac";
-            print "ACTUAL RESULT 1: Couldn't get erouter0 MAC from ifconfig"
+            print "TEST STEP 2:Execute ifconfig for erouter0 mac";
+            print "EXPECTED RESULT 2: ifconfig should return erouter0 mac";
+            print "ACTUAL RESULT 2: Couldn't get erouter0 MAC from ifconfig"
     else:
         tdkTestObj.setResultStatus("FAILURE");
         details = tdkTestObj.getResultDetails();
