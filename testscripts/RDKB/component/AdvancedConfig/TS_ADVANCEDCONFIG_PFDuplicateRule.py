@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>10</version>
+  <version>11</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_ADVANCEDCONFIG_PFDuplicateRule</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -49,6 +49,8 @@
   <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
+    <box_type>Emulator</box_type>
     <!--  -->
   </box_types>
   <rdk_versions>
@@ -111,7 +113,7 @@ TestManager GUI will publish the result as SUCCESS in Execution page</except_out
   <script_tags />
 </xml>
 '''
-																								#use tdklib library,which provides a wrapper for tdk testcase script
+																														#use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import tdkutility;
 
@@ -299,6 +301,8 @@ else:
         print "FAILURE to load Advancedconfig module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
+
+					
 
 					
 
