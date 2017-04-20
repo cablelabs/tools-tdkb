@@ -178,7 +178,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         print "ACTUAL RESULT 5: %s" %details;
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : SUCCESS";
-			time.sleep(40);
+			time.sleep(50);
                         tdkTestObj = obj.createTestStep('TADstub_Get');
                         tdkTestObj.addParameter("paramName","Device.IP.Diagnostics.TraceRoute.DiagnosticsState");
                         expectedresult="SUCCESS";
