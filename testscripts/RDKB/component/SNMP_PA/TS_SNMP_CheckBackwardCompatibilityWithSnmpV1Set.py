@@ -114,11 +114,11 @@ if "SUCCESS" in loadmodulestatus.upper():
         sleep(5);
         actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.3.0", ip);
         act_value=actResponse.rsplit(None, 1)[-1];
-        if act_value and "1" not in act_value:
+        if act_value and "1" in act_value:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 2: snmpget request to get the value of given OID";
-            print "EXPECTED RESULT 2: Command should not return the set value with version 1 ";
+            print "EXPECTED RESULT 2: Command should return the set value with version 1 ";
             print "ACTUAL RESULT 2: %s" %actResponse;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS"
@@ -126,7 +126,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 	    #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
             print "TEST STEP 2: snmpget request to get the value of given OID";
-            print "EXPECTED RESULT 2: Command should not return the set value with version 1 ";
+            print "EXPECTED RESULT 2: Command should return the set value with version 1 ";
             print "ACTUAL RESULT 2: %s" %actResponse;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE"

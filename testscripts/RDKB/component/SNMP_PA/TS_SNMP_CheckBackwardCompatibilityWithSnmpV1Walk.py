@@ -100,11 +100,11 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj = obj.createTestStep('GetCommString');
     actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpwalk", "-v1", "1.3.6.1.4.1.17270.50.2.1.1", ip);
 
-    if "=" not in actResponse :
+    if "=" in actResponse :
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: snmpwalk request to get all the values";
-        print "EXPECTED RESULT 1: Command should not return all values with version 1";
+        print "EXPECTED RESULT 1: Command should return all values with version 1";
         print "ACTUAL RESULT 1: %s" %actResponse;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
@@ -112,7 +112,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 	#Set the result status of execution
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: snmpwalk request to get all the values";
-        print "EXPECTED RESULT 1: Command should not return all values with version 1";
+        print "EXPECTED RESULT 1: Command should return all values with version 1";
         print "ACTUAL RESULT 1: %s" %actResponse;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE";				
