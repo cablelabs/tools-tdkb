@@ -149,19 +149,19 @@ if "SUCCESS" in loadmodulestatus.upper():
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details_TotalBytesReceived= tdkTestObj.getResultDetails();
-                if expectedresult in actualresult and details_TotalBytesReceived>0:
+                if expectedresult in actualresult and details_TotalBytesReceived==0:
                     #Set the result status of execution
                     tdkTestObj.setResultStatus("SUCCESS");
-                    print "TEST STEP 4 :Get TotalBytesReceived of download greater than zero";
-                    print "EXPECTED RESULT 4 :Should get the TotalBytesReceived of download as greater than zero ";
+                    print "TEST STEP 4 :Get TotalBytesReceived of download as zero";
+                    print "EXPECTED RESULT 4 :Should get the TotalBytesReceived of download as  zero ";
                     print "ACTUAL RESULT 4 :The TotalBytesReceived of download is , details : %s" %details_TotalBytesReceived;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS";
                 else:
 		    #Set the result status of execution
                     tdkTestObj.setResultStatus("FAILURE");
-                    print "TEST STEP 4 :Get TotalBytesReceived of download as greater than zero";
-                    print "EXPECTED RESULT 4 :Should get the TotalBytesReceived of download as greater than zero";
+                    print "TEST STEP 4 :Get TotalBytesReceived of download as zero";
+                    print "EXPECTED RESULT 4 :Should get the TotalBytesReceived of download as zero";
                     print "ACTUAL RESULT 4 :The TotalBytesReceived of download is , details : %s" %details_TotalBytesReceived;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : FAILURE";
