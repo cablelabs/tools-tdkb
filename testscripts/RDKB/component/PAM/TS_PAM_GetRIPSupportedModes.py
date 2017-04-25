@@ -17,65 +17,49 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version='1.0' encoding='utf-8'?>
-<xml>
-  <id></id>
-  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <id/>
   <version>3</version>
-  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_GetRIPSupportedModes</name>
-  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
-  <primitive_test_id> </primitive_test_id>
-  <!-- Do not change primitive_test_id if you are editing an existing script. -->
+  <primitive_test_id/>
   <primitive_test_name>pam_GetParameterValues</primitive_test_name>
-  <!--  -->
   <primitive_test_version>1</primitive_test_version>
-  <!--  -->
   <status>FREE</status>
-  <!--  -->
   <synopsis>This test case will retrieve the current RIP mode supported and the retrieved value should be a subset of [Send, Receive, Both]</synopsis>
-  <!--  -->
-  <groups_id />
-  <!--  -->
+  <groups_id/>
   <execution_time>2</execution_time>
-  <!--  -->
   <long_duration>false</long_duration>
-  <!--  -->
   <advanced_script>false</advanced_script>
-  <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
-  <!-- Reason for skipping the tests if marked to skip -->
+  <remarks/>
   <skip>false</skip>
-  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
-    <!--  -->
     <box_type>RPI</box_type>
-    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
-    <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id></test_case_id>
-    <test_objective></test_objective>
-    <test_type></test_type>
-    <test_setup></test_setup>
-    <pre_requisite></pre_requisite>
-    <api_or_interface_used></api_or_interface_used>
-    <input_parameters></input_parameters>
-    <automation_approch></automation_approch>
-    <except_output></except_output>
-    <priority></priority>
-    <test_stub_interface></test_stub_interface>
-    <test_script></test_script>
-    <skipped></skipped>
-    <release_version></release_version>
-    <remarks></remarks>
+    <test_case_id>TC_PAM_174</test_case_id>
+    <test_objective>This test case will retrieve the current RIP mode supported and the retrieved value should be a subset of [Send, Receive, Both]</test_objective>
+    <test_type>Positive</test_type>
+    <test_setup>XB3, RPI</test_setup>
+    <pre_requisite>1.Ccsp Components in DUT should be in a running state 
+2.TDK Agent should be in running state</pre_requisite>
+    <api_or_interface_used>CcspBaseIf_getParameterValues</api_or_interface_used>
+    <input_parameters>Device.Routing.RIP.SupportedModes</input_parameters>
+    <automation_approch>Retrieve the current RIP mode supported using the TR-181 parameter Device.Routing.RIP.SupportedModes</automation_approch>
+    <except_output>Retrieved supported mode should be subset of any of these values  [Send, Receive, Both]</except_output>
+    <priority>High</priority>
+    <test_stub_interface>pam_GetParameterValues</test_stub_interface>
+    <test_script>TS_PAM_GetRIPSupportedModes</test_script>
+    <skipped>No</skipped>
+    <release_version/>
+    <remarks/>
   </test_cases>
-  <script_tags />
+  <script_tags/>
 </xml>
+
 '''
 						#import statement
 import tdklib; 
