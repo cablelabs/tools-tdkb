@@ -40,7 +40,7 @@ else
 libtdkagentssp_la_SOURCES = src/ssp_messagebus_interface.c src/ssp_tdk_mbus_wrp.c src/ssp_tdk_mbus_lib.c src/ssp_action.c src/ssp_main.c src/ssp_tdk_CosaCM_wrp.c src/ssp_tdk_wrp.c src/ssp_tdk_CosaMTA_wrp.c
 endif
 if PLATFORM_ENABLED
-libtdkagentssp_la_LDFLAGS =  -lccsp_common -lcm_mgnt -lcm_tr181 -lmta_tr181 -ltr181
+libtdkagentssp_la_LDFLAGS =  -lccsp_common -lcm_mgnt -lcm_tr181 -lmta_tr181 -ltr181 -ldmltad
 else
-libtdkagentssp_la_LDFLAGS =  -lccsp_common -lcm_mgnt -lcm_tr181 -lmta_tr181
+libtdkagentssp_la_LDFLAGS =  -lccsp_common -lcm_mgnt -lcm_tr181 -lmta_tr181 -ldmltad
 endif

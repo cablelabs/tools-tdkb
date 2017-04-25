@@ -31,6 +31,12 @@
 #define SSP_SUCCESS       0
 #define SSP_FAILURE       1
 
+#define  DIAG_CFG_REF_STRING_LENGTH  256
+#define  IFNAMSIZ  50
+#define PING_DEF_COUNT        3
+#define PING_DEF_TIMEO       1
+#define PING_DEF_BSIZE       56
+
 enum
 {
     SSP_STOP = 0,
@@ -99,5 +105,18 @@ typedef struct _Dns
         int bEnabled;
         char Interface[20];
 }DNS;
+
+typedef struct cfg {
+    /* common configs */
+    char        host[257];
+    char        ifname[IFNAMSIZ];
+    /* DH  Diag We have to be comptible with TR-181 -- it is not wise to do the opposite.*/
+    char        Interface[DIAG_CFG_REF_STRING_LENGTH+1];
+    unsigned    cnt;
+    unsigned    timo;
+    unsigned    size;
+    unsigned    tos;
+    unsigned    maxhop; /* trace route only */
+} diag_cfg;
 
 #endif

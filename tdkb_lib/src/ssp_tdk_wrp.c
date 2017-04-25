@@ -36,6 +36,8 @@
 #include "ssp_tdk_wrp.h"
 #include "cosa_apis.h"
 #include "plugin_main_apis.h"
+#include "diag_inter.h"
+#include "diag.h"
 
 char subsystem_prefix[32]={0};
 extern  PDSLH_CPE_CONTROLLER_OBJECT     pDslhCpeController;
@@ -1377,3 +1379,122 @@ int ssp_setMultipleParameterValue(char **paramList, int size)
 
     return 0;
 }
+
+
+int ssp_Diag_Init()
+{
+    diag_err_t status = diag_init();
+
+    if(status != DIAG_ERR_OK)
+    {
+        printf("ssp_BbhmDiagipStartDiag: diag_init failed\n");
+        return 1;
+    }
+    else
+    {
+        printf("ssp_BbhmDiagipStartDiag: diag_init success\n");
+        return 0;
+    }
+}
+
+int ssp_Diag_Start(int mode)
+{
+    diag_err_t status;
+    diag_mode_t diag_mode = mode;
+    diag_obj_t *diag_ping_obj;
+
+    status = diag_start(diag_mode);
+    if(status == DIAG_ERR_OK)
+    {
+        printf("diag_start success\n");
+        return 0;
+    }
+    else
+    {
+        printf("diag_start failed. status %d\n", status);
+        return 1;
+    }
+}
+
+
+int ssp_Diag_Stop(int mode)
+{
+    diag_err_t status;
+    diag_mode_t diag_mode = mode;
+
+    status = diag_stop(mode);
+    sleep(20);
+
+    if(status == DIAG_ERR_OK)
+    {
+        printf("diag_stop success. Status is %d\n", status);
+        return 0;
+    }
+    else
+    {
+        printf("diag_stop failed. Status is %d\n", status);
+        return 1;
+    }
+    diag_term();
+}
+
+int ssp_Diag_SetCfg(int mode, diag_cfg *cfg)
+{
+    printf("In ssp_Diag_SetCfg\n");
+    diag_err_t status;
+    diag_cfg_t cfg_t;
+    strcpy(cfg_t.host, cfg->host);
+    cfg_t.cnt = PING_DEF_COUNT;
+    cfg_t.timo = PING_DEF_TIMEO;
+    cfg_t.size = PING_DEF_BSIZE;
+
+    /*status = diag_init();
+    printf("Init status %d\n", status);*/
+    status = diag_setcfg(mode, &cfg_t);
+    if(status == DIAG_ERR_OK ){
+        printf("diag_set_cfg success.\n");
+        return 0;
+    }
+    else
+    {
+        printf("diag_set_cfg failed %d host %s\n", status, cfg_t.host);
+        return 1;
+    }
+}
+
+
+int ssp_Diag_GetCfg(int mode, diag_cfg *cfg)
+{
+    printf("In ssp_Diag_GetCfg\n");
+    diag_err_t status; diag_cfg_t cfg_t;
+
+    status = diag_getcfg(mode, &cfg_t); strcpy(cfg->host, cfg_t.host);
+    if(status == DIAG_ERR_OK ){
+        printf("diag_get_cfg success.\n");
+        return 0;
+    }
+    else
+    {
+        printf("diag_get_cfg failed\n");
+        return 1;
+    }
+}
+
+
+int ssp_Diag_GetState(int mode, int *state)
+{
+    printf("In ssp_Diag_GetState\n");
+    diag_err_t status;
+
+    status = diag_getstate(mode, state);
+    if(status == DIAG_ERR_OK ){
+        printf("diag_getstate success.\n");
+        return 0;
+    }
+    else
+    {
+        printf("diag_getstate failed\n");
+        return 1;
+    }
+}
+

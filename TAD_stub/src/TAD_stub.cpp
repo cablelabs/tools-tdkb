@@ -29,6 +29,13 @@ extern "C"
     GETPARAMVALUES* ssp_getParameterValue(char *pParamName,int *pParamsize);
     int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType, int commit);
     void free_Memory_val(int size,GETPARAMVALUES *Freestruct);
+    int ssp_Diag_Init();
+    int ssp_Diag_Start(int mode);
+    int ssp_Diag_Stop(int mode);
+    int ssp_Diag_SetCfg(int mode, diag_cfg *cfg);
+    int ssp_Diag_GetCfg(int mode, diag_cfg *cfg);
+    int ssp_Diag_GetState(int mode, int *state);
+
 };
 
 /*This is a constructor function for TADstub class*/
@@ -51,6 +58,12 @@ bool TADstub::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     /*Register stub function for callback*/
     ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Get, "TADstub_Get");
     ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Set, "TADstub_Set");
+    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Init, "TADstub_Init");
+    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Start, "TADstub_Start");
+    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Stop, "TADstub_Stop");
+    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_SetCfg, "TADstub_SetCfg");
+    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_GetCfg, "TADstub_GetCfg");
+    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_GetState, "TADstub_GetState");
 
     return TEST_SUCCESS;
 
@@ -209,6 +222,209 @@ bool TADstub::TADstub_Set(IN const Json::Value& req, OUT Json::Value& response)
 }
 
 
+/*******************************************************************************************
+ *
+ * Function Name        : TADstub_Init
+ * Description          : This function will invoke ssp wrapper for diagnostics init function
+ *
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ ********************************************************************************************/
+
+bool TADstub::TADstub_Init(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"TADstub_Init --->Entry \n");
+    int status;
+
+    status = ssp_Diag_Init();
+    if(status)
+    {
+        printf("TADstub_Init failed\n");
+        response["result"] = "FAILURE";
+        response["details"] = "FAILURE : Diag init failed";
+        return TEST_FAILURE;
+    }
+    else
+    {
+        printf("TADstub_Init success\n");
+        response["result"] = "SUCCESS";
+        response["details"] = "SUCCESS : Diag init success";
+        return TEST_SUCCESS;
+    }
+}
+
+
+/***************************************************************************
+ *Function name : TADstub_Start
+ *Descrption    : This function will invoke ssp wrapper for diagnostics start function
+
+ * @param [in]   - mode : Specifies whether mode is ping or traceroute
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+bool TADstub::TADstub_Start(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"TADstub_Start --->Entry \n");
+    int status;
+    int mode = req["mode"].asInt();
+
+    status = ssp_Diag_Start(mode);
+    if(status)
+    {
+        printf("TADstub_Start failed\n");
+        response["result"] = "FAILURE";
+        response["details"] = "FAILURE : Diag start failed";
+        return TEST_FAILURE;
+    }
+    else
+    {
+        printf("TADstub_Start success\n");
+        response["result"] = "SUCCESS";
+        response["details"] = "SUCCESS : Diag start success";
+        return TEST_SUCCESS;
+    }
+}
+
+
+/***************************************************************************
+ *Function name : TADstub_Stop
+ *Descrption    : This function will invoke ssp wrapper for diagnostics stop function
+
+ * @param [in]   - mode : Specifies whether mode is ping or traceroute
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+bool TADstub::TADstub_Stop(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"TADstub_Stop --->Entry \n");
+    int status;
+    int mode = req["mode"].asInt();
+
+    status = ssp_Diag_Stop(mode);
+    if(status)
+    {
+        printf("TADstub_Stop failed\n");
+        response["result"] = "FAILURE";
+        response["details"] = "FAILURE : Diag stop failed";
+        return TEST_FAILURE;
+    }
+    else
+    {
+        printf("TADstub_Stop success\n");
+        response["result"] = "SUCCESS";
+        response["details"] = "SUCCESS : Diag stop success";
+        return TEST_SUCCESS;
+    }
+}
+
+
+/***************************************************************************
+ *Function name : TADstub_SetCfg
+ *Descrption    : This function will invoke ssp wrapper for diagnostics setCfg function
+                for setting the config values of diagnostics
+
+ * @param [in]   - mode : Specifies whether mode is ping or traceroute
+ * @param [in]   - host : Specifies the host name
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+bool TADstub::TADstub_SetCfg(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"TADstub_Stop --->Entry \n");
+    int status;
+    diag_cfg cfg;
+    int mode = req["mode"].asInt();
+    strcpy(cfg.host, req["host"].asCString());
+
+    status = ssp_Diag_SetCfg(mode, &cfg);
+    if(status)
+    {
+        printf("TADstub_SetCfg failed\n");
+        response["result"] = "FAILURE";
+        response["details"] = "FAILURE : Diag setcfg failed";
+        return TEST_FAILURE;
+    }
+    else
+    {
+        printf("TADstub_SetCfg success\n");
+        response["result"] = "SUCCESS";
+        response["details"] = "SUCCESS : Diag setCfg success";
+        return TEST_SUCCESS;
+    }
+}
+
+
+/***************************************************************************
+ *Function name : TADstub_SetCfg
+ *Descrption    : This function will invoke ssp wrapper for diagnostics getCfg function
+                for setting the config values of diagnostics
+
+ * @param [in]   - mode : Specifies whether mode is ping or traceroute
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+bool TADstub::TADstub_GetCfg(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"TADstub_Stop --->Entry \n");
+    int status;
+    diag_cfg cfg; char result[200] = {'\0'};
+    int mode = req["mode"].asInt();
+
+    status = ssp_Diag_GetCfg(mode, &cfg);
+    if(status)
+    {
+        printf("TADstub_GetCfg failed\n");
+        response["result"] = "FAILURE";
+        response["details"] = "FAILURE : Diag getcfg failed";
+        return TEST_FAILURE;
+    }
+    else
+    {
+        printf("TADstub_GetCfg success\n");
+        response["result"] = "SUCCESS"; sprintf(result, "host fromcfg is %s", cfg.host);
+        response["details"] = result;
+        return TEST_SUCCESS;
+    }
+}
+
+
+/***************************************************************************
+ *Function name : TADstub_GetState
+ *Descrption    : This function will invoke ssp wrapper for diagnostics getState function
+                for getting the diagnostics state
+
+ * @param [in]   - mode : Specifies whether mode is ping or traceroute
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+
+bool TADstub::TADstub_GetState(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"TADstub_State --->Entry \n");
+    int status;
+    int mode = req["mode"].asInt();
+    int state;
+    char result[200] = {'\0'};
+
+    status = ssp_Diag_GetState(mode, &state);
+    sprintf(result, "state is %d", state);
+    if(status)
+    {
+        printf("TADstub_GetState failed\n");
+        response["result"] = "FAILURE";
+        response["details"] = result;
+        return TEST_FAILURE;
+    }
+    else
+    {
+        printf("TADstub_GetState success\n");
+        response["result"] = "SUCCESS";
+        response["details"] = result;
+        return TEST_SUCCESS;
+    }
+}
+
+
 /**************************************************************************
  * Function Name        : CreateObject
  * Description  : This function will be used to create a new object for the
@@ -238,6 +454,13 @@ bool TADstub::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
 
     ptrAgentObj->UnregisterMethod("TADstub_Get");
     ptrAgentObj->UnregisterMethod("TADstub_Set");
+    ptrAgentObj->UnregisterMethod("TADstub_Init");
+    ptrAgentObj->UnregisterMethod("TADstub_Start");
+    ptrAgentObj->UnregisterMethod("TADstub_Stop");
+    ptrAgentObj->UnregisterMethod("TADstub_GetCfg");
+    ptrAgentObj->UnregisterMethod("TADstub_SetCfg");
+    ptrAgentObj->UnregisterMethod("TADstub_GetState");
+
     return TEST_SUCCESS;
 }
 
