@@ -53,7 +53,7 @@ CcspBaseIf_setParameterValues</api_or_interface_used>
 Device.DHCPv4.Server.Pool.1.SubnetMask
 Device.DHCPv4.Server.Pool.1.MaxAddress</input_parameters>
     <automation_approch>1. Retrieve the current LAN Gateway IP address using the TR-181 parameter Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress
-2. Set the subnet mask range as "255.255.255.0" using the parameter Device.DHCPv4.Server.Pool.1.SubnetMask
+2. Set the subnet mask range as "255.255.255.0" using the parameter Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask
 3. Set the DHCP End address beyond the range of subnet mask using the parameter Device.DHCPv4.Server.Pool.1.MaxAddress</automation_approch>
     <except_output>Setting the DHCP end address beyond the subnet mask range should fail.</except_output>
     <priority>High</priority>
@@ -103,7 +103,7 @@ if "SUCCESS" in loadModuleresult.upper():
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
                 
                 tdkTestObj = obj.createTestStep("pam_SetParameterValues");
-                tdkTestObj.addParameter("ParamName","Device.DHCPv4.Server.Pool.1.SubnetMask");
+                tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask");
                 tdkTestObj.addParameter("Type","string");
                 tdkTestObj.addParameter("ParamValue","255.255.255.0");
                 expectedresult = "SUCCESS";
