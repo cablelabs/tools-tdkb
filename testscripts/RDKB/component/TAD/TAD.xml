@@ -65,6 +65,10 @@
           <parameter name="mode" value=""/>
         </parameters>
       </primitiveTest>
+      <primitiveTest name="TADstub_Init" id="" version="1">
+        <function>TADstub_Init</function>
+        <parameters/>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>

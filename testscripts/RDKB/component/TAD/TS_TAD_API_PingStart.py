@@ -25,7 +25,7 @@
   <primitive_test_name>TADstub_Start</primitive_test_name>
   <primitive_test_version>1</primitive_test_version>
   <status>FREE</status>
-  <synopsis>Testing</synopsis>
+  <synopsis>For testing diag_start() api in ping mode</synopsis>
   <groups_id/>
   <execution_time>1</execution_time>
   <long_duration>false</long_duration>
@@ -34,6 +34,9 @@
   <skip>false</skip>
   <box_types>
     <box_type>Broadband</box_type>
+   <!--  -->
+    <box_type>Emulator</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
