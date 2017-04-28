@@ -112,7 +112,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "[TEST EXECUTION RESULT] : SUCCESS";
 
         tdkTestObj = obj.createTestStep('TADstub_Set');
-        tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.TraceRoute.Host");
+        tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.IPPing.Host");
         tdkTestObj.addParameter("ParamValue","google.com");
         tdkTestObj.addParameter("Type","string");
         expectedresult="SUCCESS";
