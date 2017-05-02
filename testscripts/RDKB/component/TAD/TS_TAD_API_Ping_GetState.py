@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>2</version>
+  <version>4</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_TAD_API_Ping_GetState</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -58,7 +58,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_TAD_36</test_case_id>
+    <test_case_id>TC_TAD_49</test_case_id>
     <test_objective>To verify the functionality of diag_getstate() api</test_objective>
     <test_type>Positive</test_type>
     <test_setup>xb3, emulator</test_setup>

@@ -58,7 +58,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_TAD_41</test_case_id>
+    <test_case_id>TC_TAD_52</test_case_id>
     <test_objective>To verify the functionality of diag_setcfg() api</test_objective>
     <test_type>Positive</test_type>
     <test_setup>xb3, emulator</test_setup>
