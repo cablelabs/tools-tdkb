@@ -108,7 +108,7 @@ if "SUCCESS" in loadmodulestatus.upper() and sysloadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
     tdkTestObj = obj.createTestStep('TADstub_Set');
     tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.UDPEchoConfig.Interface");
-    tdkTestObj.addParameter("ParamValue","Interface_erouter0");
+    tdkTestObj.addParameter("ParamValue","");
     tdkTestObj.addParameter("Type","string");
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
