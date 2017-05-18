@@ -16,8 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
-
-SUBDIRS = agent tdkb_lib RDKLogger_stub CMAgent_stub WIFIAgent_stub MBUS_Stub WECB_Stub CosaCM_Stub SNMP_PA_Stub TR069Pa_Stub Mta_agent_Stub AdvancedConfig_stub CosaMTA_Stub pam_stub SysUtil_stub TAD_stub Moca_Stub
-DIST_SUBDIRS = @SUBDIRS@
-
-distcleancheck_listfiles = *-libtool
+ACLOCAL_AMFLAGS = -Im4 --install
+AM_CPPFLAGS = ${COPTS} -fPIC -DDEBUG_LEVEL_TRACE
+AM_CXXFLAGS = -I${top_srcdir}/Moca_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
+lib_LTLIBRARIES = libmocastub.la
+libmocastub_la_SOURCES = src/Moca_Stub.cpp
+libmocastub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la
+libmocastub_la_LIBADD =  $(libmocastub_la_DEPENDENCIES)
+libmocastub_la_includedir = ${includedir}
+libmocastub_la_include_HEADERS = ${top_srcdir}/Moca_Stub/include/Moca_Stub.h
