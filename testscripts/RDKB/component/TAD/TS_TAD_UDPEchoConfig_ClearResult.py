@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>2</version>
+  <version>3</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_TAD_UDPEchoConfig_ClearResult</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -37,7 +37,7 @@
   <!--  -->
   <groups_id />
   <!--  -->
-  <execution_time>2</execution_time>
+  <execution_time>1</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
   <!--  -->
@@ -121,7 +121,7 @@ if "SUCCESS" in loadmodulestatus.upper() and sysloadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
     tdkTestObj = obj.createTestStep('TADstub_Set');
     tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.UDPEchoConfig.Interface");
-    tdkTestObj.addParameter("ParamValue","Interface_erouter0");
+    tdkTestObj.addParameter("ParamValue","");
     tdkTestObj.addParameter("Type","string");
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
@@ -235,7 +235,7 @@ if "SUCCESS" in loadmodulestatus.upper() and sysloadmodulestatus.upper():
                                 print "ACTUAL RESULT 7: %s" %details;
                                 #Get the result of execution
                                 print "[TEST EXECUTION RESULT] : SUCCESS";
-                                time.sleep(10);
+				time.sleep(10);
 				tdkTestObj = obj.createTestStep('TADstub_Set');
                 		tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.UDPEchoConfig.Enable");
                 		tdkTestObj.addParameter("ParamValue","true");
@@ -252,7 +252,7 @@ if "SUCCESS" in loadmodulestatus.upper() and sysloadmodulestatus.upper():
                 		    print "ACTUAL RESULT 8: %s" %details;
                 		    #Get the result of execution
                 		    print "[TEST EXECUTION RESULT] : SUCCESS";
-                                    time.sleep(10);
+				    time.sleep(10);
 				    tdkTestObj = obj.createTestStep('TADstub_Get');
                         	    tdkTestObj.addParameter("paramName","Device.IP.Diagnostics.UDPEchoConfig.BytesReceived");
                         	    expectedresult="SUCCESS";
