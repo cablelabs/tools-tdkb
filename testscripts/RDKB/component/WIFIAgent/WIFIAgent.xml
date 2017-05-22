@@ -97,6 +97,12 @@
           <parameter name="paramValue" value=""/>
         </parameters>
       </primitiveTest>
+      <primitiveTest name="WIFIAgent_SetMultiple" id=" " version="1">
+        <function>WIFIAgent_SetMultiple</function>
+        <parameters>
+          <parameter name="paramList" value=""/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>
