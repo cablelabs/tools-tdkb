@@ -150,7 +150,7 @@ bool CMAgent::CMAgent_Get(IN const Json::Value& req, OUT Json::Value& response)
     else
     {
         response["result"]="SUCCESS";
-        response["details"]="Get Parameter Value API Validation is Succeeded";
+        response["details"]=resultDetails[0].pParamValues;
 
         for(int i=0; i < paramsize; i++)
         {

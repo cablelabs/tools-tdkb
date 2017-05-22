@@ -122,12 +122,20 @@ resultDetails = tdkTestObj.getResultDetails();
 
 if expectedresult in actualresult:
 	#Set the result status of execution as success
-        print "Get Value of Core Version Function is SUCCESS"
-	tdkTestObj.setResultStatus("SUCCESS");
+     	tdkTestObj.setResultStatus("SUCCESS");
+	print "TEST STEP 1: Get the CoreVersion";
+    	print "EXPECTED RESULT 1: Should get the value of CoreVersion";
+    	print "ACTUAL RESULT 1: %s" %resultDetails;
+    	#Get the result of execution
+    	print "[TEST EXECUTION RESULT] : SUCCESS";
 else:
 	#Set the result status of execution as failure
-        print "Get Value of Core Version Function is FAILURE"
-	tdkTestObj.setResultStatus("FAILURE");
+        tdkTestObj.setResultStatus("FAILURE");
+	print "TEST STEP 1: Get the CoreVersion";
+        print "EXPECTED RESULT 1: Should get the value of CoreVersion";
+        print "ACTUAL RESULT 1: %s" %resultDetails;
+        #Get the result of execution
+        print "[TEST EXECUTION RESULT] : FAILURE";
 
 print "[TEST EXECUTION RESULT] : %s" %resultDetails ;
 

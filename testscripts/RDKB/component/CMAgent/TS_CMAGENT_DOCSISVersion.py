@@ -25,7 +25,7 @@
   <primitive_test_name>CMAgent_Get</primitive_test_name>
   <primitive_test_version>2</primitive_test_version>
   <status>FREE</status>
-  <synopsis>TC_CMAGENT_15 - To Validate "DOCSIS Version" Function Parameter</synopsis>
+  <synopsis>TC_CMAGENT_15 - To Validate "DOCSIS Version" Function Parameter and check if the value returned is 3.0 or 3.1</synopsis>
   <groups_id>4</groups_id>
   <execution_time>2</execution_time>
   <long_duration>false</long_duration>
@@ -39,9 +39,7 @@
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_CMAGENT_11</test_case_id>
-    <test_objective>To Validate 
-"DOCSIS Version" 
-Function Parameters</test_objective>
+    <test_objective>To Validate "DOCSIS Version" Function Parameters and and check if the value returned is 3.0 or 3.1</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component.
@@ -52,15 +50,10 @@ API Name
 CMAgent_Get
 Input
 1.PathName ("paramName")
-( eg: "Device.X_CISCO_COM_CableModem.DOCSISVersion" )</input_parameters>
-    <automation_approch>1.Configure the Function info in Test Manager GUI  which needs to be tested  
-(CMAgent_Get  - func name - "If not exists already"
- cmagent - module name
- Necessary I/P args as Mentioned in Input)
-2.Python Script will be generated/overrided automically by Test Manager with provided arguments in configure page (TS_CMAGENT_DOCSISVersion.py)
-3.Execute the generated Script(TS_CMAGENT_DOCSISVersion.py) using excution page of  Test Manager GUI
-4.cmagentstub which is a part of TDK Agent process, will be in listening mode to execute TDK Component function named CMAgent_Get through registered TDK cmagentstub function along with necessary Path Name as arguments
-5.CMAgent_Get function will call Ccsp Base Functions named "CcspBaseIf_getParameterValues", that inturn will execute get functionalities of readonly parameters
+( eg: "Device.X_CISCO_COM_CableModem.DOCSISVersion")</input_parameters>
+    <automation_approch>1.Load the cmagent module
+2.From script invoke CMAgent_Get to get the DOCSISVersion 
+3.Check if the value returned is 3.0 or 3.1
 6.Response(s)(printf) from TDK Component,Ccsp Library function and cmagentstub would be logged in Agent Console log based on the debug info redirected to agent console.
 7.cmagentstub will validate the available result (from agent console log and Pointer to instance as updated) with expected result ("Values for Requested Param" ) and the same is updated to agent console log.
 8.TestManager will publish the result in GUI as PASS/FAILURE based on the response from cmagentstub.</automation_approch>
@@ -99,9 +92,9 @@ print "[LIB LOAD STATUS]  :  %s" %loadModuleresult;
 loadStatusExpected = "SUCCESS"
 
 if loadStatusExpected not in loadModuleresult.upper():
-        print "[Failed To Load CM Agent Stub from env TDK Path]"
-        print "[Exiting the Script]"
-        exit();
+    print "[Failed To Load CM Agent Stub from env TDK Path]"
+    print "[Exiting the Script]"
+    exit();
 		
 #Primitive test case which associated to this Script
 tdkTestObj = obj.createTestStep('CMAgent_Get');
@@ -118,17 +111,43 @@ tdkTestObj.executeTestCase(expectedresult);
 actualresult = tdkTestObj.getResult();
 print "[TEST EXECUTION RESULT] : %s" %actualresult ;
 
-resultDetails = tdkTestObj.getResultDetails();
+resultDetails_Version = tdkTestObj.getResultDetails();
 
 if expectedresult in actualresult:
-	#Set the result status of execution as success
-	tdkTestObj.setResultStatus("SUCCESS");
-        print "Get Value of DOCSIS Version Function is SUCCESS"
-else:
-	#Set the result status of execution as failure
-	tdkTestObj.setResultStatus("FAILURE");
-        print "Get Value of DOCSIS Version Function is FAILURE"
+    #Set the result status of execution as success
+    tdkTestObj.setResultStatus("SUCCESS");
+    print "TEST STEP 1: Get the DOCSISVersion";
+    print "EXPECTED RESULT 1: Should get the DOCSISVersion";
+    print "ACTUAL RESULT 1: %s" %resultDetails_Version;
+    #Get the result of execution
+    print "[TEST EXECUTION RESULT] : SUCCESS";
 
-print "[TEST EXECUTION RESULT] : %s" %resultDetails ;
+    if  "3.0" in resultDetails_Version or "3.1" in resultDetails_Version:
+        #Set the result status of execution as failure
+        tdkTestObj.setResultStatus("SUCCESS");
+        print "TEST STEP 2: Get the DOCSIS Version as 3.0 or 3.1";
+    	print "EXPECTED RESULT 2: Should get the DOCSIS Version as 3.0 or 3.1";
+    	print "ACTUAL RESULT 2: %s" %resultDetails_Version;
+    	#Get the result of execution
+    	print "[TEST EXECUTION RESULT] : SUCCESS";
+
+    else:
+        #Set the result status of execution as failure
+        tdkTestObj.setResultStatus("FAILURE");
+        print "TEST STEP 2: Get the DOCSIS Version as 3.0 or 3.1";
+        print "EXPECTED RESULT 2: Should get the DOCSIS Version as 3.0 or 3.1";
+        print "ACTUAL RESULT 2: %s" %resultDetails_Version;
+        #Get the result of execution
+        print "[TEST EXECUTION RESULT] : FAILURE";
+else:
+    #Set the result status of execution as failure
+    tdkTestObj.setResultStatus("FAILURE");
+    print "TEST STEP 1: Get the DOCSISVersion";
+    print "EXPECTED RESULT 1: Should get the DOCSISVersion";
+    print "ACTUAL RESULT 1: %s" %resultDetails_Version;
+    #Get the result of execution
+    print "[TEST EXECUTION RESULT] : FAILURE";
+
+print "[TEST EXECUTION RESULT] : %s" %resultDetails_Version;
 
 obj.unloadModule("cmagent");

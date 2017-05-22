@@ -125,10 +125,19 @@ resultDetails = tdkTestObj.getResultDetails();
 
 if expectedresult in actualresult:
 	#Set the result status of execution as success
-	tdkTestObj.setResultStatus("SUCCESS");
+	print "TEST STEP 1: Get the value of NetworkAccess function";
+    	print "EXPECTED RESULT 1: Should get the value of NetworkAccess function";
+    	print "ACTUAL RESULT 1: %s" %resultDetails;
+    	#Get the result of execution
+    	print "[TEST EXECUTION RESULT] : SUCCESS";
 else:
 	#Set the result status of execution as failure
 	tdkTestObj.setResultStatus("FAILURE");
+	print "TEST STEP 1: Get the value of NetworkAccess function";
+        print "EXPECTED RESULT 1: Should get the value of NetworkAccess function";
+        print "ACTUAL RESULT 1: %s" %resultDetails;
+        #Get the result of execution
+        print "[TEST EXECUTION RESULT] : FAILURE";
 
 print "[TEST EXECUTION RESULT] : %s" %resultDetails ;
 

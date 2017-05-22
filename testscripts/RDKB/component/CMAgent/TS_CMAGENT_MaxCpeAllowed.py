@@ -123,11 +123,19 @@ resultDetails = tdkTestObj.getResultDetails();
 if expectedresult in actualresult:
 	#Set the result status of execution as success
 	tdkTestObj.setResultStatus("SUCCESS");
-        print "Get Value of MAX CPE Allowed Function is SUCCESS"
+        print "TEST STEP 1: Get the MaxCpeAllowed";
+    	print "EXPECTED RESULT 1: Should get the MaxCpeAllowed";
+    	print "ACTUAL RESULT 1: %s" %resultDetails;
+    	#Get the result of execution
+    	print "[TEST EXECUTION RESULT] : SUCCESS";
 else:
 	#Set the result status of execution as failure
 	tdkTestObj.setResultStatus("FAILURE");
-        print "Get Value of MAX CPE Allowed Function is FAILURE"
+        print "TEST STEP 1: Get the MaxCpeAllowed";
+        print "EXPECTED RESULT 1: Should get the MaxCpeAllowed";
+        print "ACTUAL RESULT 1: %s" %resultDetails;
+        #Get the result of execution
+        print "[TEST EXECUTION RESULT] : FAILURE";
 print "[TEST EXECUTION RESULT] : %s" %resultDetails ;
 
 obj.unloadModule("cmagent");

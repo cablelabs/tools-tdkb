@@ -123,11 +123,19 @@ resultDetails = tdkTestObj.getResultDetails();
 if expectedresult in actualresult:
 	#Set the result status of execution as success
 	tdkTestObj.setResultStatus("SUCCESS");
-        print "Get Value of MDD IP Override Function is SUCCESS"
+        print "TEST STEP 1: Get the value of MDD IP Override Function";
+    	print "EXPECTED RESULT 1: Should get the value of MDD IP Override Function";
+    	print "ACTUAL RESULT 1: %s" %resultDetails;
+    	#Get the result of execution
+    	print "[TEST EXECUTION RESULT] : SUCCESS";
 else:
 	#Set the result status of execution as failure
 	tdkTestObj.setResultStatus("FAILURE");
-        print "Get Value of MDD IP Override Function is FAILURE"
+        print "TEST STEP 1: Get the value of MDD IP Override Function";
+        print "EXPECTED RESULT 1: Should get the value of MDD IP Override Function";
+        print "ACTUAL RESULT 1: %s" %resultDetails;
+        #Get the result of execution
+        print "[TEST EXECUTION RESULT] : FAILURE";
 
 print "[TEST EXECUTION RESULT] : %s" %resultDetails ;
 
