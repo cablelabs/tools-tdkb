@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>27</version>
+  <version>28</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_WIFIAGENT_DelObject</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -43,7 +43,7 @@
   <!--  -->
   <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
-  <remarks>As per developers, this scenario need not be tested at the moment</remarks>
+  <remarks>As per the discussion with Dev team, currently there is no use case for this scenario</remarks>
   <!-- Reason for skipping the tests if marked to skip -->
   <skip>true</skip>
   <!--  -->
