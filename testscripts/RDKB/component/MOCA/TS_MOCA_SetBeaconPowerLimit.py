@@ -80,7 +80,7 @@ obj = tdklib.TDKScriptingLibrary("moca","1");
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_MOCA_SetBeaconPowerLimit');
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
@@ -91,7 +91,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.addParameter("paramName","Device.MoCA.Interface.1.BeaconPowerLimit");
     expectedresult="SUCCESS";
 
-    #Execute the test case in STB
+    #Execute the test case in DUT
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     Beaconpowerlimit= tdkTestObj.getResultDetails();
@@ -110,7 +110,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.addParameter("Type","unsignedint");
         expectedresult="SUCCESS";
 
-        #Execute the test case in STB
+        #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details= tdkTestObj.getResultDetails();
@@ -136,7 +136,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.addParameter("ParamValue",Beaconpowerlimit);
         tdkTestObj.addParameter("Type","unsignedint");
         expectedresult="SUCCESS";
-        #Execute the test case in STB
+        #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details= tdkTestObj.getResultDetails();

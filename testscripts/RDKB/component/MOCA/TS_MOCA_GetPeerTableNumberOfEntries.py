@@ -17,58 +17,62 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
   <version>1</version>
-  <name>TS_MOCA_GetBeaconPowerLimit</name>
-  <primitive_test_id/>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
+  <name>TS_MOCA_GetPeerTableNumberOfEntries</name>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id> </primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>Mocastub_Get</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
-  <synopsis>To check if the BeaconPowerLimit obtained is a valid. The valid values are 0,3,6,9,12,15.</synopsis>
-  <groups_id/>
+  <!--  -->
+  <synopsis>To get the number of peer table entries.</synopsis>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
   <advanced_script>false</advanced_script>
-  <remarks/>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_MOCA_02</test_case_id>
-    <test_objective>To check if the BeaconPowerLimit obtained is a valid. The valid values are 0,3,6,9,12,15.</test_objective>
-    <test_type>Positive</test_type>
-    <test_setup>XB3</test_setup>
-    <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components.
-2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
-    <api_or_interface_used>Mocastub_Get</api_or_interface_used>
-    <input_parameters>Device.MoCA.Interface.1.BeaconPowerLimit</input_parameters>
-    <automation_approch>1. Load MOCA modules
-2. From script invoke Mocastub_Get to get the Beacon power limit
-3. Check if the obtained value is a subset of given values
-4. Validation of  the result is done within the python script and send the result status to Test Manager.
-5.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from Moca stub.</automation_approch>
-    <except_output>CheckPoint 1:
- The output  should be logged in the Agent console/Component log
-
-CheckPoint 2:
-Stub function result should be success and should see corresponding log in the agent console log
-
-CheckPoint 3:
-TestManager GUI will publish the result as PASS in Execution/Console page of Test Manager</except_output>
-    <priority>High</priority>
-    <test_stub_interface>None</test_stub_interface>
-    <test_script>TS_MOCA_GetBeaconPowerLimit</test_script>
-    <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <test_case_id></test_case_id>
+    <test_objective></test_objective>
+    <test_type></test_type>
+    <test_setup></test_setup>
+    <pre_requisite></pre_requisite>
+    <api_or_interface_used></api_or_interface_used>
+    <input_parameters></input_parameters>
+    <automation_approch></automation_approch>
+    <except_output></except_output>
+    <priority></priority>
+    <test_stub_interface></test_stub_interface>
+    <test_script></test_script>
+    <skipped></skipped>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
 </xml>
-
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
@@ -80,8 +84,7 @@ obj = tdklib.TDKScriptingLibrary("moca","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_MOCA_GetBeaconPowerLimit');
-
+obj.configureTestCase(ip,port,'TS_MOCA_GetPeerTableNumberOfEntries');
 #Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
@@ -90,28 +93,28 @@ if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
     tdkTestObj = obj.createTestStep('Mocastub_Get');
-    tdkTestObj.addParameter("paramName","Device.MoCA.Interface.1.BeaconPowerLimit");
+    tdkTestObj.addParameter("paramName","Device.MoCA.Interface.1.X_CISCO_COM_PeerTableNumberOfEntries");
     expectedresult="SUCCESS";
 
     #Execute the test case in DUT
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details= tdkTestObj.getResultDetails();
-    List = {"0","3","6","9","12","15"};
-    if expectedresult in actualresult and details in List:
+
+    if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Get the BeaconPowerLimit";
-        print "EXPECTED RESULT 1: Should get the BeaconPowerLimit";
-        print "ACTUAL RESULT 1: BeaconPowerLimit is :%s" %details;
+        print "TEST STEP 1: Get the number of peer table entries";
+        print "EXPECTED RESULT 1: Should get the number of perr table entries";
+        print "ACTUAL RESULT 1: Number of peer table entries is :%s" %details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
     else:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Get the BeaconPowerLimit";
-        print "EXPECTED RESULT 1: Should get the BeaconPowerLimit";
-        print "ACTUAL RESULT 1: BeaconPowerLimit is :%s" %details;
+        print "TEST STEP 1: Get the number of peer table entries";
+        print "EXPECTED RESULT 1: Should get the number of peer table entries";
+        print "ACTUAL RESULT 1: Number of peer table entries is :%s" %details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
     obj.unloadModule("moca");

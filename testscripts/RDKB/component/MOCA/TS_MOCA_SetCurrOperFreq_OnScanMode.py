@@ -86,7 +86,7 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_MOCA_SetCurrOperFreq_OnScanMode');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
@@ -98,7 +98,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.addParameter("paramName","Device.MoCA.Interface.1.X_CISCO_COM_ChannelScanning");
     expectedresult="SUCCESS";
 
-    #Execute the test case in STB
+    #Execute the test case in DUT
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     ScanMode= tdkTestObj.getResultDetails();
@@ -115,7 +115,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.addParameter("paramName","Device.MoCA.Interface.1.CurrentOperFreq");
         expectedresult="SUCCESS";
 
-        #Execute the test case in STB
+        #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         Curr_Freq= tdkTestObj.getResultDetails();
@@ -132,7 +132,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             tdkTestObj.addParameter("paramName","Device.MoCA.Interface.1.FreqCurrentMaskSetting");
             expectedresult="SUCCESS";
 
-            #Execute the test case in STB
+            #Execute the test case in DUT
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             Freq_Mask= tdkTestObj.getResultDetails();
@@ -152,7 +152,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 tdkTestObj.addParameter("Type","bool");
                 expectedresult="SUCCESS";
 
-                #Execute the test case in STB
+                #Execute the test case in DUT
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details= tdkTestObj.getResultDetails();
@@ -175,7 +175,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.addParameter("Type","string");
                     expectedresult="SUCCESS";
 
-                    #Execute the test case in STB
+                    #Execute the test case in DUT
                     tdkTestObj.executeTestCase(expectedresult);
                     actualresult = tdkTestObj.getResult();
                     details= tdkTestObj.getResultDetails();
@@ -192,7 +192,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         tdkTestObj.addParameter("paramName","Device.MoCA.Interface.1.CurrentOperFreq");
                         expectedresult="SUCCESS";
 
-                        #Execute the test case in STB
+                        #Execute the test case in DUT
                         tdkTestObj.executeTestCase(expectedresult);
                         actualresult = tdkTestObj.getResult();
                         New_Freq= tdkTestObj.getResultDetails();
@@ -228,7 +228,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.addParameter("Type","string");
                     expectedresult="SUCCESS";
 
-                    #Execute the test case in STB
+                    #Execute the test case in DUT
                     tdkTestObj.executeTestCase(expectedresult);
                     actualresult = tdkTestObj.getResult();
                     details= tdkTestObj.getResultDetails();
@@ -263,7 +263,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 tdkTestObj.addParameter("Type","bool");
                 expectedresult="SUCCESS";
 
-                #Execute the test case in STB
+                #Execute the test case in DUT
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details= tdkTestObj.getResultDetails();

@@ -84,7 +84,7 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_MOCA_GetMocaResetCount');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
@@ -95,7 +95,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.addParameter("paramName","Device.MoCA.MocaResetCount");
     expectedresult="SUCCESS";
 
-    #Execute the test case in STB
+    #Execute the test case in DUT
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     LastResetCount= tdkTestObj.getResultDetails();
@@ -114,7 +114,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.addParameter("Type","bool");
         expectedresult="SUCCESS";
 
-        #Execute the test case in STB
+        #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details= tdkTestObj.getResultDetails();
