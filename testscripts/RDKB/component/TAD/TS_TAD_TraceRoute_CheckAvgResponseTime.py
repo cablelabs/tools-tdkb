@@ -77,9 +77,10 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
 </xml>
 
 '''
-						# use tdklib library,which provides a wrapper for tdk testcase script
+# use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import time;
+import tdkutility;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("tad","1");
@@ -96,6 +97,7 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
+    host = tdkutility.readHostConfigFile(obj);
     tdkTestObj = obj.createTestStep('TADstub_Set');
     tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.TraceRoute.Interface");
     tdkTestObj.addParameter("ParamValue","Interface_erouter0");
@@ -115,7 +117,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
         tdkTestObj = obj.createTestStep('TADstub_Set');
         tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.TraceRoute.Host");
-        tdkTestObj.addParameter("ParamValue","google.com");
+        tdkTestObj.addParameter("ParamValue",host);
         tdkTestObj.addParameter("Type","string");
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);

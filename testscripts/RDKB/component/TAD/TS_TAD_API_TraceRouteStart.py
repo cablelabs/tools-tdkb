@@ -84,7 +84,8 @@
 </xml>
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+import tdklib;
+import tdkutility; 
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("tad","1");
@@ -101,6 +102,7 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
+    host = tdkutility.readHostConfigFile(obj);
     tdkTestObj = obj.createTestStep('TADstub_Init');
     expectedresult="SUCCESS";
 
@@ -129,7 +131,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
     #setting mode 1 for traceroute
     tdkTestObj.addParameter("mode",1);
-    tdkTestObj.addParameter("host","google.com");
+    tdkTestObj.addParameter("host",host);
 
     #Execute the test case in STB
     tdkTestObj.executeTestCase(expectedresult);

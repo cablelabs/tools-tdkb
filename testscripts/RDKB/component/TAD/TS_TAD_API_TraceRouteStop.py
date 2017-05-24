@@ -85,7 +85,8 @@
 </xml>
 '''
 						# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+import tdklib;
+import tdkutility; 
 from time import sleep;
 
 #Test component to be tested
@@ -105,6 +106,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
 
     #Prmitive test case which associated to this Script
+    host = tdkutility.readHostConfigFile(obj);
     tdkTestObj = obj.createTestStep('TADstub_Init');
     expectedresult="SUCCESS";
 
@@ -133,7 +135,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
     #setting mode 1 for ping
     tdkTestObj.addParameter("mode",1);
-    tdkTestObj.addParameter("host","google.com");
+    tdkTestObj.addParameter("host",host);
 
     #Execute the test case in STB
     tdkTestObj.executeTestCase(expectedresult);
