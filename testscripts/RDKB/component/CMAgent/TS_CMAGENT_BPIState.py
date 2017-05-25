@@ -166,7 +166,7 @@ else:
 
 
 
-print "[TEST EXECUTION RESULT] : %s" %resultDetails ;
+print "[TEST EXECUTION RESULT] : %s" %Details_cmstatus ;
 
 obj.unloadModule("cmagent");
 	

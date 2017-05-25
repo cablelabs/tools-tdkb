@@ -164,6 +164,6 @@ else:
     #Get the result of execution
     print "[TEST EXECUTION RESULT] : FAILURE";
 
-print "[TEST EXECUTION RESULT] : %s" %resultDetails ;
+print "[TEST EXECUTION RESULT] : %s" %Details_cmstatus ;
 
 obj.unloadModule("cmagent");
