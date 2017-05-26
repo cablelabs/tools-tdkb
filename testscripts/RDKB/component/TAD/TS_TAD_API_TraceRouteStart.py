@@ -102,55 +102,18 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-    host = tdkutility.readHostConfigFile(obj);
-    tdkTestObj = obj.createTestStep('TADstub_Init');
+    host = tdkutility.readtdkbConfigFile(obj);
+    tdkTestObj = obj.createTestStep('TADstub_Get');
+    tdkTestObj.addParameter("paramName","Device.IP.Diagnostics.TraceRoute.Host");
     expectedresult="SUCCESS";
-
-    #Execute the test case in STB
     tdkTestObj.executeTestCase(expectedresult);
-    actualresult = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails();
-    if expectedresult in actualresult:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Set diagnostics init"
-        print "EXPECTED RESULT 1: Should set diagnostics init";
-        print "ACTUAL RESULT 1:  %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS";
-    else:
+    if host == "NULL":
         tdkTestObj.setResultStatus("FAILURE");
-        print "TEST STEP 1: Set diagnostics init"
-        print "EXPECTED RESULT 1: Should set diagnostics init";
-        print "ACTUAL RESULT 1:  %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : FAILURE, exiting script";
-        exit();
-
-    tdkTestObj = obj.createTestStep('TADstub_SetCfg');
-    expectedresult="SUCCESS";
-    #setting mode 1 for traceroute
-    tdkTestObj.addParameter("mode",1);
-    tdkTestObj.addParameter("host",host);
-
-    #Execute the test case in STB
-    tdkTestObj.executeTestCase(expectedresult);
-    actualresult = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails();
-    if expectedresult in actualresult:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Set traceroute config values"
-        print "EXPECTED RESULT 1: Should set the traceroute config";
-        print "ACTUAL RESULT 1:  %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS";
-
-        #invoke traceroute start
-        tdkTestObj = obj.createTestStep('TADstub_Start');
-        #setting mode 1 for traceroute
-        tdkTestObj.addParameter("mode",1);
+        print "Host name not available in tdkb config file"
+    else:
+        tdkTestObj = obj.createTestStep('TADstub_Init');
         expectedresult="SUCCESS";
+
         #Execute the test case in STB
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
@@ -158,27 +121,72 @@ if "SUCCESS" in loadmodulestatus.upper():
         if expectedresult in actualresult:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 1: Start the IP traceroute";
-            print "EXPECTED RESULT 1: Should Start the IP traceroute";
+            print "TEST STEP 1: Set diagnostics init"
+            print "EXPECTED RESULT 1: Should set diagnostics init";
             print "ACTUAL RESULT 1:  %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
         else:
+            tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP 1: Set diagnostics init"
+            print "EXPECTED RESULT 1: Should set diagnostics init";
+            print "ACTUAL RESULT 1:  %s" %details;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : FAILURE, exiting script";
+            exit();
+
+        tdkTestObj = obj.createTestStep('TADstub_SetCfg');
+        expectedresult="SUCCESS";
+        #setting mode 1 for traceroute
+        tdkTestObj.addParameter("mode",1);
+        tdkTestObj.addParameter("host",host);
+
+        #Execute the test case in STB
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        details = tdkTestObj.getResultDetails();
+        if expectedresult in actualresult:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP 1: Set traceroute config values"
+            print "EXPECTED RESULT 1: Should set the traceroute config";
+            print "ACTUAL RESULT 1:  %s" %details;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+
+            #invoke traceroute start
+            tdkTestObj = obj.createTestStep('TADstub_Start');
+            #setting mode 1 for traceroute
+            tdkTestObj.addParameter("mode",1);
+            expectedresult="SUCCESS";
+            #Execute the test case in STB
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            details = tdkTestObj.getResultDetails();
+            if expectedresult in actualresult:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("SUCCESS");
+                print "TEST STEP 1: Start the IP traceroute";
+                print "EXPECTED RESULT 1: Should Start the IP traceroute";
+                print "ACTUAL RESULT 1:  %s" %details;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : SUCCESS";
+            else:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("FAILURE");
+                print "TEST STEP 1: Start the IP traceroute";
+                print "EXPECTED RESULT 1: Should Start the IP traceroute";
+                print "ACTUAL RESULT 1:  %s" %details;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : FAILURE";
+        else:
             #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 1: Start the IP traceroute";
-            print "EXPECTED RESULT 1: Should Start the IP traceroute";
+            print "TEST STEP 1: Set traceroute config values"
+            print "EXPECTED RESULT 1: Should set the traceroute config"
             print "ACTUAL RESULT 1:  %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
-    else:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("FAILURE");
-        print "TEST STEP 1: Set traceroute config values"
-        print "EXPECTED RESULT 1: Should set the traceroute config"
-        print "ACTUAL RESULT 1:  %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("tad");
 
 else:

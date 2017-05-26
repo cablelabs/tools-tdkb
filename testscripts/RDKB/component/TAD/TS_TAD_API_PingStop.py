@@ -106,55 +106,18 @@ if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
 
     #Prmitive test case which associated to this Script
-    host = tdkutility.readHostConfigFile(obj);
-    tdkTestObj = obj.createTestStep('TADstub_Init');
+    host = tdkutility.readtdkbConfigFile(obj);
+    tdkTestObj = obj.createTestStep('TADstub_Get');
+    tdkTestObj.addParameter("paramName","Device.IP.Diagnostics.TraceRoute.Host");
     expectedresult="SUCCESS";
-
-    #Execute the test case in STB
     tdkTestObj.executeTestCase(expectedresult);
-    actualresult = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails();
-    if expectedresult in actualresult:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Set diagnostics init"
-        print "EXPECTED RESULT 1: Should set diagnostics init";
-        print "ACTUAL RESULT 1:  %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS";
-    else:
+    if host == "NULL":
         tdkTestObj.setResultStatus("FAILURE");
-        print "TEST STEP 1: Set diagnostics init"
-        print "EXPECTED RESULT 1: Should set diagnostics init";
-        print "ACTUAL RESULT 1:  %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : FAILURE, exiting script";
-        exit();
-
-    tdkTestObj = obj.createTestStep('TADstub_SetCfg');
-    expectedresult="SUCCESS";
-    #setting mode 1 for ping
-    tdkTestObj.addParameter("mode",0);
-    tdkTestObj.addParameter("host",host);
-
-    #Execute the test case in STB
-    tdkTestObj.executeTestCase(expectedresult);
-    actualresult = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails();
-    if expectedresult in actualresult:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Set ping config values"
-        print "EXPECTED RESULT 1: Should set the ping config";
-        print "ACTUAL RESULT 1:  %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS";
-
-        #invoke ping start
-        tdkTestObj = obj.createTestStep('TADstub_Start');
-        #setting mode 1 for ping
-        tdkTestObj.addParameter("mode",0);
+        print "Host name not available in tdkb config file"
+    else:
+        tdkTestObj = obj.createTestStep('TADstub_Init');
         expectedresult="SUCCESS";
+
         #Execute the test case in STB
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
@@ -162,51 +125,96 @@ if "SUCCESS" in loadmodulestatus.upper():
         if expectedresult in actualresult:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 1: Start the IP ping";
-            print "EXPECTED RESULT 1: Should Start the IP ping";
+            print "TEST STEP 1: Set diagnostics init"
+            print "EXPECTED RESULT 1: Should set diagnostics init";
             print "ACTUAL RESULT 1:  %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
-	    sleep(20);
+        else:
+            tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP 1: Set diagnostics init"
+            print "EXPECTED RESULT 1: Should set diagnostics init";
+            print "ACTUAL RESULT 1:  %s" %details;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : FAILURE, exiting script";
+            exit();
 
-            ##Staring ping_stop sequence
-     	    tdkTestObj = obj.createTestStep('TADstub_Stop');
-	    tdkTestObj.addParameter("mode",0);
+        tdkTestObj = obj.createTestStep('TADstub_SetCfg');
+        expectedresult="SUCCESS";
+        #setting mode 1 for ping
+        tdkTestObj.addParameter("mode",0);
+        tdkTestObj.addParameter("host",host);
+
+        #Execute the test case in STB
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        details = tdkTestObj.getResultDetails();
+        if expectedresult in actualresult:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP 1: Set ping config values"
+            print "EXPECTED RESULT 1: Should set the ping config";
+            print "ACTUAL RESULT 1:  %s" %details;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+
+            #invoke ping start
+            tdkTestObj = obj.createTestStep('TADstub_Start');
+            #setting mode 1 for ping
+            tdkTestObj.addParameter("mode",0);
+            expectedresult="SUCCESS";
+            #Execute the test case in STB
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
             if expectedresult in actualresult:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP 1: Stop the IP ping";
-                print "EXPECTED RESULT 1: Should Stop the IP ping";
+                print "TEST STEP 1: Start the IP ping";
+                print "EXPECTED RESULT 1: Should Start the IP ping";
                 print "ACTUAL RESULT 1:  %s" %details;
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : SUCCESS";
+                sleep(20);
+
+                ##Staring ping_stop sequence
+         	tdkTestObj = obj.createTestStep('TADstub_Stop');
+                tdkTestObj.addParameter("mode",0);
+                tdkTestObj.executeTestCase(expectedresult);
+                actualresult = tdkTestObj.getResult();
+                details = tdkTestObj.getResultDetails();
+                if expectedresult in actualresult:
+                    #Set the result status of execution
+                    tdkTestObj.setResultStatus("SUCCESS");
+                    print "TEST STEP 1: Stop the IP ping";
+                    print "EXPECTED RESULT 1: Should Stop the IP ping";
+                    print "ACTUAL RESULT 1:  %s" %details;
+                    #Get the result of execution
+                    print "[TEST EXECUTION RESULT] : SUCCESS";
+                else:
+                    #Set the result status of execution
+                    tdkTestObj.setResultStatus("FAILURE");
+                    print "TEST STEP 1: Stop the IP ping";
+                    print "EXPECTED RESULT 1: Should Stop the IP ping";
+                    print "ACTUAL RESULT 1:  %s" %details;
+                    #Get the result of execution
+                    print "[TEST EXECUTION RESULT] : FAILURE";
             else:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("FAILURE");
-                print "TEST STEP 1: Stop the IP ping";
-                print "EXPECTED RESULT 1: Should Stop the IP ping";
+                print "TEST STEP 1: Start the IP ping";
+                print "EXPECTED RESULT 1: Should Start the IP ping";
                 print "ACTUAL RESULT 1:  %s" %details;
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : FAILURE";
         else:
             #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 1: Start the IP ping";
-            print "EXPECTED RESULT 1: Should Start the IP ping";
+            print "TEST STEP 1: Set ping config values"
+            print "EXPECTED RESULT 1: Should set the ping config"
             print "ACTUAL RESULT 1:  %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
-    else:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("FAILURE");
-        print "TEST STEP 1: Set ping config values"
-        print "EXPECTED RESULT 1: Should set the ping config"
-        print "ACTUAL RESULT 1:  %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("tad");
 
 else:
