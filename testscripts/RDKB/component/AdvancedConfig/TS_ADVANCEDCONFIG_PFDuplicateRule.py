@@ -135,6 +135,18 @@ if "SUCCESS" in loadModuleresult.upper():
         obj.setLoadModuleStatus("SUCCESS");
 	instance1 ="";
 	instance2 ="";
+	tdkTestObj = obj.createTestStep("AdvancedConfig_Get");
+        tdkTestObj.addParameter("paramName","Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
+        expectedresult="SUCCESS";
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult= tdkTestObj.getResult();
+        #tdkTestObj.setResultStatus("SUCCESS");
+        details_lan = tdkTestObj.getResultDetails();
+        lanip = details_lan.split(':');
+        iplist = lanip[1].split('.');
+        iplist[3]= "7";
+        clientIP1 = ".".join(iplist);
+        clientIP=clientIP1.strip();
         #Enabling port forwarding - setting the port mapping as true
         tdkTestObj = obj.createTestStep("AdvancedConfig_Set");
         tdkTestObj.addParameter("paramName","Device.NAT.X_Comcast_com_EnablePortMapping");
@@ -174,7 +186,7 @@ if "SUCCESS" in loadModuleresult.upper():
                         if (instance1 > 0):
                             # Setting the external port
 			    tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
-			    tdkTestObj.addParameter("paramList","Device.NAT.PortMapping.%s.Enable|true|bool|Device.NAT.PortMapping.%s.ExternalPort|1|unsignedint|Device.NAT.PortMapping.%s.InternalPort|22|unsignedint|Device.NAT.PortMapping.%s.Protocol|BOTH|string|Device.NAT.PortMapping.%s.InternalClient|10.0.0.7|string|Device.NAT.PortMapping.%s.Description|NEW_RULE|string|Device.NAT.PortMapping.%s.ExternalPortEndRange|8050|unsignedint" %(instance1, instance1, instance1, instance1, instance1, instance1, instance1));
+			    tdkTestObj.addParameter("paramList","Device.NAT.PortMapping.%s.Enable|true|bool|Device.NAT.PortMapping.%s.ExternalPort|1|unsignedint|Device.NAT.PortMapping.%s.InternalPort|22|unsignedint|Device.NAT.PortMapping.%s.Protocol|BOTH|string|Device.NAT.PortMapping.%s.InternalClient|%s|string|Device.NAT.PortMapping.%s.Description|NEW_RULE|string|Device.NAT.PortMapping.%s.ExternalPortEndRange|8050|unsignedint" %(instance1, instance1, instance1, instance1, instance1, clientIP, instance1, instance1));
                             expectedresult="SUCCESS";
                             tdkTestObj.executeTestCase(expectedresult);
                             actualresult = tdkTestObj.getResult();
@@ -206,7 +218,7 @@ if "SUCCESS" in loadModuleresult.upper():
 				    instance2 = temp[1];
                                     #setting the start port
 				    tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
-				    tdkTestObj.addParameter("paramList","Device.NAT.PortMapping.%s.Enable|true|bool|Device.NAT.PortMapping.%s.ExternalPort|1|unsignedint|Device.NAT.PortMapping.%s.InternalPort|22|unsignedint|Device.NAT.PortMapping.%s.Protocol|BOTH|string|Device.NAT.PortMapping.%s.InternalClient|10.0.0.7|string|Device.NAT.PortMapping.%s.Description|NEW_RULE|string|Device.NAT.PortMapping.%s.ExternalPortEndRange|8050|unsignedint" %(instance2, instance2, instance2, instance2, instance2, instance2, instance2));
+				    tdkTestObj.addParameter("paramList","Device.NAT.PortMapping.%s.Enable|true|bool|Device.NAT.PortMapping.%s.ExternalPort|1|unsignedint|Device.NAT.PortMapping.%s.InternalPort|22|unsignedint|Device.NAT.PortMapping.%s.Protocol|BOTH|string|Device.NAT.PortMapping.%s.InternalClient|%s|string|Device.NAT.PortMapping.%s.Description|NEW_RULE|string|Device.NAT.PortMapping.%s.ExternalPortEndRange|8050|unsignedint" %(instance2, instance2, instance2, instance2, instance2,clientIP, instance2, instance2));
                                     expectedresult="FAILURE";
                                     tdkTestObj.executeTestCase(expectedresult);
                                     actualresult = tdkTestObj.getResult();

@@ -131,6 +131,18 @@ if "SUCCESS" in loadmodulestatus.upper():
         obj.setLoadModuleStatus("SUCCESS");
         instance ="";
         org="";
+	tdkTestObj = obj.createTestStep("AdvancedConfig_Get");
+        tdkTestObj.addParameter("paramName","Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
+        expectedresult="SUCCESS";
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult= tdkTestObj.getResult();
+        #tdkTestObj.setResultStatus("SUCCESS");
+        details_lan = tdkTestObj.getResultDetails();
+        lanip = details_lan.split(':');
+        iplist = lanip[1].split('.');
+        iplist[3]= "7";
+        clientIP1 = ".".join(iplist);
+        clientIP=clientIP1.strip();
         tdkTestObj = obj.createTestStep("AdvancedConfig_Get");
         tdkTestObj.addParameter("paramName","Device.NAT.X_Comcast_com_EnablePortMapping");
         expectedresult="SUCCESS";
@@ -185,7 +197,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         print "INSTANCE VALUE: %s" %instance
                         #Enabling the added rule
                         tdkTestObj = obj.createTestStep("AdvancedConfig_SetMultiple");
-                        tdkTestObj.addParameter("paramList","Device.NAT.PortMapping.%s.Enable|true|bool|Device.NAT.PortMapping.%s.ExternalPort|1|unsignedint|Device.NAT.PortMapping.%s.InternalPort|22|unsignedint|Device.NAT.PortMapping.%s.Protocol|BOTH|string|Device.NAT.PortMapping.%s.InternalClient|10.0.0.7|string|Device.NAT.PortMapping.%s.Description|NEW_RULE|string|Device.NAT.PortMapping.%s.ExternalPortEndRange|8050|unsignedint" %(instance, instance, instance, instance, instance, instance, instance));
+                        tdkTestObj.addParameter("paramList","Device.NAT.PortMapping.%s.Enable|true|bool|Device.NAT.PortMapping.%s.ExternalPort|1|unsignedint|Device.NAT.PortMapping.%s.InternalPort|22|unsignedint|Device.NAT.PortMapping.%s.Protocol|BOTH|string|Device.NAT.PortMapping.%s.InternalClient|%s|string|Device.NAT.PortMapping.%s.Description|NEW_RULE|string|Device.NAT.PortMapping.%s.ExternalPortEndRange|8050|unsignedint" %(instance, instance, instance, instance, instance, clientIP, instance, instance));
                         expectedresult="SUCCESS";
                         tdkTestObj.executeTestCase(expectedresult);
                         actualresult = tdkTestObj.getResult();
