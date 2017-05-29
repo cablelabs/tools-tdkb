@@ -39,8 +39,11 @@
 #include <dslh_definitions_database.h>
 #include <sys/ucontext.h>
 #include "cosa_x_cisco_com_cablemodem_apis.h"
+#include <unistd.h>
 
 ANSC_HANDLE cm_handle = NULL;    
+PCOSA_BACKEND_MANAGER_OBJECT g_pCosaBEManager;
+
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlCMGetResetCount
@@ -913,10 +916,11 @@ int ssp_cosacm_GetUpstreamChannel(int handleType, int bufferType)
 int ssp_CosaCableModemCreate()
 {
     int return_status = 0;
+
     printf("Entering ssp_CosaCableModemCreate");
-    ANSC_HANDLE cm_handle = NULL;
-    cm_handle = CosaCableModemCreate();
-    if(cm_handle !=NULL)
+
+    g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)CosaBackEndManagerCreate();
+    if(g_pCosaBEManager !=NULL)
     {
         printf("\n ssp_CosaCableModemCreate :: CosaCableModemCreate function is success with return status %d",return_status);
         return_status = SSP_SUCCESS;
@@ -926,6 +930,8 @@ int ssp_CosaCableModemCreate()
         printf("\n ssp_CosaCableModemCreate :: CosaCableModemCreate function is failure and return status %d",return_status);
         return_status = SSP_FAILURE;
     }
+
+    printf("Exiting ssp_CosaCableModemCreate\n");
     return return_status;
 }
 
@@ -938,12 +944,23 @@ int ssp_CosaCableModemCreate()
 int ssp_CosaCableModemInitialize(int Value)
 {
     int return_status = 0;
-    ANSC_HANDLE cm_handle = NULL;
-    printf("Entering ssp_CosaCableModemInitialize");
+    
+    printf("Entering ssp_CosaCableModemInitialize\n");
+
     if(Value == 0)
     {
-        printf("\nNULL handle passed\n");
-        return_status = CosaCableModemInitialize(NULL);
+	printf("Create handle for the cable modem\n");
+        g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)CosaBackEndManagerCreate();
+        if ( g_pCosaBEManager && g_pCosaBEManager->Initialize )
+        {
+             printf("Negative Scenario: Initialize the Cable Modem with NULL handle\n");
+             return_status = CosaBackEndManagerInitialize(NULL);
+        }
+        else
+        {
+                return_status = SSP_FAILURE;
+        }
+
         if(return_status == SSP_SUCCESS)
         {
             printf("\n ssp_CosaCableModemInitialize :: CosaCableModemInitialize function fails to handle NULL scenarios %d",return_status);
@@ -958,9 +975,17 @@ int ssp_CosaCableModemInitialize(int Value)
     }
     else if (Value == 1)
     {
-        printf("\nvalid handle passed\n");
-        cm_handle = CosaCableModemCreate();
-        return_status = CosaCableModemInitialize(cm_handle);
+        printf("Create handle for the cable modem\n");
+        g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)CosaBackEndManagerCreate();
+        if ( g_pCosaBEManager && g_pCosaBEManager->Initialize )
+        {
+             printf("Initialize the cable modem\n");
+             return_status = CosaBackEndManagerInitialize((ANSC_HANDLE)g_pCosaBEManager);
+        }
+        else
+        {
+      		return_status = SSP_FAILURE;
+        }
 
         if(return_status == SSP_SUCCESS)
         {
@@ -988,11 +1013,25 @@ int ssp_CosaCableModemInitialize(int Value)
 int ssp_CosaCableModemRemove(int Value)
 {
     int return_status = 0;
-    ANSC_HANDLE cm_handle = NULL;
-    printf("Entering ssp_CosaCableModemRemove");
+    
+    printf("Entering ssp_CosaCableModemRemove\n");
+
     if(Value == 0)
     {
-        return_status = CosaCableModemRemove(NULL);
+	printf("Create handle for the cable modem\n");
+        g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)CosaBackEndManagerCreate();
+        if ( g_pCosaBEManager && g_pCosaBEManager->Initialize )
+        {
+	     printf("Initialize the cable modem\n");
+             return_status = CosaBackEndManagerInitialize((ANSC_HANDLE)g_pCosaBEManager);
+    	     printf("Negative Scenario: Free the cable modem resources created using NULL handle\n");
+             return_status = CosaBackEndManagerRemove(NULL);
+        }
+        else
+        {
+                return_status = SSP_FAILURE;
+        }
+
         if(return_status == SSP_SUCCESS)
         {
             printf("\n ssp_CosaCableModemRemove :: CosaCableModemRemove function does not handle NULL sceanrios with return status %d",return_status);
@@ -1006,17 +1045,32 @@ int ssp_CosaCableModemRemove(int Value)
 
     }
     else if (Value == 1)
-    {   
-        cm_handle = CosaCableModemCreate();
-        return_status = CosaCableModemRemove(cm_handle);
+    { 
+	printf("Create handle for the cable modem\n");  
+	g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)CosaBackEndManagerCreate();
+        if ( g_pCosaBEManager && g_pCosaBEManager->Initialize )
+        {
+	     printf("Initialize the cable modem\n");
+             return_status = CosaBackEndManagerInitialize((ANSC_HANDLE)g_pCosaBEManager);
+	     sleep(20);
+ 	     printf("Free the cable modem resources created\n");
+	     return_status = CosaBackEndManagerRemove((ANSC_HANDLE)g_pCosaBEManager);
+        }
+        else
+        {
+		return_status = SSP_FAILURE;
+        }
+
         if(return_status == SSP_SUCCESS)
         {
             printf("\n ssp_CosaCableModemRemove :: CosaCableModemRemove function is success with return status %d",return_status);
+            g_pCosaBEManager = NULL;
             return 0;
         }
         else
         {
             printf("\n ssp_CosaCableModemRemove :: CosaCableModemRemove function is failure and return status %d",return_status);
+            g_pCosaBEManager = NULL;
             return 1;
         }
     }
