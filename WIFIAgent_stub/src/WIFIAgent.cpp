@@ -26,7 +26,7 @@ extern "C"
 {
     int ssp_register(bool);
     GETPARAMVALUES* ssp_getParameterValue(char *pParamName,int *pParamsize);
-    int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType);
+    int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType,int commit);
     GETPARAMATTR* ssp_getParameterAttr(char *pParamAttr,int *pParamAttrSize);
     int ssp_setParameterAttr(char *pParamName,char *pAttrNotify,char *pAttrAccess);
     GETPARAMNAMES* ssp_getParameterNames(char *pPathName,int recursive,int *pParamSize);
@@ -227,6 +227,7 @@ bool WIFIAgent::WIFIAgent_Set(IN const Json::Value& req, OUT Json::Value& respon
     char ParamName[MAX_PARAM_SIZE];
     char ParamValue[MAX_PARAM_SIZE];
     char ParamType[MAX_PARAM_SIZE];
+    int commit = 1;
 
     strcpy(ParamName,req["paramName"].asCString());
     strcpy(ParamValue,req["paramValue"].asCString());
@@ -237,7 +238,7 @@ bool WIFIAgent::WIFIAgent_Set(IN const Json::Value& req, OUT Json::Value& respon
     DEBUG_PRINT(DEBUG_TRACE,"\nWIFIAgent_Set:: ParamType input is %s",ParamType);
 
 
-    returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0]);
+    returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0],commit);
 
     if(0 == returnValue)
     {
@@ -255,12 +256,12 @@ bool WIFIAgent::WIFIAgent_Set(IN const Json::Value& req, OUT Json::Value& respon
     if ((!strncmp(ParamName, "Device.WiFi.Radio.1.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.1.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.1.", 19)))
     {
         printf("Apply the wifi settings for 2.4GHZ\n");
-        retVal = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySetting","true","boolean");
+        retVal = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySetting","true","boolean",commit);
     }
     else if ((!strncmp(ParamName, "Device.WiFi.Radio.2.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.2.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.2.", 19)))
     {
         printf("Apply the wifi settings for 5GHZ\n");
-        retVal = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting","true","boolean");
+        retVal = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting","true","boolean",commit);
     }
 
     if((0 == returnValue) && (0 == retVal))
@@ -301,6 +302,7 @@ bool WIFIAgent::WIFIAgent_SetMultiple(IN const Json::Value& req, OUT Json::Value
     int num_spaces = 0;
     int index = 0;
     int size = 0;
+    int commit = 1;
 
     strcpy(params,req["paramList"].asCString());
 
@@ -350,12 +352,12 @@ bool WIFIAgent::WIFIAgent_SetMultiple(IN const Json::Value& req, OUT Json::Value
    if ((!strncmp(paramlist[0], "Device.WiFi.Radio.1.", 20)) || (!strncmp(paramlist[0], "Device.WiFi.AccessPoint.1.", 26)) || (!strncmp(paramlist[0], "Device.WiFi.SSID.1.", 19)))
     {
         printf("Apply the wifi settings for 2.4GHZ\n");
-        retVal = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySetting","true","boolean");
+        retVal = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySetting","true","boolean",commit);
     }
     else if ((!strncmp(paramlist[0], "Device.WiFi.Radio.2.", 20)) || (!strncmp(paramlist[0], "Device.WiFi.AccessPoint.2.", 26)) || (!strncmp(paramlist[0], "Device.WiFi.SSID.2.", 19)))
     {
         printf("Apply the wifi settings for 5GHZ\n");
-        retVal = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting","true","boolean");
+        retVal = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting","true","boolean",commit);
     }
 
     if((0 == returnValue) && (0 == retVal))
@@ -399,6 +401,7 @@ bool WIFIAgent::WIFIAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& re
     char ParamName[MAX_PARAM_SIZE];
     char ParamValue[MAX_PARAM_SIZE];
     char ParamType[MAX_PARAM_SIZE];
+    int commit = 1;
 
     //Get Param
     char ParamNames[MAX_PARAM_SIZE];
@@ -419,7 +422,7 @@ bool WIFIAgent::WIFIAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& re
 
 
 
-    returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0]);
+    returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0],commit);
 
     if(0 != returnValue)
     {
