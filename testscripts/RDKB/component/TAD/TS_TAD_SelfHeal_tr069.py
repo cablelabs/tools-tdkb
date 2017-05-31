@@ -84,7 +84,7 @@ sysutil</test_stub_interface>
   <script_tags />
 </xml>
 '''
-												# use tdklib library,which provides a wrapper for tdk testcase script 
+# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 from time import sleep;
 
@@ -110,7 +110,7 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
     sysObj.setLoadModuleStatus("SUCCESS");
 
     tdkTestObj = sysObj.createTestStep('ExecuteCmd');
-    tdkTestObj.addParameter("command", " ps -ef | grep -i CcspTr069PaSsp | grep -v grep")
+    tdkTestObj.addParameter("command", " ps | grep -i CcspTr069PaSsp | grep -v grep")
     expectedresult="SUCCESS";
 
     #Execute the test case in STB
@@ -124,7 +124,7 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
         print "ACTUAL RESULT 1: CcspTr069PaSsp process is running"
         tdkTestObj.setResultStatus("SUCCESS");
 
-        tdkTestObj.addParameter("command", "killall CcspTr069PaSsp;  ps -ef | grep CcspTr069PaSsp | grep -v grep")
+        tdkTestObj.addParameter("command", "killall CcspTr069PaSsp;  ps | grep CcspTr069PaSsp | grep -v grep")
         tdkTestObj.executeTestCase("expectedresult");
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip()
@@ -147,7 +147,7 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
 
     #wait for CcspTr069PaSsp prcs to start
     sleep(1800)
-    tdkTestObj.addParameter("command", " ps -ef | grep -i CcspTr069PaSsp | grep -v grep")
+    tdkTestObj.addParameter("command", " ps | grep -i CcspTr069PaSsp | grep -v grep")
     tdkTestObj.executeTestCase("expectedresult");
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails().strip()

@@ -93,7 +93,7 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
     sysObj.setLoadModuleStatus("SUCCESS");
 
     tdkTestObj = sysObj.createTestStep('ExecuteCmd');
-    tdkTestObj.addParameter("command", " ps -ef | grep -i PsmSsp | grep -v grep")
+    tdkTestObj.addParameter("command", " ps | grep -i PsmSsp | grep -v grep")
     expectedresult="SUCCESS";
 
     #Execute the test case in STB
@@ -107,7 +107,7 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
         print "ACTUAL RESULT 1: PsmSsp process is running"
         tdkTestObj.setResultStatus("SUCCESS");
 
-        tdkTestObj.addParameter("command", "killall PsmSsp;  ps -ef | grep PsmSsp | grep -v grep")
+        tdkTestObj.addParameter("command", "killall PsmSsp;  ps | grep PsmSsp | grep -v grep")
         tdkTestObj.executeTestCase("SUCCESS");
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip()
@@ -130,7 +130,7 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
     #wait for PsmSsp prcs to start
     sleep(1800)
     tdkTestObj = sysObj.createTestStep('ExecuteCmd');
-    tdkTestObj.addParameter("command", " ps -ef | grep -i PsmSsp | grep -v grep")
+    tdkTestObj.addParameter("command", " ps | grep -i PsmSsp | grep -v grep")
     tdkTestObj.executeTestCase("SUCCESS");
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails().strip()
