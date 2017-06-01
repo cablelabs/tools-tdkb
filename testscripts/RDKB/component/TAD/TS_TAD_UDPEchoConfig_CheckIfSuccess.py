@@ -243,6 +243,46 @@ if "SUCCESS" in loadmodulestatus.upper() and sysloadmodulestatus.upper():
                         		        print "ACTUAL RESULT 6:\n Bytes recieved : "+bytes_rcvd+" \n Packets received : "+pkts_rcvd+" \n Packets responded : "+pkts_rspnd+" \n Bytes responded : "+bytes_rspnd+" \n TimeFirstPacketReceived : "+Time_rcvd+" \n TimeLastPacketReceived : "+Time_rspnd;
                         		        #Get the result of execution
                         		        print "[TEST EXECUTION RESULT] : FAILURE";
+					else:
+					    #Set the result status of execution
+                                            tdkTestObj.setResultStatus("FAILURE");
+                                            print "TEST STEP 6: Check if Time received is updated";
+                                            print "EXPECTED RESULT 6: Time received should be updated";
+                                            print "ACTUAL RESULT 6:Failed to update the time";
+                                            #Get the result of execution
+                                            print "[TEST EXECUTION RESULT] : FAILURE";
+				    else:
+					#Set the result status of execution
+                                        tdkTestObj.setResultStatus("FAILURE");
+                                        print "TEST STEP 6: Check if bytes responded is updated";
+                                        print "EXPECTED RESULT 6: Bytes responded should be updated";
+                                        print "ACTUAL RESULT 6:Failed to update the bytes responded";
+                                        #Get the result of execution
+                                        print "[TEST EXECUTION RESULT] : FAILURE";
+				else:
+				    #Set the result status of execution
+                                    tdkTestObj.setResultStatus("FAILURE");
+                                    print "TEST STEP 6: Check if packets responded is updated";
+                                    print "EXPECTED RESULT 6: packets responded should be updated";
+                                    print "ACTUAL RESULT 6:Failed to update the packets responded";
+                                    #Get the result of execution
+                                    print "[TEST EXECUTION RESULT] : FAILURE";
+			    else:
+				#Set the result status of execution
+                                tdkTestObj.setResultStatus("FAILURE");
+                                print "TEST STEP 6: Check if packets received is updated";
+                                print "EXPECTED RESULT 6: packets received should be updated";
+                                print "ACTUAL RESULT 6:Failed to update the packets received";
+                                #Get the result of execution
+                                print "[TEST EXECUTION RESULT] : FAILURE";
+			else:
+			    #Set the result status of execution
+                            tdkTestObj.setResultStatus("FAILURE");
+                            print "TEST STEP 6: Check if bytes received is updated";
+                            print "EXPECTED RESULT 6: bytes received should be updated";
+                            print "ACTUAL RESULT 6:Failed to update the bytes received";
+                            #Get the result of execution
+                            print "[TEST EXECUTION RESULT] : FAILURE";
 		    else:
 			#Set the result status of execution
                         tdkTestObj.setResultStatus("FAILURE");
