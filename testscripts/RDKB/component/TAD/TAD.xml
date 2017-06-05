@@ -34,6 +34,14 @@
           <parameter name="Type" value="null"/>
         </parameters>
       </primitiveTest>
+      <primitiveTest name="TADstub_SetDiagnosticsState" id=" " version="1">
+        <function>TADstub_SetDiagnosticsState</function>
+        <parameters>
+          <parameter name="ParamName" value="null"/>
+          <parameter name="ParamValue" value="null"/>
+          <parameter name="Type" value="null"/>
+        </parameters>
+      </primitiveTest>
       <primitiveTest id=" " name="TADstub_GetCfg" version="1">
         <function>TADstub_GetCfg</function>
         <parameters>

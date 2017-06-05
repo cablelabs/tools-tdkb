@@ -47,12 +47,12 @@
     <test_setup>XB3,Emulator</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components.
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
-    <api_or_interface_used>TADstub_Set,TADstub_Get</api_or_interface_used>
+    <api_or_interface_used>TADstub_Set,TADstub_Get,TADstub_SetDiagnosticsState</api_or_interface_used>
     <input_parameters>Device.DNS.Diagnostics.NSLookupDiagnostics.Interface
 Device.DNS.Diagnostics.NSLookupDiagnostics.HostName
 Device.DNS.Diagnostics.NSLookupDiagnostics.DiagnosticsState</input_parameters>
 <automation_approch>1. Load  TAD modules
-2. From script invoke TADstub_Set to set all the NSLookup parameters except Interface
+2. From script invoke TADstub_Set to set hostname of the NSLookup and invoke TADstub_SetDiagnosticsState to set the diagnostics state
 3. After setting all the writable parameters except Interface ,check the success count
 4. check whether the success count is greater than zero
 5. Validation of  the result is done within the python script and send the result status to Test Manager.
@@ -138,7 +138,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : SUCCESS";
 
-                tdkTestObj = obj.createTestStep('TADstub_Set');
+                tdkTestObj = obj.createTestStep('TADstub_SetDiagnosticsState');
                 tdkTestObj.addParameter("ParamName","Device.DNS.Diagnostics.NSLookupDiagnostics.DiagnosticsState");
                 tdkTestObj.addParameter("ParamValue","Requested");
                 tdkTestObj.addParameter("Type","string");

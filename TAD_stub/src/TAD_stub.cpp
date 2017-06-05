@@ -58,13 +58,14 @@ bool TADstub::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     /*Register stub function for callback*/
     ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Get, "TADstub_Get");
     ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Set, "TADstub_Set");
+    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_SetDiagnosticsState, "TADstub_SetDiagnosticsState");
     ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Init, "TADstub_Init");
     ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Start, "TADstub_Start");
     ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Stop, "TADstub_Stop");
     ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_SetCfg, "TADstub_SetCfg");
     ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_GetCfg, "TADstub_GetCfg");
     ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_GetState, "TADstub_GetState");
-
+    
     return TEST_SUCCESS;
 
 }
@@ -222,6 +223,43 @@ bool TADstub::TADstub_Set(IN const Json::Value& req, OUT Json::Value& response)
 }
 
 
+/***************************************************************************
+ *Function name : TADstub_SetDiagnosticsState
+ *Descrption    : TAD Component SetDiagnosticsState API functionality checking
+ * @param [in]  req - ParamName : Holds the name of the parameter
+ * @param [in]  req - ParamValue : Holds the value of the parameter
+ * @param [in]  req - Type : Holds the Type of the parameter
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+bool TADstub::TADstub_SetDiagnosticsState(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"TADstub_SetDiagnosticsState --->Entry \n");
+
+    int setResult=0;
+    char ParamName[MAX_PARAM_SIZE];
+    char ParamValue[MAX_PARAM_SIZE];
+    char Type[MAX_PARAM_SIZE];
+    strcpy(ParamName,req["ParamName"].asCString());
+    strcpy(ParamValue,req["ParamValue"].asCString());
+    strcpy(Type,req["Type"].asCString());
+ 
+    setResult=ssp_setParameterValue(&ParamName[0],&ParamValue[0],&Type[0],1);
+    if(setResult==0)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"Parameter Values have been set.\n");
+        response["result"] = "SUCCESS";
+        response["details"] = "Set has been validated successfully";
+        return TEST_SUCCESS;
+    }
+    else
+    {
+        response["result"] = "FAILURE";
+        response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
+        return TEST_FAILURE;
+    }
+}
+    
 /*******************************************************************************************
  *
  * Function Name        : TADstub_Init
@@ -454,13 +492,14 @@ bool TADstub::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
 
     ptrAgentObj->UnregisterMethod("TADstub_Get");
     ptrAgentObj->UnregisterMethod("TADstub_Set");
+    ptrAgentObj->UnregisterMethod("TADstub_SetDiagnosticsState");
     ptrAgentObj->UnregisterMethod("TADstub_Init");
     ptrAgentObj->UnregisterMethod("TADstub_Start");
     ptrAgentObj->UnregisterMethod("TADstub_Stop");
     ptrAgentObj->UnregisterMethod("TADstub_GetCfg");
     ptrAgentObj->UnregisterMethod("TADstub_SetCfg");
     ptrAgentObj->UnregisterMethod("TADstub_GetState");
-
+   
     return TEST_SUCCESS;
 }
 

@@ -54,6 +54,7 @@ class TADstub : public RDKTestStubInterface
         /*CM Agent Stub Wrapper functions*/
         bool TADstub_Get(IN const Json::Value& req, OUT Json::Value& response);
         bool TADstub_Set(IN const Json::Value& req, OUT Json::Value& response);
+        bool TADstub_SetDiagnosticsState(IN const Json::Value& req, OUT Json::Value& response);
         bool TADstub_Init(IN const Json::Value& req, OUT Json::Value& response);
         bool TADstub_Start(IN const Json::Value& req, OUT Json::Value& response);
         bool TADstub_Stop(IN const Json::Value& req, OUT Json::Value& response);
