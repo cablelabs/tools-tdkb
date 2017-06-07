@@ -49,7 +49,7 @@ class Mocastub : public RDKTestStubInterface
         /*Moca stub Wrapper functions*/
         bool Mocastub_Get(IN const Json::Value& req, OUT Json::Value& response);
         bool Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response);
-
+	bool Mocastub_SetKeypassphrase(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__CMAGENT_STUB_H__
 

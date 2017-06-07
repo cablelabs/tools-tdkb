@@ -44,6 +44,7 @@ bool Mocastub::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     /*Register stub function for callback*/
     ptrAgentObj->RegisterMethod(*this,&Mocastub::Mocastub_Get, "Mocastub_Get");
     ptrAgentObj->RegisterMethod(*this,&Mocastub::Mocastub_Set, "Mocastub_Set");
+    ptrAgentObj->RegisterMethod(*this,&Mocastub::Mocastub_SetKeypassphrase, "Mocastub_SetKeypassphrase");
     return TEST_SUCCESS;
 }
 /***************************************************************************
@@ -177,6 +178,41 @@ bool Mocastub::Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response
     return TEST_FAILURE;
 }
 
+/***************************************************************************
+ *Function name : Mocastub_SetKeypassphrase
+ *Descrption    : Moca Component Set Param Value API functionality checking
+ * @param [in]  req - ParamName : Holds the name of the parameter
+ * @param [in]  req - ParamValue : Holds the value of the parameter
+ * @param [in]  req - Type : Holds the Type of the parameter
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *****************************************************************************/
+bool Mocastub::Mocastub_SetKeypassphrase(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"Mocastub_SetKeypassphrase --->Entry \n");
+    int setResult=0;
+    char ParamName[MAX_PARAM_SIZE];
+    char ParamValue[MAX_PARAM_SIZE];
+    char Type[MAX_PARAM_SIZE];
+    strcpy(ParamName,req["ParamName"].asCString());
+    strcpy(ParamValue,req["ParamValue"].asCString());
+    strcpy(Type,req["Type"].asCString());
+    setResult=ssp_setParameterValue(&ParamName[0],&ParamValue[0],&Type[0],1);
+    if(setResult==0)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"New Parameter Values have been set.\n");
+       response["result"] = "SUCCESS";
+        response["details"] = "Set has been validated successfully";
+       return TEST_SUCCESS;
+    }
+    else
+    {
+        response["result"] = "FAILURE";
+        response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
+        return TEST_FAILURE;
+    }
+}
+
 /**************************************************************************
  * Function Name        : CreateObject
  * Description  : This function will be used to create a new object for the
@@ -202,6 +238,7 @@ bool Mocastub::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     /*unRegister stub function for callback*/
     ptrAgentObj->UnregisterMethod("Mocastub_Get");
     ptrAgentObj->UnregisterMethod("Mocastub_Set");
+    ptrAgentObj->UnregisterMethod("Mocastub_SetKeypassphrase");
     return TEST_SUCCESS;
 }
 /**************************************************************************

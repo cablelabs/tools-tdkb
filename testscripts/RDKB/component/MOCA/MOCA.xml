@@ -25,12 +25,20 @@
           <parameter name="paramName" value="null"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="Mocastub_Set" id=" " version="2">
+      <primitiveTest id=" " name="Mocastub_Set" version="2">
         <function>Mocastub_Set</function>
         <parameters>
           <parameter name="Type" value="null"/>
           <parameter name="ParamName" value="null"/>
           <parameter name="ParamValue" value="null"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="Mocastub_SetKeypassphrase" id=" " version="1">
+        <function>Mocastub_SetKeypassphrase</function>
+        <parameters>
+          <parameter name="ParamName" value="null"/>
+          <parameter name="ParamValue" value="null"/>
+          <parameter name="Type" value="null"/>
         </parameters>
       </primitiveTest>
     </primitiveTests>

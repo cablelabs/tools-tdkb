@@ -106,7 +106,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT 1: The KeyPassphrase is :%s" %Password;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
-        tdkTestObj = obj.createTestStep('Mocastub_Set');
+        tdkTestObj = obj.createTestStep('Mocastub_SetKeypassphrase');
         tdkTestObj.addParameter("ParamName","Device.MoCA.Interface.1.KeyPassphrase");
         tdkTestObj.addParameter("ParamValue","12345678901234567890");
         tdkTestObj.addParameter("Type","string");
@@ -133,7 +133,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
         #setting the default password
-        tdkTestObj = obj.createTestStep('Mocastub_Set');
+        tdkTestObj = obj.createTestStep('Mocastub_SetKeypassphrase');
         tdkTestObj.addParameter("ParamName","Device.MoCA.Interface.1.KeyPassphrase");
         tdkTestObj.addParameter("ParamValue",Password);
         tdkTestObj.addParameter("Type","string");
