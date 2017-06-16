@@ -17,7 +17,7 @@
  * limitations under the License.
 */
 #include "RDKLoggerAgent.h"
-bool b_rdk_logger_enabled = false;
+bool b_rdk_logger_enabled = true;
 string g_tdkPath = getenv("TDK_LOGGER_PATH");
 string tdkDebugIniFile = g_tdkPath + "/" + DEBUG_CONF;
 string log_path = getenv("LOG_PATH");
@@ -227,23 +227,6 @@ std::string RDKBLoggerAgent::testmodulepre_requisites()
 {
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Entry\n");
 
-	// Make a copy of debug.ini file for testing
-        if (false == createTdkDebugIniFile())
-        {
-                return "FAILURE<DETAILS>Failed to create test conf file";
-        }
-
-	DEBUG_PRINT(DEBUG_TRACE, "Init rdk logger success\n");
-        // Initialize the temp conf file
-	rdk_Error ret = rdk_logger_init(tdkDebugIniFile.c_str());
-        if ( RDK_SUCCESS != ret)
-        {
-                DEBUG_PRINT(DEBUG_TRACE, "Failed to init rdk logger. ErrCode = %d\n", ret);
-		DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Exit\n");
-		return "FAILURE<DETAILS>Failed to init rdk logger";
-        }
-	b_rdk_logger_enabled = true;
-
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Exit\n");
         return "SUCCESS";
 }
@@ -256,18 +239,6 @@ std::string RDKBLoggerAgent::testmodulepre_requisites()
 bool RDKBLoggerAgent::testmodulepost_requisites()
 {
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule post_requisites --> Entry\n");
-
-	// Remove the local copy of debug.ini file
-	if( remove( tdkDebugIniFile.c_str() ) != 0 )
-	{
-		DEBUG_PRINT(DEBUG_ERROR,"\n%s: Error deleting file %s\n", __FUNCTION__,tdkDebugIniFile.c_str());
-		DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule post requisites --> Exit");
-		return TEST_FAILURE;
-	}
-  	else
-	{
-		DEBUG_PRINT(DEBUG_TRACE, "%s file successfully deleted\n", tdkDebugIniFile.c_str());
-	}
 
 #if 0
         // De-Initialize rdklogger

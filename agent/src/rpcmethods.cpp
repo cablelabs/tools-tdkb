@@ -52,7 +52,7 @@ std::string GetSubString (std::string strLine, std::string strDelimiter);
 #define BUFFER_SIZE   64       // Maximum size of buffer
 #define LINE_LEN      128
 
-#define TDK_ENABLE_FILE "/opt/.tdkenable"                            // File to check if TDK is enabled
+#define TDK_ENABLE_FILE "/nvram/.tdkenable"                            // File to check if TDK is enabled
 #define DEVICE_LIST_FILE     "devicesFile.ini"                 	// File to populate connected devices
 #define CRASH_STATUS_FILE    "crashStatus.ini"                  // File to store test details on a device crash
 #define REBOOT_CONFIG_FILE   "rebootconfig.ini"                 // File to store the state of test before reboot 
@@ -1464,7 +1464,7 @@ bool RpcMethods::RPCResetAgent (const Json::Value& request, Json::Value& respons
     cout << "Received query: \n" << request << endl;
 
     /* Extracting path to file */
-    strFilePath= getenv ("TDK_PATH");
+    strFilePath= getenv ("TDK_LOGGER_PATH");
     strFilePath.append("/");
     strFilePath.append(MODULE_LIST_FILE);
 

@@ -42,6 +42,8 @@
 /* Application Includes */
 #include "rpcmethods.h"
 #include "rdktestagentintf.h"
+#include "rdk_debug.h"
+#include "rdk_utils.h"
 
 /* Constants */
 #define DEVICE_INFO_SUCCESS 0
@@ -59,6 +61,7 @@
 
 #define CRASH_STATUS_FILE "crashStatus.ini"
 #define FLUSH_IP_TABLE "sh $TDK_PATH/flush_iptables.sh"
+#define DEBUG_CONF      "debug.ini"
 
 using namespace std;
 using namespace Json;
@@ -111,6 +114,9 @@ const char* RpcMethods::sm_szBoxInterface = NULL;
 FILE* RpcMethods::sm_pLogStream = NULL;
 std::string RpcMethods::sm_strLogFolderPath = "";
 std::string RpcMethods::sm_strTDKPath = "";
+
+string g_tdkPath = getenv("TDK_LOGGER_PATH");
+string tdkDebugIniFile = g_tdkPath + "/" + DEBUG_CONF;
 
 /********************************************************************************************************************
  Purpose:                To get a substring seperated by a delimiter.
@@ -1134,6 +1140,82 @@ int AgentMonitor (char **pProcessName, int nProcessNameSize)
 } /* End of AgentMonitor */
 
 
+/********************************************************************************************************************
+ Description:           createTdkDebugIniFile - Create debug.ini under /nvram which includes TEST module
+
+ Parameters:            enableMPELog - Always true
+
+ Return:                bool - Success/Failure
+
+ Other Methods used:    main()
+
+*********************************************************************************************************************/
+bool createTdkDebugIniFile(bool enableMPELog=true)
+{
+        // Make a copy of debug.ini file for testing
+        ifstream  src(DEBUG_CONF_FILE, ios::binary);
+        ofstream  dst(tdkDebugIniFile, ios::binary);
+        if(!src || !dst)
+        {
+            DEBUG_PRINT(DEBUG_TRACE, "Error opening files!\n");
+            return false;
+        }
+        if (!enableMPELog)
+        {
+            //Disable MPEOS debug support
+            string strTemp;
+            while(getline(src,strTemp)){
+                if (strTemp.find("EnableMPELog = TRUE") != std::string::npos) {
+                    dst << "EnableMPELog = FALSE" << endl;
+                }
+                else {
+                    dst << strTemp << endl;
+                }
+            }
+        }
+        else
+        {
+            dst << src.rdbuf();
+        }
+        src.close();
+        dst.close();
+        // Now edit temp debug.ini file to add modules and env variables
+        // for simulating test scenarios
+        fstream debugFile;
+        string line;
+        debugFile.open (tdkDebugIniFile, ios::in | ios::out | ios::app);
+        if (debugFile.is_open())
+        {
+            debugFile << "LOG.RDK.TEST = ALL DEBUG TRACE" << endl;
+            debugFile << "LOG.RDK.TEST1 = ALL DEBUG TRACE" << endl;
+            debugFile << "LOG.RDK.TEST2 = NONE ALL" << endl;
+            debugFile << "LOG.RDK.TEST3 = ALL NONE" << endl;
+            debugFile << "LOG.RDK.TEST4 = TRACE" << endl;
+            debugFile << "LOG.RDK.TEST5 = !TRACE" << endl;
+            debugFile << "LOG.RDK.TEST6 = " << endl;
+            //Print temp debug.ini file contents
+            debugFile.clear();                  // clear fail and eof bits
+            debugFile.seekg(0, ios::beg);       // back to the start!
+            DEBUG_PRINT(DEBUG_TRACE, "\n==== Start %s ====================\n", tdkDebugIniFile.c_str());
+            while(debugFile.good())
+            {
+                    getline(debugFile,line);
+                    // Ignore commented lines
+                    if (line[0] == '#')
+                        continue;
+                    DEBUG_PRINT(DEBUG_TRACE, "%s", line.c_str());
+            }
+            DEBUG_PRINT(DEBUG_TRACE, "\n====== End %s ====================\n\n", tdkDebugIniFile.c_str());
+            // end of printing temp debug.ini
+            debugFile.close();
+        }
+        else
+        {
+                DEBUG_PRINT(DEBUG_ERROR,"\n%s: Unable to create test conf file %s\n",__FUNCTION__,tdkDebugIniFile.c_str());
+                return false;
+        }
+        return true;
+}
 
 /********************************************************************************************************************
  Description:           main function. Starts agent monitoring.
@@ -1215,6 +1297,21 @@ int main(int argc, char **argv)
     {
         DEBUG_PRINT (DEBUG_TRACE, "Alert!!! Unable to create logs folder \n");
     }
+
+    if (false == createTdkDebugIniFile())
+    {
+        DEBUG_PRINT (DEBUG_TRACE, "Alert!!! Failed to create TDK debug.ini file\n");
+    }
+
+    DEBUG_PRINT(DEBUG_TRACE, "Created TDK debug.ini file successfully\n");
+
+    nReturnValue = rdk_logger_init(tdkDebugIniFile.c_str());
+    if (nReturnValue != RETURN_SUCCESS)
+    {
+         DEBUG_PRINT(DEBUG_TRACE, "Alert!!! Failed to init rdk logger. ErrCode = %d\n", nReturnValue);
+    }
+
+    DEBUG_PRINT (DEBUG_LOG, "Intialized RDK Logger for TDK process\n");
 
     /* Starting agent monitor */
     nReturnValue = AgentMonitor (argv, nProcessNameSize);
