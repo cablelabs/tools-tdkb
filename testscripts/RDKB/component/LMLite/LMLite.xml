@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+  <module name="LMLite" testGroup="Component">
+    <primitiveTests>
+      <primitiveTest id="" name="LMLiteStub_Get" version="1">
+        <function>LMLiteStub_Get</function>
+        <parameters>
+          <parameter name="paramName" value="null"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="LMLiteStub_Set" id=" " version="2">
+        <function>LMLiteStub_Set</function>
+        <parameters>
+          <parameter name="ParamName" value="null"/>
+          <parameter name="ParamValue" value="null"/>
+          <parameter name="Type" value="null"/>
+        </parameters>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>

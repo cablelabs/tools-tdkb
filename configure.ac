@@ -115,5 +115,6 @@ AC_CONFIG_FILES([Makefile
 	 SysUtil_stub/Makefile
          RDKLogger_stub/Makefile
 	 TAD_stub/Makefile
-	 Moca_Stub/Makefile])
+	 Moca_Stub/Makefile
+	 LMLite_Stub/Makefile])
 AC_OUTPUT
