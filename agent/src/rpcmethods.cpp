@@ -1464,7 +1464,7 @@ bool RpcMethods::RPCResetAgent (const Json::Value& request, Json::Value& respons
     cout << "Received query: \n" << request << endl;
 
     /* Extracting path to file */
-    strFilePath= getenv ("TDK_PATH");
+    strFilePath= getenv ("TDK_LOGGER_PATH");
     strFilePath.append("/");
     strFilePath.append(MODULE_LIST_FILE);
 

@@ -227,6 +227,11 @@ std::string RDKBLoggerAgent::testmodulepre_requisites()
 {
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Entry\n");
 
+/* Current RDK-B design does not allow multiple logger init and option to override debug.ini
+* file location. This code section will be enabled when the above feature is supported. Until then
+* rdk logger initialization will be handled as part of TDK process initialization.
+*/
+#if 0
 	// Make a copy of debug.ini file for testing
         if (false == createTdkDebugIniFile())
         {
@@ -242,6 +247,7 @@ std::string RDKBLoggerAgent::testmodulepre_requisites()
 		DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Exit\n");
 		return "FAILURE<DETAILS>Failed to init rdk logger";
         }
+#endif
 	b_rdk_logger_enabled = true;
 
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule pre_requisites --> Exit\n");
@@ -257,6 +263,11 @@ bool RDKBLoggerAgent::testmodulepost_requisites()
 {
 	DEBUG_PRINT(DEBUG_TRACE, "RDKlogger testmodule post_requisites --> Entry\n");
 
+/* Current RDK-B design does not allow multiple logger init and option to override debug.ini
+* file location. This code section will be enabled when the above feature is supported. Until then
+* rdk logger initialization will be handled as part of TDK process initialization.
+*/
+#if 0
 	// Remove the local copy of debug.ini file
 	if( remove( tdkDebugIniFile.c_str() ) != 0 )
 	{
@@ -268,6 +279,7 @@ bool RDKBLoggerAgent::testmodulepost_requisites()
 	{
 		DEBUG_PRINT(DEBUG_TRACE, "%s file successfully deleted\n", tdkDebugIniFile.c_str());
 	}
+#endif
 
 #if 0
         // De-Initialize rdklogger

@@ -54,6 +54,9 @@ PCCSP_CCD_INTERFACE             pPnmCcdIf               = (PCCSP_CCD_INTERFACE  
 PCCC_MBI_INTERFACE              pPnmMbiIf               = (PCCC_MBI_INTERFACE         )NULL;
 BOOL                            g_bActive               = FALSE;
 
+#define DEBUG_INI_NAME "/etc/debug.ini"
+char tdkDebugIniFile[100] = {0};
+
 int  cmd_dispatch(int  command)
 {
     ULONG                           ulInsNumber        = 0;
@@ -306,6 +309,79 @@ static int is_core_dump_opened(void)
 #endif
 
 
+/***************************************************************************
+ *Function name : createTdkDebugIniFile
+ *Descrption    : Create TEST module in debug.ini for TDK testing
+ *
+ *****************************************************************************/
+bool createTdkDebugIniFile()
+{
+   printf("Entering createTdkDebugIniFile\n");
+
+   int buf;
+   FILE *src, *dst;
+   char *g_tdkPath;
+   char buffer[200]= {"LOG.RDK.TEST = ALL DEBUG TRACE\n\
+LOG.RDK.TEST1 = ALL DEBUG TRACE\n\
+LOG.RDK.TEST2 = NONE ALL\n\
+LOG.RDK.TEST3 = ALL NONE\n\
+LOG.RDK.TEST4 = TRACE\n\
+LOG.RDK.TEST5 = !TRACE\n\
+LOG.RDK.TEST6 =\n"};
+
+   /* Open /etc/debug.ini to read the content */
+   src = fopen(DEBUG_INI_NAME, "r");
+
+   if( src == NULL )
+   {
+      printf("Failed to open the src file:%s\n",DEBUG_INI_NAME);
+      return false;
+   }
+
+   /* Get the logger path where debug.ini for TDK testing to be created */
+   g_tdkPath=getenv("TDK_LOGGER_PATH");
+
+   strcpy(tdkDebugIniFile,g_tdkPath);
+   strcat(tdkDebugIniFile,"/debug.ini");
+
+   printf("TDK debug file:%s\n",tdkDebugIniFile);
+
+   /* Open the TDK debug.ini file to copy the /etc/debug.ini file content */
+   dst = fopen(tdkDebugIniFile, "w");
+
+   if( dst == NULL )
+   {
+      fclose(src);
+      printf("Failed to open the target file:%s\n",tdkDebugIniFile);
+      return false;
+   }
+
+   /* Write the file content of /etc/debug.ini to TDK debug.ini */
+   while( ( buf = fgetc(src) ) != EOF )
+   {
+      fputc(buf, dst);
+   }
+
+   fclose(src);
+   fclose(dst);
+
+   /* Open the TDK debug.ini to append TEST module log levels */
+   dst = fopen(tdkDebugIniFile, "a");
+   if( dst == NULL )
+   {
+      printf("Failed to open the file:%s\n",tdkDebugIniFile);
+      return false;
+   }
+
+   fputs(buffer, dst);
+
+   fclose(dst);
+
+   printf("Exiting createTdkDebugIniFile\n");
+
+   return true;
+}
+
 int ssp_register(bool bexecVal)
 {
 
@@ -319,10 +395,30 @@ int ssp_register(bool bexecVal)
     DmErr_t                         err;
     char                            *subSys            = NULL;
     extern ANSC_HANDLE bus_handle;
+    int nReturnValue = 0;
 
     printf("\n***************************************** \n");
     printf("\n Entering ssp register TDK Main function\n");
     printf("\n***************************************** \n");
+
+    /* Invoke createTdkDebugIniFile to create debug.ini for TDK testing */
+    if (false == createTdkDebugIniFile())
+    {
+         return 1;
+    }
+
+    printf("Created debug.ini with TEST modules\n");
+
+    /* Initialize logger for TDK testing */
+    nReturnValue = rdk_logger_init(tdkDebugIniFile);
+    if (nReturnValue != 0)
+    {
+         printf("Alert!!! Failed to init rdk logger. ErrCode = %d\n", nReturnValue);
+    }
+    else
+    {
+         printf("Initialized RDK Logger\n");
+    }
 
     if(SSP_STOP == (int)bexecVal)
     {
