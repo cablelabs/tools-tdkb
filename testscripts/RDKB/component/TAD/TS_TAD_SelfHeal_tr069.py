@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>3</version>
+  <version>6</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_TAD_SelfHeal_tr069</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -49,6 +49,10 @@
   <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
+    <box_type>Emulator</box_type>
+    <!--  -->
+    <box_type>RPI</box_type>
     <!--  -->
   </box_types>
   <rdk_versions>
@@ -87,10 +91,13 @@ sysutil</test_stub_interface>
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 from time import sleep;
+from tdkbVariables import *;
+
+MAX_RETRY = 6;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("tad","1");
-sysObj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
+sysObj = tdklib.TDKScriptingLibrary("sysutil","RDKB")
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -99,7 +106,7 @@ port = <port>
 obj.configureTestCase(ip,port,'TS_TAD_SelfHeal_tr069');
 sysObj.configureTestCase(ip,port,'TS_TAD_SelfHeal_tr069');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus1 =obj.getLoadModuleResult();
 loadmodulestatus2 =sysObj.getLoadModuleResult();
 
@@ -109,54 +116,89 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
     obj.setLoadModuleStatus("SUCCESS");
     sysObj.setLoadModuleStatus("SUCCESS");
 
+    # Check whether the process is running
+    query="sh %s/tdk_platform_utility.sh checkProcess CcspTr069PaSsp" %TDK_PATH
+    print "query:%s" %query
     tdkTestObj = sysObj.createTestStep('ExecuteCmd');
-    tdkTestObj.addParameter("command", " ps | grep -i CcspTr069PaSsp | grep -v grep")
+    tdkTestObj.addParameter("command", query)
     expectedresult="SUCCESS";
 
-    #Execute the test case in STB
-    tdkTestObj.executeTestCase("expectedresult");
+    #Execute the test case in DUT
+    tdkTestObj.executeTestCase("SUCCESS");
     actualresult = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails().strip()
+    pid = tdkTestObj.getResultDetails().strip()
+    print "CcspTr069PaSsp PID: %s" %pid
 
-    if expectedresult in actualresult and details:
+    if expectedresult in actualresult and pid:
         print "TEST STEP 1:Check if CcspTr069PaSsp process is running"
         print "EXPECTED RESULT 1: CcspTr069PaSsp should be running";
         print "ACTUAL RESULT 1: CcspTr069PaSsp process is running"
         tdkTestObj.setResultStatus("SUCCESS");
 
-        tdkTestObj.addParameter("command", "killall CcspTr069PaSsp;  ps | grep CcspTr069PaSsp | grep -v grep")
-        tdkTestObj.executeTestCase("expectedresult");
+        # Kill the process
+        query="sh %s/tdk_platform_utility.sh killProcess CcspTr069PaSsp" %TDK_PATH
+        print "query:%s" %query
+        tdkTestObj.addParameter("command", query)
+        tdkTestObj.executeTestCase("SUCCESS");
         actualresult = tdkTestObj.getResult();
-        details = tdkTestObj.getResultDetails().strip()
-
-        if expectedresult in actualresult :
+        result = tdkTestObj.getResultDetails().strip()
+        if expectedresult in actualresult:
             print "TEST STEP 1:Kill CcspTr069PaSsp process"
-            print "EXPECTED RESULT 1: CcspTr069PaSsp should not be running";
-            print "ACTUAL RESULT 1: CcspTr069PaSsp process is not running"
+            print "EXPECTED RESULT 1: CcspTr069PaSsp should be killed";
+            print "ACTUAL RESULT 1: CcspTr069PaSsp should be killed"
             tdkTestObj.setResultStatus("SUCCESS");
+
+            #check whether the process is restarted automatically
+            query="sh %s/tdk_platform_utility.sh checkProcess CcspTr069PaSsp" %TDK_PATH
+            print "query:%s" %query
+            tdkTestObj = sysObj.createTestStep('ExecuteCmd');
+            tdkTestObj.addParameter("command", query)
+            expectedresult="SUCCESS";
+
+            print "Check for every 10 secs whether the process is up"
+            retryCount = 0;
+            while retryCount < MAX_RETRY:
+                tdkTestObj.executeTestCase("SUCCESS");
+                actualresult = tdkTestObj.getResult();
+                pid = tdkTestObj.getResultDetails().strip();
+                if expectedresult in actualresult and pid:
+                    break;
+                else:
+                    sleep(10);
+                    retryCount = retryCount + 1;
+
+            if not pid:
+                print "Retry Again: Check for every 5 mins whether the process is up"
+                retryCount = 0;
+                while retryCount < MAX_RETRY:
+                    tdkTestObj.executeTestCase("SUCCESS");
+                    actualresult = tdkTestObj.getResult();
+                    pid = tdkTestObj.getResultDetails().strip();
+                    if expectedresult in actualresult and pid:
+                        break;
+                    else:
+                        sleep(300);
+                        retryCount = retryCount + 1;
+
+            if expectedresult in actualresult and pid:
+                print "TEST STEP 3:Check if CcspTr069PaSsp process is running"
+                print "EXPECTED RESULT 3: CcspTr069PaSsp should be running";
+                print "ACTUAL RESULT 3: CcspTr069PaSsp process is running"
+                print "CcspTr069PaSsp PID: %s" %pid
+                tdkTestObj.setResultStatus("SUCCESS");
+            else:
+                print "TEST STEP 3:Check if CcspTr069PaSsp process is running"
+                print "EXPECTED RESULT 3: CcspTr069PaSsp should be running";
+                print "ACTUAL RESULT 3: CcspTr069PaSsp process is not running"
+                tdkTestObj.setResultStatus("FAILURE");
+                # Initiate reboot if process is not restarted automatically
+                obj.initiateReboot();
+			
         else:
             print "TEST STEP 1:Kill CcspTr069PaSsp process"
-            print "EXPECTED RESULT 1: CcspTr069PaSsp should not be running";
-            print "ACTUAL RESULT 1: CcspTr069PaSsp process is running"
+            print "EXPECTED RESULT 1: CcspTr069PaSsp should be killed";
+            print "ACTUAL RESULT 1: CcspTr069PaSsp not killed"
             tdkTestObj.setResultStatus("FAILURE");
-    else:
-        print "TEST STEP 1:Check if CcspTr069PaSsp process is running"
-        print "EXPECTED RESULT 1: CcspTr069PaSsp should be running";
-        print "ACTUAL RESULT 1: CcspTr069PaSsp process is not running"
-        tdkTestObj.setResultStatus("SUCCESS");
-
-    #wait for CcspTr069PaSsp prcs to start
-    sleep(1800)
-    tdkTestObj.addParameter("command", " ps | grep -i CcspTr069PaSsp | grep -v grep")
-    tdkTestObj.executeTestCase("expectedresult");
-    actualresult = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails().strip()
-
-    if expectedresult in actualresult and details:
-        print "TEST STEP 1:Check if CcspTr069PaSsp process is running"
-        print "EXPECTED RESULT 1: CcspTr069PaSsp should be running";
-        print "ACTUAL RESULT 1: CcspTr069PaSsp process is running"
-        tdkTestObj.setResultStatus("SUCCESS");
     else:
         print "TEST STEP 1:Check if CcspTr069PaSsp process is running"
         print "EXPECTED RESULT 1: CcspTr069PaSsp should be running";
@@ -170,8 +212,3 @@ else:
     obj.setLoadModuleStatus("FAILURE");
     sysObj.setLoadModuleStatus("FAILURE");
     print "Module loading FAILURE";
-
-
-					
-
-					
