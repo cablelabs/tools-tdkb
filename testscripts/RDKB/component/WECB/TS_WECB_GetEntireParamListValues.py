@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>6</version>
+  <version>7</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_WECB_GetEntireParamListValues</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -40,10 +40,12 @@
   <execution_time>1</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
+  <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
+  <remarks>Support for WECB feature removed from RDKB. This will be replaced by Plume</remarks>
   <!-- Reason for skipping the tests if marked to skip -->
-  <skip>false</skip>
+  <skip>true</skip>
   <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
@@ -53,6 +55,23 @@
     <rdk_version>RDKB</rdk_version>
     <!--  -->
   </rdk_versions>
+  <test_cases>
+    <test_case_id></test_case_id>
+    <test_objective></test_objective>
+    <test_type></test_type>
+    <test_setup></test_setup>
+    <pre_requisite></pre_requisite>
+    <api_or_interface_used></api_or_interface_used>
+    <input_parameters></input_parameters>
+    <automation_approch></automation_approch>
+    <except_output></except_output>
+    <priority></priority>
+    <test_stub_interface></test_stub_interface>
+    <test_script></test_script>
+    <skipped></skipped>
+    <release_version></release_version>
+    <remarks></remarks>
+  </test_cases>
   <script_tags />
 </xml>
 '''
