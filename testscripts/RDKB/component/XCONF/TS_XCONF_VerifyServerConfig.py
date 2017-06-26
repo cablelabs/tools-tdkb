@@ -98,6 +98,9 @@ if "SUCCESS" in result.upper() :
     obj.setLoadModuleStatus("SUCCESS");
     expectedresult = "SUCCESS"
 
+    ####Override server url to be used as the mock server url
+    actualresult, xconfFile = xconfUtilityLib.overrideServerUrl(obj, CDN_MOC_SERVER);
+
     ################get JSON response file name from tdk_platform.properties
     actualresult, propVal = xconfUtilityLib.GetPlatformProperties(obj, "FWDL_RESPONSE");
     if expectedresult in actualresult:
@@ -226,6 +229,10 @@ if "SUCCESS" in result.upper() :
         print "EXPECTED RESULT 6: Should find the pattern in the logs"
         print "ACTUAL RESULT 6: is %s " %details
         print "[TEST EXECUTION RESULT] : FAILURE"
+
+    ###########restore the override file
+    xconfUtilityLib.restoreOverrideFile(obj, xconfFile);
+
     obj.unloadModule("sysutil");
 else:
     print"Load module failed";

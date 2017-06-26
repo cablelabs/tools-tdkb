@@ -17,61 +17,75 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>1</version>
-  <name>TS_XCONF_TFTPDownloadProtocol</name>
-  <primitive_test_id/>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>2</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
+  <name>TS_XCONF_EmptyFirmwareName</name>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>XCONF_DoNothing</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
-  <synopsis>Test if on configuring download protocol as tftp, client is going for retry 3 times</synopsis>
-  <groups_id/>
-  <execution_time>15</execution_time>
+  <!--  -->
+  <synopsis>Test by setting empty firmware name in xconf server config</synopsis>
+  <!--  -->
+  <groups_id />
+  <!--  -->
+  <execution_time>10</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
   <advanced_script>false</advanced_script>
-  <remarks/>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_XCONF_10</test_case_id>
-    <test_objective>Test if on configuring download protocol as tftp, client is going for retry 3 times</test_objective>
+    <test_case_id>TC_XCONF_6</test_case_id>
+    <test_objective>Test by setting empty firmware name in xconf server config</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3</test_setup>
-    <pre_requisite>Make AUTO_SEARCH_IN_JENKINS true or false depending whether build name is to be fetched from jenkins or xconfVariables.py
-
-If AUTO_SEARCH_IN_JENKINS is false,set proper firmware name in xconfVariables.py</pre_requisite>
+    <pre_requisite>Set proper values in tdk_platform.properties file and   xconfVariables.py</pre_requisite>
     <api_or_interface_used>GetPlatformProperties
 ExecuteCmd
-getXCONFServerConfigCmd</api_or_interface_used>
-    <input_parameters>"cat /version.txt | grep -i imagename | cut -d= -f 2 | tr \"\n\" \" \""
+removeLog</api_or_interface_used>
+    <input_parameters>INTERFACE_FOR_ESTB_MAC
+ifconfig " + interface + "| grep HWaddr | awk '{ print $NF }' | tr \"\n\" \" \""
 CDN_LOG
 CDN_FILE
-"rm " + cdnLog
-"sh " + cdnFile + " &amp;"
-grep \"RETRY is\" " + cdnLog + " | wc -l"</input_parameters>
+grep \"imgae () returned NULL. No Upgrade/Downgrade\" " + cdnLog + " ;echo $?"</input_parameters>
     <automation_approch>1. Load sysutil module
-3. Construct  and execute the curl command to configure server with download protocol as tftp
+3. In the curl command for xconf configuration, make firmwareVersion and firmwareName values as empty
 4. Get CDN_LOG and CDN_FILE values from the device
 5. Remove previous logs, CDN_LOG
 6. Execute CDN_FILE
-7. In the response log of xconf server, check if retrial is happening thrice
-8. Unload sysutil module</automation_approch>
-    <except_output>In the response log of xconf server, retrial should happen thrice</except_output>
+7. In the new log, check for imgae () returned NULL error
+9. Unload sysutil module</automation_approch>
+    <except_output>Server response should have  imgae () returned NULL error</except_output>
     <priority>High</priority>
     <test_stub_interface>sysutil</test_stub_interface>
-    <test_script>TS_XCONF_TFTPDownloadProtocol</test_script>
+    <test_script>TS_XCONF_EmptyFirmwareName</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
@@ -87,9 +101,8 @@ obj = tdklib.TDKScriptingLibrary("sysutil","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_XCONF_TFTPDownloadProtocol');
+obj.configureTestCase(ip,port,'TS_XCONF_EmptyFirmwareName');
 
-#Get the result of connection with test component and STB
 result =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %result;
 
@@ -99,21 +112,14 @@ if "SUCCESS" in result.upper() :
     expectedresult = "SUCCESS"
 
     ####Override server url to be used as the mock server url
-    actualresult, xconfFile = xconfUtilityLib.overrideServerUrl(obj, CDN_MOC_SERVER)
+    actualresult, xconfFile = xconfUtilityLib.overrideServerUrl(obj, CDN_MOC_SERVER);
 
-    ###get details of the current firmware in the device
-    Old_FirmwareVersion, Old_FirmwareFilename = xconfUtilityLib.getCurrentFirmware(obj);
-
-    #get firmware details from config file
-    FirmwareVersion, FirmwareFilename = xconfUtilityLib.getFirmwareDetails(obj)
-
-    #########if the current image in device is same as the latest image fetched by getCurrentFirmware(), use the ALTERNATE_URL variable from the config file
-    if Old_FirmwareFilename == FirmwareFilename:
-        FirmwareVersion = ALTERNATE_URL
-        FirmwareFilename = FirmwareVersion+'_signed.bin'
+    #get firmware details from config file    
+    FirmwareVersion = ""
+    FirmwareFilename = ""
 
     ####form the curl command to set the configuration details of the device in the mock server
-    Curl_CMD = xconfUtilityLib.getXCONFServerConfigCmd(obj, FirmwareVersion, FirmwareFilename, "tftp")
+    Curl_CMD = xconfUtilityLib.getXCONFServerConfigCmd(obj, FirmwareVersion, FirmwareFilename, "http");
     tdkTestObj = obj.createTestStep('ExecuteCmd');
 
     print "Curl Request Formed:",Curl_CMD
@@ -183,15 +189,15 @@ if "SUCCESS" in result.upper() :
             print "[TEST EXECUTION RESULT] : FAILURE"
 
     tdkTestObj = obj.createTestStep('ExecuteCmd');
-    ######search in log whether retry is happening 3 times
-    tdkTestObj.addParameter("command","grep \"RETRY is\" " + cdnLog + " | wc -l")
+    ######search in log whether download is failing
+    tdkTestObj.addParameter("command","grep \"imgae () returned NULL. No Upgrade/Downgrade\" " + cdnLog + " ;echo $?")
     tdkTestObj.executeTestCase("SUCCESS");
 
     result = tdkTestObj.getResult();
     print "[TEST EXECUTION RESULT] : %s" %result;
     details = tdkTestObj.getResultDetails();
     print "[TEST EXECUTION DETAILS] : %s" %details;
-    if "3" in details.lower():
+    if "0" in details.lower():
         print "TEST STEP 6: Search for pattern in logs"
         print "EXPECTED RESULT 6: Should find the pattern in the logs"
         print "ACTUAL RESULT 6: is %s " %details
@@ -212,3 +218,4 @@ else:
     print"Load module failed";
     #Set the module loading status
     obj.setLoadModuleStatus("FAILURE");
+

@@ -98,8 +98,19 @@ if "SUCCESS" in result.upper() :
     obj.setLoadModuleStatus("SUCCESS");
     expectedresult = "SUCCESS"
 
+    ####Override server url to be used as the mock server url
+    actualresult, xconfFile = xconfUtilityLib.overrideServerUrl(obj, CDN_MOC_SERVER);
+
+    ###get details of the current firmware in the device
+    Old_FirmwareVersion, Old_FirmwareFilename = xconfUtilityLib.getCurrentFirmware(obj);
+
     #get firmware details from config file
     FirmwareVersion, FirmwareFilename = xconfUtilityLib.getFirmwareDetails(obj)
+
+    #########if the current image in device is same as the latest image fetched by getCurrentFirmware(), use the ALTERNATE_URL variable from the config file
+    if Old_FirmwareFilename == FirmwareFilename:
+        FirmwareVersion = ALTERNATE_URL
+        FirmwareFilename = FirmwareVersion+'_signed.bin'
 
     ####Define an invalid Fw url string with more than 300 characters
     InvalidFirmwareLocation = "http://stb-b3-a0001-b.ccp.xcal.tv:8080/Images/stb-b3-a0001-b.ccp.xcal.tv:8080/Images/stb-b3-a0001-b.ccp.xcal.tv:8080/Images/stb-b3-a0001-b.ccp.xcal.tv:8080/Images/stb-b3-a0001-b.ccp.xcal.tv:8080/Images/stb-b3-a0001-b.ccp.xcal.tv:8080/Images"
@@ -227,6 +238,9 @@ if "SUCCESS" in result.upper() :
         print "EXPECTED RESULT 6: Should find the pattern in the logs"
         print "ACTUAL RESULT 6: is %s " %details
         print "[TEST EXECUTION RESULT] : FAILURE"
+
+    ###########restore the override file
+    xconfUtilityLib.restoreOverrideFile(obj, xconfFile);
 
     obj.unloadModule("sysutil");
 else:

@@ -20,12 +20,12 @@
 <?xml version="1.0" encoding="UTF-8"?><xml>
   <id/>
   <version>1</version>
-  <name>TS_XCONF_TFTPDownloadProtocol</name>
+  <name>TS_XCONF_NoDownloadProtocol</name>
   <primitive_test_id/>
   <primitive_test_name>XCONF_DoNothing</primitive_test_name>
   <primitive_test_version>1</primitive_test_version>
   <status>FREE</status>
-  <synopsis>Test if on configuring download protocol as tftp, client is going for retry 3 times</synopsis>
+  <synopsis>Test if on configuring download protocol as empty, client is going for retry 3 times</synopsis>
   <groups_id/>
   <execution_time>15</execution_time>
   <long_duration>false</long_duration>
@@ -39,8 +39,8 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_XCONF_10</test_case_id>
-    <test_objective>Test if on configuring download protocol as tftp, client is going for retry 3 times</test_objective>
+    <test_case_id>TC_XCONF_9</test_case_id>
+    <test_objective>Test if on configuring download protocol as empty, client is going for retry 3 times</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3</test_setup>
     <pre_requisite>Make AUTO_SEARCH_IN_JENKINS true or false depending whether build name is to be fetched from jenkins or xconfVariables.py
@@ -56,7 +56,7 @@ CDN_FILE
 "sh " + cdnFile + " &amp;"
 grep \"RETRY is\" " + cdnLog + " | wc -l"</input_parameters>
     <automation_approch>1. Load sysutil module
-3. Construct  and execute the curl command to configure server with download protocol as tftp
+3. Construct  and execute the curl command to configure server with download protocol as empty
 4. Get CDN_LOG and CDN_FILE values from the device
 5. Remove previous logs, CDN_LOG
 6. Execute CDN_FILE
@@ -65,7 +65,7 @@ grep \"RETRY is\" " + cdnLog + " | wc -l"</input_parameters>
     <except_output>In the response log of xconf server, retrial should happen thrice</except_output>
     <priority>High</priority>
     <test_stub_interface>sysutil</test_stub_interface>
-    <test_script>TS_XCONF_TFTPDownloadProtocol</test_script>
+    <test_script>TS_XCONF_NoDownloadProtocol</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>
@@ -87,9 +87,8 @@ obj = tdklib.TDKScriptingLibrary("sysutil","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_XCONF_TFTPDownloadProtocol');
+obj.configureTestCase(ip,port,'TS_XCONF_NoDownloadProtocol');
 
-#Get the result of connection with test component and STB
 result =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %result;
 
@@ -99,7 +98,7 @@ if "SUCCESS" in result.upper() :
     expectedresult = "SUCCESS"
 
     ####Override server url to be used as the mock server url
-    actualresult, xconfFile = xconfUtilityLib.overrideServerUrl(obj, CDN_MOC_SERVER)
+    actualresult, xconfFile = xconfUtilityLib.overrideServerUrl(obj, CDN_MOC_SERVER);
 
     ###get details of the current firmware in the device
     Old_FirmwareVersion, Old_FirmwareFilename = xconfUtilityLib.getCurrentFirmware(obj);
@@ -113,7 +112,7 @@ if "SUCCESS" in result.upper() :
         FirmwareFilename = FirmwareVersion+'_signed.bin'
 
     ####form the curl command to set the configuration details of the device in the mock server
-    Curl_CMD = xconfUtilityLib.getXCONFServerConfigCmd(obj, FirmwareVersion, FirmwareFilename, "tftp")
+    Curl_CMD = xconfUtilityLib.getXCONFServerConfigCmd(obj, FirmwareVersion, FirmwareFilename, "");
     tdkTestObj = obj.createTestStep('ExecuteCmd');
 
     print "Curl Request Formed:",Curl_CMD
@@ -212,3 +211,5 @@ else:
     print"Load module failed";
     #Set the module loading status
     obj.setLoadModuleStatus("FAILURE");
+
+

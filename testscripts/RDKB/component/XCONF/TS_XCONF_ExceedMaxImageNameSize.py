@@ -98,6 +98,9 @@ if "SUCCESS" in result.upper() :
     obj.setLoadModuleStatus("SUCCESS");
     expectedresult = "SUCCESS"
 
+    ####Override server url to be used as the mock server url
+    actualresult, xconfFile = xconfUtilityLib.overrideServerUrl(obj, CDN_MOC_SERVER);
+
     ############create a firmware file name with more than 200 characters
     FirmwareFilename = "InvalidFirmwareNameInvalidFirmwareNameInvalidFirmwareNameInvalidFirmwareNameInvalidFirmwareNameInvalidFirmwareNameInvalidFirmwareNameInvalidFirmwareNameInvalidFirmwareNameInvalidFirmwareNameInvalidFirmwareName"
     FirmwareVersion = FirmwareFilename;
@@ -219,6 +222,9 @@ if "SUCCESS" in result.upper() :
             print "EXPECTED RESULT 6: invaid config should be handled by client"
             print "ACTUAL RESULT 6: No error thrown from client"
             print "[TEST EXECUTION RESULT] : FAILURE"
+
+    ###########restore the override file
+    xconfUtilityLib.restoreOverrideFile(obj, xconfFile);
 
     obj.unloadModule("sysutil");
 else:

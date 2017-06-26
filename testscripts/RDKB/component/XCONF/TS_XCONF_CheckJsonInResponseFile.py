@@ -88,7 +88,7 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_XCONF_CheckJsonInResponseFile');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 result =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %result;
 
@@ -104,6 +104,9 @@ if "SUCCESS" in result.upper() :
         responseFile = propVal
     else:
         print "FAILURE:failed to get log file name"
+
+    ####Override server url to be used as the mock server url
+    actualresult, xconfFile = xconfUtilityLib.overrideServerUrl(obj, CDN_MOC_SERVER);
 
     ##########remove the previous response file
     result = xconfUtilityLib.removeLog(obj, responseFile);
@@ -199,6 +202,9 @@ if "SUCCESS" in result.upper() :
         print "EXPECTED RESULT 6: response file shouldn't be empty"
         print "ACTUAL RESULT 6: is %s " %details
         print "[TEST EXECUTION RESULT] : FAILURE"
+
+    ###########restore the override file
+    xconfUtilityLib.restoreOverrideFile(obj, xconfFile);
 
     obj.unloadModule("sysutil");
 else:

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <module name="XCONF" testGroup="Component">
+    <primitiveTests>
+      <primitiveTest id="" name="XCONF_DoNothing" version="1">
+        <function>XCONF_DoNothing</function>
+        <parameters/>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>
