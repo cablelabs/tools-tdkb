@@ -73,7 +73,7 @@ std::string GetSubString (std::string strLine, std::string strDelimiter);
 #define SYSSTAT_SCRIPT       "sh $TDK_PATH/runSysStat.sh"	  // Script to get system diagnostic info from sar command
 #define PERF_DATA_EXTRACTOR_SCRIPT       "sh $TDK_PATH/PerformanceDataExtractor.sh"	  // Script to extract usage details for cpu amd memory
 #define NULL_LOG_FILE        "cat /dev/null > "
-#define GET_IMAGENAME_CMD    "cat /version.txt | grep imagename | cut -d: -f 2"
+#define GET_IMAGENAME_CMD    "cat /version.txt | grep imagename | cut -d: -f 2 | cut -d= -f 2"
 #define UPLOAD_LOG_SCRIPT "$TDK_PATH/uploadLogs.sh"       // Script to upload log files when device IP is configured for IPv6
 
 #ifndef RDKVERSION

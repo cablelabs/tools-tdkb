@@ -17,26 +17,45 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>1</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>3</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_GetXHSWifiPassword</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>GetCommString</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>To verify that the XHS Wifi password is not accessible via snmp.Getting the password should return "No Such Instance currently exists at this OID"</synopsis>
-  <groups_id/>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
+  <!--  -->
+  <advanced_script>false</advanced_script>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
     <box_type>Emulator</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_SNMP_PA_15</test_case_id>
@@ -69,18 +88,18 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
     <test_stub_interface>SNMP_PA_Stub</test_stub_interface>
     <test_script>TS_SNMP_GetXHSWifiPassword</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 import snmplib;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -88,14 +107,21 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_GetXHSWifiPassword');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.1.1.2.10002", ip);
+
+    #Get the Community String
+    communityString = snmplib.getCommunityString(obj,"snmpget");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
+    ########## Script to Execute the snmp command ###########
+    actResponse =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.1.1.2.10002", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
 
     if "No Such" in actResponse:
         print "TEST STEP 1:Get the XHS Wifi Password";
@@ -110,7 +136,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "EXPECTED RESULT 1: snmpget should not return the password";
         print "ACTUAL RESULT 1: %s" %actResponse;
         print "[TEST EXECUTION RESULT] :FAILURE" ;
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");

@@ -17,26 +17,45 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>1</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>2</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_SetFirewallProtection</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>GetCommString</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>To set the firewall protection as low/medium/high/custom</synopsis>
-  <groups_id/>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
+  <!--  -->
+  <advanced_script>false</advanced_script>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
     <box_type>Emulator</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_SNMP_PA_05</test_case_id>
@@ -69,11 +88,11 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
     <test_stub_interface>GetCommString</test_stub_interface>
     <test_script>TS_SNMP_SetFirewallProtection</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
@@ -81,7 +100,7 @@ import snmplib;
 from time import sleep;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -89,15 +108,22 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_SetFirewallProtection');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
+    
+    #Get the Community String
+    commGetStr = snmplib.getCommunityString(obj,"snmpget");
+    commSetStr = snmplib.getCommunityString(obj,"snmpset");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
     ########## Script to Execute the snmp command ###########
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0", ip);
+    actResponse =snmplib.SnmpExecuteCmd("snmpget", commGetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
 
     if "=" in actResponse :
         #Set the result status of execution
@@ -110,9 +136,9 @@ if "SUCCESS" in loadmodulestatus.upper():
         org_value = actResponse.rsplit(None, 1)[-1];
         print "Current firewall protection level is %s " %org_value;
         #Set the status of MocaDevice as true
-        actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0 i 2", ip);
+        actResponse =snmplib.SnmpExecuteCmd("snmpset", commSetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0 i 2", ipaddress);
         sleep(5);
-        actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0", ip);
+        actResponse =snmplib.SnmpExecuteCmd("snmpget", commGetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0", ipaddress);
         act_value=actResponse.rsplit(None, 1)[-1];
         if act_value and "2" in act_value:
             #Set the result status of execution
@@ -122,9 +148,9 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT 2: %s" %actResponse;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS"
-            actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0 i %s" %org_value, ip);
+            actResponse =snmplib.SnmpExecuteCmd("snmpset", commSetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0 i %s" %org_value, ipaddress);
             sleep(5);
-            actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0", ip);
+            actResponse =snmplib.SnmpExecuteCmd("snmpget", commGetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.4.1.1.0", ipaddress);
             def_value=actResponse.rsplit(None, 1)[-1];
             if def_value and org_value in def_value:
                 #Set the result status of execution
@@ -158,7 +184,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT 1: %s" %actResponse;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE"
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");

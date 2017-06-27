@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>2</version>
+  <version>3</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_IsTruncatingGetWifiPassphrase</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -40,6 +40,8 @@
   <execution_time>2</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
+  <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
   <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
@@ -93,13 +95,13 @@ pam</test_stub_interface>
   <script_tags />
 </xml>
 '''
-						# use tdklib library,which provides a wrapper for tdk testcase script 
+# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 import snmplib;
 from time import sleep;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 pamObj = tdklib.TDKScriptingLibrary("pam","RDKB");
 
 #IP and Port of box, No need to change,
@@ -109,7 +111,7 @@ port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_IsTruncatingGetWifiPassphrase');
 pamObj.configureTestCase(ip,port,'TS_SNMP_IsTruncatingGetWifiPassphrase');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
 pamloadmodulestatus =pamObj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
@@ -118,8 +120,15 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
     obj.setLoadModuleStatus("SUCCESS");
     pamObj.setLoadModuleStatus("SUCCESS");
 
-    tdkTestObj = obj.createTestStep('GetCommString');
-    get_details =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001", ip);
+    #Get the Community String
+    communityString = snmplib.getCommunityString(obj,"snmpget");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
+    ########## Script to Execute the snmp command ###########
+    get_details =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
+    
     if "=" in get_details:
         orgPassphrase = get_details.rsplit(None, 1)[-1].strip('"');
         tdkTestObj.setResultStatus("SUCCESS");
@@ -145,8 +154,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
 
 	    sleep(30);
 	    #check if on snmpget this long passphrase is getting truncated or not
-	    tdkTestObj = obj.createTestStep('GetCommString');
-	    get_details =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001", ip);
+	    get_details =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001", ipaddress);
 	    if "=" in get_details:
         	passphrase = get_details.rsplit(None, 1)[-1].strip('"');
 		print "passphrase after set is ", passphrase
@@ -191,11 +199,10 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         tdkTestObj.setResultStatus("FAILURE");
         print "ACTUAL RESULT 1: FAILURE, snmpget for passphrase failed %s" %get_details;
 
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
     pamObj.unloadModule("pam");
 else:
     print "FAILURE to load SNMP_PA module";
     obj.setLoadModuleStatus("FAILURE");
+    pamObj.setLoadModuleStatus("FAILURE");
     print "Module loading FAILURE";
-
-					

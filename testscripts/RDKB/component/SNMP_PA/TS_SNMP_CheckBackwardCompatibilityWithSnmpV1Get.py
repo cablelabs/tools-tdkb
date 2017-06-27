@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>2</version>
+  <version>12</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_CheckBackwardCompatibilityWithSnmpV1Get</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -40,6 +40,8 @@
   <execution_time>1</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
+  <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
   <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
@@ -97,7 +99,7 @@ import tdklib;
 import snmplib;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB")
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -105,15 +107,21 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_CheckBackwardCompatibilityWithSnmpV1Get');
 
-#Get the result of connection with test component and STB
-loadmodulestatus=obj.getLoadModuleResult();
+#Get the result of connection with test component and DUT
+loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
+
+    #Get the Community String
+    communityString = snmplib.getCommunityString(obj,"snmpget");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
     ########## Script to Execute the snmp command ###########
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v1", "1.3.6.1.4.1.17270.50.2.4.1.1.0", ip);
+    actResponse = snmplib.SnmpExecuteCmd("snmpget", communityString, "-v1", "1.3.6.1.4.1.17270.50.2.4.1.1.0", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
 
     if "=" in actResponse :
         #Set the result status of execution
@@ -124,17 +132,16 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS"
     else:
-	#Set the result status of execution
+        #Set the result status of execution
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: snmpget request to check backward comptibility with snmp version 1";
         print "EXPECTED RESULT 1: Command should return the value with version 1";
         print "ACTUAL RESULT 1: %s" %actResponse;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE"
-    obj.unloadModule("snmp_pa");
+   
+    obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
-
-					

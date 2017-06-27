@@ -100,7 +100,7 @@ import snmplib;
 from time import sleep;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","RDKB");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 pamobj = tdklib.TDKScriptingLibrary("pam","RDKB");
 
 #IP and Port of box, No need to change,
@@ -110,7 +110,7 @@ port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_ResetWifiOnly');
 pamobj.configureTestCase(ip,port,'TS_SNMP_ResetWifiOnly');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
 pamloadmodulestatus =pamobj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
@@ -151,8 +151,12 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS"
 	    # Resetting wifi using snmp command
-	    tdkTestObj = obj.createTestStep('GetCommString');
-	    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1002.0 i 3", ip);
+            #Get the Community String
+            communityString = snmplib.getCommunityString(obj,"snmpset");
+            #Get the IP Address
+            ipaddress = snmplib.getIPAddress(obj);
+            ########## Script to Execute the snmp command ###########
+	    actResponse =snmplib.SnmpExecuteCmd("snmpset", communityString, "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1002.0 i 3", ipaddress);
 	    sleep(180);
 	    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
 	    tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
@@ -213,12 +217,13 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the current SSID password";
         print "EXPECTED RESULT 1: Should get the current SSID password";
-        print "ACTUAL RESULT 1: %s" %actResponse;
+        print "ACTUAL RESULT 1: %s" %actualresult;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE"
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
     pamobj.unloadModule("pam");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");
+        pamobj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";

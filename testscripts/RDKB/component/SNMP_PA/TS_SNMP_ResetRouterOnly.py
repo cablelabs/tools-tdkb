@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>2</version>
+  <version>3</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_ResetRouterOnly</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -40,6 +40,8 @@
   <execution_time>2</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
+  <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
   <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
@@ -90,32 +92,37 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-						# use tdklib library,which provides a wrapper for tdk testcase script
+# use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import snmplib;
 from time import sleep;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
-sysobj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_ResetRouterOnly');
-sysobj.configureTestCase(ip,port,'TS_SNMP_ResetRouterOnly');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
-sysloadmodulestatus =sysobj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
-if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in sysloadmodulestatus.upper():
+if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
+    
+    #Get the Community String
+    commGetStr = snmplib.getCommunityString(obj,"snmpget");
+    commSetStr = snmplib.getCommunityString(obj,"snmpset");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
     ########## Script to Execute the snmp command ###########
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1003.0", ip);
+    actResponse =snmplib.SnmpExecuteCmd("snmpget", commGetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1003.0", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
+    
     act_value=actResponse.rsplit(None, 1)[-1];
 
     if "=" in actResponse and act_value == "0":
@@ -126,14 +133,14 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in sysloadmodulestatus.up
         print "ACTUAL RESULT 1: %s" %actResponse;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS"
-        actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1003.0 i 2", ip);
+        actResponse =snmplib.SnmpExecuteCmd("snmpset", commSetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1003.0 i 2", ipaddress);
         sleep(65);
 	tdkTestObj = obj.createTestStep('ExecuteCmd');
 	string = "set erouter0 down";
 	tdkTestObj.addParameter("command", "grep -inr \"set erouter0 down\" /rdklogs/logs/ArmConsolelog.txt.0");
 	expectedresult="SUCCESS";
 
-        #Execute the test case in STB
+        #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip();
@@ -161,8 +168,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in sysloadmodulestatus.up
         print "ACTUAL RESULT 1: %s" %actResponse;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE"
-    obj.unloadModule("snmp_pa");
-    sysobj.unloadModule("sysutil");
+    obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");

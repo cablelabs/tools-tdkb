@@ -1,5 +1,5 @@
 ##########################################################################
-#If not stated otherwise in this file or this component's Licenses.txt
+# If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
 # Copyright 2016 RDK Management
@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>6</version>
+  <version>8</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_ValidateSnmpGetWithGetAPIOnWanAddressMode</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -97,7 +97,7 @@ import snmplib;
 
 #Test component to be tested
 pamObj = tdklib.TDKScriptingLibrary("pam","RDKB");
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -106,7 +106,7 @@ port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_ValidateSnmpGetWithGetAPIOnWanAddressMode');
 pamObj.configureTestCase(ip,port,'TS_SNMP_ValidateSnmpGetWithGetAPIOnWanAddressMode');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
 pamloadmodulestatus =pamObj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
@@ -114,9 +114,15 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
     pamObj.setLoadModuleStatus("SUCCESS");
+    
+    #Get the Community String
+    communityString = snmplib.getCommunityString(obj,"snmpget");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
     ########## Script to Execute the snmp command ###########
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.3.9.1.1.0", ip);
+    actResponse =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", "1.3.6.1.4.1.17270.50.2.3.9.1.1.0", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
 
     if "=" in actResponse :
         #Set the result status of execution
@@ -138,7 +144,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
 	tdkTestObj = obj.createTestStep('pam_GetParameterValues');
         tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_DeviceControl.WanAddressMode");
         expectedresult="SUCCESS";
-        #Execute the test case in STB
+        #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
@@ -177,9 +183,10 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         print "ACTUAL RESULT 1: %s" %actResponse;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE"
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
     pamObj.unloadModule("pam");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");
+        pamObj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";

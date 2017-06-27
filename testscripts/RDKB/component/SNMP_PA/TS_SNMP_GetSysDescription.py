@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>4</version>
+  <version>5</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_GetSysDescription</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -40,6 +40,8 @@
   <execution_time>1</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
+  <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
   <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
@@ -88,12 +90,12 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-																		# use tdklib library,which provides a wrapper for tdk testcase script 
+# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 import snmplib;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -101,14 +103,21 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_GetSysDescription');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus = obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.2.1.1.1.0", ip);
+
+    #Get the Community String
+    communityString = snmplib.getCommunityString(obj,"snmpget");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
+    ########## Script to Execute the snmp command ###########
+    actResponse =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", "1.3.6.1.2.1.1.1.0", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
 
     if "HW_REV" in actResponse and "VENDOR" in actResponse and "BOOTR" in actResponse and "SW_REV" in actResponse and "MODEL" in actResponse:
         tdkTestObj.setResultStatus("SUCCESS");
@@ -124,14 +133,8 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "EXPECTED RESULT 1: snmpget should get the system description values";
         print "ACTUAL RESULT 1: %s" %actResponse;
         print "[TEST EXECUTION RESULT] : %s" %actResponse ;
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
-
-					
-
-					
-
-					

@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>2</version>
+  <version>3</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_v2cSETqueryOnKeepAliveCount</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -40,6 +40,8 @@
   <execution_time>1</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
+  <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
   <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
@@ -92,13 +94,13 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-						# use tdklib library,which provides a wrapper for tdk testcase script
+# use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import snmplib;
 from time import sleep;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -106,15 +108,21 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_v2cSETqueryOnKeepAliveCount');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-    ########## Script to Execute the snmp command ###########
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.14.1.8.0", ip);
+    
+    #Get the Community String
+    commGetStr = snmplib.getCommunityString(obj,"snmpget");
+    commSetStr = snmplib.getCommunityString(obj,"snmpset");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
+    actResponse =snmplib.SnmpExecuteCmd("snmpget", commGetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.14.1.8.0", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
 
     if "=" in actResponse :
         #Set the result status of execution
@@ -127,9 +135,9 @@ if "SUCCESS" in loadmodulestatus.upper():
         org_value = actResponse.rsplit(None, 1)[-1];
         print "Current value is %s " %org_value;
         #Set the status of MocaDevice as true
-        actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", "1.3.6.1.4.1.17270.50.2.14.1.8.0 i 4", ip);
+        actResponse =snmplib.SnmpExecuteCmd("snmpset", commSetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.14.1.8.0 i 4", ipaddress);
         sleep(5);
-        actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.14.1.8.0", ip);
+        actResponse =snmplib.SnmpExecuteCmd("snmpget", commGetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.14.1.8.0", ipaddress);
         act_value=actResponse.rsplit(None, 1)[-1];
         if act_value and "4" in act_value:
             #Set the result status of execution
@@ -139,9 +147,9 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT 2: %s" %actResponse;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS"
-            actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", "1.3.6.1.4.1.17270.50.2.14.1.8.0 i %s" %org_value, ip);
+            actResponse =snmplib.SnmpExecuteCmd("snmpset", commSetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.14.1.8.0 i %s" %org_value, ipaddress);
             sleep(5);
-            actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.14.1.8.0", ip);
+            actResponse =snmplib.SnmpExecuteCmd("snmpget", commGetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.14.1.8.0", ipaddress);
             def_value=actResponse.rsplit(None, 1)[-1];
             if def_value and org_value in def_value:
                 #Set the result status of execution
@@ -175,7 +183,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT 1: %s" %actResponse;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE"
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");

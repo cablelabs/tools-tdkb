@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>4</version>
+  <version>5</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_GetCMTSMAC</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -40,6 +40,8 @@
   <execution_time>1</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
+  <advanced_script>false</advanced_script>
   <!-- execution_time is the time out time for test execution -->
   <remarks></remarks>
   <!-- Reason for skipping the tests if marked to skip -->
@@ -92,32 +94,34 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-																		# use tdklib library,which provides a wrapper for tdk testcase script 
+# use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 import snmplib;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
-sysObj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_GetCMTSMAC');
-sysObj.configureTestCase(ip,port,'TS_SNMP_GetCMTSMAC');
 
-#Get the result of connection with test component and STB
-loadmodulestatus1 =obj.getLoadModuleResult();
-loadmodulestatus2 =sysObj.getLoadModuleResult();
+#Get the result of connection with test component and DUT
+loadmodulestatus =obj.getLoadModuleResult();
 
-print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus1
+print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus
 
-if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upper():
+if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-    sysObj.setLoadModuleStatus("SUCCESS");
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.2.1.10.127.1.2.1.1.1.2", ip);
+
+    #Get the Community String
+    communityString = snmplib.getCommunityString(obj,"snmpget");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
+    actResponse =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", "1.3.6.1.2.1.10.127.1.2.1.1.1.2", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
 
     if "SNMPv2-SMI" in actResponse:
         mac = actResponse.split("STRING:")[1].strip()
@@ -128,11 +132,11 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : %s" %mac ;
 
-	tdkTestObj = sysObj.createTestStep('ExecuteCmd');
+	tdkTestObj = obj.createTestStep('ExecuteCmd');
 	tdkTestObj.addParameter("command", "arp -a | grep erouter0 | grep -v incomplete | cut -d \" \" -f4 | tr \"\n\" \" \" | tr \":\" \" \"");
         expectedresult="SUCCESS";
 
-        #Execute the test case in STB
+        #Execute the test case in DUT
         tdkTestObj.executeTestCase("expectedresult");
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip().upper();
@@ -158,10 +162,8 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
         print "EXPECTED RESULT 1: snmpget should return CMTS mac";
         print "ACTUAL RESULT 1: %s" %actResponse;
         print "[TEST EXECUTION RESULT] : %s" %actResponse ;
-    sysObj.unloadModule("sysutil");
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");
-        sysObj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";

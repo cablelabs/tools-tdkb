@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>6</version>
+  <version>7</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_Get2.4SSIDWithDisabledXfinityWifi</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -33,7 +33,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>Do snmp query for  2.4Ghz xfinitywifi SSID name	when xfinitywifi is disabled</synopsis>
+  <synopsis>Do snmp query for  2.4Ghz xfinitywifi SSID name when xfinitywifi is disabled</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -102,7 +102,7 @@ import snmplib;
 from time import sleep;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 pamObj = tdklib.TDKScriptingLibrary("pam","RDKB");
 
 #IP and Port of box, No need to change,
@@ -112,16 +112,22 @@ port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_Get2.4SSIDWithDisabledXfinityWifi');
 pamObj.configureTestCase(ip,port,'TS_SNMP_Get2.4SSIDWithDisabledXfinityWifi');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
 pamloadmodulestatus =pamObj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
 if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
+
+    #Get the Community String
+    communityString = snmplib.getCommunityString(obj,"snmpget");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
     ########## Script to Execute the snmp command ###########
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.4.1.17270.50.2.13.1.1.0", ip);
+    actResponse =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", "1.3.6.1.4.1.17270.50.2.13.1.1.0", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
 
     if "=" in actResponse :
         #Set the result status of execution
@@ -155,10 +161,10 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                 print "TEST STEP 2:Disable Xfinity Wifi";
                 print "EXPECTED RESULT 2: Should disable Xfinity Wifi successfully";
                 print "ACTUAL RESULT 2: %s" %details;
-                obj.unloadModule("snmp_pa");
+                obj.unloadModule("sysutil");
                 pamObj.unloadModule("pam");
-        tdkTestObj = obj.createTestStep('GetCommString');
-        actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.2.1.1.3.10003", ip);
+
+        actResponse =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.2.1.1.3.10003", ipaddress);
         if "OutOfService" in actResponse:
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 2: snmpget request to get the SSID";
@@ -203,15 +209,8 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE";
     pamObj.unloadModule("pam");
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
-
-
-					
-
-					
-
-					

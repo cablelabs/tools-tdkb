@@ -17,26 +17,45 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>1</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>3</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_Set32PlusWifiPassphrase</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>GetCommString</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>Test to set wifi passphrase with more than 32 characters</synopsis>
-  <groups_id/>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
+  <!--  -->
+  <advanced_script>false</advanced_script>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
     <box_type>Emulator</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_SNMP_PA_34</test_case_id>
@@ -68,18 +87,18 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
     <test_stub_interface>snmp_pa</test_stub_interface>
     <test_script>TS_SNMP_Set32PlusWifiPassphrase</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 import snmplib;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
+obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
@@ -87,19 +106,28 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_Set32PlusWifiPassphrase');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-    tdkTestObj = obj.createTestStep('GetCommString');
-    get_details =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001", ip);
+    
+    #Get the Community String
+    commGetStr = snmplib.getCommunityString(obj,"snmpget");
+    commSetStr = snmplib.getCommunityString(obj,"snmpset");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
+    ########## Script to Execute the snmp command ###########
+    get_details =snmplib.SnmpExecuteCmd("snmpget", commGetStr, "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
+    
     if "=" in get_details:
         orgPassphrase = get_details.rsplit(None, 1)[-1];
 	tdkTestObj.setResultStatus("SUCCESS");
 
-        setDetails =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001 s passwordpasswordpasswordpasswordpassword", ip);
+        setDetails =snmplib.SnmpExecuteCmd("snmpset", commSetStr, "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001 s passwordpasswordpasswordpasswordpassword", ipaddress);
 
         if "ERROR" not in setDetails:
             tdkTestObj.setResultStatus("SUCCESS");
@@ -109,7 +137,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : %s" %setDetails;
 
-            setDetails =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpset", "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001 s %s" %orgPassphrase, ip);
+            setDetails =snmplib.SnmpExecuteCmd("snmpset", commSetStr, "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001 s %s" %orgPassphrase, ipaddress);
 	    if "=" in setDetails:
                 tdkTestObj.setResultStatus("SUCCESS");
                 print "TEST STEP 1:Execute snmpset for original wifi passphrase";
@@ -133,7 +161,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     else:
 	tdkTestObj.setResultStatus("FAILURE");
 	print "ACTUAL RESULT 1: FAILURE, snmpget for passphrase failed %s" %get_details;
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");

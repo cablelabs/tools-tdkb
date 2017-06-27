@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>6</version>
+  <version>7</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_SNMP_GetSysDescrVendor</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -100,7 +100,7 @@ import tdklib;
 import snmplib;
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("snmp_pa","1");
+obj = tdklib.TDKScriptingLibrary("sysutil","1");
 pamObj = tdklib.TDKScriptingLibrary("pam","RDKB");
 
 #IP and Port of box, No need to change,
@@ -110,15 +110,21 @@ port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_GetSysDescrVendor');
 pamObj.configureTestCase(ip,port,'TS_SNMP_GetSysDescrVendor');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus1=obj.getLoadModuleResult();
 loadmodulestatus2=pamObj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus1;
 
 if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upper():
     obj.setLoadModuleStatus("SUCCESS");
-    tdkTestObj = obj.createTestStep('GetCommString');
-    actResponse =snmplib.SnmpExecuteCmd(tdkTestObj, "snmpget", "-v 2c", "1.3.6.1.2.1.1.1.0", ip);
+
+    #Get the Community String
+    communityString = snmplib.getCommunityString(obj,"snmpget");
+    #Get the IP Address
+    ipaddress = snmplib.getIPAddress(obj);
+    actResponse =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", "1.3.6.1.2.1.1.1.0", ipaddress);
+    tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.executeTestCase("SUCCESS");
 
     if "SNMPv2-MIB" in actResponse:
         vendor = actResponse.split("VENDOR:")[1].split(';')[0].strip()
@@ -132,7 +138,7 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
 	tdkTestObj.addParameter("ParamName","Device.DeviceInfo.Manufacturer");
         expectedresult="SUCCESS";
 
-        #Execute the test case in STB
+        #Execute the test case in DUT
         tdkTestObj.executeTestCase("expectedresult");
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip();
@@ -159,10 +165,10 @@ if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upp
         print "EXPECTED RESULT 1: snmpget should get the VENDOR system description values";
         print "ACTUAL RESULT 1: %s" %actResponse;
         print "[TEST EXECUTION RESULT] : %s" %actResponse ;
-    obj.unloadModule("snmp_pa");
+    obj.unloadModule("sysutil");
+    pamObj.unloadModule("pam");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");
+        pamObj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
-
-					
