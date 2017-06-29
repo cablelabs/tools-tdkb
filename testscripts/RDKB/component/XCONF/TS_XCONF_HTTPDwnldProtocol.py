@@ -206,8 +206,6 @@ if "SUCCESS" in result.upper() :
         print "[TEST EXECUTION RESULT] : SUCCESS"
         tdkTestObj.setResultStatus("SUCCESS");
 
-	#######If download is success, reboot the box, otherwise log update will not happen
-        obj.initiateReboot();
     else:
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 6: Search for pattern in logs"

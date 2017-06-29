@@ -107,21 +107,17 @@ if "SUCCESS" in result.upper() :
         ################get log file name from tdk_platform.properties
         actualresult, propVal = xconfUtilityLib.GetPlatformProperties(obj, "CDN_LOG");
         if expectedresult in actualresult:
-            tdkTestObj.setResultStatus("SUCCESS");
             cdnLog = propVal
             print "SUCCESS:get log file name"
         else:
-            tdkTestObj.setResultStatus("FAILURE");
             print "FAILURE:failed to get log file name"
 
         ################get CDN file name from tdk_platform.properties
         actualresult, propVal = xconfUtilityLib.GetPlatformProperties(obj, "CDN_FILE");
         if expectedresult in actualresult:
-            tdkTestObj.setResultStatus("SUCCESS");
             print "SUCCESS:get cdn file name"
             cdnFile = propVal
         else:
-            tdkTestObj.setResultStatus("FAILURE");
             print "FAILURE:failed to get log file name"
 
         #Remove the exsisting logs
