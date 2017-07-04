@@ -125,7 +125,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
     tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
     tdkTestObj.addParameter("ParamName","Device.WiFi.Radio.1.Enable");
     expectedresult="SUCCESS";
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     orgRadio = tdkTestObj.getResultDetails();
 
@@ -134,7 +134,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         print "ACTUAL RESULT 1: Radio status get SUCCESS";
 
         tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.1.Enable");
-        tdkTestObj.executeTestCase("expectedresult");
+        tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         orgSsid = tdkTestObj.getResultDetails();
 

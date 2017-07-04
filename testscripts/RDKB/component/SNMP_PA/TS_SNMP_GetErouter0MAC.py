@@ -137,7 +137,7 @@ if "SUCCESS" in loadmodulestatus1.upper():
         expectedresult="SUCCESS";
 
         #Execute the test case in DUT
-        tdkTestObj.executeTestCase("expectedresult");
+        tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip().lower();
         mac_new=details.split(":");

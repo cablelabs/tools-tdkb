@@ -158,7 +158,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     	        #check passphrase after reset
                 tdkTestObj = obj.createTestStep('WIFIAgent_Get');
                 tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.2.Security.KeyPassphrase")
-                tdkTestObj.executeTestCase("expectedresult");
+                tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details = tdkTestObj.getResultDetails();
                 resetPass = details.split("VALUE:")[1].split(' ')[0];

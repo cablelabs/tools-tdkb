@@ -112,7 +112,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
 
     #Execute the test case in DUT
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
 
@@ -131,7 +131,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Enable")
         tdkTestObj.addParameter("paramValue","false")
         tdkTestObj.addParameter("paramType","boolean")
-        tdkTestObj.executeTestCase("expectedresult");
+        tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
 
@@ -147,7 +147,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             #check if ssid2 status is up or not
             tdkTestObj = obj.createTestStep('WIFIAgent_Get');
             tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Status")
-            tdkTestObj.executeTestCase("expectedresult");
+            tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
             status = details.split("VALUE:")[1].split(' ')[0];
@@ -172,7 +172,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Enable")
             tdkTestObj.addParameter("paramValue",orgState)
             tdkTestObj.addParameter("paramType","boolean")
-            tdkTestObj.executeTestCase("expectedresult");
+            tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
 

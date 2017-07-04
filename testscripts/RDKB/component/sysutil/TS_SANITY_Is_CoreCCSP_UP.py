@@ -126,7 +126,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
 
     #Execute the test case in STB
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails().strip();
 
@@ -140,7 +140,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
         tdkTestObj = sysObj.createTestStep('ExecuteCmd');
         tdkTestObj.addParameter("command",  "pidof CcspPandMSsp");
-        tdkTestObj.executeTestCase("expectedresult");
+        tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip();
 
@@ -154,7 +154,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
             tdkTestObj = sysObj.createTestStep('ExecuteCmd');
             tdkTestObj.addParameter("command",  "pidof PsmSsp");
-            tdkTestObj.executeTestCase("expectedresult");
+            tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails().strip();
 

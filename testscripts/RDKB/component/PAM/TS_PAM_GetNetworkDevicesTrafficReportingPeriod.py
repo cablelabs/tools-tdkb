@@ -103,7 +103,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
 
     #Execute the test case in STB
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
 
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();

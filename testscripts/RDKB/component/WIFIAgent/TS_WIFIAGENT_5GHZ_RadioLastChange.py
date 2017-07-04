@@ -95,7 +95,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
 
     #Execute the test case in DUT
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
 
@@ -112,7 +112,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Get and save the LastChange value
         tdkTestObj = obj.createTestStep('WIFIAgent_Get');
         tdkTestObj.addParameter("paramName","Device.WiFi.Radio.2.LastChange")
-        tdkTestObj.executeTestCase("expectedresult");
+        tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
 
@@ -135,7 +135,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             tdkTestObj.addParameter("paramName","Device.WiFi.Radio.2.Enable")
             tdkTestObj.addParameter("paramValue",toggle)
             tdkTestObj.addParameter("paramType","boolean")
-            tdkTestObj.executeTestCase("expectedresult");
+            tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
 
@@ -150,7 +150,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 		#check lastchange value after toggling
                 tdkTestObj = obj.createTestStep('WIFIAgent_Get');
                 tdkTestObj.addParameter("paramName","Device.WiFi.Radio.2.LastChange")
-                tdkTestObj.executeTestCase("expectedresult");
+                tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details = tdkTestObj.getResultDetails();
                 lastChange2 = details.split("VALUE:")[1].split(' ')[0];
@@ -175,7 +175,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 tdkTestObj.addParameter("paramName","Device.WiFi.Radio.2.Enable")
                 tdkTestObj.addParameter("paramValue",orgState)
                 tdkTestObj.addParameter("paramType","boolean")
-                tdkTestObj.executeTestCase("expectedresult");
+                tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details = tdkTestObj.getResultDetails();
 

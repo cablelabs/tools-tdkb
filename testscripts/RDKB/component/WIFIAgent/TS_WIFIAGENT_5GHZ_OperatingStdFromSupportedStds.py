@@ -110,7 +110,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
 
     #Execute the test case in DUT
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
 
@@ -127,7 +127,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #get the current Operating Frequency band
         tdkTestObj = obj.createTestStep('WIFIAgent_Get');
         tdkTestObj.addParameter("paramName","Device.WiFi.Radio.2.OperatingStandards")
-        tdkTestObj.executeTestCase("expectedresult");
+        tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
         operStd = details.split("VALUE:")[1].split(' ')[0].split(',');

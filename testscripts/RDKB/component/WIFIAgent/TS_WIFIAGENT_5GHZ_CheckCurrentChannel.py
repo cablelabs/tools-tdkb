@@ -110,7 +110,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
 
     #Execute the test case in DUT
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
     possChannels = details.split("VALUE:")[1].split(' ')[0].split(',');
@@ -126,7 +126,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
         tdkTestObj = obj.createTestStep('WIFIAgent_Get');
         tdkTestObj.addParameter("paramName","Device.WiFi.Radio.2.Channel")
-        tdkTestObj.executeTestCase("expectedresult");
+        tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
         channel = details.split("VALUE:")[1].split(' ')[0];

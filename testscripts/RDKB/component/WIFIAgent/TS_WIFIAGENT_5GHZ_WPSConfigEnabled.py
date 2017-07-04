@@ -111,7 +111,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
 
     #Execute the test case in DUT
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
 
@@ -128,7 +128,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #get the current security mode enabled
         tdkTestObj = obj.createTestStep('WIFIAgent_Get');
         tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.2.WPS.ConfigMethodsEnabled")
-        tdkTestObj.executeTestCase("expectedresult");
+        tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
         methods = details.split("VALUE:")[1].split(' ')[0];

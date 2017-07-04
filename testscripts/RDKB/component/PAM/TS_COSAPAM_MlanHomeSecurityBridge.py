@@ -105,7 +105,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
 
     #Execute the test case in STB
-    tdkTestObj.executeTestCase("expectedresult");
+    tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
 		
@@ -127,7 +127,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 #	tdkTestObj.addParameter("ParamName","Device.Bridging.Bridge.2");
 	#tdkTestObj = obj.createTestStep('pam_GetParameterValues');
 	tdkTestObj.addParameter("ParamName", param);
-	tdkTestObj.executeTestCase("expectedresult");
+	tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
 
