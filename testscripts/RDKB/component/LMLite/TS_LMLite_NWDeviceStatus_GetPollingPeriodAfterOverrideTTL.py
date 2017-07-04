@@ -243,12 +243,12 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     else:
          #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
+        tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get PollingPeriod of NetworkDevicesStatus";
         print "EXPECTED RESULT 1: Should get the Polling period of NetworkDevicesStatus";
         print "ACTUAL RESULT 1: %s" %default_polling;
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS";
+        print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("lmlite");
 
 else:
