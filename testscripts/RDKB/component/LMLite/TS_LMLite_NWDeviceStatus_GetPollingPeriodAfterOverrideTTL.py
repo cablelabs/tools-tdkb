@@ -33,7 +33,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>To check if Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Default.PollingPeriod is changed to default value after OverrideTTL time.</synopsis>
+  <synopsis>To check if Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod is changed to default value after OverrideTTL time.</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -59,14 +59,14 @@
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_LMLite_01</test_case_id>
-    <test_objective>To check if Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Default.PollingPeriod is changed to default value after OverrideTTL time.</test_objective>
+    <test_objective>To check if Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod is changed to default value after OverrideTTL time.</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3,RPI</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components.
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>LMLiteStub_Get,LMLiteStub_Set</api_or_interface_used>
     <input_parameters>Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Default.OverrideTTL
-Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Default.PollingPeriod</input_parameters>
+Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod</input_parameters>
     <automation_approch>1. Load Lmlite modules
 2. From script invoke LMLiteStub_Get to get the override TTL
 3. Set a valid value to polling period
@@ -121,8 +121,8 @@ if "SUCCESS" in loadmodulestatus.upper():
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Get PollingPeriod of NetworkDevicesStatus";
-        print "EXPECTED RESULT 1: Should get PollingPeriod of NetworkDevicesStatus";
+        print "TEST STEP 1: Get default PollingPeriod of NetworkDevicesStatus";
+        print "EXPECTED RESULT 1: Should get default  PollingPeriod of NetworkDevicesStatus";
         print "ACTUAL RESULT 1: %s" %default_polling;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
@@ -135,8 +135,6 @@ if "SUCCESS" in loadmodulestatus.upper():
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
         override=int(details);
-        default_value=900;
-        print "details=%s" %details;
      
         if expectedresult in actualresult:
             #Set the result status of execution
@@ -146,64 +144,167 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT 2: OverrideTTL of NetworkDevicesStatus :%s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
-
-	    tdkTestObj = obj.createTestStep('LMLiteStub_Set');
-            tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Default.PollingPeriod");
-            tdkTestObj.addParameter("ParamValue","1800");
-            tdkTestObj.addParameter("Type","unsignedint");
-            expectedresult="SUCCESS";
-            
+	    
+	    tdkTestObj = obj.createTestStep('LMLiteStub_Get');
+            tdkTestObj.addParameter("paramName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Enabled");
+	    #Execute the test case in DUT
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
-            details = tdkTestObj.getResultDetails();
-
-            if expectedresult in actualresult:
-                #Set the result status of execution
+            status = tdkTestObj.getResultDetails();
+            if expectedresult in (actualresult):
+		#Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP 3: Set PollingPeriod to a  valid value";
-                print "EXPECTED RESULT 3: Should set PollingPeriod to a valid value";
-                print "ACTUAL RESULT 3: %s" %details;
+                print "TEST STEP 3 : Get the status of the NetworkDevices";
+                print "EXPECTED RESULT 3 : Should get the  status of the NetworkDevices";
+                print "ACTUAL RESULT 3 : status is %s" %status;
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : SUCCESS";
-                print "override=%s" %override;
-                time.sleep(override);
 
-	        tdkTestObj = obj.createTestStep('LMLiteStub_Get');
-    	        tdkTestObj.addParameter("paramName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Default.PollingPeriod");
-    	        expectedresult="SUCCESS";
-    	        
-    	        tdkTestObj.executeTestCase(expectedresult);
-    	        actualresult = tdkTestObj.getResult();
-    	        details = tdkTestObj.getResultDetails();
-	     
-	        if expectedresult in actualresult and int(details)==default_value:
+                tdkTestObj.addParameter("paramName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod");
+                #Execute the test case in DUT
+                tdkTestObj.executeTestCase(expectedresult);
+                actualresult = tdkTestObj.getResult();
+                Polling_Time = tdkTestObj.getResultDetails();
+	        if expectedresult in (actualresult):
                     #Set the result status of execution
                     tdkTestObj.setResultStatus("SUCCESS");
-                    print "TEST STEP 4: Get PollingPeriod as default value";
-                    print "EXPECTED RESULT 4: Should get PollingPeriod as default value after the override TTL period expired";
-                    print "ACTUAL RESULT 4: %s" %details;
+                    print "TEST STEP 4: Get the current Polling period of NetworkDevicesStatus";
+                    print "EXPECTED RESULT 4: Should get current Polling period of NetworkDevicesStatus";
+                    print "ACTUAL RESULT 4: current Polling period of NetworkDevicesStatus are : %s" %Polling_Time;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS";
+	            
+	            #check if current polling period is default polling period or not
+	            if int(Polling_Time) == int(default_polling):
 
-                else:
-	            #Set the result status of execution
+		        #set the NetworkDevice status as disabled to set a higher polling time
+			tdkTestObj = obj.createTestStep('LMLiteStub_Set');
+			tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Enabled");
+			tdkTestObj.addParameter("ParamValue","false");
+                        tdkTestObj.addParameter("Type","bool");
+
+                        #Execute the test case in DUT
+                        tdkTestObj.executeTestCase(expectedresult);
+                        actualresult = tdkTestObj.getResult();
+                        details = tdkTestObj.getResultDetails();	
+			if expectedresult in actualresult:
+			    #Set the result status of execution
+                            tdkTestObj.setResultStatus("SUCCESS");
+                            print "TEST STEP 5: Set the status of the NetworkDevices as disabled";
+                            print "EXPECTED RESULT 5: Should disable NetworkDevices";
+                            print "ACTUAL RESULT 5:  %s" %details;
+                            #Get the result of execution
+                            print "[TEST EXECUTION RESULT] : SUCCESS";
+			    #change the polling period to a higher value
+			    tdkTestObj = obj.createTestStep('LMLiteStub_Set');
+                            tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod");
+                            tdkTestObj.addParameter("ParamValue","300");
+                            tdkTestObj.addParameter("Type","unsignedint");
+
+                            #Execute the test case in DUT
+                            tdkTestObj.executeTestCase(expectedresult);
+                            actualresult = tdkTestObj.getResult();
+                            details = tdkTestObj.getResultDetails();
+                            if expectedresult in actualresult:
+                                #Set the result status of execution
+                                tdkTestObj.setResultStatus("SUCCESS");
+                                print "TEST STEP 6: Change the polling period to a different value";
+                                print "EXPECTED RESULT 6: Should change the polling period";
+                                print "ACTUAL RESULT 6:  %s" %details;
+                                #Get the result of execution
+                                print "[TEST EXECUTION RESULT] : SUCCESS";
+			    else:
+				#Set the result status of execution
+                                tdkTestObj.setResultStatus("FAILURE");
+                                print "TEST STEP 6: Change the polling period to a different value";
+                                print "EXPECTED RESULT 6: Should change the polling period";
+                                print "ACTUAL RESULT 6:  %s" %details;
+                                #Get the result of execution
+                                print "[TEST EXECUTION RESULT] : FAILURE";
+				obj.unloadModule("lmlite");
+				exit();
+			else:
+			    #Set the result status of execution
+                            tdkTestObj.setResultStatus("FAILURE");
+                            print "TEST STEP 5: Set the status of the NetworkDevices as disabled";
+                            print "EXPECTED RESULT 5: Should disable NetworkDevices";
+                            print "ACTUAL RESULT 5:  %s" %details;
+                            #Get the result of execution
+                            print "[TEST EXECUTION RESULT] : FAILURE";
+			    obj.unloadModule("lmlite");
+			    exit();
+	            else:
+			print "Polling period is already different from default polling time"
+	
+		    tdkTestObj = obj.createTestStep('LMLiteStub_Set');
+                    tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Enabled");
+                    tdkTestObj.addParameter("ParamValue","true");
+                    tdkTestObj.addParameter("Type","bool");
+                    expectedresult="SUCCESS";
+
+                    tdkTestObj.executeTestCase(expectedresult);
+                    actualresult = tdkTestObj.getResult();
+                    details = tdkTestObj.getResultDetails();
+
+                    if expectedresult in actualresult:
+                        #Set the result status of execution
+                        tdkTestObj.setResultStatus("SUCCESS");
+                        print "TEST STEP : Enabling the NetworkDevices";
+                        print "EXPECTED RESULT : Should enable the NetworkDevices";
+                        print "ACTUAL RESULT : %s" %details;
+                        #Get the result of execution
+                        print "[TEST EXECUTION RESULT] : SUCCESS";
+                	time.sleep(override);
+
+	        	tdkTestObj = obj.createTestStep('LMLiteStub_Get');
+    	        	tdkTestObj.addParameter("paramName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod");
+    	        	expectedresult="SUCCESS";
+    	        	
+    	        	tdkTestObj.executeTestCase(expectedresult);
+    	        	actualresult = tdkTestObj.getResult();
+    	        	details = tdkTestObj.getResultDetails();
+	     
+	        	if expectedresult in actualresult and int(details)==int(default_polling):
+                	    #Set the result status of execution
+                	    tdkTestObj.setResultStatus("SUCCESS");
+                	    print "TEST STEP : Get PollingPeriod as default value";
+                	    print "EXPECTED RESULT : Should get PollingPeriod as default value after the override TTL period expired";
+                	    print "ACTUAL RESULT : %s" %details;
+                	    #Get the result of execution
+                	    print "[TEST EXECUTION RESULT] : SUCCESS";
+
+                	else:
+	        	    #Set the result status of execution
+                	    tdkTestObj.setResultStatus("FAILURE");
+                	    print "TEST STEP : Get PollingPeriod as default value";
+                	    print "EXPECTED RESULT : Should get PollingPeriod as default value after the override TTL period expired";
+                	    print "ACTUAL RESULT : %s" %details;
+                	    #Get the result of execution
+                	    print "[TEST EXECUTION RESULT] : FAILURE";
+		    else:
+			#Set the result status of execution
+                        tdkTestObj.setResultStatus("FAILURE");
+                        print "TEST STEP : Enabling the NetworkDevices";
+                        print "EXPECTED RESULT : Should enable the NetworkDevices";
+                        print "ACTUAL RESULT : %s" %details;
+                        #Get the result of execution
+                        print "[TEST EXECUTION RESULT] : FAILURE";
+		else:
+		    #Set the result status of execution
                     tdkTestObj.setResultStatus("FAILURE");
-                    print "TEST STEP 4: Get PollingPeriod as default value";
-                    print "EXPECTED RESULT 4: Should get PollingPeriod as default value after the override TTL period expired";
-                    print "ACTUAL RESULT 4: %s" %details;
+                    print "TEST STEP 4: Get the current Polling period of NetworkDevicesStatus";
+                    print "EXPECTED RESULT 4: Should get current Polling period of NetworkDevicesStatus";
+                    print "ACTUAL RESULT 4: current Polling period of NetworkDevicesStatus are : %s" %Polling_Time;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : FAILURE";
-
-	
             else:
-	        #Set the result status of execution
+		#Set the result status of execution
                 tdkTestObj.setResultStatus("FAILURE");
-                print "TEST STEP 3: Set PollingPeriod to a  valid value";
-                print "EXPECTED RESULT 3: Should set PollingPeriod to a valid value";
-                print "ACTUAL RESULT 3: %s" %details;
+                print "TEST STEP 3 : Get the status of the NetworkDevices";
+                print "EXPECTED RESULT 3 : Should get the  status of the NetworkDevices";
+                print "ACTUAL RESULT 3 : status is %s" %status;
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : FAILURE";
-
         else:
             #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
@@ -212,10 +313,10 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT 2: OverrideTTL of NetworkDevicesStatus :%s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
-
+	#set default value to polling period
         tdkTestObj = obj.createTestStep('LMLiteStub_Set');
-        tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Default.PollingPeriod");
-        tdkTestObj.addParameter("ParamValue",default_polling);
+        tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod");
+        tdkTestObj.addParameter("ParamValue",Polling_Time);
         tdkTestObj.addParameter("Type","unsignedint");
         expectedresult="SUCCESS";
         #Execute the test case in DUT
@@ -226,18 +327,46 @@ if "SUCCESS" in loadmodulestatus.upper():
         if expectedresult in actualresult:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 4: Set PollingPeriod to default value";
-            print "EXPECTED RESULT 4: Should set PollingPeriod to default value";
-            print "ACTUAL RESULT 4: %s" %details;
+            print "TEST STEP : Set PollingPeriod to default value";
+            print "EXPECTED RESULT : Should set PollingPeriod to default value";
+            print "ACTUAL RESULT : %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
     
         else:
  	    #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 4: Set PollingPeriod to default value";
-            print "EXPECTED RESULT 4: Should set PollingPeriod to default value";
-            print "ACTUAL RESULT 4: %s" %details;
+            print "TEST STEP : Set PollingPeriod to default value";
+            print "EXPECTED RESULT : Should set PollingPeriod to default value";
+            print "ACTUAL RESULT : %s" %details;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : FAILURE";
+	#set default value to NetworkDevices
+        tdkTestObj = obj.createTestStep('LMLiteStub_Set');
+        tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Enabled");
+        tdkTestObj.addParameter("ParamValue",status);
+        tdkTestObj.addParameter("Type","unsignedint");
+        expectedresult="SUCCESS";
+        #Execute the test case in DUT
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        details = tdkTestObj.getResultDetails();
+
+        if expectedresult in actualresult:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP : Set NetworkDevices to default value";
+            print "EXPECTED RESULT : Should set NetworkDevices to default value";
+            print "ACTUAL RESULT : %s" %details;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+
+        else:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP : Set NetworkDevices to default value";
+            print "EXPECTED RESULT : Should set NetworkDevices to default value";
+            print "ACTUAL RESULT : %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
 
