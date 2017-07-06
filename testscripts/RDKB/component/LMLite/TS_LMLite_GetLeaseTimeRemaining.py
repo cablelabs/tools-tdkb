@@ -242,9 +242,9 @@ if "SUCCESS" in loadmodulestatus.upper():
         else:
             #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 1: Get the number of hosts";
-            print "EXPECTED RESULT 1: Should get the number of hosts";
-            print "ACTUAL RESULT 1: Number of hosts:%s" %NoOfHosts;
+            print "TEST STEP 1: Get the number of active LAN clients connected";
+            print "EXPECTED RESULT 1: Should get the number of active LAN clients connected as greater than zero";
+            print "ACTUAL RESULT 1: Number of clients:%s" %NoOfClients;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
 
