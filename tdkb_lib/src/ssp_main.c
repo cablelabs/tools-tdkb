@@ -401,6 +401,13 @@ int ssp_register(bool bexecVal)
     printf("\n Entering ssp register TDK Main function\n");
     printf("\n***************************************** \n");
 
+    if(SSP_STOP == (int)bexecVal)
+    {
+        printf("\n Closing SSP TDK main Function");
+        cmd_dispatch('q');
+        return 1;
+    }
+
     /* Invoke createTdkDebugIniFile to create debug.ini for TDK testing */
     if (false == createTdkDebugIniFile())
     {
@@ -418,13 +425,6 @@ int ssp_register(bool bexecVal)
     else
     {
          printf("Initialized RDK Logger\n");
-    }
-
-    if(SSP_STOP == (int)bexecVal)
-    {
-        printf("\n Closing SSP TDK main Function");
-        cmd_dispatch('q');
-        return 1;
     }
 
     printf("\n ssp_register :: Make file option for subsytem flag eRT is set to %d",eRT);

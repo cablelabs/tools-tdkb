@@ -19,8 +19,10 @@
 
 ACLOCAL_AMFLAGS = -Im4 --install
 AM_CPPFLAGS = ${COPTS} -fPIC -DDEBUG_LEVEL_TRACE
-AM_CXXFLAGS = -I${top_srcdir}/SysUtil_stub/include -I${top_srcdir}/agent/include
+AM_CXXFLAGS = -I${top_srcdir}/SysUtil_stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
 lib_LTLIBRARIES = libsysutilstub.la
 libsysutilstub_la_SOURCES = src/SysUtil_stub.cpp
+libsysutilstub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la
+libsysutilstub_la_LIBADD =  $(libsysutilstub_la_DEPENDENCIES)
 libsysutilstub_la_includedir = ${includedir}
 libsysutilstub_la_include_HEADERS = ${top_srcdir}/SysUtil_stub/include/SysUtil_stub.h

@@ -18,6 +18,13 @@
 */
 
 #include "SysUtil_stub.h"
+#include "ssp_tdk_wrp.h"
+
+/* To provide external linkage to C Functions defined in TDKB Component folder */
+extern "C"
+{
+    int ssp_register(bool);
+};
 
 /*************************************************************************
   Function name : SysUtilAgent::SysUtilAgent
@@ -40,7 +47,17 @@ SysUtilAgent::SysUtilAgent()
  *****************************************************************************/
 std::string SysUtilAgent::testmodulepre_requisites()
 {
-        return "SUCCESS";
+    int returnValue = 0;
+    int bStart = 1;
+    returnValue = ssp_register(bStart);
+
+    if(0 != returnValue)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites --->Error invoking TDK Agent in DUT !!! \n");
+        return "TEST_FAILURE";
+    }
+
+    return "SUCCESS";
 }
 
 /***************************************************************************

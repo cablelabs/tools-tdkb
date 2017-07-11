@@ -126,9 +126,19 @@ bool CCSPMBUS::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
  *****************************************************************************/
 std::string CCSPMBUS::testmodulepre_requisites()
 {
+    int returnValue = 0;
+    int bStart = 1;
+    returnValue = ssp_register(bStart);
+
+    if(0 != returnValue)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites --->Error invoking TDK Agent in DUT !!! \n");
+        return "TEST_FAILURE";
+    }
 
     return "SUCCESS";
 }
+
 
 /***************************************************************************
  *Function name : testmodulepost_requisites
