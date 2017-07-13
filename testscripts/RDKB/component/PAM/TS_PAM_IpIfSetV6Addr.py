@@ -148,7 +148,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 	    tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
             tdkTestObj.addParameter("ParamName","%sAlias" %addrInstance);
 	    print "Parameter Name: %sAlias" %addrInstance
-            tdkTestObj.executeTestCase("expectedresult");
+            tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails().strip();
 
@@ -165,7 +165,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 tdkTestObj.addParameter("ParamValue","temp");
                 org_value = details;
                 print "Parameter Name: %sAlias" %addrInstance
-                tdkTestObj.executeTestCase("expectedresult");
+                tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details = tdkTestObj.getResultDetails().strip();
 
@@ -181,7 +181,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.addParameter("Type","string");
                     tdkTestObj.addParameter("ParamValue",org_value);
                     print "Parameter Name: %sAlias" %addrInstance
-                    tdkTestObj.executeTestCase("expectedresult");
+                    tdkTestObj.executeTestCase(expectedresult);
                     actualresult = tdkTestObj.getResult();
                     details = tdkTestObj.getResultDetails().strip();
 

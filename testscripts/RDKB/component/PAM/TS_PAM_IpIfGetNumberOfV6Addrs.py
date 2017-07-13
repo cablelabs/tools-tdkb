@@ -133,7 +133,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
         tdkTestObj.addParameter("ParamName","%sIPv6AddressNumberOfEntries" %interface);
         print "Parameter Name: %sIPv6AddressNumberOfEntries" %interface
-        tdkTestObj.executeTestCase("expectedresult");
+        tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails().strip();
 

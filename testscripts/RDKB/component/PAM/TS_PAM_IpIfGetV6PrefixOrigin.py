@@ -148,7 +148,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 	    tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
             tdkTestObj.addParameter("ParamName","%sOrigin" %addrInstance);
 	    print "Parameter Name: %sOrigin" %addrInstance
-            tdkTestObj.executeTestCase("expectedresult");
+            tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails().strip();
 

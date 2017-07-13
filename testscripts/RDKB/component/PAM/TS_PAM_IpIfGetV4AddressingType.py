@@ -149,7 +149,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 	    tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
             tdkTestObj.addParameter("ParamName","%sAddressingType" %addrInstance);
 	    print "Parameter Name: %sAddressingType" %addrInstance
-            tdkTestObj.executeTestCase("expectedresult");
+            tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails().strip();
 

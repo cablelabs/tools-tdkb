@@ -149,7 +149,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 	    tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
             tdkTestObj.addParameter("ParamName","%sEnable" %addrInstance);
 	    print "Parameter Name: %sEnable" %addrInstance
-            tdkTestObj.executeTestCase("expectedresult");
+            tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails().strip();
 
@@ -170,7 +170,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.addParameter("ParamValue","true");
                     org_value = "false"
                 print "Parameter Name: %sEnable" %addrInstance
-                tdkTestObj.executeTestCase("expectedresult");
+                tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details = tdkTestObj.getResultDetails().strip();
 
@@ -186,7 +186,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.addParameter("Type","boolean");
                     tdkTestObj.addParameter("ParamValue",org_value);
                     print "Parameter Name: %sEnable" %addrInstance
-                    tdkTestObj.executeTestCase("expectedresult");
+                    tdkTestObj.executeTestCase(expectedresult);
                     actualresult = tdkTestObj.getResult();
                     details = tdkTestObj.getResultDetails().strip();
 
