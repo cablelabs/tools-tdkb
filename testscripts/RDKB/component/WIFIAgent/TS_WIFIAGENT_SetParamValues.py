@@ -17,27 +17,47 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>6</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>7</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_WIFIAGENT_SetParamValues</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id> </primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>WIFIAgent_Set</primitive_test_name>
+  <!--  -->
   <primitive_test_version>2</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>Set Parameter Values API Validation</synopsis>
-  <groups_id/>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
+  <!--  -->
+  <advanced_script>false</advanced_script>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
-    <box_type>Emulator</box_type>
     <box_type>Broadband</box_type>
+    <!--  -->
+    <box_type>Emulator</box_type>
+    <!--  -->
     <box_type>RPI</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_WIFIAGENT_8</test_case_id>
@@ -76,15 +96,14 @@ Test Manager GUI will publish the result as SUCCESS in Execution page</except_ou
     <test_stub_interface>None</test_stub_interface>
     <test_script>TS_WIFIAGENT_SetParamValues</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
-
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+#import statement
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("wifiagent","RDKB");
@@ -95,43 +114,65 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_WIFIAGENT_SetParamValues');
 
-#Get the result of connection with test component and STB
-loadModuleresult =obj.getLoadModuleResult();
-print "[LIB LOAD STATUS]  :  %s" %loadModuleresult;
+#Get the result of connection with test component and DUT
+loadmodulestatus =obj.getLoadModuleResult();
+print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
-loadStatusExpected = "SUCCESS"
+if "SUCCESS" in loadmodulestatus.upper():
+    #Set the load module status
+    obj.setLoadModuleStatus("SUCCESS");
+    #Set the encryption method
+    tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+    tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_EncryptionMethod");
+    tdkTestObj.addParameter("paramValue","AES");
+    tdkTestObj.addParameter("paramType","string");
+    expectedresult="SUCCESS";
 
-if loadStatusExpected not in loadModuleresult.upper():
-        print "[Failed To Load WIFI Agent Stub or its supporting libraries probably from /usr/lib/]"
-        print "[Exiting the Script]"
-        exit();
+    #Execute the test case in DUT
+    tdkTestObj.executeTestCase(expectedresult);
+    actualresult = tdkTestObj.getResult();
+    details = tdkTestObj.getResultDetails();
 
-#Prmitive test case which associated to this Script
-tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+    if expectedresult in actualresult:
+        #Set the result status of execution
+        tdkTestObj.setResultStatus("SUCCESS");
+        print "TEST STEP 1 Set the encryption method as AES for 2.4GHZ WIFI";
+        print "EXPECTED RESULT 1: Should set the encryption method as AES for 2.4GHZ WIFI";
+        print "ACTUAL RESULT 1: Status %s" %details;
+        print "[TEST EXECUTION RESULT] : SUCCESS";
 
-#Input Parameters
-tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_EncryptionMethod");
-tdkTestObj.addParameter("paramValue","AES+TKIP");
-tdkTestObj.addParameter("paramType","string");
+        #Get the encryption method after set
+        tdkTestObj = obj.createTestStep('WIFIAgent_Get');
+        tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.X_CISCO_COM_EncryptionMethod");
+        expectedresult="SUCCESS";
 
-expectedresult = "SUCCESS";
+        #Execute the test case in DUT
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        value = tdkTestObj.getResultDetails();
+        value = value.split("VALUE:")[1].split(' ')[0]
 
-#Execute the test case in STB
-tdkTestObj.executeTestCase(expectedresult);
-
-#Get the result of execution
-actualresult = tdkTestObj.getResult();
-print "[TEST EXECUTION RESULT] : %s" %actualresult ;
-
-resultDetails = tdkTestObj.getResultDetails();
-
-if expectedresult in actualresult:
-	#Set the result status of execution as success
-	tdkTestObj.setResultStatus("SUCCESS");
+        if expectedresult in actualresult and "AES" in value:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP 2: Get the encryption method of 2.4GHZ WIFI";
+            print "EXPECTED RESULT 2: Should get the encryption method of 2.4GHZ WIFI";
+            print "ACTUAL RESULT 2: Encryption Method is %s" %value;
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+        else:
+            tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP 2: Get the encryption method of 2.4GHZ WIFI";
+            print "EXPECTED RESULT 2: Should get the encryption method of 2.4GHZ WIFI";
+            print "ACTUAL RESULT 2: Encryption Method is %s" %value;
+            print "[TEST EXECUTION RESULT] : FAILURE";
+    else:
+        tdkTestObj.setResultStatus("FAILURE");
+        print "TEST STEP 1: Set the encryption method as AES for 2.4GHZ WIFI";
+        print "EXPECTED RESULT 1: Should set the encryption method as AES for 2.4GHZ WIFI";
+        print "ACTUAL RESULT 1: Status %s" %details;
+        print "[TEST EXECUTION RESULT] : FAILURE";
+    obj.unloadModule("wifiagent");
 else:
-	#Set the result status of execution as failure
-	tdkTestObj.setResultStatus("FAILURE");
-
-print "[TEST EXECUTION RESULT] : %s" %resultDetails ;
-
-obj.unloadModule("wifiagent");
+        print "Failed to load wifi agent module";
+        obj.setLoadModuleStatus("FAILURE");
+        print "Module loading failed";
