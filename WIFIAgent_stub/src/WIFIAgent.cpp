@@ -36,6 +36,11 @@ extern "C"
     int ssp_getHealth(char *pComponentName);
     int ssp_setSessionId(int priority, int sessionId,char *pComponentName,int override);
     int ssp_setMultipleParameterValue(char **paramList, int size);
+    int ssp_WiFiHalCallMethodForBool(int radioIndex, unsigned char *output, char* method);
+    int ssp_WiFiCallMethodForULong(int radioIndex, unsigned long *uLongVar, char* methodName);
+    int ssp_WiFiCallMethodForString(int radioIndex, char *output, char* methodName);
+    int ssp_WiFiCallMethodForInt(int radioIndex, int *output, char* methodName);
+
 };
 
 /*This is a constructor function for WIFIAgent class*/
@@ -70,6 +75,10 @@ bool WIFIAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj
     ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_SetSessionId, "WIFIAgent_SetSessionId");
     ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_Stop, "WIFIAgent_Stop");
     ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_SetMultiple, "WIFIAgent_SetMultiple");
+    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIHal_CallMethodForBool, "WIFIHal_CallMethodForBool");
+    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIHal_CallMethodForULong,"WIFIHal_CallMethodForULong");
+    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIHal_CallMethodForString,"WIFIHal_CallMethodForString");
+    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIHal_CallMethodForInt,"WIFIHal_CallMethodForInt");
 
     return TEST_SUCCESS;
 
@@ -938,6 +947,226 @@ bool WIFIAgent::WIFIAgent_Stop(IN const Json::Value& req, OUT Json::Value& respo
     return TEST_SUCCESS;
 }
 
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHal_CallMethodForBool
+ * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
+			  get /set is BOOL
+ *
+ * @param [in] req- 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *                         
+ ********************************************************************************************/
+
+bool WIFIAgent::WIFIHal_CallMethodForBool(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHal_CallMethodForBool --->Entry\n");
+
+    char methodName[20] = {'\0'};
+    int radioIndex;
+    unsigned char enable;
+    int returnValue;
+    char details[200] = {'\0'};
+
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+    enable = req["param"].asInt();
+
+    if(strstr(methodName, "set"))
+    {
+        returnValue = ssp_WiFiHalCallMethodForBool(radioIndex, &enable, methodName);
+
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+
+            return TEST_SUCCESS;
+        }
+    }
+    else
+    {
+        returnValue = ssp_WiFiHalCallMethodForBool(radioIndex, &enable, methodName);
+
+        if(0 == returnValue)
+        {
+            DEBUG_PRINT(DEBUG_TRACE,"\n output: %d\n",enable);
+
+            sprintf(details, "Enable state : %s", int(enable)? "Enabled" : "Disabled");
+            response["result"]="SUCCESS";
+            response["details"]=details;
+
+            return TEST_SUCCESS;
+        }
+     }
+
+     sprintf(details, "%s operation failed", methodName);
+     response["result"]="FAILURE";
+     response["details"]=details;
+
+     DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForBool --->Error in execution\n");
+     return  TEST_FAILURE;
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHal_CallMethodForULong
+ * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
+                          get /set is Unsigned long
+ *
+ * @param [in] req- 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *                         
+ ********************************************************************************************/
+
+bool WIFIAgent::WIFIHal_CallMethodForULong(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHal_CallMethodForULong------>Entry\n");
+
+    char methodName[20] = {'\0'};
+    int radioIndex = 1;
+    unsigned long uLongVar = 1;
+    int returnValue;
+    char details[200] = {'\0'};
+
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+    uLongVar = (unsigned long)req["param"].asLargestUInt();
+
+    if(strstr(methodName, "set"))
+    {
+        returnValue = ssp_WiFiCallMethodForULong(radioIndex, &uLongVar, methodName);
+
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+
+           return TEST_SUCCESS;
+        }
+    }
+    else
+    {
+       returnValue = ssp_WiFiCallMethodForULong(radioIndex, &uLongVar, methodName);
+
+       if(0 == returnValue)
+        {
+            DEBUG_PRINT(DEBUG_TRACE,"\n output: %lu\n",uLongVar);
+
+            sprintf(details, "Value returned is :%lu", uLongVar);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+
+            return TEST_SUCCESS;
+        }
+     }
+
+     sprintf(details, "%s operation failed", methodName);
+     response["result"]="FAILURE";
+     response["details"]=details;
+
+     DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForULong --->Error in execution\n");
+     return  TEST_FAILURE;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHal_CallMethodForString
+ * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
+                          get /set is a string
+ *
+ * @param [in] req- 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *                         
+ ********************************************************************************************/
+
+bool WIFIAgent::WIFIHal_CallMethodForString(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHal_CallMethodForString----->Entry\n");
+
+    char methodName[20] = {'\0'};
+    int radioIndex = 1;
+    char output[100] = {'\0'};
+    int returnValue;
+    char details[200] = {'\0'};
+
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+
+    returnValue = ssp_WiFiCallMethodForString(radioIndex, output, methodName);
+
+    if(0 == returnValue)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n output: %s\n",output);
+
+        sprintf(details, "Value returned is :%s", output);
+        response["result"]="SUCCESS";
+        response["details"]=details;
+
+        return TEST_SUCCESS;
+    }
+    else
+    {
+        sprintf(details, "%s operation failed", methodName);
+        response["result"]="FAILURE";
+        response["details"]=details;
+
+        DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForULong --->Error in execution\n");
+        return  TEST_FAILURE;
+    }
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHal_CallMethodForInt
+ * Description          : This function invokes WiFi hal's get apis, when the value to be 
+                          get  is an integer
+ *
+ * @param [in] req- 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *                         
+ ********************************************************************************************/
+bool WIFIAgent::WIFIHal_CallMethodForInt(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHal_CallMethodForInt----->Entry\n");
+
+    char methodName[20] = {'\0'};
+    int radioIndex = 1;
+    int intParam;
+    int returnValue;
+    char details[200] = {'\0'};
+
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+
+    returnValue = ssp_WiFiCallMethodForInt(radioIndex, &intParam, methodName);
+
+    if(0 == returnValue)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n output: %d\n",intParam);
+
+        sprintf(details, "Value returned is :%d", intParam);
+        response["result"]="SUCCESS";
+        response["details"]=details;
+
+        return TEST_SUCCESS;
+    }
+    else
+    {
+        sprintf(details, "%s operation failed", methodName);
+        response["result"]="FAILURE";
+        response["details"]=details;
+
+        DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForInt --->Error in execution\n");
+        return  TEST_FAILURE;
+    }
+}
+
 /**************************************************************************
  * Function Name	: CreateObject
  * Description	: This function will be used to create a new object for the
@@ -978,6 +1207,10 @@ bool WIFIAgent::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("WIFIAgent_SetSessionId");
     ptrAgentObj->UnregisterMethod("WIFIAgent_Stop");
     ptrAgentObj->UnregisterMethod("WIFIAgent_SetMultiple");
+    ptrAgentObj->UnregisterMethod("WIFIHal_CallMethodForBool");
+    ptrAgentObj->UnregisterMethod("WIFIHal_CallMethodForULong");
+    ptrAgentObj->UnregisterMethod("WIFIHal_CallMethodForString");
+    ptrAgentObj->UnregisterMethod("WIFIHal_CallMethodForInt");
 
     return TEST_SUCCESS;
 }

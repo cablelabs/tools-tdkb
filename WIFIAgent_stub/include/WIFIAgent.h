@@ -66,5 +66,9 @@ class WIFIAgent : public RDKTestStubInterface
         bool WIFIAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& response);
         bool WIFIAgent_Stop(IN const Json::Value& req, OUT Json::Value& response);
         bool WIFIAgent_SetMultiple(IN const Json::Value& req, OUT Json::Value& response);
+        bool WIFIHal_CallMethodForULong(IN const Json::Value& req, OUT Json::Value& response);
+        bool WIFIHal_CallMethodForBool(IN const Json::Value& req, OUT Json::Value& response);
+        bool WIFIHal_CallMethodForString(IN const Json::Value& req, OUT Json::Value& response);
+	bool WIFIHal_CallMethodForInt(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__WIFIAGENT_STUB_H__
