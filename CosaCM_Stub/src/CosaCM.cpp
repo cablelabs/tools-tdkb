@@ -64,6 +64,10 @@ int ssp_cosacm_GetUpstreamChannel(int handleType, int bufferType);
 int ssp_CosaCableModemCreate();
 int ssp_CosaCableModemInitialize(int handleType);
 int ssp_CosaCableModemRemove(int handleType);
+
+int ssp_CMHal_GetCharValues(char* paramName, char* value);
+int ssp_CMHal_GetUlongValues(char* paramName, unsigned long* value);
+int ssp_CMHal_GetStructValues(char*, void*);
 };
 
 /*This is a constructor function for CosaCM class*/
@@ -124,6 +128,10 @@ bool CosaCM::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&CosaCM::COSACM_CableModemCreate,"COSACM_CableModemCreate");
     ptrAgentObj->RegisterMethod(*this,&CosaCM::COSACM_CableModemInitialize,"COSACM_CableModemInitialize");
     ptrAgentObj->RegisterMethod(*this,&CosaCM::COSACM_CableModemRemove,"COSACM_CableModemRemove");
+
+    ptrAgentObj->RegisterMethod(*this,&CosaCM::CMHal_GetCharValues,"CMHal_GetCharValues");
+    ptrAgentObj->RegisterMethod(*this,&CosaCM::CMHal_GetUlongValues,"CMHal_GetUlongValues");
+    ptrAgentObj->RegisterMethod(*this,&CosaCM::CMHal_GetStructValues,"CMHal_GetStructValues");
     return TEST_SUCCESS;
 }
 
@@ -1907,6 +1915,264 @@ bool CosaCM::COSACM_CableModemRemove(IN const Json::Value& req, OUT Json::Value&
     return TEST_SUCCESS;
 }
 
+/*******************************************************************************************
+ *
+ * Function Name    : CMHal_GetCharValues
+ * Description      : This will get the char values
+ *
+ * @param [in]  req - handleType : Holds the message bus handle
+ * @param [in]  req - bufferType : Holds whether buffer passed is valid or NULL
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+
+bool CosaCM::CMHal_GetCharValues(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetCharValues  --->Entry \n");
+
+    int returnValue = 0;
+    char paramName[100];
+    char Details[64] = {'\0'};
+    char value[60];
+    /* Validate the input arguments */
+    if(&req["paramName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+    strcpy(paramName,req["paramName"].asCString());
+
+    returnValue = ssp_CMHal_GetCharValues(paramName,value);
+    if(0 == returnValue)
+    {
+       sprintf(Details,"%s", value);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to get the value";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetCharValues --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetCharValues --->Exit\n");
+    return TEST_SUCCESS;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name    : CMHal_GetUlongValues
+ * Description      : This will get the Ulong values
+ *
+ * @param [in]  req - handleType : Holds the message bus handle
+ * @param [in]  req - bufferType : Holds whether buffer passed is valid or NULL
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+
+bool CosaCM::CMHal_GetUlongValues(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetUlongValues  --->Entry \n");
+
+    int returnValue = 0;
+    char paramName[100];
+    char Details[64] = {'\0'};
+    unsigned long value = 0;
+    /* Validate the input arguments */
+    if(&req["paramName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+    strcpy(paramName,req["paramName"].asCString());
+
+    returnValue = ssp_CMHal_GetUlongValues(paramName,&value);
+    if(0 == returnValue)
+    {
+        sprintf(Details,"%d", value);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to get the value";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetUlongValues --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetUlongValues --->Exit\n");
+    return TEST_SUCCESS;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name    : CMHal_GetStructValues
+ * Description      : This function is used to retrieve value of structure
+ *
+ * @param [in]  req - MethodName : Holds the name of api
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+bool CosaCM::CMHal_GetStructValues(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n  CMHal_GetStructValues--->Entry \n");
+    int returnValue = 0;
+    DOCSIS docsis = {0};
+    DS_CHANNEL ds_channel = {0};
+    US_CHANNEL us_channel = {0};
+    IPV6DHCP ipv6dhcp = {0};
+    IPV4DHCP ipv4dhcp = {0};
+    char value[400];
+    char Details[200]= {'\0'};
+    char paramName[100] = {'\0'};
+    if(&req["paramName"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return TEST_FAILURE;
+    }
+    strcpy(paramName,req["paramName"].asCString());
+    printf("paramName received as %s\n", paramName);
+    /* Invoke the wrapper function to get the config */
+    if( !(strcmp(paramName, "version")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,&docsis);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s",docsis.version);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "ConfigFileName")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,&docsis);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s",docsis.ConfigFileName);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "Ipv6DhcpBootFileName")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,&ipv6dhcp);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s",ipv6dhcp.IPv6BootFileName);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "Ipv4DhcpBootFileName")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,&ipv4dhcp);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s",ipv4dhcp.BootFileName);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "Ipv6DhcpIPAddress")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,&ipv6dhcp);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s",ipv6dhcp.IPv6Address);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "Ipv4DhcpIPAddress")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,&ipv4dhcp);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s",ipv4dhcp.IPAddress);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "DS_Frequency")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,value);
+        if(0 == returnValue)
+        {
+	sprintf(Details,"%s", value);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "US_Frequency")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,value);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s", value);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "ModulationAndSNRLevel")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,value);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s", value);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "DS_DataRate")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,&docsis);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s",docsis.DownstreamDataRate);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "US_DataRate")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,&docsis);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s",docsis.UpstreamDataRate);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else if( !(strcmp(paramName, "LockStatusAndChannelID")) )
+    {
+        returnValue = ssp_CMHal_GetStructValues(paramName,value);
+        if(0 == returnValue)
+        {
+        sprintf(Details,"%s", value);
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+        }
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="invalid parameter as input argument";
+        return TEST_FAILURE;
+    }
+    if (0 != returnValue)
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to retrieve the value";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetStructValues --->Exit\n");
+        return  TEST_FAILURE;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetStructValues --->Exit\n");
+    return TEST_SUCCESS;
+}
 /**************************************************************************
  * Function Name	: CreateObject
  * Description	: This function will be used to create a new object for the
@@ -1975,6 +2241,10 @@ bool CosaCM::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("COSACM_CableModemCreate");
     ptrAgentObj->UnregisterMethod("COSACM_CableModemInitialize");
     ptrAgentObj->UnregisterMethod("COSACM_CableModemRemove");
+
+    ptrAgentObj->UnregisterMethod("CMHal_GetCharValues");
+    ptrAgentObj->UnregisterMethod("CMHal_GetUlongValues");
+    ptrAgentObj->UnregisterMethod("CMHal_GetStructValues");
     return TEST_SUCCESS;
 }
 

@@ -40,6 +40,7 @@
 #include <sys/ucontext.h>
 #include "cosa_x_cisco_com_cablemodem_apis.h"
 #include <unistd.h>
+#include "cm_hal.h"
 
 ANSC_HANDLE cm_handle = NULL;    
 PCOSA_BACKEND_MANAGER_OBJECT g_pCosaBEManager;
@@ -1526,6 +1527,314 @@ int ssp_cosacm_getcpelist_invalid_arg()
 
     return SSP_SUCCESS;
 
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHal_GetCharValues
+ * Description          : This function will invoke the hal api of CM to get the char values
+ *
+ * @param [in]          : N/A
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+
+int ssp_CMHal_GetCharValues(char* paramName, char* value)
+{
+    int return_status = 0;
+    printf("\nEntering ssp_CMHal_GetCharValues function\n\n");
+    if( !(strcmp(paramName, "CMStatus")) )
+    {
+        return_status = docsis_getCMStatus(value);
+        printf("Return status of docsis_getCMStatus %d", return_status);
+
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHal_GetCharValues : Failed to get the CM status\n");
+            return SSP_FAILURE;
+        }
+    }
+    if( !(strcmp(paramName, "MddIpModeOverride")) )
+    {
+        return_status = docsis_GetMddIpModeOverride(value);
+        printf("Return status of docsis_GetMddIpModeOverride %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHal_GetCharValues : Failed to get MddIpModeOverride\n");
+            return SSP_FAILURE;
+        }
+    }
+    if( !(strcmp(paramName, "ProvIpType")) )
+    {
+        return_status = docsis_GetProvIpType(value);
+        printf("Return status of docsis_GetProvIpType %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHal_GetCharValues : Failed to get IPType\n");
+            return SSP_FAILURE;
+        }
+    }
+
+    return SSP_SUCCESS;
+
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHal_GetUlongValues
+ * Description          : This function will invoke the hal api of CM to get the ulong values
+ *
+ * @param [in]          : N/A
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+
+int ssp_CMHal_GetUlongValues(char* paramName, unsigned long* value)
+{
+    int return_status = 0;
+    printf("\nEntering ssp_CMHal_GetUlongValues function\n\n");
+    if( !(strcmp(paramName, "DownFreq")) )
+    {
+        *value = docsis_GetDownFreq();
+        printf("ssp_CMHal_GetUlongValues:DownFreq is %d", *value);
+
+        if ( *value == 0)
+        {
+            printf("ssp_CMHal_GetUlongValues : Failed to get the Down Frequency\n");
+            return SSP_FAILURE;
+        }
+    }
+    if( !(strcmp(paramName, "NumberofActiveRxChannels")) )
+    {
+        return_status = docsis_GetNumOfActiveRxChannels(NULL);
+        printf("Return status of docsis_GetNumOfActiveRxChannels %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHal_GetCharValues : Failed to get NumberofActiveRxChannels\n");
+            return SSP_FAILURE;
+        }
+    }
+    return SSP_SUCCESS;
+
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHal_GetStructValues
+ * Description          : This function will invoke the hal function to retrieve the values
+ *
+ *
+ * @param [in]          : handleType - message bus handle
+ * @param [in]          : bufferType - Valid or NULL pointer
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CMHal_GetStructValues(char* paramName, void* info)
+{
+    int return_status = 0;
+    CMMGMT_CM_DOCSIS_INFO docsisinfo;
+    PCMMGMT_CM_DS_CHANNEL pDsFreq;
+    PCMMGMT_CM_US_CHANNEL pUsFreq;
+    CMMGMT_CM_IPV6DHCP_INFO v6dhcpinfo;
+    CMMGMT_CM_DHCP_INFO v4dhcpinfo;
+    printf("\n Entering ssp_CMHal_GetStructValues function\n\n");
+    if( !(strcmp(paramName, "version")) )
+    {
+        DOCSIS* temp = info;
+        return_status = docsis_GetDOCSISInfo(&docsisinfo);
+        printf("ssp_CMHal_GetStructValues: Version retreived :%s\n",docsisinfo.DOCSISVersion);
+        strcpy(temp->version ,docsisinfo.DOCSISVersion);
+    }
+    if( !(strcmp(paramName, "Ipv6DhcpBootFileName")) )
+    {
+        IPV6DHCP* temp = info;
+        return_status = cm_hal_GetIPv6DHCPInfo(&v6dhcpinfo);
+        strcpy(temp->IPv6BootFileName ," ");
+        printf("ssp_CMHal_GetStructValues: BootFileName retreived :%s\n",v6dhcpinfo.IPv6BootFileName);
+        strcpy(temp->IPv6BootFileName ,v6dhcpinfo.IPv6BootFileName);
+    }
+    if( !(strcmp(paramName, "Ipv4DhcpBootFileName")) )
+    {
+        IPV4DHCP* temp = info;
+        return_status = cm_hal_GetDHCPInfo(&v4dhcpinfo);
+        strcpy(temp->BootFileName ," ");
+        printf("ssp_CMHal_GetStructValues: BootFileName retreived :%s\n",v4dhcpinfo.BootFileName);
+        strcpy(temp->BootFileName ,v4dhcpinfo.BootFileName);
+    }
+
+    if( !(strcmp(paramName, "Ipv6DhcpIPAddress")) )
+    {
+        IPV6DHCP* temp = info;
+        return_status = cm_hal_GetIPv6DHCPInfo(&v6dhcpinfo);
+        strcpy(temp->IPv6Address ," ");
+        printf("ssp_CMHal_GetStructValues: IPAddress retreived :%s\n",v6dhcpinfo.IPv6Address);
+        strcpy(temp->IPv6Address ,v6dhcpinfo.IPv6Address);
+    }
+    if( !(strcmp(paramName, "Ipv4DhcpIPAddress")) )
+    {
+        IPV4DHCP* temp = info;
+        return_status = cm_hal_GetDHCPInfo(&v4dhcpinfo);
+        strcpy(temp->IPAddress ," ");
+        printf("ssp_CMHal_GetStructValues: IPAddress retreived :%s\n",v4dhcpinfo.IPAddress);
+        sprintf(temp->IPAddress ,"%s",v4dhcpinfo.IPAddress);
+    }
+    if( !(strcmp(paramName, "ConfigFileName")) )
+    {
+        DOCSIS* temp = info;
+        return_status = docsis_GetDOCSISInfo(&docsisinfo);
+        strcpy(temp->ConfigFileName ," ");
+        printf("ssp_CMHal_GetStructValues: ConfigFileName retreived :%s\n",docsisinfo.DOCSISConfigFileName);
+        strcpy(temp->ConfigFileName ,docsisinfo.DOCSISConfigFileName);
+    }
+    if( !(strcmp(paramName, "DS_Frequency")) )
+    {
+       char* temp = info;
+       long unsigned int  count;
+       return_status = docsis_GetNumOfActiveRxChannels(&count);
+       printf("Count of Active Rx channels is %d\n",count);
+       if (return_status == 0)
+       {
+           pDsFreq = (PCMMGMT_CM_DS_CHANNEL) malloc(sizeof(CMMGMT_CM_DS_CHANNEL)*count);
+           if(!pDsFreq)
+           {
+               printf("Memory has not allocated successfully \n ");
+           }
+           else
+           {
+               return_status = docsis_GetDSChannel(&pDsFreq);
+               int i;
+	       strcpy(temp,"");
+               for(i=0;i<count;i++)
+               {
+                   printf("ssp_CMHal_GetStructValues: DS Frequency retreived :%s\n",pDsFreq->Frequency);
+                   char FreqString[64];
+                   strcpy(FreqString,pDsFreq->Frequency);
+                   FreqString[strlen(FreqString)- 4]  = '\0';
+		   strcat(temp,FreqString);
+		   strcat(temp,",");
+                   pDsFreq++;
+               }
+           }
+           free(pDsFreq);
+       }
+    }
+    if( !(strcmp(paramName, "US_Frequency")) )
+    {
+        char* temp = info;
+        long unsigned int  count;
+        return_status = docsis_GetNumOfActiveTxChannels(&count);
+        printf("Count of Active Tx channels is %d\n",count);
+        if (return_status == 0)
+        {
+            pUsFreq = (PCMMGMT_CM_US_CHANNEL) malloc(sizeof(CMMGMT_CM_US_CHANNEL)*count);
+            if(!pUsFreq)
+            {
+                printf("Memory has not allocated successfully \n ");
+            }
+            else
+            {
+                return_status = docsis_GetUSChannel(&pUsFreq);
+                int i;
+		strcpy(temp,"");
+                for(i=0;i<count;i++)
+                {
+                    printf("ssp_CMHal_GetStructValues: US Frequency retreived :%s\n",pUsFreq->Frequency);
+                    char FreqString[64];
+                    strcpy(FreqString,pUsFreq->Frequency);
+                    FreqString[strlen(FreqString)- 4]  = '\0';
+		    strcat(temp,FreqString);
+                    strcat(temp,",");
+                    pUsFreq++;
+                }
+            }
+            free(pUsFreq);
+        }
+    }
+    if( !(strcmp(paramName, "ModulationAndSNRLevel")) )
+    {
+        char* temp = info;
+        long unsigned int  count;
+        return_status = docsis_GetNumOfActiveRxChannels(&count);
+        printf("Count of Active Rx channels is %d\n",count);
+        if (return_status == 0)
+        {
+            pDsFreq = (PCMMGMT_CM_DS_CHANNEL) malloc(sizeof(CMMGMT_CM_DS_CHANNEL)*count);
+            if(!pDsFreq)
+            {
+                printf("Memory has not allocated successfully \n ");
+            }
+            else
+            {
+                return_status = docsis_GetDSChannel(&pDsFreq);
+                int i;
+		strcpy(temp,"");
+                for(i=0;i<count;i++)
+                {
+                    printf("ssp_CMHal_GetStructValues: DS Modulation retreived :%s\n",pDsFreq->Modulation);
+                    printf("ssp_CMHal_GetStructValues: DS SNR Level retreived :%s\n",pDsFreq->SNRLevel);
+                    char SNRString[64];
+                    strcpy(SNRString,pDsFreq->SNRLevel);
+                    SNRString[strlen(SNRString)- 3]  = '\0';
+		    strcat(temp,pDsFreq->Modulation);
+		    strcat(temp,":");
+		    strcat(temp,SNRString);
+		    strcat(temp,",");
+                    pDsFreq++;
+                }
+            }
+            free(pDsFreq);
+        }
+    }
+    if( !(strcmp(paramName, "LockStatusAndChannelID")) )
+    {
+        char* temp = info;
+        long unsigned int  count;
+        return_status = docsis_GetNumOfActiveRxChannels(&count);
+        printf("Count of Active Rx channels is %d\n",count);
+        if (return_status == 0)
+        {
+            pDsFreq = (PCMMGMT_CM_DS_CHANNEL) malloc(sizeof(CMMGMT_CM_DS_CHANNEL)*count);
+            if(!pDsFreq)
+            {
+                printf("Memory has not allocated successfully \n ");
+            }
+            else
+            {
+                return_status = docsis_GetDSChannel(&pDsFreq);
+                int i;
+		strcpy(temp,"");
+                for(i=0;i<count;i++)
+                {
+                    printf("ssp_CMHal_GetStructValues: DS LockStatus retreived :%s\n",pDsFreq->LockStatus);
+                    printf("ssp_CMHal_GetStructValues: DS ChannelID retreived :%d\n",pDsFreq->ChannelID);
+		    char Channelid[16];
+		    sprintf(Channelid,"%d",pDsFreq->ChannelID);
+		    strcat(temp,pDsFreq->LockStatus);
+		    strcat(temp,":");
+		    strcat(temp,Channelid);
+		    strcat(temp,",");
+                    pDsFreq++;
+                }
+            }
+            free(pDsFreq);
+        }
+    }
+    if( !(strcmp(paramName, "DS_DataRate")) )
+    {
+        DOCSIS* temp = info;
+        return_status = docsis_GetDOCSISInfo(&docsisinfo);
+        printf("ssp_CMHal_GetStructValues: DownstreamDataRate retreived :%s\n",docsisinfo.DOCSISDownstreamDataRate);
+        strcpy(temp->DownstreamDataRate ,docsisinfo.DOCSISDownstreamDataRate);
+    }
+    if( !(strcmp(paramName, "US_DataRate")) )
+    {
+        DOCSIS* temp = info;
+        return_status = docsis_GetDOCSISInfo(&docsisinfo);
+        printf("ssp_CMHal_GetStructValues: UpstreamDataRate retreived :%s\n",docsisinfo.DOCSISUpstreamDataRate);
+        strcpy(temp->UpstreamDataRate ,docsisinfo.DOCSISUpstreamDataRate);
+    }
+    if ( return_status != 0)
+    {
+        printf("ssp_CMHal_GetStructValues:Failed to retrieve the Config\n");
+        return 1;
+    }
+    return 0;
 }
 
 #endif

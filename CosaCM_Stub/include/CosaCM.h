@@ -93,6 +93,9 @@ class CosaCM : public RDKTestStubInterface
         bool COSACM_GetCMErrorCodewords(IN const Json::Value& req, OUT Json::Value& response);  
         bool COSACM_GetCMCertStatus(IN const Json::Value& req, OUT Json::Value& response);  
         bool COSACM_GetCPEList(IN const Json::Value& req, OUT Json::Value& response);
+        bool CMHal_GetCharValues(IN const Json::Value& req, OUT Json::Value& response);
+        bool CMHal_GetUlongValues(IN const Json::Value& req, OUT Json::Value& response);
+        bool CMHal_GetStructValues(IN const Json::Value& req, OUT Json::Value& response);
 
 };
 #endif //__CosaCM_STUB_H__

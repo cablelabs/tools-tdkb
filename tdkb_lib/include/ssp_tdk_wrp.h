@@ -37,6 +37,12 @@
 #define PING_DEF_TIMEO       1
 #define PING_DEF_BSIZE       56
 
+#define  ANSC_IPV4_ADDRESS                             \
+         union                                         \
+         {                                             \
+            unsigned char                   Dot[4];    \
+            unsigned long                   Value;     \
+         }
 enum
 {
     SSP_STOP = 0,
@@ -118,5 +124,39 @@ typedef struct cfg {
     unsigned    tos;
     unsigned    maxhop; /* trace route only */
 } diag_cfg;
+
+typedef struct _Docsis
+{
+        char version[64];
+        char ConfigFileName[64];
+        char DownstreamDataRate[64];
+        char UpstreamDataRate[64];
+}DOCSIS;
+
+typedef struct _DsChannel
+{
+       char Frequency[64];
+       char Modulation[64];
+       char SNRLevel[64];
+       char LockStatus[64];
+       unsigned long ChannelID;
+}DS_CHANNEL;
+
+typedef struct _UsChannel
+{
+        char Frequency[64];
+}US_CHANNEL;
+
+typedef struct _Ipv6Dhcp
+{
+       char IPv6BootFileName[64];
+       char IPv6Address[40];
+}IPV6DHCP;
+
+typedef struct _Ipv4Dhcp
+{
+       char BootFileName[64];
+       ANSC_IPV4_ADDRESS IPAddress[40];
+}IPV4DHCP;
 
 #endif
