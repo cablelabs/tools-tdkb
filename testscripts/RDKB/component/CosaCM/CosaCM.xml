@@ -164,7 +164,7 @@
         <function>COSACM_GetMarket</function>
         <parameters/>
       </primitiveTest>
-      <primitiveTest name="COSACM_SetMDDIPOverride" id=" " version="2">
+      <primitiveTest id=" " name="COSACM_SetMDDIPOverride" version="2">
         <function>COSACM_SetMDDIPOverride</function>
         <parameters>
           <parameter name="valueType" value="0"/>
@@ -247,11 +247,29 @@
           <parameter name="Value" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="CosaCM_GetTelephonyRegistrationStatus" id=" " version="1">
+      <primitiveTest id=" " name="CosaCM_GetTelephonyRegistrationStatus" version="1">
         <function>CosaCM_GetTelephonyRegistrationStatus</function>
         <parameters>
           <parameter name="bufferType" value="0"/>
           <parameter name="handleType" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMHal_GetCharValues" version="2">
+        <function>CMHal_GetCharValues</function>
+        <parameters>
+          <parameter name="paramName" value="null"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMHal_GetUlongValues" version="1">
+        <function>CMHal_GetUlongValues</function>
+        <parameters>
+          <parameter name="paramName" value="null"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMHal_GetStructValues" version="1">
+        <function>CMHal_GetStructValues</function>
+        <parameters>
+          <parameter name="paramName" value="null"/>
         </parameters>
       </primitiveTest>
     </primitiveTests>
