@@ -103,6 +103,38 @@
           <parameter name="paramList" value=""/>
         </parameters>
       </primitiveTest>
+      <primitiveTest id=" " name="WIFIHal_CallMethodForULong" version="1">
+        <function>WIFIHal_CallMethodForULong</function>
+        <parameters>
+          <parameter name="methodName" value=""/>
+          <parameter name="param" value=""/>
+          <parameter name="radioIndex" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WIFIHal_CallMethodForBool" version="1">
+        <function>WIFIHal_CallMethodForBool</function>
+        <parameters>
+          <parameter name="methodName" value=""/>
+          <parameter name="param" value=""/>
+          <parameter name="radioIndex" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="WIFIHal_CallMethodForString" id=" " version="1">
+        <function>WIFIHal_CallMethodForString</function>
+        <parameters>
+          <parameter name="methodName" value=""/>
+          <parameter name="param" value=""/>
+          <parameter name="radioIndex" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="WIFIHal_CallMethodForInt" id=" " version="1">
+        <function>WIFIHal_CallMethodForInt</function>
+        <parameters>
+          <parameter name="methodName" value=""/>
+          <parameter name="param" value=""/>
+          <parameter name="radioIndex" value=""/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>
