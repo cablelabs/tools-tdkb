@@ -181,6 +181,9 @@ bool TADstub::TADstub_Set(IN const Json::Value& req, OUT Json::Value& response)
     strcpy(Type,req["Type"].asCString());
 
     GETPARAMVALUES *DataParamValue1;
+    char oldParamValue[50] = {0};
+    char newParamValue[50] = {0};
+    int src, dst=0;
 
     setResult=ssp_setParameterValue(&ParamName[0],&ParamValue[0],&Type[0],1);
     if(setResult==0)
@@ -201,7 +204,23 @@ bool TADstub::TADstub_Set(IN const Json::Value& req, OUT Json::Value& response)
     }
     else
     {
-        if(strcmp(&ParamValue[0],&DataParamValue1[i].pParamValues[0])==0)
+        printf("ParamValue that is set:%s\n",&ParamValue[0]);
+        printf("Value Retrieved after set:%s\n",&DataParamValue1[i].pParamValues[0]);
+
+        strcpy(oldParamValue, &DataParamValue1[i].pParamValues[0]);
+
+        printf("Check for any special characters appened in the value retrieved and remove\n");
+        for (src=0; oldParamValue[src] != 0; src++)
+        if (oldParamValue[src] != '\'')
+        {
+             newParamValue[dst] = oldParamValue[src];
+             dst++;
+        }
+        newParamValue[dst] = 0;
+
+        printf("Value after truncating special characters:%s\n",newParamValue);
+
+        if(strcmp(&ParamValue[0], newParamValue)==0)
         {
             printf("Set has been validated successfully\n");
             free_Memory_val(size_ret,DataParamValue1);
