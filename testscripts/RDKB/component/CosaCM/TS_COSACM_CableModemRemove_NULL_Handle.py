@@ -17,25 +17,44 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>3</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>4</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_COSACM_CableModemRemove_NULL_Handle</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id> </primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>COSACM_CableModemRemove</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
-  <synopsis>Test case to validate CosaCableModemRemove API by giving a null handle</synopsis>
-  <groups_id/>
+  <!--  -->
+  <synopsis>Validate CosaBackEndManagerRemove with NULL Pointer as argument.</synopsis>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
-  <remarks/>
-  <skip>false</skip>
+  <!--  -->
+  <advanced_script>false</advanced_script>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks>RDKB-11943: CosaBackEndManagerRemove are expected to be called from the object on the pointer of the object itself. In such cases, it is not possible for the object to be NULL inside the function. And if the function is called independendly, (i.e., not from the object)
+it is the responsibility of the caller to check for NULL pointer. So marking this script as N/A</remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
+  <skip>true</skip>
+  <!--  -->
   <box_types>
-    <box_type>Broadband</box_type>
+    <box_type>RDKB-Gateway</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_COSACM_63</test_case_id>
@@ -46,9 +65,7 @@ Remove API negative scenario</test_objective>
 XB3</test_setup>
     <pre_requisite>1.Ccsp Components in DUT should be in a running state that includes component under test Cable Modem
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script
-3.Test case TC_COSACM_63 should have passed.
-
-</pre_requisite>
+3.Test case TC_COSACM_63 should have passed.</pre_requisite>
     <api_or_interface_used>None</api_or_interface_used>
     <input_parameters>Json Interface:
 API Name
@@ -63,18 +80,16 @@ Handle to the object - NULL</input_parameters>
 6.Responses(printf) from TDK Component and CM agentstub would be logged in Agent Console log 
 7.Based on the log set the result as SUCCESS or FAILURE</automation_approch>
     <except_output>CheckPoint 1:
-NULL should be handled by the API
-</except_output>
+NULL should be handled by the API</except_output>
     <priority>High</priority>
     <test_stub_interface>None</test_stub_interface>
     <test_script>TS_COSACM_CableModemRemove_NULL_Handle</test_script>
     <skipped>No</skipped>
-    <release_version/>
+    <release_version></release_version>
     <remarks>None</remarks>
   </test_cases>
-  <script_tags/>
+  <script_tags />
 </xml>
-
 '''
 						#use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
