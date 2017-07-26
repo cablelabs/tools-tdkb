@@ -96,14 +96,14 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the ConfigFileName";
         print "EXPECTED RESULT 1: Should get the ConfigFileName successfully";
-        print "ACTUAL RESULT 1: %s" %ConfigFileName;
+        print "ACTUAL RESULT 1: The config filename is %s" %ConfigFileName;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
     else:
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the ConfigFileName";
         print "EXPECTED RESULT 1: Should get the ConfigFileName successfully";
-        print "ACTUAL RESULT 1: %s" %ConfigFileName;
+        print "ACTUAL RESULT 1: Failed to get get the config file name, Details %s" %ConfigFileName;
         print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("cosacm");

@@ -106,14 +106,14 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get and validate the DownStream LockStatus and ChannelID";
         print "EXPECTED RESULT 1: ChannelID should not be zero if the frequency is Locked";
-        print "ACTUAL RESULT 1: %s" %Details;
+        print "ACTUAL RESULT 1: Successfully validated the ChannelID with Lockstatud" ;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
     else:
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get and validate the DownStream LockStatus and ChannelID";
         print "EXPECTED RESULT 1: ChannelID should not be zero if the frequency is Locked";
-        print "ACTUAL RESULT 1: %s" %Details;
+        print "ACTUAL RESULT 1: Validation of ChannelID with LockStatus id failed";
         print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("cosacm");

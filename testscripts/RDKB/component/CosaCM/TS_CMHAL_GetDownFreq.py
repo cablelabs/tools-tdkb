@@ -106,7 +106,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the Down frequency";
         print "EXPECTED RESULT 1: Should get the Down frequency successfully";
-        print "ACTUAL RESULT 1: Down Frequency is %d" %Freq;
+        print "ACTUAL RESULT 1: Failed to get the Down Frequency, Details :%d" %Freq;
         print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("cosacm");

@@ -94,9 +94,10 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the provisioned wan0 iptype";
         print "EXPECTED RESULT 1: Should get the provisioned wan0 iptype successfully";
-        print "ACTUAL RESULT 1: %s" %IPType;
+        print "ACTUAL RESULT 1: The IPType is %s" %IPType;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
+	BootFileName = " ";
 	if "IPv6" or "IPV6" in IPType:
     	    tdkTestObj = obj.createTestStep("CMHal_GetStructValues");
     	    tdkTestObj.addParameter("paramName","Ipv6DhcpBootFileName");
@@ -112,30 +113,26 @@ if "SUCCESS" in loadmodulestatus.upper():
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             BootFileName = tdkTestObj.getResultDetails();
-	else:
-            print "Exiting because IPType is unknown."
-	    obj.unloadModule("cosacm");
-	    exit();
 
         if expectedresult in actualresult and BootFileName != " ":
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 2: Get the BootFileName";
             print "EXPECTED RESULT 2: Should get the BootFileName successfully";
-            print "ACTUAL RESULT 2: %s" %BootFileName;
+            print "ACTUAL RESULT 2: The BootFileName is %s" %BootFileName;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
         else:
             tdkTestObj.setResultStatus("FAILURE");
             print "TEST STEP 2: Get the BootFileName";
             print "EXPECTED RESULT 2: Should get the BootFileName successfully";
-            print "ACTUAL RESULT 2: %s" %BootFileName;
+            print "ACTUAL RESULT 2: Failed to get the BootFileName, Details :%s" %BootFileName;
             print "[TEST EXECUTION RESULT] : FAILURE";
     else:
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the provisioned wan0 iptype";
         print "EXPECTED RESULT 1: Should get the provisioned wan0 iptype successfully";
-        print "ACTUAL RESULT 1: %s" %IPType;
+        print "ACTUAL RESULT 1: Failed to get the IPType, Details :%s" %IPType;
         print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("cosacm");

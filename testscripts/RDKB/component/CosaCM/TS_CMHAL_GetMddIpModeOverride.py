@@ -97,14 +97,14 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the MddIpModeOverride";
         print "EXPECTED RESULT 1: Should get the MddIpModeOverride successfully";
-        print "ACTUAL RESULT 1: %s" %Details;
+        print "ACTUAL RESULT 1: MddIpModeOverride is %s" %Details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
     else:
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the MddIpModeOverride";
         print "EXPECTED RESULT 1: Should get the MddIpModeOverride successfully";
-        print "ACTUAL RESULT 1: %s" %Details;
+        print "ACTUAL RESULT 1: Failed to get the MddIpModeOverride, Details :%s" %Details;
         print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("cosacm");
