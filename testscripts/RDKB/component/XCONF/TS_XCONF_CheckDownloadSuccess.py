@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>Check if on setting valid download url and firmware details in xconf server config, a firmware download request from client is happening properly</synopsis>
   <groups_id/>
-  <execution_time>15</execution_time>
+  <execution_time>40</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>
@@ -105,108 +105,108 @@ if "SUCCESS" in result.upper() :
     #get firmware details to be updated
     FirmwareVersion, FirmwareFilename = xconfUtilityLib.getFirmwareDetails(obj)
 
-    #########if the current image in device is same as the latest image fetched by getCurrentFirmware(), use the ALTERNATE_URL variable from the config file
-    if Old_FirmwareFilename == FirmwareFilename:
-        FirmwareVersion = ALTERNATE_URL
-        FirmwareFilename = FirmwareVersion+'_signed.bin'
+    #####create a list of FW names and versions to be flashed, including current image name for reverting back
+    FwNames = [FirmwareVersion, FirmwareFilename, Old_FirmwareVersion, Old_FirmwareFilename]
+    oldFw = [Old_FirmwareVersion, Old_FirmwareFilename, FirmwareVersion, FirmwareFilename]
 
-    ####form the curl command to set the configuration details of the device in the mock server
-    Curl_CMD = xconfUtilityLib.getXCONFServerConfigCmd(obj, FirmwareVersion, FirmwareFilename, "http")
-    tdkTestObj = obj.createTestStep('ExecuteCmd');
-
-    print "Curl Request Formed:",Curl_CMD
-    tdkTestObj.addParameter("command",Curl_CMD);
-    tdkTestObj.executeTestCase("SUCCESS");
-
-    #Get the result of execution
-    result = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails();
-    if "Successfully added configuration" in details:
-        tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 3: Execute curl cmnd to  add device configuration"
-        print "EXPECTED RESULT 3: Should add device configuration"
-        print "ACTUAL RESULT 3: Status: %s " %details
-        print "[TEST EXECUTION RESULT] : SUCCESS";
-        print "SUCCESS:Executed Curl Command"
-    else:
-        tdkTestObj.setResultStatus("FAILURE");
-        print "TEST STEP 3: Execute curl cmnd to  add device configuration"
-        print "EXPECTED RESULT 3: Should add device configuration"
-        print "ACTUAL RESULT 3: Status: %s " %details
-        print "[TEST EXECUTION RESULT] :FAILURE:Failed to execute Curl Command";
-
-    ################get log file name from tdk_platform.properties
-    actualresult, propVal = xconfUtilityLib.GetPlatformProperties(obj, "CDN_LOG");
-    if expectedresult in actualresult:
-        tdkTestObj.setResultStatus("SUCCESS");
-        cdnLog = propVal
-        print "SUCCESS:get log file name"
-    else:
-        tdkTestObj.setResultStatus("FAILURE");
-        print "FAILURE:failed to get log file name"
-
-    ################get CDN file name from tdk_platform.properties
-    actualresult, propVal = xconfUtilityLib.GetPlatformProperties(obj, "CDN_FILE");
-    if expectedresult in actualresult:
-        tdkTestObj.setResultStatus("SUCCESS");
-        print "SUCCESS:get cdn file name"
-        cdnFile = propVal
-    else:
-        tdkTestObj.setResultStatus("FAILURE");
-        print "FAILURE:failed to get log file name"
-
-    #Remove the exsisting logs
-    result = xconfUtilityLib.removeLog(obj, cdnLog);
-    if "SUCCESS" in result:
+    for i in range (0,3,2):
+        ####form the curl command to set the configuration details of the device in the mock server
+        Curl_CMD = xconfUtilityLib.getXCONFServerConfigCmd(obj, FwNames[i], FwNames[i+1], "http")
+        tdkTestObj = obj.createTestStep('ExecuteCmd');
+    
+        print "Curl Request Formed:",Curl_CMD
+        tdkTestObj.addParameter("command",Curl_CMD);
+        tdkTestObj.executeTestCase("SUCCESS");
+    
+        #Get the result of execution
+        result = tdkTestObj.getResult();
+        details = tdkTestObj.getResultDetails();
+        if "Successfully added configuration" in details:
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP 3: Execute curl cmnd to  add device configuration"
+            print "EXPECTED RESULT 3: Should add device configuration"
+            print "ACTUAL RESULT 3: Status: %s " %details
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+            print "SUCCESS:Executed Curl Command"
+        else:
+            tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP 3: Execute curl cmnd to  add device configuration"
+            print "EXPECTED RESULT 3: Should add device configuration"
+            print "ACTUAL RESULT 3: Status: %s " %details
+            print "[TEST EXECUTION RESULT] :FAILURE:Failed to execute Curl Command";
+    
+        ################get log file name from tdk_platform.properties
+        actualresult, propVal = xconfUtilityLib.GetPlatformProperties(obj, "CDN_LOG");
+        if expectedresult in actualresult:
+            tdkTestObj.setResultStatus("SUCCESS");
+            cdnLog = propVal
+            print "SUCCESS:get log file name"
+        else:
+            tdkTestObj.setResultStatus("FAILURE");
+            print "FAILURE:failed to get log file name"
+    
+        ################get CDN file name from tdk_platform.properties
+        actualresult, propVal = xconfUtilityLib.GetPlatformProperties(obj, "CDN_FILE");
+        if expectedresult in actualresult:
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "SUCCESS:get cdn file name"
+            cdnFile = propVal
+        else:
+            tdkTestObj.setResultStatus("FAILURE");
+            print "FAILURE:failed to get log file name"
+    
+        #Remove the exsisting logs
+        result = xconfUtilityLib.removeLog(obj, cdnLog);
         if "SUCCESS" in result:
-                #Execute cdnFile
-                tdkTestObj.addParameter("command", cdnFile + " > /dev/null 2>&1 &");
-                tdkTestObj.executeTestCase("SUCCESS");
-
-                result = tdkTestObj.getResult();
-                details = tdkTestObj.getResultDetails();
-                if "SUCCESS" in result:
-                    tdkTestObj.setResultStatus("SUCCESS");
-                    print "TEST STEP 5: Initiate firmware download"
-                    print "EXPECTED RESULT 5: firmware download should be initiated"
-                    print "ACTUAL RESULT 5: is %s " %details
-                    print "[TEST EXECUTION RESULT] : SUCCESS"
-
-                    #### Sleeping till httpdownload completed
-                    time.sleep(300)
-                    tdkTestObj = obj.createTestStep('ExecuteCmd');
-                    ######search for patterns in Log
-                    tdkTestObj.addParameter("command","grep -inr \"### httpdownload completed ###\" " + cdnLog + " ;echo $?")
+            if "SUCCESS" in result:
+                    #Execute cdnFile
+                    tdkTestObj.addParameter("command", cdnFile + " > /dev/null 2>&1 &");
                     tdkTestObj.executeTestCase("SUCCESS");
-
+    
                     result = tdkTestObj.getResult();
-                    print "[TEST EXECUTION RESULT] : %s" %result;
                     details = tdkTestObj.getResultDetails();
-                    print "[TEST EXECUTION DETAILS] : %s" %details;
-                    if "0" in details.lower():
-                        print "TEST STEP 6: Search for pattern in logs"
-                        print "EXPECTED RESULT 6: Should find the pattern in the logs"
-                        print "ACTUAL RESULT 6: is %s " %details
-                        print "[TEST EXECUTION RESULT] : SUCCESS"
+                    if "SUCCESS" in result:
                         tdkTestObj.setResultStatus("SUCCESS");
-
-                        #######If download is success, reboot the box, otherwise log update will not happen
-                        obj.initiateReboot();
-
+                        print "TEST STEP 5: Initiate firmware download"
+                        print "EXPECTED RESULT 5: firmware download should be initiated"
+                        print "ACTUAL RESULT 5: is %s " %details
+                        print "[TEST EXECUTION RESULT] : SUCCESS"
+    
+                        #### Sleeping till httpdownload completed
+                        time.sleep(300)
+                        tdkTestObj = obj.createTestStep('ExecuteCmd');
+                        ######search for patterns in Log
+                        tdkTestObj.addParameter("command","grep -inr \"HTTP download Successful\" " + cdnLog + " ;echo $?")
+                        tdkTestObj.executeTestCase("SUCCESS");
+    
+                        result = tdkTestObj.getResult();
+                        print "[TEST EXECUTION RESULT] : %s" %result;
+                        details = tdkTestObj.getResultDetails();
+                        print "[TEST EXECUTION DETAILS] : %s" %details;
+                        if "0" in details.lower():
+                            print "TEST STEP 6: Search for pattern in logs"
+                            print "EXPECTED RESULT 6: Should find the pattern in the logs"
+                            print "ACTUAL RESULT 6: is %s " %details
+                            print "[TEST EXECUTION RESULT] : SUCCESS"
+                            tdkTestObj.setResultStatus("SUCCESS");
+    
+                            #######If download is success, reboot the box, otherwise log update will not happen
+                            obj.initiateReboot();
+    
+                        else:
+    
+                            tdkTestObj.setResultStatus("FAILURE");
+                            print "TEST STEP 6: Search for pattern in logs"
+                            print "EXPECTED RESULT 6: Should find the pattern in the logs"
+                            print "ACTUAL RESULT 6: is %s " %details
+                            print "[TEST EXECUTION RESULT] : FAILURE"
                     else:
-
                         tdkTestObj.setResultStatus("FAILURE");
-                        print "TEST STEP 6: Search for pattern in logs"
-                        print "EXPECTED RESULT 6: Should find the pattern in the logs"
-                        print "ACTUAL RESULT 6: is %s " %details
+                        print "TEST STEP 5: Initiate firmware download"
+                        print "EXPECTED RESULT 5: firmware download should be initiated"
+                        print "ACTUAL RESULT 5: is %s " %details
                         print "[TEST EXECUTION RESULT] : FAILURE"
-                else:
-                    tdkTestObj.setResultStatus("FAILURE");
-                    print "TEST STEP 5: Initiate firmware download"
-                    print "EXPECTED RESULT 5: firmware download should be initiated"
-                    print "ACTUAL RESULT 5: is %s " %details
-                    print "[TEST EXECUTION RESULT] : FAILURE"
-
+    
     ###########restore the override file
     xconfUtilityLib.restoreOverrideFile(obj, xconfFile);
     obj.unloadModule("sysutil");

@@ -97,7 +97,7 @@ if "SUCCESS" in result.upper() :
     #Set the module loading status
     obj.setLoadModuleStatus("SUCCESS");
     expectedresult = "SUCCESS"
-    xconfUtilityLib.overrideServerUrl(obj, CDN_MOC_SERVER);
+    actualresult, xconfFile = xconfUtilityLib.overrideServerUrl(obj, CDN_MOC_SERVER);
 
     ###get details of the current firmware in the device
     Old_FirmwareVersion, Old_FirmwareFilename = xconfUtilityLib.getCurrentFirmware(obj);
@@ -173,7 +173,7 @@ if "SUCCESS" in result.upper() :
     time.sleep(40)
     tdkTestObj = obj.createTestStep('ExecuteCmd');
     ######search for patterns in Log
-    tdkTestObj.addParameter("command","grep -inr \"### httpdownload started ###\" " + cdnLog + " ;echo $?")
+    tdkTestObj.addParameter("command","grep -inr \"HTTP download Successful\" " + cdnLog + " ;echo $?")
     tdkTestObj.executeTestCase("SUCCESS");
 
     result = tdkTestObj.getResult();
@@ -210,7 +210,7 @@ if "SUCCESS" in result.upper() :
         print "ACTUAL RESULT 6: is %s " %details
         print "[TEST EXECUTION RESULT] : FAILURE"
 
-    xconfUtilityLib.restoreOverrideFile(obj, CDN_MOC_SERVER);
+    xconfUtilityLib.restoreOverrideFile(obj, xconfFile);
     obj.unloadModule("sysutil");
 else:
     print"Load module failed";

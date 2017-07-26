@@ -107,11 +107,6 @@ if "SUCCESS" in result.upper() :
     #get firmware details from config file
     FirmwareVersion, FirmwareFilename = xconfUtilityLib.getFirmwareDetails(obj)
 
-    #########if the current image in device is same as the latest image fetched by getCurrentFirmware(), use the ALTERNATE_URL variable from the config file
-    if Old_FirmwareFilename == FirmwareFilename:
-        FirmwareVersion = ALTERNATE_URL
-        FirmwareFilename = FirmwareVersion+'_signed.bin'
-
     Protocol = "http"
     ######get MAC details from device
     expectedresult = "SUCCESS"
@@ -195,13 +190,13 @@ if "SUCCESS" in result.upper() :
     if "SUCCESS" in result:
         ###########excute the shell script to download firware
         tdkTestObj = obj.createTestStep('ExecuteCmd');
-        tdkTestObj.addParameter("command", cdnFile + " &");
+        tdkTestObj.addParameter("command", cdnFile + " > /dev/null 2>&1 &");
         tdkTestObj.executeTestCase("SUCCESS");
 
         result = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
         #wait till log updation
-        time.sleep(2)
+        time.sleep(10)
         if "SUCCESS" in result:
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 5: Initiate firmware download"
