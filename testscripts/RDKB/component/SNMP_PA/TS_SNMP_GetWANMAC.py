@@ -118,57 +118,57 @@ if "SUCCESS" in loadmodulestatus1.upper():
     communityString = snmplib.getCommunityString(obj,"snmpget");
     #Get the IP Address
     ipaddress = snmplib.getIPAddress(obj);
-    ########## Script to Execute the snmp command ###########
-    actResponse =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", "1.3.6.1.2.1.2.2.1.6.2", ipaddress);
-    tdkTestObj = obj.createTestStep('ExecuteCmd');
-    tdkTestObj.executeTestCase("SUCCESS");
-
-    if "IF-MIB" in actResponse:
-        mac = actResponse.split("STRING:")[1].strip()
-        tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1:Execute snmpget for WAN mac";
-        print "EXPECTED RESULT 1: snmpget should return WAN mac";
-        print "ACTUAL RESULT 1: WAN mac is %s" %mac;
+    #Get the wan MAC Address from DUT
+    macaddress = " ";
+    macaddress = snmplib.getMACAddress(obj);
+    if macaddress != " " :
+        macaddress = macaddress.strip().lower();
+	print "TEST STEP 1:Get WAN mac from DUT";
+        print "EXPECTED RESULT 1: Should get WAN mac from DUT";
+        print "ACTUAL RESULT 1: WAN mac is %s" %macaddress;
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : %s" %mac ;
-        tdkTestObj = obj.createTestStep('ExecuteCmd');
-        tdkTestObj.addParameter("command", "ifconfig | grep wan | cut -d \" \" -f11 | tr \"\n\" \" \" ");
-        expectedresult="SUCCESS";
+        print "[TEST EXECUTION RESULT] : SUCCESS" ;
 
-        #Execute the test case in DUT
-        tdkTestObj.executeTestCase(expectedresult);
-        actualresult = tdkTestObj.getResult();
-        details = tdkTestObj.getResultDetails().strip().lower();
-        mac_new=details.split(":");
-        index=len(mac_new);
-        mac_list = [];
-        for num in range(0,index):
-            mac_int=int(mac_new[num],16);
-            mac_hex=hex(mac_int)[2:];
-            mac_list.append(mac_hex);
-            final_mac=":".join(mac_list);
-        if expectedresult in actualresult and final_mac:
-            print "TEST STEP 1:Execute ifconfig for wan mac";
-            print "EXPECTED RESULT 1: ifconfig should return wan mac";
+        ########## Script to Execute the snmp command ###########
+        actResponse =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", "1.3.6.1.2.1.2.2.1.6.2", ipaddress);
+        tdkTestObj = obj.createTestStep('ExecuteCmd');
+        tdkTestObj.executeTestCase("SUCCESS");
+
+        if "IF-MIB" in actResponse:
+            mac = actResponse.split("STRING:")[1].strip()
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP 1:Execute snmpget for WAN mac";
+            print "EXPECTED RESULT 1: snmpget should return WAN mac";
+            print "ACTUAL RESULT 1: WAN mac is %s" %mac;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : SUCCESS" ;
+            mac_new=macaddress.split(":");
+            index=len(mac_new);
+            mac_list = [];
+            for num in range(0,index):
+                mac_int=int(mac_new[num],16);
+                mac_hex=hex(mac_int)[2:];
+                mac_list.append(mac_hex);
+                final_mac=":".join(mac_list);
             if mac==final_mac:
-                print "ACTUAL RESULT 1: wan MAC from snmpget and ifconfig are same"
+                print "TEST STEP 2:Check if the wan MAC addresses are same"
+                print "EXPECTED RESULT 2:Both MAC addresses should be same"
+                print "ACTUAL RESULT 2: wan MAC from snmpget and ifconfig are same"
                 tdkTestObj.setResultStatus("SUCCESS");
+		print "[TEST EXECUTION RESULT] :SUCCESS";
             else:
-                print "ACTUAL RESULT 1: wan MAC from snmpget and ifconfig are not same"
+                print "TEST STEP 2:Check if the wan MAC addresses are same"
+                print "EXPECTED RESULT 2:Both MAC addresses should be same"
+                print "ACTUAL RESULT 2: wan MAC from snmpget and ifconfig are not same"
                 tdkTestObj.setResultStatus("FAILURE");
-            print "[TEST EXECUTION RESULT] : %s" %final_mac
-        else:
-            tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 1:Execute ifconfig for wan mac";
-            print "EXPECTED RESULT 1: ifconfig should return wan mac";
-            print "ACTUAL RESULT 1: Couldn't get wan MAC from ifconfig"
+		print "[TEST EXECUTION RESULT] :FAILURE";
     else:
         tdkTestObj.setResultStatus("FAILURE");
         details = tdkTestObj.getResultDetails();
         print "TEST STEP 1:Execute snmpget for WAN mac";
         print "EXPECTED RESULT 1: snmpget should return WAN mac";
         print "ACTUAL RESULT 1: %s" %actResponse;
-        print "[TEST EXECUTION RESULT] : %s" %actResponse ;
+        print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
