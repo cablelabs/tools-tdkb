@@ -17,28 +17,47 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>2</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>4</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_LMLite_GetIPv4AddressNumberOfEntries</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>LMLiteStub_Get</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>Device.Hosts.Host.1.IPv4AddressNumberOfEntries should be always 1. Should not be zero.</synopsis>
-  <groups_id/>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>1</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
   <advanced_script>false</advanced_script>
-  <remarks/>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
     <box_type>Emulator</box_type>
+    <!--  -->
     <box_type>RPI</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_LMLite_14</test_case_id>
@@ -66,37 +85,39 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
     <test_stub_interface>None</test_stub_interface>
     <test_script>TS_LMLite_GetIPv4AddressNumberOfEntries</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
-  <script_tags/>
+  <script_tags />
 </xml>
-
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("lmlite","1");
+wifiobj = tdklib.TDKScriptingLibrary("wifiagent","1");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_LMLite_GetIPv4AddressNumberOfEntries');
+wifiobj.configureTestCase(ip,port,'TS_LMLite_GetIPv4AddressNumberOfEntries');
 #Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
+wifiloadmodulestatus=wifiobj.getLoadModuleResult();
 
 
-if "SUCCESS" in loadmodulestatus.upper():
+if "SUCCESS" in (loadmodulestatus.upper(),wifiloadmodulestatus.upper()):
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
 
     #Disable WiFi before testing LMLite features
-    tdkTestObj = obj.createTestStep('LMLiteStub_Set');
-    tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.1.Enable");
-    tdkTestObj.addParameter("ParamValue","false");
-    tdkTestObj.addParameter("Type","boolean");
+    tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+    tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
+    tdkTestObj.addParameter("paramValue","false");
+    tdkTestObj.addParameter("paramType","boolean");
 
     expectedresult="SUCCESS"
     #Execute the test case in DUT
@@ -104,10 +125,10 @@ if "SUCCESS" in loadmodulestatus.upper():
     actualresult1 = tdkTestObj.getResult();
     Details = tdkTestObj.getResultDetails();
 
-    tdkTestObj = obj.createTestStep('LMLiteStub_Set');
-    tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.2.Enable");
-    tdkTestObj.addParameter("ParamValue","false");
-    tdkTestObj.addParameter("Type","boolean");
+    tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+    tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Enable");
+    tdkTestObj.addParameter("paramValue","false");
+    tdkTestObj.addParameter("paramType","boolean");
 
     expectedresult="SUCCESS"
     #Execute the test case in DUT
@@ -230,20 +251,20 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "[TEST EXECUTION RESULT] : FAILURE";
     
         #Enabling WiFi before exiting the test
-        tdkTestObj = obj.createTestStep('LMLiteStub_Set');
-        tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.1.Enable");
-        tdkTestObj.addParameter("ParamValue","true");
-        tdkTestObj.addParameter("Type","boolean");
+        tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+        tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
+        tdkTestObj.addParameter("paramValue","true");
+        tdkTestObj.addParameter("paramType","boolean");
 
         #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
         actualresult1 = tdkTestObj.getResult();
         Details = tdkTestObj.getResultDetails();
 
-	tdkTestObj = obj.createTestStep('LMLiteStub_Set');
-        tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.2.Enable");
-        tdkTestObj.addParameter("ParamValue","true");
-        tdkTestObj.addParameter("Type","boolean");
+	tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+        tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Enable");
+        tdkTestObj.addParameter("paramValue","true");
+        tdkTestObj.addParameter("paramType","boolean");
 
         #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
@@ -275,6 +296,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("lmlite");
+    wifiobj.unloadModule("wifiagent");
 else:
     print "Failed to load lmlite module";
     obj.setLoadModuleStatus("FAILURE");

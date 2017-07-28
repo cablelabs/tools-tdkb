@@ -79,25 +79,27 @@ import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("lmlite","1");
+wifiobj = tdklib.TDKScriptingLibrary("wifiagent","1");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_LMLite_GetLeaseTimeRemaining');
+wifiobj.configureTestCase(ip,port,'TS_LMLite_GetLeaseTimeRemaining');
 #Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
+wifiloadmodulestatus=wifiobj.getLoadModuleResult();
 
-
-if "SUCCESS" in loadmodulestatus.upper():
+if "SUCCESS" in (loadmodulestatus.upper(),wifiloadmodulestatus.upper()):
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
 
     #Disable WiFi before testing LMLite features
-    tdkTestObj = obj.createTestStep('LMLiteStub_Set');
-    tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.1.Enable");
-    tdkTestObj.addParameter("ParamValue","false");
-    tdkTestObj.addParameter("Type","boolean");
+    tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+    tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
+    tdkTestObj.addParameter("paramValue","false");
+    tdkTestObj.addParameter("paramType","boolean");
 
     expectedresult="SUCCESS"
     #Execute the test case in DUT
@@ -105,10 +107,10 @@ if "SUCCESS" in loadmodulestatus.upper():
     actualresult1 = tdkTestObj.getResult();
     Details = tdkTestObj.getResultDetails();
 
-    tdkTestObj = obj.createTestStep('LMLiteStub_Set');
-    tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.2.Enable");
-    tdkTestObj.addParameter("ParamValue","false");
-    tdkTestObj.addParameter("Type","boolean");
+    tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+    tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Enable");
+    tdkTestObj.addParameter("paramValue","false");
+    tdkTestObj.addParameter("paramType","boolean");
 
     expectedresult="SUCCESS"
     #Execute the test case in DUT
@@ -220,7 +222,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         tdkTestObj.setResultStatus("FAILURE");
                         print "TEST STEP 4: Get lease time and address source";
                         print "EXPECTED RESULT 4: If address source is DHCP, lease time should be greater than zero.Otherwise equal to zero";
-                        print "ACTUAL RESULT 4: Successfully updated the lease time";
+                        print "ACTUAL RESULT 4: Failed to update the lease time";
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : FAILURE";
                 else:
@@ -249,20 +251,20 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "[TEST EXECUTION RESULT] : FAILURE";
 
         #Enabling WiFi before exiting the test
-        tdkTestObj = obj.createTestStep('LMLiteStub_Set');
-        tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.1.Enable");
-        tdkTestObj.addParameter("ParamValue","true");
-        tdkTestObj.addParameter("Type","boolean");
+        tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+        tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
+        tdkTestObj.addParameter("paramValue","true");
+        tdkTestObj.addParameter("paramType","boolean");
 
         #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
         actualresult1 = tdkTestObj.getResult();
         Details = tdkTestObj.getResultDetails();
 
-        tdkTestObj = obj.createTestStep('LMLiteStub_Set');
-        tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.2.Enable");
-        tdkTestObj.addParameter("ParamValue","true");
-        tdkTestObj.addParameter("Type","boolean");
+        tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+        tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Enable");
+        tdkTestObj.addParameter("paramValue","true");
+        tdkTestObj.addParameter("paramType","boolean");
 
         #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
@@ -294,6 +296,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("lmlite");
+    wifiobj.unloadModule("wifiagent");
 else:
     print "Failed to load lmlite module";
     obj.setLoadModuleStatus("FAILURE");
