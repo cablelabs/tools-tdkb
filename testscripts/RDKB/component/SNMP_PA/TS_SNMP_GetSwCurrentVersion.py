@@ -118,7 +118,8 @@ if "SUCCESS" in loadmodulestatus.upper():
     actResponse =snmplib.SnmpExecuteCmd("snmpget", communityString, "-v 2c", "1.3.6.1.2.1.69.1.3.5.0", ipaddress);
     tdkTestObj = obj.createTestStep('ExecuteCmd');
     tdkTestObj.executeTestCase("SUCCESS");
-    imagename = tdklib.getImageName (ipaddress, port).split('=')[1]
+    imagename = tdklib.getImageName (ip, port);
+    print "image name : "imagename;
 
     if imagename in actResponse:
         sw_rev = actResponse.split("STRING:")[1]
@@ -127,14 +128,14 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "EXPECTED RESULT 1: snmpget should get the Software version";
         print "ACTUAL RESULT 1: SW_verion is %s" %sw_rev;
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : %s" %sw_rev ;
+        print "[TEST EXECUTION RESULT] : SUCCESS";
     else:
         tdkTestObj.setResultStatus("FAILURE");
         details = tdkTestObj.getResultDetails();
         print "TEST STEP 1:Execute snmpget for Software version";
         print "EXPECTED RESULT 1: snmpget should get the Software version";
         print "ACTUAL RESULT 1: %s" %actResponse;
-        print "[TEST EXECUTION RESULT] : %s" %actResponse ;
+        print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";

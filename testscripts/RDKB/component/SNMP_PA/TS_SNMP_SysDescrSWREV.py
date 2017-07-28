@@ -119,7 +119,8 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj = obj.createTestStep('ExecuteCmd');
     tdkTestObj.executeTestCase("SUCCESS");
     
-    imagename = tdklib.getImageName (ip, port).split('=')[1]
+    imagename = tdklib.getImageName (ip, port);
+    print "image name : "imagename;
 
     if imagename in actResponse:
 	sw_rev = actResponse.split("SW_REV:")[1].split(';')[0]
@@ -129,14 +130,14 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "EXPECTED RESULT 1: snmpget should get the SW_REV system description values";
         print "ACTUAL RESULT 1: SW_REV is %s" %sw_rev;
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : %s" %sw_rev ;
+        print "[TEST EXECUTION RESULT] : SUCCESS";
     else:
         tdkTestObj.setResultStatus("FAILURE");
         details = tdkTestObj.getResultDetails();
         print "TEST STEP 1:Execute snmpget for SW_REV in system description";
         print "EXPECTED RESULT 1: snmpget should get the SW_REV system description values";
         print "ACTUAL RESULT 1: %s" %actResponse;
-        print "[TEST EXECUTION RESULT] : %s" %actResponse ;
+        print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("sysutil");
 else:
         print "FAILURE to load SNMP_PA module";
