@@ -74,7 +74,7 @@ radioIndex : 1</input_parameters>
     <automation_approch>1. Load wifiagent module
 2. Using WIFIHal_CallMethodForBool invoke wifi_getRadioDfsSupport to check if Dfs is supporetd
 3.If supported, invoke getRadioDFSEnable to get the dfs enable state
-4. If not supported return failure
+4. If not supported also return success
 5. Unload wifiagent module</automation_approch>
     <except_output>Dfs should be supported</except_output>
     <priority>High</priority>
@@ -131,7 +131,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 print "getRadioDFSEnable() failed"
         else:
             print "RadioDFS is not Supported"
-            tdkTestObj.setResultStatus("FAILURE");
+            tdkTestObj.setResultStatus("SUCCESS");
     else:
         print "getRadioDFSSupported() failed"
 

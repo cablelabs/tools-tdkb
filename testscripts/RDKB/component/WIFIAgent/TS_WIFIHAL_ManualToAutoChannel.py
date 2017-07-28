@@ -129,9 +129,9 @@ if "SUCCESS" in loadmodulestatus.upper():
 		primitive = "WIFIHal_CallMethodForBool"
 		tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 1, setMethod)
 
+		primitive = 'WIFIHal_CallMethodForULong'
 		if expectedresult in actualresult :
    		    getMethod = "getRadioChannel"
-		    primitive = 'WIFIHal_CallMethodForULong'
 		    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
  		    channelAfterAuto = int(details.split(":")[1].strip())
 		    if channelAfterAuto != channel :

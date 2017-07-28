@@ -188,11 +188,11 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                     print "EXPECTED RESULT 1: Should get the value as enabled"
 		    if "=" in get_details:
 		        snmpStatus = get_details.rsplit(None, 1)[-1].strip('"');
-	    		if snmpStatus == '1':
-                    	    print "ACTUAL RESULT 1: SUCCESS, enabled";
+	    		if snmpStatus != '1':
+                    	    print "ACTUAL RESULT 1: SUCCESS, SSID is disabled with radio disable"
 		            tdkTestObj.setResultStatus("SUCCESS");
 			else:
-			    print "ACTUAL RESULT 1: FAILURE, not enabled";
+			    print "ACTUAL RESULT 1: FAILURE, SSID is not disabled with radio disable"
 			    tdkTestObj.setResultStatus("FAILURE");
 		    else:
 		        tdkTestObj.setResultStatus("FAILURE");
@@ -256,5 +256,3 @@ else:
     pamObj.setLoadModuleStatus("FAILURE");
     print "Module loading FAILURE";
 
-
-					

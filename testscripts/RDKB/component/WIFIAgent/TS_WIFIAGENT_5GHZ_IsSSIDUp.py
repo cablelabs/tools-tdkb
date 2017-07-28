@@ -145,6 +145,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
 
+            sleep(5);
 	    #check if ssid2 status is up or not
             tdkTestObj = obj.createTestStep('WIFIAgent_Get');
             tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Status")

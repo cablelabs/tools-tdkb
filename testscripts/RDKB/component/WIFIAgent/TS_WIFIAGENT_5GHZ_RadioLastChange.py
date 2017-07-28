@@ -121,7 +121,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 1: get LastChange value"
             print "EXPECTED RESULT 1: Should get LastChange value"
-	    lastChange = details.split("VALUE:")[1].split(' ')[0];
+	    lastChange = int(details.split("VALUE:")[1].split(' ')[0]);
             print "ACTUAL RESULT 1: value is %s " %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";  
@@ -153,7 +153,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details = tdkTestObj.getResultDetails();
-                lastChange2 = details.split("VALUE:")[1].split(' ')[0];
+                lastChange2 = int(details.split("VALUE:")[1].split(' ')[0]);
 
                 if expectedresult in actualresult and lastChange2 < lastChange:
                     tdkTestObj.setResultStatus("SUCCESS");
