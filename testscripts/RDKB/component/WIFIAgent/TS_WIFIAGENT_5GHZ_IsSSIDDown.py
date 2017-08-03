@@ -89,6 +89,7 @@ Device.WiFi.SSID.2.Status</input_parameters>
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
+from time import sleep;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("wifiagent","1");
