@@ -1089,13 +1089,13 @@ int ssp_setParameterAttr(char *pParamName,char *pAttrNotify,char *pAttrAccess)
         if ( size2 == 0 )
         {
             printf("ssp_setParameterAttr::Can't find destination component.\n");
-            return NULL;
+            return 1;
         }
     }
     else
     {
         printf("ssp_setParameterAttr::Can't find destination component.\n");
-        return NULL;
+        return 1;
     }
 
     dst_componentid = ppComponents[0]->componentName;
