@@ -93,7 +93,7 @@ wifiobj.configureTestCase(ip,port,'TS_LMLite_CheckConnectedDeviceNumber_InBridge
 loadmodulestatus=obj.getLoadModuleResult();
 wifiloadmodulestatus=wifiobj.getLoadModuleResult();
 
-if "SUCCESS" in (loadmodulestatus.upper(),wifiloadmodulestatus.upper()):
+if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
     #Disable WiFi before testing LMLite features
@@ -119,7 +119,7 @@ if "SUCCESS" in (loadmodulestatus.upper(),wifiloadmodulestatus.upper()):
     actualresult2 = tdkTestObj.getResult();
     Details = tdkTestObj.getResultDetails();
 
-    if expectedresult in (actualresult1,actualresult2):
+    if expectedresult in (actualresult1 and actualresult2):
 	#Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP : Disable WiFi before testing LMLite features";
@@ -268,7 +268,7 @@ if "SUCCESS" in (loadmodulestatus.upper(),wifiloadmodulestatus.upper()):
         actualresult2 = tdkTestObj.getResult();
         Details = tdkTestObj.getResultDetails();
 
-        if expectedresult in (actualresult1,actualresult2):
+        if expectedresult in (actualresult1 and actualresult2):
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP : Enable WiFi before exiting test";

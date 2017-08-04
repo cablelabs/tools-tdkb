@@ -176,7 +176,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 actualresult2 = tdkTestObj.getResult();
                 Polling_Time = tdkTestObj.getResultDetails();
 	        
-	        if expectedresult in (actualresult1,actualresult2):
+	        if expectedresult in (actualresult1 and actualresult2):
 	            #Set the result status of execution
                     tdkTestObj.setResultStatus("SUCCESS");
                     print "TEST STEP 4: Get the current Reporting period and Polling period of NetworkDevicesStatus";
@@ -358,7 +358,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         actualresult2 = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
 
-        if expectedresult in (actualresult1,actualresult2):
+        if expectedresult in (actualresult1 and actualresult2):
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP : Set ReportingPeriod and polling period to default value";
