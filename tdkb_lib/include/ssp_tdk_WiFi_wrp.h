@@ -20,7 +20,7 @@
 #define SSP_SUCCESS       0
 #define SSP_FAILURE       1
 
-int ssp_WiFiCallMethodForULong(int radioIndex, unsigned long *uLongVar, char* methodName);
-int ssp_WiFiHalCallMethodForBool(int radioIndex, unsigned char *enable, char* method);
-int ssp_WiFiCallMethodForString(int radioIndex, char* output, char* method);
-int ssp_WiFiCallMethodForInt(int radioIndex, int* output, char* method);
+int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, char* methodName);
+int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, char* method);
+int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* method);
+int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method);

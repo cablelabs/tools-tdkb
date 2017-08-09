@@ -116,5 +116,6 @@ AC_CONFIG_FILES([Makefile
          RDKLogger_stub/Makefile
 	 TAD_stub/Makefile
 	 Moca_Stub/Makefile
-	 LMLite_Stub/Makefile])
+	 LMLite_Stub/Makefile
+	 WIFIHAL_stub/Makefile])
 AC_OUTPUT

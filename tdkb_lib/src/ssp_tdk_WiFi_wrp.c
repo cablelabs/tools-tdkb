@@ -23,7 +23,7 @@
 
 /*******************************************************************************************
  *
- * Function Name        : ssp_WiFiHalCallMethodForBool
+ * Function Name        : ssp_WIFIHALGetOrSetParamBoolValue
  * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
                           get /set is Bool
  *
@@ -32,9 +32,9 @@
  * @param [in]          : method     - name of the wifi hal api to be invoked
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-int ssp_WiFiHalCallMethodForBool(int radioIndex, unsigned char *enable, char* method)
+int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, char* method)
 {
-    printf("\n ssp_WiFiHalCallMethod----> Entry\n");
+    printf("\n ssp_WIFIHALGetOrSetParamBoolValue----> Entry\n");
     int return_status = 0;
 
     if(!strcmp(method, "getRadioEnable"))
@@ -61,14 +61,16 @@ int ssp_WiFiHalCallMethodForBool(int radioIndex, unsigned char *enable, char* me
         return_status = wifi_getRadioAutoChannelRefreshPeriodSupported(radioIndex, enable);
     else if(!strcmp(method, "setAutoChannelEnable"))
         return_status = wifi_setRadioAutoChannelEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getRadioStatus"))
+        return_status = wifi_getRadioStatus(radioIndex, *enable);
     else
     {
         return_status = SSP_FAILURE;
-        printf("\n ssp_WiFiHalCallMethod: Invalid methodName\n");
+        printf("\n ssp_WIFIHALGetOrSetParamBoolValue: Invalid methodName\n");
     }
 
-    printf("ssp_WiFiHalCallMethod:: Enable status is %d, ret:status %d\n", *enable, return_status);
-    printf("\n ssp_WiFiHalCallMethod----> Exit\n");
+    printf("ssp_WIFIHALGetOrSetParamBoolValue: Enable status is %d, ret:status %d\n", *enable, return_status);
+    printf("\n ssp_WIFIHALGetOrSetParamBoolValue----> Exit\n");
     return return_status;
 }
 
@@ -85,9 +87,9 @@ int ssp_WiFiHalCallMethodForBool(int radioIndex, unsigned char *enable, char* me
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 
-int ssp_WiFiCallMethodForULong(int radioIndex, unsigned long *uLongVar, char* method)
+int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, char* method)
 {
-    printf("\n ssp_WiFiCallMethodForULong-----> Entry\n");
+    printf("\n ssp_WIFIHALGetOrSetParamULongValue-----> Entry\n");
     int return_status = 0;
 
     if(!strcmp(method, "getRadioChannel"))
@@ -120,9 +122,9 @@ int ssp_WiFiCallMethodForULong(int radioIndex, unsigned long *uLongVar, char* me
  * @param [in]          : method     - name of the wifi hal api to be invoked
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-int ssp_WiFiCallMethodForString(int radioIndex, char* output, char* method)
+int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* method)
 {
-    printf("\n ssp_WiFiCallMethodForString----> Entry\n");
+    printf("\n ssp_WIFIHALGetOrSetParamStringValue----> Entry\n");
     int return_status = 0;
 
     if(!strcmp(method, "getRadioChannelsInUse"))
@@ -137,6 +139,12 @@ int ssp_WiFiCallMethodForString(int radioIndex, char* output, char* method)
         return_status = wifi_getRadioOperationalDataTransmitRates(radioIndex, output);
     else if(!strcmp(method, "getSupportedDataTransmitRates"))
         return_status = wifi_getRadioSupportedDataTransmitRates(radioIndex, output);
+    else if(!strcmp(method, "getRadioSupportedFrequencyBands"))
+        return_status = wifi_getRadioSupportedFrequencyBands(radioIndex, output);
+    else if(!strcmp(method, "getRadioOperatingFrequencyBand"))
+        return_status = wifi_getRadioOperatingFrequencyBand(radioIndex, output);
+    else if(!strcmp(method, "getRadioSupportedStandards"))
+        return_status = wifi_getRadioSupportedStandards(radioIndex, output);
 
     else
     {
@@ -161,9 +169,9 @@ int ssp_WiFiCallMethodForString(int radioIndex, char* output, char* method)
  * @param [in]          : method     - name of the wifi hal api to be invoked
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-int ssp_WiFiCallMethodForInt(int radioIndex, int* output, char* method)
+int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
 {
-    printf("\n ssp_WiFiCallMethodForInt----> Entry\n");
+    printf("\n ssp_WIFIHALGetOrSetParamIntValue----> Entry\n");
     int return_status = 0;
 
     if(!strcmp(method, "getRadioMCS"))
