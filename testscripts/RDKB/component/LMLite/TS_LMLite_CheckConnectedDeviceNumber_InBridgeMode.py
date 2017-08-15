@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>If gateway is in bridge mode, Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber should be zero.</synopsis>
   <groups_id/>
-  <execution_time>2</execution_time>
+  <execution_time>5</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>
@@ -186,7 +186,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             NoOfClients = tdkTestObj.getResultDetails();
-            print Mode;
+            print "Lan Mode retrieved is: %s" %Mode;
             if expectedresult in actualresult:
                 if "bridge mode" in Mode and int(NoOfClients) == 0:
             	    #Set the result status of execution

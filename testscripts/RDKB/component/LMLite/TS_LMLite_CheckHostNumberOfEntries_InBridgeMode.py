@@ -37,7 +37,7 @@
   <!--  -->
   <groups_id />
   <!--  -->
-  <execution_time>2</execution_time>
+  <execution_time>5</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
   <!--  -->
@@ -205,7 +205,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             NoOfHosts = tdkTestObj.getResultDetails();
-	    print Mode;
+	    print "Lan Mode retrieved is: %s" %Mode;
             if expectedresult in actualresult:
                 if "bridge mode" in Mode and int(NoOfHosts) == 0:
                     #Set the result status of execution

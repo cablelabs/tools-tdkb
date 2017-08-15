@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>To check whether the WAN Mac address is same as the value of Device.Hosts.Host.1.X_RDKCENTRAL-COM_Parent</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>3</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>
@@ -208,10 +208,12 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                             tdkTestObj.executeTestCase(expectedresult);
                             actualresult = tdkTestObj.getResult();
                             IP1 = tdkTestObj.getResultDetails();
+                            print "WAN Address in Device.Hosts.: %s" %IP1;
+			    print "WAN Address using ARP command: %s" %IP;
                             if IP1 in IP:
-                                print "Wan IP of host number ",n," matches";
+                                print "Wan IP of host instance ",n," matches";
                             else:
-                                print "Wan IP of host number ",n," doesnt match";
+                                print "Wan IP of host instance ",n," doesnt match";
                                 ret = 1
                         if expectedresult in actualresult and ret ==0:
                             #Set the result status of execution

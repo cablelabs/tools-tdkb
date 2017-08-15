@@ -567,7 +567,7 @@ int ssp_terminate()
     if (err != CCSP_SUCCESS)
     {
         fprintf(stderr, "Cdm_Term: %s\n", Cdm_StrError(err));
-        exit(1);
+        return 1;
     }
 
     if ( g_bActive )

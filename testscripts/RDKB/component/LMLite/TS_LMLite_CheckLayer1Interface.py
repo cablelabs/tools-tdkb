@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>Get Device.Hosts.Host.2.Layer1Interface and compare it with the interface obtained from box using arp command. (empty if wifi and ether if lan)</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>3</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>
@@ -208,9 +208,9 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
 			    if "Ethernet" in Interface:
 				Interface = "ether";
                             if Interface in IP:
-                                print "Interface name of client number ",n," matches";
+                                print "Interface name of host instance ",n," matches";
                             else:
-                                print "Interface name of client number ",n," doesnt match";
+                                print "Interface name of host instance ",n," doesnt match";
                                 ret = 1
                         if expectedresult in actualresult and ret ==0:
                             #Set the result status of execution

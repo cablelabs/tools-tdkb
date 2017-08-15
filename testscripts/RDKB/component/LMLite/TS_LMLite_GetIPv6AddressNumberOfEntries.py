@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>Device.Hosts.Host.1.IPv6AddressNumberOfEntries should be greater than zero</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>3</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>
