@@ -17,15 +17,16 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
   <id/>
-  <version>2</version>
-  <name>TS_WIFIHAL_2.4GHzGetRadioOperatingFrequencyBand</name>
+  <version>1</version>
+  <name>TS_WIFIHAL_5GHzGetRadioOperatingFrequencyBand</name>
   <primitive_test_id/>
   <primitive_test_name>WIFIHAL_GetOrSetParamStringValue</primitive_test_name>
-  <primitive_test_version>1</primitive_test_version>
+  <primitive_test_version>2</primitive_test_version>
   <status>FREE</status>
-  <synopsis>To get the current operating frequency band of 2.4GHZ and check whether the value is within the valid supported frequency list.</synopsis>
+  <synopsis>To get the current operating frequency band of 5GHZ and check whether the value is within the valid supported frequency list.</synopsis>
   <groups_id/>
   <execution_time>1</execution_time>
   <long_duration>false</long_duration>
@@ -41,29 +42,28 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_17</test_case_id>
-    <test_objective>To get the current operating frequency band of 2.4GHZ and check whether the value is within the valid supported frequency list.</test_objective>
+    <test_case_id>TC_WIFIHAL_22</test_case_id>
+    <test_objective>To get the current operating frequency band of 5GHZ and check whether the value is within the valid supported frequency list.</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband,Emulator, RPI</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>wifi_getRadioOperatingFrequencyBand()</api_or_interface_used>
     <input_parameters>methodName : getRadioOperatingFrequencyBands
-radioIndex : 0</input_parameters>
+radioIndex : 1</input_parameters>
     <automation_approch>1. Load wifihal module
-2. Invoke "WIFIHAL_GetOrSetParamStringValue" to get the Operating Frequency band of 2.4GHz
+2. Invoke "WIFIHAL_GetOrSetParamStringValue" to get the Operating Frequency band of 5GHz
 3.Check if the value returned is valid or not
 4. If not, return failure
 5.Unload wifihal module</automation_approch>
-    <except_output>The Operating Frequency band should return 2.4GHz since radioIndex is 0.</except_output>
+    <except_output>The Operating Frequency band should return 5GHz since radioIndex is 1.</except_output>
     <priority>High</priority>
     <test_stub_interface>WIFIHAL</test_stub_interface>
-    <test_script>TS_WIFIHAL_2.4GHzGetRadioOperatingFrequencyBand</test_script>
+    <test_script>TS_WIFIHAL_5GHzGetRadioOperatingFrequencyBand</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>
   </test_cases>
-  <script_tags/>
 </xml>
 
 '''
@@ -77,20 +77,20 @@ obj = tdklib.TDKScriptingLibrary("wifihal","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_WIFIHAL_2.4GHzGetRadioOperatingFrequencyBand');
+obj.configureTestCase(ip,port,'TS_WIFIHAL_5GHzGetRadioOperatingFrequencyBand');
+
 #Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-
     #Script to load the configuration file of the component
     tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetParamStringValue");
     #Giving the method name to invoke the api for getting Supported Frequency band. ie,wifi_getRadioSupportedFrequencyBands()
     tdkTestObj.addParameter("methodName","getRadioSupportedFrequencyBands");
     #Radio index is 0 for 2.4GHz and 1 for 5GHz
-    tdkTestObj.addParameter("radioIndex",0);
+    tdkTestObj.addParameter("radioIndex",1);
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
@@ -98,17 +98,17 @@ if "SUCCESS" in loadmodulestatus.upper():
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Get the Radio Supported Frequency bands for 2.4GHz";
-        print "EXPECTED RESULT 1: Should get the Radio Supported Frequency bands for 2.4GHz";
+        print "TEST STEP 1: Get the Radio Supported Frequency bands for 5GHz";
+        print "EXPECTED RESULT 1: Should get the Radio Supported Frequency bands for 5GHz";
         print "ACTUAL RESULT 1: %s" %SupportedFreqBands;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
 
         tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetParamStringValue");
-        #Giving the method name to invoke the api for getting Operating Frequency band. ie, wifi_getRadioOperatingFrequencyBand()
+	#Giving the method name to invoke the api for getting Operating Frequency band. ie,wifi_getRadioOperatingFrequencyBands()
         tdkTestObj.addParameter("methodName","getRadioOperatingFrequencyBand");
-        #Radio index is 0 for 2.4GHz and 1 for 5GHz
-        tdkTestObj.addParameter("radioIndex",0);
+	#Radio index is 0 for 2.4GHz and 1 for 5GHz
+        tdkTestObj.addParameter("radioIndex",1);
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
@@ -117,24 +117,24 @@ if "SUCCESS" in loadmodulestatus.upper():
         if expectedresult in actualresult and OperatingFreqBands.split(":")[1] in ExpectedFreqList:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 2: Get the Radio Operating Frequency band for 2.4GHz";
-            print "EXPECTED RESULT 2: Should get the Radio Operating Frequency band for 2.4GHz";
+            print "TEST STEP 2: Get the Radio Operating Frequency band for 5GHz";
+            print "EXPECTED RESULT 2: Should get the Radio Operating Frequency band for 5GHz";
             print "ACTUAL RESULT 2: %s" %OperatingFreqBands;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
         else:
             #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 2: Get the Radio Operating Frequency band 2.4GHz";
-            print "EXPECTED RESULT 2: Should get the Radio Operating Frequency band 2.4GHz";
+            print "TEST STEP 2: Get the Radio Operating Frequency band 5GHz";
+            print "EXPECTED RESULT 2: Should get the Radio Operating Frequency band 5GHz";
             print "ACTUAL RESULT 2: %s" %OperatingFreqBands;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
     else:
         #Set the result status of execution
         tdkTestObj.setResultStatus("FAILURE");
-        print "TEST STEP 1: Get the Radio Supported Frequency bands for 2.4GHz";
-        print "EXPECTED RESULT 1: Should get the Radio Supported Frequency bands for 2.4GHz";
+        print "TEST STEP 1: Get the Radio Supported Frequency bands for 5GHz";
+        print "EXPECTED RESULT 1: Should get the Radio Supported Frequency bands for 5GHz";
         print "ACTUAL RESULT 1: %s" %SupportedFreqBands;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE";
