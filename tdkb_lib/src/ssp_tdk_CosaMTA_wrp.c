@@ -45,6 +45,8 @@
 
 
 #include "cosa_x_cisco_com_mta_apis.h"
+
+#define BUFFER_LEN 32
 //#if !defined(CCSP_INC_no_asm_sigcontext_h)^M
   //  #include <asm/sigcontext.h>
 //#endif
@@ -245,13 +247,20 @@ int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType, char* Battery
 
     if(bufferType == 0)
     {
-        value  = ((CHAR *) malloc(20));
+        value  = ((CHAR *) malloc(BUFFER_LEN));
+        size = BUFFER_LEN;
     }
 
     return_status = CosaDmlMtaBatteryGetStatus(mta_handle,value,&size);
 
     printf("ssp_CosaDmlMtaBatteryGetStatus: Battery Status is:%s\n",value);
     strcpy(BatteryStatus ,value);
+
+    if(value)
+    {
+	free(value);
+	value = NULL;
+    }
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -287,13 +296,20 @@ int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType,char* Pow
 
     if(bufferType == 0)
     {
-        value  = ((CHAR *) malloc(20));
+        value  = ((CHAR *) malloc(BUFFER_LEN));
+        size = BUFFER_LEN;
     }
 
     return_status = CosaDmlMtaBatteryGetPowerStatus(mta_handle,value,&size);
 
     printf("ssp_CosaDmlMtaBatteryGetPowerStatus: Battery Power Status is:%s\n",value);
     strcpy(Power ,value);
+
+    if(value)
+    {
+        free(value);
+        value = NULL;
+    }
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -974,13 +990,21 @@ int ssp_CosaDmlMtaBatteryGetLife(int handleType, int bufferType,char *Life)
 
     if(bufferType == 0)
     {
-        value  = ((CHAR *) malloc(20*sizeof(CHAR)));
+        value  = ((CHAR *) malloc(BUFFER_LEN));
+	size = BUFFER_LEN;
     }
 
     return_status = CosaDmlMtaBatteryGetLife(mta_handle,value,&size);
 
     printf("ssp_CosaDmlMtaBatteryGetLife: Battery Life is:%s\n",value);
     strcpy(Life ,value);
+
+    if(value)
+    {
+        free(value);
+        value = NULL;
+    }
+
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -1019,13 +1043,20 @@ int ssp_CosaDmlMtaBatteryGetCondition(int handleType, int bufferType,char *Cond)
 
     if(bufferType == 0)
     {
-        value  = ((CHAR *) malloc(10*sizeof(char)));
+        value  = ((CHAR *) malloc(BUFFER_LEN));
+	size = BUFFER_LEN;
     }
 
     return_status = CosaDmlMtaBatteryGetCondition(mta_handle,value,&size);
 
     printf("ssp_CosaDmlMtaBatteryGetCondition: BATTERY Condition is:%s\n",value);
     strcpy(Cond ,value);
+
+    if(value)
+    {
+        free(value);
+        value = NULL;
+    }
 
     if ( return_status != SSP_SUCCESS)
     {
