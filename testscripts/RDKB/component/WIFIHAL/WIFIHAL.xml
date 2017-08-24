@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <module name="WIFIHAL" testGroup="Component">
+    <primitiveTests>
+      <primitiveTest id=" " name="WIFIHAL_GetOrSetParamBoolValue" version="1">
+        <function>WIFIHAL_GetOrSetParamBoolValue</function>
+        <parameters>
+          <parameter name="methodName" value=""/>
+          <parameter name="param" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="radioIndex" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WIFIHAL_GetOrSetParamULongValue" version="1">
+        <function>WIFIHAL_GetOrSetParamULongValue</function>
+        <parameters>
+          <parameter name="methodName" value=""/>
+          <parameter name="param" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="radioIndex" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WIFIHAL_GetOrSetParamStringValue" version="1">
+        <function>WIFIHAL_GetOrSetParamStringValue</function>
+        <parameters>
+          <parameter name="methodName" value=""/>
+          <parameter name="param" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="radioIndex" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="WIFIHAL_GetOrSetParamIntValue" id=" " version="1">
+        <function>WIFIHAL_GetOrSetParamIntValue</function>
+        <parameters>
+          <parameter name="methodName" value=""/>
+          <parameter name="param" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="radioIndex" value=""/>
+        </parameters>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>
