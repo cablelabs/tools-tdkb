@@ -140,7 +140,7 @@ if "SUCCESS" in result.upper() :
         if "SUCCESS" in result:
             ###########excute the shell script to download firmware
             tdkTestObj = obj.createTestStep('ExecuteCmd');
-            tdkTestObj.addParameter("command", "sh " + cdnFile + " &");
+            tdkTestObj.addParameter("command", "sh " + cdnFile + " > /dev/null 2>&1 &");
             tdkTestObj.executeTestCase("SUCCESS");
 
             result = tdkTestObj.getResult();

@@ -17,26 +17,43 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>1</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>3</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_XCONF_CheckDownloadSuccess</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>XCONF_DoNothing</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>Check if on setting valid download url and firmware details in xconf server config, a firmware download request from client is happening properly</synopsis>
-  <groups_id/>
-  <execution_time>40</execution_time>
+  <!--  -->
+  <groups_id />
+  <!--  -->
+  <execution_time>55</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
   <advanced_script>false</advanced_script>
-  <remarks/>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_XCONF_19</test_case_id>
@@ -67,11 +84,11 @@ as old firmwareVersion  and old firmwareName
     <test_stub_interface>sysutil</test_stub_interface>
     <test_script>TS_XCONF_CheckDownloadSuccess</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
@@ -189,9 +206,7 @@ if "SUCCESS" in result.upper() :
                             print "ACTUAL RESULT 6: is %s " %details
                             print "[TEST EXECUTION RESULT] : SUCCESS"
                             tdkTestObj.setResultStatus("SUCCESS");
-    
-                            #######If download is success, reboot the box, otherwise log update will not happen
-                            obj.initiateReboot();
+                                                            
     
                         else:
     
@@ -200,6 +215,9 @@ if "SUCCESS" in result.upper() :
                             print "EXPECTED RESULT 6: Should find the pattern in the logs"
                             print "ACTUAL RESULT 6: is %s " %details
                             print "[TEST EXECUTION RESULT] : FAILURE"
+
+#######If download is success, reboot the box, otherwise log update will not happen
+                        obj.initiateReboot();
                     else:
                         tdkTestObj.setResultStatus("FAILURE");
                         print "TEST STEP 5: Initiate firmware download"

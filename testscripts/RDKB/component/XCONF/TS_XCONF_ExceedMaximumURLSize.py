@@ -198,7 +198,7 @@ if "SUCCESS" in result.upper() :
         result = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
         #wait till log updation
-        time.sleep(30)
+        time.sleep(50)
         if "SUCCESS" in result:
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 5: Initiate firmware download"

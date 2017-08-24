@@ -178,7 +178,7 @@ if "SUCCESS" in result.upper() :
     	            print "[TEST EXECUTION RESULT] : SUCCESS"
     
     		    #### Sleeping till httpdownload completed
-    	       	    time.sleep(200)	
+    	       	    time.sleep(240)	
     		    tdkTestObj = obj.createTestStep('ExecuteCmd');
     		    ######search for patterns in Log
     		    tdkTestObj.addParameter("command","grep -inr \"HTTP download Successful\" " + cdnLog + " ;echo $?")

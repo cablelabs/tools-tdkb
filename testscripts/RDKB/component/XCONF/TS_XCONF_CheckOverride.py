@@ -125,13 +125,13 @@ if "SUCCESS" in result.upper() :
         if "SUCCESS" in result:
             ###########excute the shell script to download firmware
             tdkTestObj = obj.createTestStep('ExecuteCmd');
-            tdkTestObj.addParameter("command", "sh " + cdnFile + " 0 1 &");
+            tdkTestObj.addParameter("command", "sh " + cdnFile + " 0 1  > /dev/null 2>&1 &");
             tdkTestObj.executeTestCase("SUCCESS");
 
             result = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
             #wait till log updation
-            time.sleep(2)
+            time.sleep(20)
             if "SUCCESS" in result:
                 tdkTestObj.setResultStatus("SUCCESS");
                 print "TEST STEP 5: Initiate firmware download"
