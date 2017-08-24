@@ -98,6 +98,8 @@ int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, 
         return_status = wifi_setRadioChannel(radioIndex, *uLongVar);
     else if(!strcmp(method, "getAutoChannelRefreshPeriod"))
         return_status = wifi_getRadioAutoChannelRefreshPeriod(radioIndex, uLongVar);
+    else if(!strcmp(method, "getRadioNumberOfEntries"))
+        return_status = wifi_getRadioNumberOfEntries(uLongVar);
 
     else
     {
@@ -126,6 +128,7 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
 {
     printf("\n ssp_WIFIHALGetOrSetParamStringValue----> Entry\n");
     int return_status = 0;
+    unsigned char gOnly,nOnly,acOnly;
 
     if(!strcmp(method, "getRadioChannelsInUse"))
         return_status = wifi_getRadioChannelsInUse(radioIndex, output);
@@ -145,6 +148,12 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
         return_status = wifi_getRadioOperatingFrequencyBand(radioIndex, output);
     else if(!strcmp(method, "getRadioSupportedStandards"))
         return_status = wifi_getRadioSupportedStandards(radioIndex, output);
+    else if(!strcmp(method, "getRadioIfName"))
+        return_status = wifi_getRadioIfName(radioIndex, output);
+    else if(!strcmp(method, "getRadioStandard"))
+        return_status = wifi_getRadioStandard(radioIndex, output, &gOnly, &nOnly, &acOnly);
+    else if(!strcmp(method, "getSSIDStatus"))
+        return_status = wifi_getSSIDStatus(radioIndex, output);
 
     else
     {
