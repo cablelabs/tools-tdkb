@@ -117,5 +117,6 @@ AC_CONFIG_FILES([Makefile
 	 TAD_stub/Makefile
 	 Moca_Stub/Makefile
 	 LMLite_Stub/Makefile
-	 WIFIHAL_stub/Makefile])
+	 WIFIHAL_stub/Makefile
+	 CMHAL_Stub/Makefile])
 AC_OUTPUT
