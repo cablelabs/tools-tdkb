@@ -190,7 +190,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS"
 
-                    #Wait for 75 secs for the router to reset after executing the SNMP query to reset the router.
+                    #Wait for 100 secs for the router to reset after executing the SNMP query to reset the router.
                     #This delay is required to ensure the agent and test manager communication is not broken due to router reset
                     actResponse =snmplib.SnmpExecuteCmd("snmpset", commSetStr, "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1003.0 i 2", ipaddress);
                     if "INTEGER: 2" in actResponse:
@@ -201,7 +201,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         print "ACTUAL RESULT 5: %s" %actResponse;
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : SUCCESS"
-                        sleep(75);
+                        sleep(100);
 
                         # Kill the process
                         tdkTestObj = obj.createTestStep('ExecuteCmd');

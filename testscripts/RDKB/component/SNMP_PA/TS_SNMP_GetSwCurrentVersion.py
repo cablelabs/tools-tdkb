@@ -119,7 +119,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj = obj.createTestStep('ExecuteCmd');
     tdkTestObj.executeTestCase("SUCCESS");
     imagename = tdklib.getImageName (ip, port);
-    print "image name : "imagename;
+    print "image name : ",imagename;
 
     if imagename in actResponse:
         sw_rev = actResponse.split("STRING:")[1]
