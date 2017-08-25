@@ -84,7 +84,7 @@ bool CMHAL::CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& 
     int returnValue = 0;
     char paramName[100];
     char Details[64] = {'\0'};
-    char value[400];
+    char value[700];
     char paramType[10] = {'\0'};
 
     /* Validate the input arguments */
