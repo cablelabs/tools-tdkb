@@ -19,10 +19,10 @@
 '''
 <?xml version="1.0" encoding="UTF-8"?><xml>
   <id/>
-  <version>1</version>
-  <name>TS_WIFIHAL_ManualToAutoChannel</name>
+  <version>2</version>
+  <name>TS_WIFIHAL_5GHzManualToAutoChannel</name>
   <primitive_test_id/>
-  <primitive_test_name>WIFIHal_CallMethodForULong</primitive_test_name>
+  <primitive_test_name>WIFIHAL_GetOrSetParamULongValue</primitive_test_name>
   <primitive_test_version>1</primitive_test_version>
   <status>FREE</status>
   <synopsis/>
@@ -53,22 +53,23 @@ methodName : eetRadioChannel
 methodName : getRadioPossibleChannels
 methodName : setAutoChannelEnable
 radioIndex     :    1</input_parameters>
-    <automation_approch>1. Load wifiagent module
+    <automation_approch>1. Load wifihal module
 2. Using wifi_getRadioChannel() get and save current channel
 3. Set a new channel from possible channel list using wifi_setRadioChannel()
 4. Enable autochannel mode using wifi_setRadioAutoChannelEnable()
 5. Using wifi_getRadioChannel() get the current channel number and check if if it has changed from the manually set value
 6. If not, return failure
 6. Revert back to the previous channel value
-5. Unload wifiagent module</automation_approch>
+5. Unload wifihal module</automation_approch>
     <except_output>On enabling autoChannel mode using wifi_setRadioAutoChannelEnable(), the manually set channel number should get changed</except_output>
     <priority>High</priority>
     <test_stub_interface>WiFiAgent</test_stub_interface>
-    <test_script>TS_WIFIHAL_ManualToAutoChannel</test_script>
+    <test_script>TS_WIFIHAL_5GHzManualToAutoChannel</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>
   </test_cases>
+  <script_tags/>
 </xml>
 
 '''
@@ -77,13 +78,13 @@ import tdklib;
 from wifiUtility import *
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("wifiagent","1");
+obj = tdklib.TDKScriptingLibrary("wifihal","1");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_WIFIHAL_ManualToAutoChannel');
+obj.configureTestCase(ip,port,'TS_WIFIHAL_5GHzManualToAutoChannel');
 
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus
@@ -96,7 +97,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     radioIndex = 1
     getMethod = "getRadioChannel"
     param = 0
-    primitive = 'WIFIHal_CallMethodForULong'
+    primitive = 'WIFIHAL_GetOrSetParamULongValue'
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
 
     if expectedresult in actualresult :
@@ -104,7 +105,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
         #get the possible channel list
         getMethod = "getRadioPossibleChannels"
-        primitive = 'WIFIHal_CallMethodForString'
+        primitive = 'WIFIHAL_GetOrSetParamStringValue'
         tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
 
         if expectedresult in actualresult :
@@ -117,17 +118,17 @@ if "SUCCESS" in loadmodulestatus.upper():
 
             #setchannel with the above selected channel number
             setMethod = "setRadioChannel"
-            primitive = 'WIFIHal_CallMethodForULong'
+            primitive = 'WIFIHAL_GetOrSetParamULongValue'
 
             tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, channel, setMethod)
             if expectedresult in actualresult :
                 print "Radio channel set"
 
 		setMethod = "setAutoChannelEnable"
-		primitive = "WIFIHal_CallMethodForBool"
+		primitive = "WIFIHAL_GetOrSetParamBoolValue"
 		tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 1, setMethod)
 
-		primitive = 'WIFIHal_CallMethodForULong'
+		primitive = 'WIFIHAL_GetOrSetParamULongValue'
 		if expectedresult in actualresult :
    		    getMethod = "getRadioChannel"
 		    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
@@ -148,7 +149,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     print "Couldn't revert channel num"
 		    tdkTestObj.setResultStatus("FAILURE");
 
-    obj.unloadModule("wifiagent");
+    obj.unloadModule("wifihal");
 
 else:
     print "Failed to load wifi module";

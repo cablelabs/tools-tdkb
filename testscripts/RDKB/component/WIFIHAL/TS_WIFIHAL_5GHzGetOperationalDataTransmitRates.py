@@ -21,19 +21,19 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>2</version>
+  <version>4</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
-  <name>TS_WIFIHAL_SetSSIDEnable</name>
+  <name>TS_WIFIHAL_5GHzGetOperationalDataTransmitRates</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id> </primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
-  <primitive_test_name>WIFIHAL_GetOrSetParamBoolValue</primitive_test_name>
+  <primitive_test_name>WIFIHAL_GetOrSetParamStringValue</primitive_test_name>
   <!--  -->
   <primitive_test_version>1</primitive_test_version>
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>Test to enable/disable radio enable status using wifi_setSSIDEnable() api and verify using wifi_getSSIDEnable() api</synopsis>
+  <synopsis>Get the operational data transmit rate using wifi_getRadioOperationalDataTransmitRates() and see if its a subset of values returned by wifi_getRadioSupportedDataTransmitRates()</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -50,8 +50,6 @@
   <box_types>
     <box_type>Broadband</box_type>
     <!--  -->
-    <box_type>Emulator</box_type>
-    <!--  -->
     <box_type>RPI</box_type>
     <!--  -->
   </box_types>
@@ -60,27 +58,25 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIAGENT_42</test_case_id>
-    <test_objective>Test to enable/disable radio enable status using wifi_setSSIDEnable() api and verify using wifi_getSSIDEnable() api</test_objective>
+    <test_case_id>TC_WIFIAGENT_46</test_case_id>
+    <test_objective>Get the operational data transmit rate using wifi_getRadioOperationalDataTransmitRates() and see if its a subset of values returned by wifi_getRadioSupportedDataTransmitRates()</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3. XB6, Emulator, Rpi</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
-    <api_or_interface_used>wifi_setSSIdEnable()
-wifi_getSSIDEnable()</api_or_interface_used>
-    <input_parameters>methodName : getSSIDEnable
-methodName : setSSIDEnable
+    <api_or_interface_used>wifi_getRadioOperationalDataTransmitRates()
+wifi_getRadioSupportedDataTransmitRates()</api_or_interface_used>
+    <input_parameters>methodName : getSupportedDataTransmitRates
+methodName : getOperationalDataTransmitRates
 radioIndex : 1</input_parameters>
     <automation_approch>1. Load wifihal module
-2. Using WIFIHAL_GetOrSetParamBoolValue invoke wifi_getSSIDEnable and save the current SSID enable state
-3.Using WIFIHAL_GetOrSetParamBoolValue invoke wifi_setSSIDEnable and toggle the current SSID enable state
-4. Using wifi_getSSIDEnable, verify the set operation
-5. Restore the saved SSID enable status
-6. Unload wifihal module</automation_approch>
-    <except_output>set operation using wifi_setSSIDEnable() should be success</except_output>
+2. Invoke wifi_getRadioOperationalDataTransmitRates()  to get the current data transmit rate
+3.Get the supported transmit rate using wifi_getRadioSupportedDataTransmitRates()  and check if current value is from this list
+5. Unload wifihal module</automation_approch>
+    <except_output>OperationalDataTransmitRates should be a subset of supported data transmit rates</except_output>
     <priority>High</priority>
-    <test_stub_interface>wifihal</test_stub_interface>
-    <test_script>TS_WIFIHAL_SetSSIDEnable</test_script>
+    <test_stub_interface>WiFiAgent</test_stub_interface>
+    <test_script>TS_WIFIHAL_GetOperationalDataTransmitRates</test_script>
     <skipped>No</skipped>
     <release_version></release_version>
     <remarks></remarks>
@@ -99,7 +95,7 @@ obj = tdklib.TDKScriptingLibrary("wifihal","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_WIFIHAL_SetSSIDEnable');
+obj.configureTestCase(ip,port,'TS_WIFIHAL_5GHzGetOperationalDataTransmitRates');
 
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus
@@ -109,37 +105,27 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     expectedresult="SUCCESS";
     radioIndex = 1
-    getMethod = "getSSIDEnable"
-    primitive = 'WIFIHAL_GetOrSetParamBoolValue'
+    getMethod = "getSupportedDataTransmitRates"
+    primitive = 'WIFIHAL_GetOrSetParamStringValue'
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
 
     if expectedresult in actualresult :
-        enable = details.split(":")[1].strip()
-        if "Enabled" in enable:
-	    oldEnable = 1
-            newEnable = 0
-        else:
-	    oldEnable = 0
-            newEnable = 1
+        supportedRates = details.split(":")[1].strip()
 
-        setMethod = "setSSIDEnable"
-        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, newEnable, setMethod)
-
+        getMethod = "getOperationalDataTransmitRates"
+        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
         if expectedresult in actualresult :
-            print "Enable state toggled using set"
-            tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+            operationalRates = details.split(":")[1].strip()
 
-            if expectedresult in actualresult and enable not in details.split(":")[1].strip():
-                print "SetEnable Success, verified with getEnable() api"
-                tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, oldEnable, setMethod)
-
-                if expectedresult in actualresult :
-                    print "Enable status reverted back";
-                else:
-                    print "Couldn't revert enable status"
+            if operationalRates in supportedRates :
+                print "OperationalDataTransmitRates is in the list of SupportedDataTransmitRates"
             else:
-                print "Set validation with get api failed"
-		tdkTestObj.setResultStatus("FAILURE");
+                print "OperationalDataTransmitRates is not in the list of SupportedDataTransmitRates"
+                tdkTestObj.setResultStatus("FAILURE");
+        else:
+            print "getOperationalDataTransmitRates() call failed"
+    else:
+        print "getSupportedDataTransmitRates() call failed"
 
     obj.unloadModule("wifihal");
 

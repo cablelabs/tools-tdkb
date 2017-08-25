@@ -19,13 +19,13 @@
 '''
 <?xml version="1.0" encoding="UTF-8"?><xml>
   <id/>
-  <version>3</version>
-  <name>TS_WIFIHAL_GetCurrentRadioChannel</name>
+  <version>5</version>
+  <name>TS_WIFIHAL_5GHzgetRadioMCS</name>
   <primitive_test_id/>
-  <primitive_test_name>WIFIHal_CallMethodForString</primitive_test_name>
+  <primitive_test_name>WIFIHAL_GetOrSetParamULongValue</primitive_test_name>
   <primitive_test_version>1</primitive_test_version>
   <status>FREE</status>
-  <synopsis>Test if channel no: returned by wifi_getRadioChannel() is a subset of wifi_getRadioChannelsInUse() output</synopsis>
+  <synopsis>Check if Modulation Coding Scheme returned by wifi_getRadioMCS(), is the the range [-1:15, 16:31]</synopsis>
   <groups_id/>
   <execution_time>1</execution_time>
   <long_duration>false</long_duration>
@@ -41,26 +41,24 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIAGENT_44</test_case_id>
-    <test_objective>Test if channel no: returned by wifi_getRadioChannel() is a subset of wifi_getRadioChannelsInUse() output</test_objective>
+    <test_case_id>TC_WIFIAGENT_55</test_case_id>
+    <test_objective>Check if Modulation Coding Scheme returned by wifi_getRadioMCS(), is the the range [-1:15, 16:31]</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3. XB6, Emulator, Rpi</test_setup>
-    <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
-2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
-    <api_or_interface_used>wifi_getRadioChannel()
-wifi_getRadioChannelsInUse()</api_or_interface_used>
-    <input_parameters>methodName : getRadioChannelsInUse
-methodName : getRadioChannel
+    <pre_requisite/>
+    <api_or_interface_used>wifi_getRadioMCS()</api_or_interface_used>
+    <input_parameters>methodName :getRadioMCS
 radioIndex : 1</input_parameters>
-    <automation_approch>1. Load wifiagent module
-2. Invoke wifi_getRadioChannel() to find the current radio channel
-3.Get the list of cahnnels in use using wifi_getRadioChannelsInUse() api
-4.Check if current channel is a available in channelsInUse list
-5. Unload wifiagent module</automation_approch>
-    <except_output>current channel should be available in channelsInUse list</except_output>
+    <automation_approch>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
+2.TDK Agent should be in running state or invoke it through StartTdk.sh script</automation_approch>
+    <except_output>1. Load wifihal module
+2. Invoke wifi_getRadioMCS() to get the current MCS value
+3.Check if the value returned is in the range  [-1:15, 16:31]
+4. If not, return failure
+5.Unload wifihal module</except_output>
     <priority>High</priority>
-    <test_stub_interface>wifiAgent</test_stub_interface>
-    <test_script>TS_WIFIHAL_GetCurrentRadioChannel</test_script>
+    <test_stub_interface>WiFiAgent</test_stub_interface>
+    <test_script>TS_WIFIHAL_5GHzgetRadioMCS</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>
@@ -74,46 +72,39 @@ import tdklib;
 from wifiUtility import *
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("wifiagent","1");
+obj = tdklib.TDKScriptingLibrary("wifihal","1");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_WIFIHAL_GetCurrentRadioChannel');
+obj.configureTestCase(ip,port,'TS_WIFIHAL_5GHzgetRadioMCS');
 
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-
     expectedresult="SUCCESS";
     radioIndex = 1
-    getMethod = "getRadioChannelsInUse"
-    primitive = 'WIFIHal_CallMethodForString'
+    getMethod = "getRadioMCS"
+    primitive = 'WIFIHAL_GetOrSetParamIntValue'
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
-
     if expectedresult in actualresult :
-        channelsInUse = details.split(":")[1].strip()
+	MCS = int(details.split(":")[1].strip())
 
-        getMethod = "getRadioChannel"
-        primitive = 'WIFIHal_CallMethodForULong'
-        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
-        if expectedresult in actualresult :
-            currChannel = details.split(":")[1].strip()
-	    if currChannel in channelsInUse :
-		print "Current channel number available in channels in use list"
-	    else:
-		print "Current channel number not available in channels in use list"
-		tdkTestObj.setResultStatus("FAILURE");
+	if (-1 <= MCS and MCS <= 15) or (16 <= MCS and MCS <= 31):
+	    print "MCS value is in the valid range of [-1:15, 16:31]"
 	else:
-	    print "getRadioChannel() call failed"
+	    print "MCS value is not in the valid range of [-1:15, 16:31]"
+	    tdkTestObj.setResultStatus("FAILURE");
     else:
-	print "getRadioChannelsInUse() call failed"
+	print "Call to getRadioMCS() failed"
 
-    obj.unloadModule("wifiagent");
+    obj.unloadModule("wifihal");
 
 else:
     print "Failed to load wifi module";
     obj.setLoadModuleStatus("FAILURE");
+
+

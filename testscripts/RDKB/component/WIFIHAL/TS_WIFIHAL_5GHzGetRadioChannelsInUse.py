@@ -21,19 +21,19 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>4</version>
+  <version>5</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
-  <name>TS_WIFIHAL_GetOperatingChannelBandwidth</name>
+  <name>TS_WIFIHAL_5GHzGetRadioChannelsInUse</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id> </primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
-  <primitive_test_name>WIFIHal_CallMethodForString</primitive_test_name>
+  <primitive_test_name>WIFIHAL_GetOrSetParamStringValue</primitive_test_name>
   <!--  -->
   <primitive_test_version>1</primitive_test_version>
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>Check if the values returned by wifi_getRadioOperatingChannelBandwidth() is in the enumeration list 20MHz, 40MHz, 80MHz, 160MHz, Auto</synopsis>
+  <synopsis>Test if the list returned by wifi_getRadioChannelsInUse()api is a subset of the list returned by wifi_getRadioPossibleChannels()</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -60,23 +60,26 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIAGENT_45</test_case_id>
-    <test_objective>Check if the values returned by wifi_getRadioOperatingChannelBandwidth() is in the enumeration list 20MHz, 40MHz, 80MHz, 160MHz, Auto</test_objective>
+    <test_case_id>TC_WIFIAGENT_47</test_case_id>
+    <test_objective>Test if the list returned by wifi_getRadioChannelsInUse()api is a subset of the list returned by wifi_getRadioPossibleChannels()</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3. XB6, Emulator, Rpi</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
-    <api_or_interface_used>wifi_getRadioOperatingChannelBandwidth()</api_or_interface_used>
-    <input_parameters>methodName : getChannelBandwidth
-radioIndex : 1</input_parameters>
-    <automation_approch>1. Load wifiagent module
-2. Invoke wifi_getRadioOperatingChannelBandwidth() to get channel banwidth
-3.Check if the bandwidth is from the enumeration list [20MHz, 40MHz, 80MHz, 160MHz, Auto]
-5. Unload wifiagent module</automation_approch>
-    <except_output>Operating bandwidth should be from the enumeration list [20MHz, 40MHz, 80MHz, 160MHz, Auto]</except_output>
+    <api_or_interface_used>wifi_getRadioChannelsInUse()
+wifi_getRadioPossibleChannels()</api_or_interface_used>
+    <input_parameters>methodName : getRadioPossibleChannels
+methodName : getRadioChannelsInUse
+radioIndex     :    1</input_parameters>
+    <automation_approch>1. Load wifihal module
+2. Invoke wifi_getRadioChannelsInUse()  to get the current channels in use
+3.Get the possible channel list using wifi_getRadioPossibleChannels()  
+4. check if current channels in use value is from the possible channel list
+5. Unload wifihal module</automation_approch>
+    <except_output>current channels in use value should be from the possible channel list</except_output>
     <priority>High</priority>
     <test_stub_interface>WiFiAgent</test_stub_interface>
-    <test_script>TS_WIFIHAL_GetOperatingChannelBandwidth</test_script>
+    <test_script>TS_WIFIHAL_GetRadioChannelsInUse</test_script>
     <skipped>No</skipped>
     <release_version></release_version>
     <remarks></remarks>
@@ -85,17 +88,17 @@ radioIndex : 1</input_parameters>
 </xml>
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib;
+import tdklib; 
 from wifiUtility import *
 
 #Test component to be tested
-obj = tdklib.TDKScriptingLibrary("wifiagent","1");
+obj = tdklib.TDKScriptingLibrary("wifihal","1");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_WIFIHAL_GetOperatingChannelBandwidth');
+obj.configureTestCase(ip,port,'TS_WIFIHAL_5GHzGetRadioChannelsInUse');
 
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus
@@ -103,26 +106,38 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
 
-    bandWidthList = "20MHz, 40MHz, 80MHz, 160MHz, Auto"
     expectedresult="SUCCESS";
     radioIndex = 1
-    getMethod = "getChannelBandwidth"
-    primitive = 'WIFIHal_CallMethodForString'
+    getMethod = "getRadioPossibleChannels"
+    primitive = 'WIFIHAL_GetOrSetParamStringValue'
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
 
     if expectedresult in actualresult :
-        bandWidth = details.split(":")[1].strip()
+	possibleCh = details.split(":")[1].strip()
 
-	if bandWidth in bandWidthList:
-	    print "OperatingChannelBandwidth is from the list %s"%bandWidthList
+	getMethod = "getRadioChannelsInUse"
+	tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+	if expectedresult in actualresult :
+	    chInUse = details.split(":")[1].strip();
+
+	    flag = 1
+            for index in range(len(chInUse)):
+                if chInUse[index] not in possibleCh:
+                    flag = 0;
+                    break;
+
+	    if flag == 1 :
+		print "Channel In use is a subset of possible cahannels"
+	    else:
+		print "Error:Channel In use not found in possible channel list"
 	else:
-	    print "OperatingChannelBandwidth is not from the list %s"%bandWidthList
-	    tdkTestObj.setResultStatus("FAILURE");
+	    print "getChannelInUse() failed"
     else:
-	print "GetOperatingChannelBandwidth() failed"
+	print "getRadioPossibleChannels failed"
 
-    obj.unloadModule("wifiagent");
+    obj.unloadModule("wifihal");
 
 else:
     print "Failed to load wifi module";
     obj.setLoadModuleStatus("FAILURE");
+
