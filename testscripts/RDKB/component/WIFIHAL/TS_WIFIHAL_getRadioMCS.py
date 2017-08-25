@@ -111,7 +111,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     if expectedresult in actualresult :
 	MCS = int(details.split(":")[1].strip())
 
-	if (-1 < MCS and MCS < 15) or (16 < MCS and MCS < 31):
+	if (-1 <= MCS and MCS <= 15) or (16 <= MCS and MCS <= 31):
 	    print "MCS value is in the valid range of [-1:15, 16:31]"
 	else:
 	    print "MCS value is not in the valid range of [-1:15, 16:31]"

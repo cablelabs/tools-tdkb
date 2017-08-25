@@ -97,7 +97,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
     MCS= int(details.split(":")[1]);
-    if (-1 < MCS and MCS < 15) or (16 < MCS and MCS < 31):
+    if (-1 <= MCS and MCS <= 15) or (16 <= MCS and MCS <= 31):
 	status ="SUCCESS";
     else:
 	status ="FAILURE";

@@ -90,8 +90,8 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetParamULongValue");
     #Giving the method name to invoke the api for getting Radio channel. ie,wifi_getRadioChannel()
     tdkTestObj.addParameter("methodName","getRadioChannel");
-    #Radio index is 1 or 5 for 2.4GHz and 2 or 6 for 5GHz
-    tdkTestObj.addParameter("radioIndex",1);
+    #Radio index is 0 for 2.4GHz and 1 for 5GHz
+    tdkTestObj.addParameter("radioIndex",0);
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
@@ -132,7 +132,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             #if possible channels are given as values eg:1,2,3,4,5
             else:
         	#get the possible channels as a list of integers
-        	PossibleChannels = [int(x) for x in details.split(",")];
+        	PossibleChannels = [int(x) for x in details.split(":")[1].split(",")];
         	print "Possible channels are ", PossibleChannels;
 	    #select a channel from possible channels which is not the current channel
 	    for i in PossibleChannels:
@@ -144,8 +144,8 @@ if "SUCCESS" in loadmodulestatus.upper():
 	    tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetParamULongValue");
             #Giving the method name to invoke the api for getting Radio Channel. ie,wifi_getRadioChannel()
             tdkTestObj.addParameter("methodName","setRadioChannel");
-            #Radio index is 1 or 5 for 2.4GHz and 2 or 6 for 5GHz
-            tdkTestObj.addParameter("radioIndex",1);
+            #Radio index is 0 for 2.4GHz and 1 for 5GHz
+            tdkTestObj.addParameter("radioIndex",0);
             tdkTestObj.addParameter("param",newChannel);
             expectedresult="SUCCESS";
             tdkTestObj.executeTestCase(expectedresult);
@@ -163,9 +163,9 @@ if "SUCCESS" in loadmodulestatus.upper():
 		tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetParamBoolValue");
 	        #Giving the method name to invoke the api to set auto channel enable. ie,wifi_setRadioAutoChannelEnable()
 		tdkTestObj.addParameter("methodName","setAutoChannelEnable");
-        	#Radio index is 1 or 5 for 2.4GHz and 2 or 6 for 5GHz
-        	tdkTestObj.addParameter("radioIndex",1);
-        	tdkTestObj.addParameter("param",2);
+        	#Radio index is 0 for 2.4GHz and 5 for 5GHz
+        	tdkTestObj.addParameter("radioIndex",0);
+        	tdkTestObj.addParameter("param",1);
         	expectedresult="SUCCESS";
         	tdkTestObj.executeTestCase(expectedresult);
         	actualresult = tdkTestObj.getResult();
@@ -182,8 +182,8 @@ if "SUCCESS" in loadmodulestatus.upper():
 		    tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetParamULongValue");
     		    #Giving the method name to invoke the api for getting Radio channel. ie,wifi_getRadioChannel()
     		    tdkTestObj.addParameter("methodName","getRadioChannel");
-    		    #Radio index is 1 or 5 for 2.4GHz and 2 or 6 for 5GHz
-    		    tdkTestObj.addParameter("radioIndex",1);
+    		    #Radio index is 0 for 2.4GHz and 1 for 5GHz
+    		    tdkTestObj.addParameter("radioIndex",0);
     		    expectedresult="SUCCESS";
     		    tdkTestObj.executeTestCase(expectedresult);
     		    actualresult = tdkTestObj.getResult();
@@ -224,8 +224,8 @@ if "SUCCESS" in loadmodulestatus.upper():
 	    #set channel back
 	    #Giving the method name to invoke the api for getting Radio Channel. ie,wifi_getRadioChannel()
             tdkTestObj.addParameter("methodName","setRadioChannel");
-            #Radio index is 1 or 5 for 2.4GHz and 2 or 6 for 5GHz
-            tdkTestObj.addParameter("radioIndex",1);
+            #Radio index is 0 for 2.4GHz and 1 for 5GHz
+            tdkTestObj.addParameter("radioIndex",0);
             tdkTestObj.addParameter("param",currentChannel);
             expectedresult="SUCCESS";
             tdkTestObj.executeTestCase(expectedresult);

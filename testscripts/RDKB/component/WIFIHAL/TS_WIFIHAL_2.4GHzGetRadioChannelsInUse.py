@@ -113,7 +113,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 	#if possible channels are given as values eg:1,2,3,4,5
 	else:
 	    #get the possible channels as a list of integers
-	    PossibleChannels = [int(x) for x in details.split(",")];
+	    PossibleChannels = [int(x) for x in details.split(":")[1].split(",")];
 	    print "Possible channels are ", PossibleChannels;
 	#Giving the method name to invoke the api for getting Radio Channel in use. ie,wifi_getRadioChannelsInUse()
         tdkTestObj.addParameter("methodName","getRadioChannelsInUse");

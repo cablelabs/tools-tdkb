@@ -109,11 +109,11 @@ if "SUCCESS" in loadmodulestatus.upper():
         if "Enabled" in details:
             oldEnable = 1;
             newEnable = 0;
-            ExpectedStatus = "Disabled";
+            ExpectedStatus = ["Disabled","Down"];
         else:
             oldEnable = 0;
             newEnable = 1;
-            ExpectedStatus = "Enabled";
+            ExpectedStatus = ["Enabled","Up"];
         #Giving the method name to invoke the api for setting SSID Enable Status. ie,wifi_setSSIDEnable()
         tdkTestObj.addParameter("methodName","setSSIDEnable");
         #Radio index stands for SSID index here.

@@ -110,8 +110,8 @@ if "SUCCESS" in loadmodulestatus.upper():
 	tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetParamULongValue");
         #Giving the method name to invoke the api for getting Radio Channel. ie,wifi_getRadioChannel()
         tdkTestObj.addParameter("methodName","getRadioChannel");
-        #Radio index is 1 or 5 for 2.4GHz and 2 or 6 for 5GHz
-        tdkTestObj.addParameter("radioIndex",1);
+        #Radio index is 0 for 2.4GHz and 1 for 5GHz
+        tdkTestObj.addParameter("radioIndex",0);
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
