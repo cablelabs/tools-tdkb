@@ -125,6 +125,8 @@ if "SUCCESS" in loadmodulestatus.upper():
             status = "Success";
         elif "NOT SUPPORTED" in Data[1] and "Not Locked" in Data[0]:
             status= "Success";
+        elif "UNSUPPORTED" in Data[1] and "Not Locked" in Data[0]:
+            status= "Success";
         else:
             status = "Failure";
             break;

@@ -33,7 +33,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>To retrieve DOCSIS Downstream scanning and to check whether DOCSISUpstreamRanging is Complete if CMStatus is OPERATIONAL</synopsis>
+  <synopsis>To retrieve DOCSIS Downstream scanning and to check whether DOCSISDownstream scanning is Complete if CMStatus is OPERATIONAL</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -57,7 +57,7 @@
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_CMHAL_25</test_case_id>
-    <test_objective>To retrieve DOCSIS Downstream scanning and to check whether DOCSISUpstreamRanging is Complete if CMStatus is OPERATIONAL</test_objective>
+    <test_objective>To retrieve DOCSIS Downstream scanning and to check whether DOCSISDownstreamScanning is Complete if CMStatus is OPERATIONAL</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state of DUT that includes component under test Cable Modem
@@ -73,7 +73,7 @@
     <except_output>The DownstreamScanning should be Complete when CMStatus is OPERATIONAL</except_output>
     <priority>High</priority>
     <test_stub_interface>CMHAL</test_stub_interface>
-    <test_script>TS_CMHAL_GetDownstreamScanning/test_script>
+    <test_script>TS_CMHAL_GetDownstreamScanning</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>

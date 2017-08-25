@@ -23,7 +23,7 @@
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
   <version>2</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
-  <name>TS_CMHAL_GetDSChannelIDWithFrequency</name>
+  <name>TS_CMHAL_GetChannelIDWithDSFrequency</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id> </primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
@@ -73,7 +73,7 @@
     <except_output>The Channel ID and frequencies for each downstream channel are retrieved.</except_output>
     <priority>High</priority>
     <test_stub_interface>CMHAL</test_stub_interface>
-    <test_script>TS_CMHAL_GetDSChannelIDWithFrequency</test_script>
+    <test_script>TS_CMHAL_GetChannelIDWithDSFrequency</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>
@@ -91,7 +91,7 @@ obj = tdklib.TDKScriptingLibrary("cmhal","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_CMHAL_GetDSChannelIDWithFrequency');
+obj.configureTestCase(ip,port,'TS_CMHAL_GetChannelIDWithDSFrequency');
 
 #Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
@@ -124,7 +124,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             status = "Failure";
             break;
         elif int(Data[0]) != 0 and "MHz" not in Data[1] :
-             Data[1]=float(Data[1]/1000000);
+             Data[1]=float(Data[1])/1000000;
         
              if  minFreq<=Data[1]<=maxFreq:
                status = "Success";
