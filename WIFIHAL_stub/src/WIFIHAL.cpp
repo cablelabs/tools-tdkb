@@ -85,7 +85,7 @@ bool WIFIHAL::testmodulepost_requisites()
 bool WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamBoolValue --->Entry\n");
-    char methodName[20] = {'\0'};
+    char methodName[50] = {'\0'};
     int radioIndex;
     unsigned char enable;
     int returnValue;
@@ -148,7 +148,7 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
 bool WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamULongValue------>Entry\n");
-    char methodName[20] = {'\0'};
+    char methodName[50] = {'\0'};
     int radioIndex = 1;
     unsigned long uLongVar = 1;
     int returnValue;
@@ -211,7 +211,7 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
 bool WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamStringValue----->Entry\n");
-    char methodName[20] = {'\0'};
+    char methodName[50] = {'\0'};
     int radioIndex = 1;
     char output[100] = {'\0'};
     int returnValue;
@@ -264,7 +264,7 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
 bool WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamIntValue----->Entry\n");
-    char methodName[20] = {'\0'};
+    char methodName[50] = {'\0'};
     int radioIndex = 1;
     int intParam;
     int returnValue;
