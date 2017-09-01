@@ -407,6 +407,7 @@ bool WIFIAgent::WIFIAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& re
     bool bReturn = TEST_FAILURE;
     //Set Param
     int returnValue = 0;
+    int retVal = 0;
     char ParamName[MAX_PARAM_SIZE];
     char ParamValue[MAX_PARAM_SIZE];
     char ParamType[MAX_PARAM_SIZE];
@@ -430,7 +431,6 @@ bool WIFIAgent::WIFIAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& re
     DEBUG_PRINT(DEBUG_TRACE,"\nWIFIAgent_Set_Get:: ParamType input is %s",ParamType);
 
 
-
     returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0],commit);
 
     if(0 != returnValue)
@@ -441,6 +441,28 @@ bool WIFIAgent::WIFIAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& re
         return  TEST_FAILURE;
     }
 
+    if ((!strncmp(ParamName, "Device.WiFi.Radio.1.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.1.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.1.", 19)))
+    {
+        printf("Apply the wifi settings for 2.4GHZ\n");
+        retVal = ssp_setParameterValue("Device.WiFi.Radio.1.X_CISCO_COM_ApplySetting","true","boolean",commit);
+    }
+    else if ((!strncmp(ParamName, "Device.WiFi.Radio.2.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.2.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.2.", 19)))
+    {
+        printf("Apply the wifi settings for 5GHZ\n");
+        retVal = ssp_setParameterValue("Device.WiFi.Radio.2.X_CISCO_COM_ApplySetting","true","boolean",commit);
+    }
+    if((0 == returnValue) && (0 == retVal))
+    {
+        response["result"]="SUCCESS";
+        response["details"]="SET API Validation is Success";
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="WIFIAgentStub::SET API ApplySetting is Failure";
+        DEBUG_PRINT(DEBUG_TRACE,"\n tdk_wifiagent_set --->Error in Set API ApplySetting Validation in DUT !!! \n");
+	return  TEST_FAILURE;
+    }    
 
     resultDetails = ssp_getParameterValue(&ParamNames[0],&paramsize);
 
