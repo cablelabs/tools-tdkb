@@ -41,6 +41,7 @@ extern "C"
     int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, char* methodName);
     int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char *output, char* methodName);
     int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int *output, char* methodName);
+    int ssp_WIFIHALGetOrSetParamUIntValue(int radioIndex, unsigned int *output, char* methodName);
 };
 
 class RDKTestAgent;
@@ -60,6 +61,7 @@ class WIFIHAL : public RDKTestStubInterface
         bool WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json::Value& response);
         bool WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Json::Value& response);
         bool WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json::Value& response);
+        bool WIFIHAL_GetOrSetParamUIntValue(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__WIFIHAL_STUB_H__
 

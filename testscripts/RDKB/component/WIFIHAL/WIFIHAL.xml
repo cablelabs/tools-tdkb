@@ -37,6 +37,15 @@
           <parameter name="radioIndex" value=""/>
         </parameters>
       </primitiveTest>
+      <primitiveTest name="WIFIHAL_GetOrSetParamUIntValue" id=" " version="1">
+        <function>WIFIHAL_GetOrSetParamUIntValue</function>
+        <parameters>
+          <parameter name="methodName" value=""/>
+          <parameter name="param" value=""/>
+          <parameter name="paramType" value=""/>
+          <parameter name="radioIndex" value=""/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>
