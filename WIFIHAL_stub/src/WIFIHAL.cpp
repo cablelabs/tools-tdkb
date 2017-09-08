@@ -37,10 +37,11 @@ bool WIFIHAL::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     DEBUG_PRINT(DEBUG_TRACE,"TDK::WIFIHAL Initialize\n");
     /*Register stub function for callback*/
 
-ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamBoolValue, "WIFIHAL_GetOrSetParamBoolValue");
+    ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamBoolValue, "WIFIHAL_GetOrSetParamBoolValue");
     ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamULongValue,"WIFIHAL_GetOrSetParamULongValue");
     ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamStringValue,"WIFIHAL_GetOrSetParamStringValue");
     ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamIntValue,"WIFIHAL_GetOrSetParamIntValue");
+    ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamUIntValue,"WIFIHAL_GetOrSetParamUIntValue");
     return TEST_SUCCESS;
 }
 
@@ -139,9 +140,9 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
                           get /set is Unsigned long
  *
  * @param [in] req-    : methodName - identifier for the hal api name
- 			  radioIndex - radio index value of wifi
-                          param     - the ulong value to be get/set
-                          paramType  - To indicate negative test scenario. it is set as NULL for negative sceanario, otherwise empty
+			 radioIndex - radio index value of wifi
+                         param     - the ulong value to be get/set
+                         paramType  - To indicate negative test scenario. it is set as NULL for negative sceanario, otherwise empty
  * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
  *
  ********************************************************************************************/
@@ -213,7 +214,7 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamStringValue----->Entry\n");
     char methodName[50] = {'\0'};
     int radioIndex = 1;
-    char output[100] = {'\0'};
+    char output[200] = {'\0'};
     int returnValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
@@ -299,7 +300,57 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json:
     }
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetOrSetParamUIntValue
+ * Description          : This function invokes WiFi hal's get apis, when the value to be
+                          get  is an unsigned integer
+ *
+ * @param [in] req-    : methodName - identifier for the hal api name
+ 			  radioIndex - radio index value of wifi
+                          param     - the int value to be get
+                          paramType  - To indicate negative test scenario. it is set as NULL for negative sceanario, otherwise empty
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+bool WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamUIntValue----->Entry\n");
 
+    char methodName[50] = {'\0'};
+    int radioIndex = 1;
+    unsigned int uintParam;
+    int returnValue;
+    char details[200] = {'\0'};
+    char paramType[10] = {'\0'};
+
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+    strcpy(paramType, req["paramType"].asCString());
+
+    //paramType is set as NULL for negative test scenarios, for NULL pointer checks
+    if(strcmp(paramType, "NULL"))
+        returnValue = ssp_WIFIHALGetOrSetParamUIntValue(radioIndex, &uintParam, methodName);
+    else
+        returnValue = ssp_WIFIHALGetOrSetParamUIntValue(radioIndex, NULL, methodName);
+
+    if(0 == returnValue)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n output: %d\n",uintParam);
+        sprintf(details, "Value returned is :%d", uintParam);
+        response["result"]="SUCCESS";
+        response["details"]=details;
+        return TEST_SUCCESS;
+    }
+    else
+    {
+        sprintf(details, "%s operation failed", methodName);
+        response["result"]="FAILURE";
+        response["details"]=details;
+        DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForUInt --->Error in execution\n");
+        return  TEST_FAILURE;
+    }
+}
 /**************************************************************************
  * Function Name        : CreateObject
  * Description  : This function will be used to create a new object for the
@@ -328,6 +379,7 @@ bool WIFIHAL::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamULongValue");
     ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamStringValue");
     ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamIntValue");
+    ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamUIntValue");
     return TEST_SUCCESS;
 }
 
