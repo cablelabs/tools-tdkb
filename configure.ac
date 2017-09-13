@@ -119,5 +119,6 @@ AC_CONFIG_FILES([Makefile
 	 LMLite_Stub/Makefile
 	 WIFIHAL_stub/Makefile
 	 CMHAL_Stub/Makefile
-	 ethsw_hal_stub/Makefile])
+	 ethsw_hal_stub/Makefile
+	 tdkb_e2e_stub/Makefile])
 AC_OUTPUT
