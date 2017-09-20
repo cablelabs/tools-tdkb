@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>3</version>
+  <version>4</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_LMLite_NWDeviceStatus_GetReportingPeriodAfterOverrideTTL</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -37,7 +37,7 @@
   <!--  -->
   <groups_id />
   <!--  -->
-  <execution_time>8</execution_time>
+  <execution_time>30</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
   <!--  -->
@@ -49,6 +49,8 @@
   <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
+    <box_type>Emulator</box_type>
     <!--  -->
     <box_type>RPI</box_type>
     <!--  -->
@@ -169,6 +171,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult1 = tdkTestObj.getResult();
                 Reporting_Time = tdkTestObj.getResultDetails();
+		RP = Reporting_Time
 
                 tdkTestObj.addParameter("paramName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod");
                 #Execute the test case in DUT
@@ -277,7 +280,14 @@ if "SUCCESS" in loadmodulestatus.upper():
                         print "ACTUAL RESULT : %s" %details;
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : SUCCESS";
-            	        time.sleep(override);
+
+                        ##sleep till override time or reportingPeriod, whichever is greater and check if polling period changes back to its default value^M
+                        if int(override) > int(RP):
+                            print "Sleeping for ",override
+                            time.sleep(override + 10);
+                        else:
+                            print "Sleeping for ",RP
+                            time.sleep(int(RP) + 10)
 
 	            	tdkTestObj = obj.createTestStep('LMLiteStub_Get');
                     	tdkTestObj.addParameter("paramName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.ReportingPeriod");
@@ -379,7 +389,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj = obj.createTestStep('LMLiteStub_Set');
         tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Enabled");
         tdkTestObj.addParameter("ParamValue",status);
-        tdkTestObj.addParameter("Type","unsignedint");
+        tdkTestObj.addParameter("Type","bool");
         expectedresult="SUCCESS";
         #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
