@@ -105,19 +105,24 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     expectedresult="SUCCESS";
     radioIndex = 1
+    flag = 1
     getMethod = "getSupportedDataTransmitRates"
     primitive = 'WIFIHAL_GetOrSetParamStringValue'
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
 
     if expectedresult in actualresult :
-        supportedRates = details.split(":")[1].strip()
+        supportedRates = details.split(":")[1].strip().split(",")
 
         getMethod = "getOperationalDataTransmitRates"
         tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
         if expectedresult in actualresult :
-            operationalRates = details.split(":")[1].strip()
+            operationalRates = details.split(":")[1].strip().split(",")
 
-            if operationalRates in supportedRates :
+	    for rate in operationalRates:
+		if rate not in supportedRates:
+		    flag = 0;
+		    break;
+	    if flag == 1:
                 print "OperationalDataTransmitRates is in the list of SupportedDataTransmitRates"
             else:
                 print "OperationalDataTransmitRates is not in the list of SupportedDataTransmitRates"
