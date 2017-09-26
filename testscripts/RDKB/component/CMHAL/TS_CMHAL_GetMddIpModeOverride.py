@@ -89,10 +89,9 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     Details = tdkTestObj.getResultDetails();
+    print "Details=%s"%Details;
 
-    MddIpModeOverride_List =["UNDEFINED","IPV4","IPV6","HONOR"];
-
-    if expectedresult in actualresult and Details.upper() in MddIpModeOverride_List:
+    if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the MddIpModeOverride";
@@ -100,6 +99,30 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT 1: MddIpModeOverride is %s" %Details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
+
+	Details=Details.split("-")[0];
+    	if Details.isupper()=="True":
+       		Details=Details;
+    	else:
+       		Details=Details.upper();
+
+	MddIpModeOverride_List =["UNDEFINED","IPV4","IPV6","HONOR"];
+	if Details in MddIpModeOverride_List:
+		#Set the result status of execution
+        	tdkTestObj.setResultStatus("SUCCESS");
+        	print "TEST STEP 2: Check whether MddIpModeOverride retrieved is a subset of {UNDEFINED,IPV4,IPV6,HONOR}";
+        	print "EXPECTED RESULT 2: MddIpModeOverride retrieved should be subset of {UNDEFINED,IPV4,IPV6,HONOR}";
+        	print "ACTUAL RESULT 2: MddIpModeOverride is %s" %Details;
+        	#Get the result of execution
+        	print "[TEST EXECUTION RESULT] : SUCCESS";
+	else:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("FAILURE");
+                print "TEST STEP 2: Check whether MddIpModeOverride retrieved is a subset of {UNDEFINED,IPV4,IPV6,HONOR}";
+                print "EXPECTED RESULT 2: MddIpModeOverride retrieved should be subset of {UNDEFINED,IPV4,IPV6,HONOR}";
+                print "ACTUAL RESULT 2: MddIpModeOverride is %s" %Details;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : FAILURE";
     else:
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the MddIpModeOverride";
