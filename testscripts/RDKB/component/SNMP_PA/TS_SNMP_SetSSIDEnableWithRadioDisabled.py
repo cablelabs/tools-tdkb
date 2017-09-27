@@ -37,7 +37,7 @@
   <!--  -->
   <groups_id />
   <!--  -->
-  <execution_time>2</execution_time>
+  <execution_time>10</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
   <!--  -->
@@ -65,7 +65,7 @@
     <pre_requisite>1.Ccsp Components in DUT should be in a running state that includes component under test Cable Modem
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>GetCommString
-pam_SetParameterValues</api_or_interface_used>
+WIFIAgent_Set</api_or_interface_used>
     <input_parameters>Device.WiFi.Radio.1.Enable
 Device.WiFi.SSID.1.Enable
 
@@ -73,11 +73,11 @@ Device.WiFi.SSID.1.Enable
     <automation_approch>1.TM will load the snmp_pa library via Test agent
 2.From python script, invoke SnmpExecuteCmd function in snmplib to get the value of given OID 
 3. GetCommString function in the SNMP_PA stub  will be called from snmplib to get the community string. 
-4.With pam_SetParameterValues disable wifi.Radio
-5.With pam_SetParameterValues enable wifi.SSID
+4.With WIFIAgent_Set disable wifi.Radio
+5.With WIFIAgent_Set enable wifi.SSID
 5.Check with snmpget that wifi.SSID is enabled or not
 6. Validation of  the result is done within the python script and send the result status to Test Manager.
-7.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from pam stub.</automation_approch>
+7.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from wifiagent stub.</automation_approch>
     <except_output>CheckPoint 1:
   Response of snmp command should be logged in the script log
 
@@ -88,7 +88,7 @@ CheckPoint 3:
 TestManager GUI will publish the result as PASS in Execution/Console page of Test Manager</except_output>
     <priority>High</priority>
     <test_stub_interface>snmp_pa
-pam</test_stub_interface>
+wifiagent</test_stub_interface>
     <test_script>TS_SNMP_SetSSIDEnableWithRadioDisabled</test_script>
     <skipped>No</skipped>
     <release_version></release_version>
@@ -104,49 +104,49 @@ from time import sleep;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
-pamObj = tdklib.TDKScriptingLibrary("pam","RDKB");
+wifiObj = tdklib.TDKScriptingLibrary("wifiagent","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_SetSSIDEnableWithRadioDisabled');
-pamObj.configureTestCase(ip,port,'TS_SNMP_SetSSIDEnableWithRadioDisabled');
+wifiObj.configureTestCase(ip,port,'TS_SNMP_SetSSIDEnableWithRadioDisabled');
 
 #Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
-pamloadmodulestatus =pamObj.getLoadModuleResult();
+wifiagentloadmodulestatus =wifiObj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
-if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.upper():
+if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiagentloadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-    pamObj.setLoadModuleStatus("SUCCESS");
+    wifiObj.setLoadModuleStatus("SUCCESS");
 
-    tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
-    tdkTestObj.addParameter("ParamName","Device.WiFi.Radio.1.Enable");
+    tdkTestObj = wifiObj.createTestStep('WIFIAgent_Get');
+    tdkTestObj.addParameter("paramName","Device.WiFi.Radio.1.Enable");
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
-    orgRadio = tdkTestObj.getResultDetails();
 
     if expectedresult in actualresult:
         tdkTestObj.setResultStatus("SUCCESS");
         print "ACTUAL RESULT 1: Radio status get SUCCESS";
+        orgRadio = tdkTestObj.getResultDetails().split("VALUE:")[1].split(' ')[0];
 
-        tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.1.Enable");
+        tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
         tdkTestObj.executeTestCase(expectedresult);
-        actualresult = tdkTestObj.getResult();
-        orgSsid = tdkTestObj.getResultDetails();
+        actualresult = tdkTestObj.getResult();        
     
         if expectedresult in actualresult:
             tdkTestObj.setResultStatus("SUCCESS");
             print "ACTUAL RESULT 1: SSID status get SUCCESS";
+            orgSsid = tdkTestObj.getResultDetails().split("VALUE:")[1].split(' ')[0];
 
             #Disable Radio
-            tdkTestObj = obj.createTestStep('pam_SetParameterValues');
-            tdkTestObj.addParameter("ParamName","Device.WiFi.Radio.1.Enable");
-            tdkTestObj.addParameter("ParamValue","false");
-            tdkTestObj.addParameter("Type","boolean");
+            tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+            tdkTestObj.addParameter("paramName","Device.WiFi.Radio.1.Enable");
+            tdkTestObj.addParameter("paramValue","false");
+            tdkTestObj.addParameter("paramType","boolean");
             expectedresult="SUCCESS";
 
             #Execute the test case in Gateway
@@ -161,9 +161,9 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                 print "ACTUAL RESULT 1: SUCCESS, Disabled";
 
 		#Enable Wifi.SSID
-                tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.1.Enable");
-                tdkTestObj.addParameter("ParamValue","true");
-                tdkTestObj.addParameter("Type","boolean");
+                tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
+                tdkTestObj.addParameter("paramValue","true");
+                tdkTestObj.addParameter("paramType","boolean");
                 expectedresult="SUCCESS";
 
                 tdkTestObj.executeTestCase(expectedresult);
@@ -199,10 +199,10 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
 			print "ACTUAL RESULT 1: FAILURE, snmpget failed"
 
 		    #restore previous state of wifi.SSID
-                    tdkTestObj = obj.createTestStep('pam_SetParameterValues');
-                    tdkTestObj.addParameter("ParamName","Device.WiFi.SSID.1.Enable");
-                    tdkTestObj.addParameter("ParamValue",orgSsid);
-	            tdkTestObj.addParameter("Type","boolean");
+                    tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+                    tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
+                    tdkTestObj.addParameter("paramValue",orgSsid);
+	            tdkTestObj.addParameter("paramType","boolean");
         	    expectedresult="SUCCESS";
                     tdkTestObj.executeTestCase(expectedresult);
                     actualresult = tdkTestObj.getResult();
@@ -221,10 +221,10 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                     print "ACTUAL RESULT 1: FAILURE, not enabled";
 
                 #Restore WiFi.Radio
-                tdkTestObj = obj.createTestStep('pam_SetParameterValues');
-                tdkTestObj.addParameter("ParamName","Device.WiFi.Radio.1.Enable");
-                tdkTestObj.addParameter("ParamValue",orgRadio);
-                tdkTestObj.addParameter("Type","boolean");
+                tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+                tdkTestObj.addParameter("paramName","Device.WiFi.Radio.1.Enable");
+                tdkTestObj.addParameter("paramValue",orgRadio);
+                tdkTestObj.addParameter("paramType","boolean");
                 expectedresult="SUCCESS";
 
                 tdkTestObj.executeTestCase(expectedresult);
@@ -249,10 +249,10 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         tdkTestObj.setResultStatus("FAILURE");
         print "ACTUAL RESULT 1: Radio status get FAILED";
     obj.unloadModule("sysutil");
-    pamObj.unloadModule("pam");
+    wifiObj.unloadModule("wifiagent");
 else:
     print "FAILURE to load SNMP_PA module";
     obj.setLoadModuleStatus("FAILURE");
-    pamObj.setLoadModuleStatus("FAILURE");
+    wifiObj.setLoadModuleStatus("FAILURE");
     print "Module loading FAILURE";
 
