@@ -96,8 +96,8 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-    currentChannel = details.split(":")[1];
     if expectedresult in actualresult:
+        currentChannel = details.split(":")[1];
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the Radio channel for 2.4GHz";
@@ -188,15 +188,19 @@ if "SUCCESS" in loadmodulestatus.upper():
     		    tdkTestObj.executeTestCase(expectedresult);
     		    actualresult = tdkTestObj.getResult();
     		    details = tdkTestObj.getResultDetails();
-    		    ChannelAfterAuto = details.split(":")[1];
-    		    if expectedresult in actualresult and int(ChannelAfterAuto) != newChannel:
-    		        #Set the result status of execution
-    		        tdkTestObj.setResultStatus("SUCCESS");
-    		        print "TEST STEP 5: Get the Radio channel for 2.4GHz";
-    		        print "EXPECTED RESULT 5: Should get the Radio channel for 2.4GHz";
-    		        print "ACTUAL RESULT 5: %s" %details;
-    		        #Get the result of execution
-    		        print "[TEST EXECUTION RESULT] : SUCCESS";
+    		    if expectedresult in actualresult :
+    		        ChannelAfterAuto = details.split(":")[1];
+		        if int(ChannelAfterAuto) != newChannel:
+    		            #Set the result status of execution
+    		            tdkTestObj.setResultStatus("SUCCESS");
+    		            print "TEST STEP 5: Get the Radio channel for 2.4GHz";
+    		            print "EXPECTED RESULT 5: Should get the Radio channel for 2.4GHz";
+    		            print "ACTUAL RESULT 5: %s" %details;
+    		            #Get the result of execution
+    		            print "[TEST EXECUTION RESULT] : SUCCESS";
+			else:
+			    tdkTestObj.setResultStatus("FAILURE");
+			    print " FAILURE: channel not changed on auto mode"
 		    else:
 			#Set the result status of execution
                         tdkTestObj.setResultStatus("FAILURE");

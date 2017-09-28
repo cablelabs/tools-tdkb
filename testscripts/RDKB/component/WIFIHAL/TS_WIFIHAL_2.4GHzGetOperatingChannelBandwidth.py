@@ -96,16 +96,20 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-    Bandwidth= details.split(":")[1];
     ExpectedList = ["20MHz", "40MHz", "80MHz", "160MHz", "Auto"];
-    if expectedresult in actualresult and Bandwidth in ExpectedList:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Get the Radio channel bandwidth for 2.4GHz";
-        print "EXPECTED RESULT 1: Should get the Radio channel bandwidth for 2.4GHz";
-        print "ACTUAL RESULT 1: %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS";
+    if expectedresult in actualresult :
+	Bandwidth= details.split(":")[1];
+	if Bandwidth in ExpectedList:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP 1: Get the Radio channel bandwidth for 2.4GHz";
+            print "EXPECTED RESULT 1: Should get the Radio channel bandwidth for 2.4GHz";
+            print "ACTUAL RESULT 1: %s" %details;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+	else:
+	    tdkTestObj.setResultStatus("FAILURE");
+	    print "Operating Channel bandwidth is not from the expected list"
     else:
 	#Set the result status of execution
         tdkTestObj.setResultStatus("FAILURE");

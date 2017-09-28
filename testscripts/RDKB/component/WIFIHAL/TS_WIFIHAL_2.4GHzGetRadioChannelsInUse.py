@@ -123,22 +123,26 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
-	#get the channels in use a list of integers
-	channelInUse = [int(x) for x in details.split(":")[1].split(",")];
-	for i in channelInUse:
-	    if i in PossibleChannels:
-		status = "SUCCESS";
+        if expectedresult in actualresult:
+	    #get the channels in use a list of integers
+     	    channelInUse = [int(x) for x in details.split(":")[1].split(",")];
+   	    for i in channelInUse:
+	        if i in PossibleChannels:
+		    status = "SUCCESS";
+ 	        else:
+		    status = "FAILURE";
+		    break;
+	    if "SUCCESS" in status:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("SUCCESS");
+                print "TEST STEP 2: Get the possible Channels in use for 2.4GHz";
+                print "EXPECTED RESULT 2: Should get the Radio Channels in use for 2.4GHz";
+                print "ACTUAL RESULT 2: %s" %details;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : SUCCESS";
 	    else:
-		status = "FAILURE";
-		break;
-        if expectedresult in actualresult and "SUCCESS" in status:
-            #Set the result status of execution
-            tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 2: Get the possible Channels in use for 2.4GHz";
-            print "EXPECTED RESULT 2: Should get the Radio Channels in use for 2.4GHz";
-            print "ACTUAL RESULT 2: %s" %details;
-            #Get the result of execution
-            print "[TEST EXECUTION RESULT] : SUCCESS";
+		tdkTestObj.setResultStatus("FAILURE");
+		print "channel in use is not from possible channel list"
 	else:
 	    #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");

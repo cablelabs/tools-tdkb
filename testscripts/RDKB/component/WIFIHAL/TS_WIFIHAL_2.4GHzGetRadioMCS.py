@@ -96,19 +96,23 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-    MCS= int(details.split(":")[1]);
-    if (-1 <= MCS and MCS <= 15) or (16 <= MCS and MCS <= 31):
-	status ="SUCCESS";
-    else:
-	status ="FAILURE";
-    if expectedresult in actualresult and "SUCCESS" in status:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Get the Radio MCS for 2.4GHz";
-        print "EXPECTED RESULT 1: Should get the Radio MCS for 2.4GHz";
-        print "ACTUAL RESULT 1: %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS";
+    if expectedresult in actualresult : 
+        MCS= int(details.split(":")[1]);
+        if (-1 <= MCS and MCS <= 15) or (16 <= MCS and MCS <= 31):
+            status ="SUCCESS";
+        else:
+            status ="FAILURE";
+        if "SUCCESS" in status:
+            #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP 1: Get the Radio MCS for 2.4GHz";
+            print "EXPECTED RESULT 1: Should get the Radio MCS for 2.4GHz";
+            print "ACTUAL RESULT 1: %s" %details;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+	else:
+	    tdkTestObj.setResultStatus("FAILURE");
+	    print "FAILURE: Radio MCS value not in the expected range"
     else:
 	#Set the result status of execution
         tdkTestObj.setResultStatus("FAILURE");

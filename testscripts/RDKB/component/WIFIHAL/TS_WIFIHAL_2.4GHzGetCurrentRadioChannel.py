@@ -97,7 +97,6 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-    channelInUse= details.split(":")[1];
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
@@ -106,6 +105,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT 1: %s" %details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
+        channelInUse= details.split(":")[1];
 	
 	tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetParamULongValue");
         #Giving the method name to invoke the api for getting Radio Channel. ie,wifi_getRadioChannel()
@@ -116,16 +116,22 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
-        CurrentChannel= details.split(":")[1];
-	ExpectedList = channelInUse.split(",");
-        if expectedresult in actualresult and CurrentChannel in ExpectedList:
+        if expectedresult in actualresult :
             #Set the result status of execution
-            tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 1: Get the Radio channel for 2.4GHz";
             print "EXPECTED RESULT 1: Should get the Radio channel for 2.4GHz";
             print "ACTUAL RESULT 1: %s" %details;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
+
+            CurrentChannel= details.split(":")[1];
+   	    ExpectedList = channelInUse.split(",");
+	    if CurrentChannel in ExpectedList :
+                tdkTestObj.setResultStatus("SUCCESS");
+		print "SUCCESS: current channel is available in channels in use list"
+	    else:
+		tdkTestObj.setResultStatus("FAILURE");
+		print "FAILURE: current channel is not available in channels in use list"	
 	else:
 	    #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");

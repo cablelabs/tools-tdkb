@@ -94,8 +94,9 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     SupportedStandards = tdkTestObj.getResultDetails();
-    ActualList = SupportedStandards.split(":")[1].split(",");
     if expectedresult in actualresult:
+        ActualList = SupportedStandards.split(":")[1].split(",");
+	tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the Radio Supported Standards for 2.4GHz";
         print "EXPECTED RESULT 1: Should get the Radio Supported Standards for 2.4GHz";
         print "ACTUAL RESULT 1: %s" %SupportedStandards;
@@ -112,15 +113,19 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
-        CurrStandard = details.split(":")[1];
-        if expectedresult in actualresult and CurrStandard in SupportedStandards:
-            #Set the result status of execution
-            tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 2: Get the current Radio standard";
-            print "EXPECTED RESULT 2: Should get the Radio standard for 2.4GHz";
-            print "ACTUAL RESULT 2: %s" %details;
-            #Get the result of execution
-            print "[TEST EXECUTION RESULT] : SUCCESS";
+        if expectedresult in actualresult :
+            CurrStandard = details.split(":")[1];
+            if CurrStandard in ActualList:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("SUCCESS");
+                print "TEST STEP 2: Get the current Radio standard";
+                print "EXPECTED RESULT 2: Should get the Radio standard for 2.4GHz";
+                print "ACTUAL RESULT 2: %s" %details;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : SUCCESS";
+	    else:
+		tdkTestObj.setResultStatus("FAILURE");
+		print "FAILURE: Current radio std: not in Supported std list"
         else:
             #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");

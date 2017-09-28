@@ -144,15 +144,19 @@ if "SUCCESS" in loadmodulestatus.upper():
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
-            SSIDStatus = details.split(":")[1];
-            if expectedresult in actualresult and SSIDStatus in ExpectedStatus:
-                #Set the result status of execution
-                tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP 3: Get the SSID Status for 2.4GHz";
-                print "EXPECTED RESULT 3: Should get the SSID Status for 2.4GHz";
-                print "ACTUAL RESULT 3: %s" %details;
-                #Get the result of execution
-                print "[TEST EXECUTION RESULT] : SUCCESS";
+            if expectedresult in actualresult :
+                SSIDStatus = details.split(":")[1];
+		if SSIDStatus in ExpectedStatus:
+                    #Set the result status of execution
+                    tdkTestObj.setResultStatus("SUCCESS");
+                    print "TEST STEP 3: Get the SSID Status for 2.4GHz";
+                    print "EXPECTED RESULT 3: Should get the SSID Status for 2.4GHz";
+                    print "ACTUAL RESULT 3: %s" %details;
+                    #Get the result of execution
+                    print "[TEST EXECUTION RESULT] : SUCCESS";
+		else:
+		    tdkTestObj.setResultStatus("FAILURE");
+		    print "FAILURE : SSIDStatus is not as expected"
             else:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("FAILURE");

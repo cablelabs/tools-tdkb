@@ -95,8 +95,8 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     SupportedStandards = tdkTestObj.getResultDetails();
-    ActualList = SupportedStandards.split(":")[1].split(",");
     if expectedresult in actualresult:
+        ActualList = SupportedStandards.split(":")[1].split(",");
         print "TEST STEP 1: Get the Radio Supported Standards for 5GHz";
         print "EXPECTED RESULT 1: Should get the Radio Supported Standards for 5GHz";
         print "ACTUAL RESULT 1: %s" %SupportedStandards;
