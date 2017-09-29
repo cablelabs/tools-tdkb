@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>Set Attributes API Validation</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <remarks/>
   <skip>false</skip>
