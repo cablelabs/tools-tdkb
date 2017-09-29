@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>Get Device.Hosts.Host.2.Layer1Interface and compare it with the interface obtained from box using arp command. (empty if wifi and ether if lan)</synopsis>
   <groups_id/>
-  <execution_time>3</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

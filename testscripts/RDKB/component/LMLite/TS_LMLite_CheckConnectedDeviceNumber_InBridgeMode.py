@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>If gateway is in bridge mode, Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber should be zero.</synopsis>
   <groups_id/>
-  <execution_time>5</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>
