@@ -65,14 +65,14 @@
     <pre_requisite>1.Ccsp Components in DUT should be in a running state that includes component under test Cable Modem
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>GetCommString
-pam_SetParameterValues</api_or_interface_used>
+WIFIAgent_Set</api_or_interface_used>
     <input_parameters>snmpget", "-v 2c", ".1.3.6.1.4.1.17270.50.2.2.3.3.1.3.10001"
 
 Device.WiFi.AccessPoint.1.Security.KeyPassphrase</input_parameters>
     <automation_approch>1.TM will load the snmp_pa library via Test agent
 2.From python script, invoke SnmpExecuteCmd function in snmplib to get the value of given OID 
 3. GetCommString function in the SNMP_PA stub  will be called from snmplib to get the community string. 
-4.With pam_SetParameterValues set  a passphrase with more than 32 characters
+4.With WIFIAgent_Set set  a passphrase with more than 32 characters
 5.Check if the same passphrase is received on snmpget  or not
 6. Validation of  the result is done within the python script and send the result status to Test Manager.
 7.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from pam stub.</automation_approch>
@@ -102,23 +102,23 @@ from time import sleep;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
-pamObj = tdklib.TDKScriptingLibrary("pam","RDKB");
+wifiObj = tdklib.TDKScriptingLibrary("wifiagent","1");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_IsTruncatingGetWifiPassphrase');
-pamObj.configureTestCase(ip,port,'TS_SNMP_IsTruncatingGetWifiPassphrase');
+wifiObj.configureTestCase(ip,port,'TS_SNMP_IsTruncatingGetWifiPassphrase');
 
 #Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
-pamloadmodulestatus =pamObj.getLoadModuleResult();
+wifiloadmodulestatus =wifiObj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
-if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.upper():
+if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiloadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-    pamObj.setLoadModuleStatus("SUCCESS");
+    wifiObj.setLoadModuleStatus("SUCCESS");
 
     #Get the Community String
     communityString = snmplib.getCommunityString(obj,"snmpget");
@@ -135,10 +135,10 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
 
 	#set 32+ passphrase using setparams()
 	temp_pass = "passwordpasswordpasswordpasswordpassword"
-        tdkTestObj = obj.createTestStep('pam_SetParameterValues');
-        tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
-        tdkTestObj.addParameter("ParamValue",temp_pass);
-        tdkTestObj.addParameter("Type","string");
+        tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+        tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
+        tdkTestObj.addParameter("paramValue",temp_pass);
+        tdkTestObj.addParameter("paramType","string");
         expectedresult="SUCCESS";
 
         #Execute the test case in Gateway
@@ -169,11 +169,10 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
 	        print "ACTUAL RESULT : FAILURE, snmpget for passphrase failed %s" %get_details;
 
 	    #setting passphrase back to original value
-            tdkTestObj = obj.createTestStep('pam_SetParameterValues');
-            tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
-            tdkTestObj.addParameter("ParamValue",orgPassphrase);
-            #tdkTestObj.addParameter("ParamValue",temp_pass);
-            tdkTestObj.addParameter("Type","string");
+            tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+            tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
+            tdkTestObj.addParameter("paramValue",orgPassphrase);
+            tdkTestObj.addParameter("paramType","string");
             expectedresult="SUCCESS";
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
@@ -200,9 +199,9 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         print "ACTUAL RESULT 1: FAILURE, snmpget for passphrase failed %s" %get_details;
 
     obj.unloadModule("sysutil");
-    pamObj.unloadModule("pam");
+    wifiObj.unloadModule("wifiagent");
 else:
     print "FAILURE to load SNMP_PA module";
     obj.setLoadModuleStatus("FAILURE");
-    pamObj.setLoadModuleStatus("FAILURE");
+    wifiObj.setLoadModuleStatus("FAILURE");
     print "Module loading FAILURE";

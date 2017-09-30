@@ -101,25 +101,25 @@ from time import sleep;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
-pamobj = tdklib.TDKScriptingLibrary("pam","RDKB");
+wifiObj = tdklib.TDKScriptingLibrary("wifiagent","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_SNMP_ResetWifiOnly');
-pamobj.configureTestCase(ip,port,'TS_SNMP_ResetWifiOnly');
+wifiObj.configureTestCase(ip,port,'TS_SNMP_ResetWifiOnly');
 
 #Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
-pamloadmodulestatus =pamobj.getLoadModuleResult();
+wifiloadmodulestatus =wifiObj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
-if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.upper():
+if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiloadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
     ########## Script to Execute the snmp command ###########
-    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
-    tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
+    tdkTestObj = obj.createTestStep('WIFIAgent_Get');
+    tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
@@ -130,13 +130,13 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         print "TEST STEP 1: Get the current SSID password";
         print "EXPECTED RESULT 1: Should get the current SSID password";
         print "ACTUAL RESULT 1: %s" %details;
-	org_status=details;
+	org_status=details.split("VALUE:")[1].split(' ')[0];
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS"
-        tdkTestObj = obj.createTestStep('pam_SetParameterValues');
-	tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
-        tdkTestObj.addParameter("ParamValue","wifipassword");
-        tdkTestObj.addParameter("Type","string");
+        tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+	tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
+        tdkTestObj.addParameter("paramValue","wifipassword");
+        tdkTestObj.addParameter("paramType","string");
         expectedresult="SUCCESS";
 
         tdkTestObj.executeTestCase(expectedresult);
@@ -158,8 +158,8 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
             ########## Script to Execute the snmp command ###########
 	    actResponse =snmplib.SnmpExecuteCmd("snmpset", communityString, "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1002.0 i 3", ipaddress);
 	    sleep(180);
-	    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
-	    tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
+	    tdkTestObj = obj.createTestStep('WIFIAgent_Get');
+	    tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
@@ -180,10 +180,10 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : FAILURE"
             #set the previous value to WiFi.SSID if wifi reset is failed
-            tdkTestObj = obj.createTestStep('pam_SetParameterValues');
-            tdkTestObj.addParameter("ParamName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
-            tdkTestObj.addParameter("ParamValue",org_status);
-            tdkTestObj.addParameter("Type","string");
+            tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+            tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
+            tdkTestObj.addParameter("paramValue",org_status);
+            tdkTestObj.addParameter("paramType","string");
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
@@ -221,9 +221,9 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE"
     obj.unloadModule("sysutil");
-    pamobj.unloadModule("pam");
+    wifiObj.unloadModule("wifiagent");
 else:
         print "FAILURE to load SNMP_PA module";
         obj.setLoadModuleStatus("FAILURE");
-        pamobj.setLoadModuleStatus("FAILURE");
+        wifiObj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
