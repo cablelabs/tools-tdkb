@@ -126,7 +126,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         elif int(Data[0]) != 0 and "dBmV" not in Data[1] :
              
         
-             if  minPower<=Data[1]<=maxPower:
+             if  minPower<=float(Data[1])<=maxPower:
                status = "Success";
              else:
                status = "Failure";
