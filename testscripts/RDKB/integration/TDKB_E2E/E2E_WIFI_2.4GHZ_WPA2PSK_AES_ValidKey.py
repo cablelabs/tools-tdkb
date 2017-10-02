@@ -178,9 +178,10 @@ if "SUCCESS" in loadmodulestatus.upper():
                                 if expectedresult in status:
                                     tdkTestObj.setResultStatus("SUCCESS");
 
-                                    print "TEST STEP 8: Check whether wlan client connected with WPA2-Personal"
+                                    print "TEST STEP 8: Check whether wlan client connected with WPA2-Personal or WPA-Personal"
                                     security_mode = getSecurityMode(tdkbE2EUtility.ssid_2ghz_name);
-                                    if security_mode == "WPA2-Personal":
+				    security_mode_list = ['WPA2-Personal','WPA-Personal']
+                                    if security_mode in security_mode_list:
                                         tdkTestObj.setResultStatus("SUCCESS");
 
                                         print "TEST STEP 9: From wlan client, Disconnect from the wifi ssid"
