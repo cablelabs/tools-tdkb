@@ -63,6 +63,70 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
         return_status = wifi_setRadioAutoChannelEnable(radioIndex, *enable);
     else if(!strcmp(method, "getRadioStatus"))
         return_status = wifi_getRadioStatus(radioIndex, *enable);
+    else if(!strcmp(method, "getApEnable"))
+        return_status = wifi_getApEnable(radioIndex,enable);
+    else if(!strcmp(method, "getApIsolationEnable"))
+        return_status = wifi_getApIsolationEnable(radioIndex,enable);
+    else if(!strcmp(method, "setApIsolationEnable"))
+        return_status = wifi_setApIsolationEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getRadioIEEE80211hSupported"))
+        return_status = wifi_getRadioIEEE80211hSupported(radioIndex,enable);
+    else if(!strcmp(method, "getRadioIEEE80211hEnabled"))
+        return_status = wifi_getRadioIEEE80211hEnabled(radioIndex,enable);
+    else if(!strcmp(method, "setRadioIEEE80211hEnabled"))
+        return_status = wifi_setRadioIEEE80211hEnabled(radioIndex, *enable);
+    else if(!strcmp(method, "getBandSteeringCapability"))
+        return_status = wifi_getBandSteeringCapability(enable);
+    else if(!strcmp(method, "getBandSteeringEnable"))
+        return_status = wifi_getBandSteeringEnable(enable);
+    else if(!strcmp(method, "setBandSteeringEnable"))
+        return_status = wifi_setBandSteeringEnable(*enable);
+    else if(!strcmp(method, "getRadioReverseDirectionGrantSupported"))
+        return_status = wifi_getRadioReverseDirectionGrantSupported(radioIndex,enable);
+    else if(!strcmp(method, "getRadioReverseDirectionGrantEnable"))
+        return_status = wifi_getRadioReverseDirectionGrantEnable(radioIndex,enable);
+    else if(!strcmp(method, "setRadioReverseDirectionGrantEnable"))
+        return_status = wifi_setRadioReverseDirectionGrantEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getRadioDeclineBARequestEnable"))
+        return_status = wifi_getRadioDeclineBARequestEnable(radioIndex, enable);
+    else if(!strcmp(method, "setRadioDeclineBARequestEnable"))
+        return_status = wifi_setRadioDeclineBARequestEnable(radioIndex,*enable);
+    else if(!strcmp(method, "getRadioAutoBlockAckEnable"))
+        return_status = wifi_getRadioAutoBlockAckEnable(radioIndex,enable);
+    else if(!strcmp(method, "setRadioAutoBlockAckEnable"))
+        return_status = wifi_setRadioAutoBlockAckEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getRadio11nGreenfieldSupported"))
+        return_status = wifi_getRadio11nGreenfieldSupported(radioIndex,enable);
+    else if(!strcmp(method, "getRadio11nGreenfieldEnable"))
+        return_status = wifi_getRadio11nGreenfieldEnable(radioIndex,enable);
+    else if(!strcmp(method, "setRadio11nGreenfieldEnable"))
+        return_status = wifi_setRadio11nGreenfieldEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getRadioIGMPSnoopingEnable"))
+        return_status = wifi_getRadioIGMPSnoopingEnable(radioIndex,enable);
+    else if(!strcmp(method, "setRadioIGMPSnoopingEnable"))
+        return_status = wifi_setRadioIGMPSnoopingEnable(radioIndex,*enable);
+    else if(!strcmp(method, "getApRtsThresholdSupported"))
+        return_status = wifi_getApRtsThresholdSupported(radioIndex,enable);
+    else if(!strcmp(method, "getApSsidAdvertisementEnable"))
+        return_status = wifi_getApSsidAdvertisementEnable(radioIndex,enable);
+    else if(!strcmp(method, "setApSsidAdvertisementEnable"))
+        return_status = wifi_setApSsidAdvertisementEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getApWMMCapability"))
+        return_status = wifi_getApWMMCapability(radioIndex,enable);
+    else if(!strcmp(method, "getApUAPSDCapability"))
+        return_status = wifi_getApUAPSDCapability(radioIndex,enable);
+    else if(!strcmp(method, "getApWmmEnable"))
+        return_status = wifi_getApWmmEnable(radioIndex,enable);
+    else if(!strcmp(method, "setApWmmEnable"))
+        return_status = wifi_setApWmmEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getApWmmUapsdEnable"))
+        return_status = wifi_getApWmmUapsdEnable(radioIndex,enable);
+    else if(!strcmp(method, "setApWmmUapsdEnable"))
+        return_status = wifi_setApWmmUapsdEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getApWpsEnable"))
+        return_status = wifi_getApWpsEnable(radioIndex,enable);
+    else if(!strcmp(method, "setApWpsEnable"))
+        return_status = wifi_setApWpsEnable(radioIndex,enable);
     else
     {
         return_status = SSP_FAILURE;
