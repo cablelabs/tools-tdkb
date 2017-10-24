@@ -174,7 +174,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                                     tdkTestObj.setResultStatus("SUCCESS");
 
                                     print "TEST STEP 8:Checking whether the WLAN client is able to access Internet"
-                                    status = verifyNetworkConnectivity(tdkbE2EUtility.network_ip, "PING", tdkbE2EUtility.wlan_5ghz_interface)
+                                    status = verifyNetworkConnectivity(tdkbE2EUtility.network_ip, "PING", tdkbE2EUtility.wlan_5ghz_interface,curIPAddress,wlanIP)
                                     if expectedresult in status:
                                         tdkTestObj.setResultStatus("SUCCESS");
                                         print "verifyNetworkConnectivity: SUCCESS"
