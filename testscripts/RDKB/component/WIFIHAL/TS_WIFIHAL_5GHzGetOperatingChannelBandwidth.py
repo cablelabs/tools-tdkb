@@ -94,7 +94,8 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     if expectedresult in actualresult :
         bandWidth = details.split(":")[1].strip()
-
+        bandWidth=bandWidth.split("\\n")[0];
+        print bandWidth;
 	if bandWidth in bandWidthList:
 	    print "OperatingChannelBandwidth is from the list %s"%bandWidthList
 	else:

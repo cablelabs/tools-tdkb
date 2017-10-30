@@ -67,7 +67,7 @@ radioIndex :0</input_parameters>
 </xml>
 
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
+#use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 
 #Test component to be tested
@@ -99,12 +99,14 @@ if "SUCCESS" in loadmodulestatus.upper():
     ExpectedList = ["20MHz", "40MHz", "80MHz", "160MHz", "Auto"];
     if expectedresult in actualresult :
 	Bandwidth= details.split(":")[1];
+        Bandwidth=Bandwidth.split("\\n")[0];
+        print Bandwidth;
 	if Bandwidth in ExpectedList:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 1: Get the Radio channel bandwidth for 2.4GHz";
             print "EXPECTED RESULT 1: Should get the Radio channel bandwidth for 2.4GHz";
-            print "ACTUAL RESULT 1: %s" %details;
+            print "ACTUAL RESULT 1: %s" %Bandwidth;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
 	else:
@@ -115,7 +117,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the Radio channel bandwidth for 2.4GHz";
         print "EXPECTED RESULT 1: Should get the Radio channel bandwidth for 2.4GHz";
-        print "ACTUAL RESULT 1: %s" %details;
+        print "ACTUAL RESULT 1: %s" %Bandwidth;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("wifihal");
