@@ -163,7 +163,7 @@ int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, 
     else if(!strcmp(method, "getAutoChannelRefreshPeriod"))
         return_status = wifi_getRadioAutoChannelRefreshPeriod(radioIndex, uLongVar);
     else if(!strcmp(method, "getRadioNumberOfEntries"))
-        return_status = wifi_getRadioNumberOfEntries(uLongVar);
+        return_status = wifi_getRadioNumberOfEntries(*uLongVar);
     else
     {
         return_status = SSP_FAILURE;

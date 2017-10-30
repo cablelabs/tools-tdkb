@@ -152,6 +152,7 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
     char methodName[50] = {'\0'};
     int radioIndex = 1;
     unsigned long uLongVar = 1;
+    unsigned long nullValue = NULL;
     int returnValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
@@ -178,7 +179,7 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
        if(strcmp(paramType, "NULL"))
            returnValue = ssp_WIFIHALGetOrSetParamULongValue(radioIndex, &uLongVar, methodName);
        else
-           returnValue = ssp_WIFIHALGetOrSetParamULongValue(radioIndex, NULL, methodName);
+           returnValue = ssp_WIFIHALGetOrSetParamULongValue(radioIndex, &nullValue, methodName);
        if(0 == returnValue)
         {
             DEBUG_PRINT(DEBUG_TRACE,"\n output: %lu\n",uLongVar);
