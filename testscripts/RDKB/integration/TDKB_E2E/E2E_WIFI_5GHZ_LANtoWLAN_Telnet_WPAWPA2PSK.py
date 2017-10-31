@@ -247,7 +247,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 							
 							    #Do telnet from LAN client to WLAN clinet
 							    print "TEST STEP 14: Do telnet from LAN client to WLAN LAN Client"
-							    status = telnetToClient(tdkbE2EUtility.lan_script, wlanIP, tdkbE2EUtility.wlan_username, tdkbE2EUtility.wlan_password)
+							    status = telnetToClient("WLAN", wlanIP)
 							    if "SUCCESS" in status:
 								tdkTestObj.setResultStatus("SUCCESS");
 								print "SUCCESS: Telnet traffic successful between wired and wireless clients %s" %status

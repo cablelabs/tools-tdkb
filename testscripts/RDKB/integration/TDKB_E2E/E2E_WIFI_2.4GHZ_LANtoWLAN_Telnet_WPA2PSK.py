@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>3</version>
+  <version>6</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>E2E_WIFI_2.4GHZ_LANtoWLAN_Telnet_WPA2PSK</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -159,6 +159,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
                 #Retrieve the values after set and compare
                 newParamList=[ssidName,keyPassPhrase,securityMode,radioEnable,ssidEnable]
+                time.sleep(60);
                 tdkTestObj,status,newValues = getMultipleParameterValues(obj,newParamList)
 
                 if expectedresult in status and setValuesList == newValues:
@@ -169,7 +170,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     print "[TEST EXECUTION RESULT] : SUCCESS";
 
                     #Wait for the changes to reflect in client device
-                    time.sleep(60);
+                   # time.sleep(60);
 
                     #Connect to the wifi ssid from wlan client
                     print "TEST STEP 4: From wlan client, Connect to the wifi ssid"
@@ -215,7 +216,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         		        if expectedresult in status:
                         		            tdkTestObj.setResultStatus("SUCCESS");
 						    	
-						    status = telnetToClient(tdkbE2EUtility.lan_script, wlanIP, tdkbE2EUtility.wlan_username, tdkbE2EUtility.wlan_password)
+						    status = telnetToClient("WLAN", wlanIP)
 						    if "SUCCESS" in status:
 							tdkTestObj.setResultStatus("SUCCESS");
 							print "SUCCESS: Telnet traffic successful between wired and wireless clients %s" %status
