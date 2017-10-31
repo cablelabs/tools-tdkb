@@ -137,7 +137,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     tdkTestObj.setResultStatus("SUCCESS");
 
                     print "TEST STEP 4:Check whether the LAN client is able to ping to Gateway IP when CM Status is Operational"
-                    status = verifyNetworkConnectivity(gatewayIP, "PING", tdkbE2EUtility.lan_interface,gatewayIP)
+                    status = verifyNetworkConnectivity(gatewayIP, "PING", lanIP, gatewayIP)
                     if expectedresult in status:
                         tdkTestObj.setResultStatus("SUCCESS");
                         print "Ping to Gateway IP from LAN Client: SUCCESS"
