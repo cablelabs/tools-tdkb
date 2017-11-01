@@ -224,7 +224,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
                                                         #Send http request to LAN client from WAN clinet
                                                         print "TEST STEP 12: Connect to WLAN Client and send HTTPS Request to LAN Client"
-                                                        status = verifyNetworkConnectivity(lanIP,"WGET_HTTPS",tdkbE2EUtility.lan_interface,curIPAddress,wlanIP);
+                                                        status = verifyNetworkConnectivity(lanIP,"WGET_HTTPS",wlanIP,curIPAddress);
                                                         if "SUCCESS" not in status:
                                                             tdkTestObj.setResultStatus("SUCCESS");
                                                             print "HTTPS traffic not successful between wired and wireless clients"
