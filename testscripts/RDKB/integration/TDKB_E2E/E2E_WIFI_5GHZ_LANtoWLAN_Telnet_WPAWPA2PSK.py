@@ -215,58 +215,16 @@ if "SUCCESS" in loadmodulestatus.upper():
                         		        if expectedresult in status:
                         		            tdkTestObj.setResultStatus("SUCCESS");
 						    	
-						    #Disabling 2.4GHz ssid interface of the WG 
-            					    setValuesList = ['false'];
-            					    print "WIFI parameter values that are set: %s" %setValuesList
-
-            					    list1 = [radioEnable, 'false','bool']
-
-            					    #Concatenate the lists with the elements separated by pipe
-            					    setParamList = list1
-            					    setParamList = "|".join(map(str, setParamList))
-
-            					    tdkTestObj,actualresult,details = setMultipleParameterValues(obj,setParamList)
-            					    if expectedresult in actualresult:
-            					        tdkTestObj.setResultStatus("SUCCESS");
-            					        print "TEST STEP 12: Set RadioEnable as false"
-            					        print "EXPECTED RESULT 12: Should set the RadioEnable as false";
-            					        print "ACTUAL RESULT 12: %s" %details;
-            					        print "[TEST EXECUTION RESULT] : SUCCESS";
-
-							time.sleep(60);
-            					        #Retrieve the values after set and compare
-            					        newParamList=[radioEnable]
-            					        tdkTestObj,status,newValues = getMultipleParameterValues(obj,newParamList)
-
-            					        if expectedresult in status and setValuesList == newValues:
-            					            tdkTestObj.setResultStatus("SUCCESS");
-            					            print "TEST STEP 13: Get the current RadioEnable"
-            					            print "EXPECTED RESULT 13: Should retrieve the current RadioEnable"
-            					            print "ACTUAL RESULT 13: %s" %newValues;
-            					            print "[TEST EXECUTION RESULT] : SUCCESS";
-							
-							    #Do telnet from LAN client to WLAN clinet
-							    print "TEST STEP 14: Do telnet from LAN client to WLAN LAN Client"
-							    status = telnetToClient("WLAN", wlanIP)
-							    if "SUCCESS" in status:
-								tdkTestObj.setResultStatus("SUCCESS");
-								print "SUCCESS: Telnet traffic successful between wired and wireless clients %s" %status
-								finalStatus = "SUCCESS"
-							    else:
-								tdkTestObj.setResultStatus("FAILURE");
-                                                                print "FAILURE: Telnet traffic not successful between wired and wireless clients"
-							else:
-							    tdkTestObj.setResultStatus("FAILURE");
-                                                            print "TEST STEP 13: Get the current RadioEnable"
-                                                            print "EXPECTED RESULT 13: Should retrieve the current RadioEnable"
-                                                            print "ACTUAL RESULT 13: %s" %newValues;
-                                                            print "[TEST EXECUTION RESULT] : FAILURE";
+						    #Do telnet from LAN client to WLAN clinet
+						    print "TEST STEP 14: Do telnet from LAN client to WLAN LAN Client"
+						    status = telnetToClient("WLAN", wlanIP)
+						    if "SUCCESS" in status:
+							tdkTestObj.setResultStatus("SUCCESS");
+							print "SUCCESS: Telnet traffic successful between wired and wireless clients %s" %status
+							finalStatus = "SUCCESS"
 						    else:
 							tdkTestObj.setResultStatus("FAILURE");
-                                                        print "TEST STEP 12: Set RadioEnable"
-                                                        print "EXPECTED RESULT 12: Should set the RadioEnable";
-                                                        print "ACTUAL RESULT 12: %s" %details;
-                                                        print "[TEST EXECUTION RESULT] : FAILURE";
+                                                        print "FAILURE: Telnet traffic not successful between wired and wireless clients"
 						else:
 						    tdkTestObj.setResultStatus("FAILURE");
 						    print "TEST STEP 11: FAILURE, lan ip address is not in the same DHCP range"
