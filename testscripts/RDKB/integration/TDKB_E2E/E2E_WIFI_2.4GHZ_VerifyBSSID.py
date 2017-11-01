@@ -188,7 +188,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
                                         print "TEST STEP 9: Check if the Access Point MAC address from client is same as the one from WG"
                                         print "EXPECTED RESULT 9: Both MAC addresses should be the same"
-	   			        if MAC1 == MAC2:
+	   			        if MAC1.upper() == MAC2.upper():
 	                                    print "ACTUAL RESULT 8: Both MACS are same %s %s" %(MAC1,MAC2);
          	                            print "[TEST EXECUTION RESULT] : SUCCESS"
 					    finalStatus = "SUCCESS"
