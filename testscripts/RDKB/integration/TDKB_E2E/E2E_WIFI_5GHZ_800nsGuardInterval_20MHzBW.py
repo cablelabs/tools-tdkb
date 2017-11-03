@@ -207,8 +207,8 @@ if "SUCCESS" in loadmodulestatus.upper():
             #Prepare the list of parameter values to be reverted
             list1 = [ssidName,orgValue[0],'string']
             list2 = [keyPassPhrase,orgValue[1],'string']
-            list1 = [GuardInterval,orgValue[2],'string']
-            list2 = [ChannelBW,orgValue[3],'string']
+            list3 = [GuardInterval,orgValue[2],'string']
+            list4 = [ChannelBW,orgValue[3],'string']
 
             #Concatenate the lists with the elements separated by pipe
             revertParamList = list1 + list2 + list3 + list4
