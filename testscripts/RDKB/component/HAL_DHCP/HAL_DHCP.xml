@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <module name="HAL_DHCP" testGroup="Component">
+    <primitiveTests>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_config_attempts" version="1">
+        <function>dhcp_stub_hal_get_ecm_config_attempts</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_dhcp_svr" version="1">
+        <function>dhcp_stub_hal_get_ecm_dhcp_svr</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_dns_svrs" version="1">
+        <function>dhcp_stub_hal_get_ecm_dns_svrs</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_fsm_state" version="1">
+        <function>dhcp_stub_hal_get_ecm_fsm_state</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_gw" version="1">
+        <function>dhcp_stub_hal_get_ecm_gw</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_ifname" version="1">
+        <function>dhcp_stub_hal_get_ecm_ifname</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_ip_addr" version="1">
+        <function>dhcp_stub_hal_get_ecm_ip_addr</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_lease_time" version="1">
+        <function>dhcp_stub_hal_get_ecm_lease_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_mask" version="1">
+        <function>dhcp_stub_hal_get_ecm_mask</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_remain_lease_time" version="1">
+        <function>dhcp_stub_hal_get_ecm_remain_lease_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_remain_rebind_time" version="1">
+        <function>dhcp_stub_hal_get_ecm_remain_renew_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ecm_remain_renew_time" version="1">
+        <function>dhcp_stub_hal_get_ecm_remain_renew_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_emta_remain_lease_time" version="1">
+        <function>dhcp_stub_hal_get_emta_remain_lease_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_emta_remain_rebind_time" version="1">
+        <function>dhcp_stub_hal_get_emta_remain_rebind_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_emta_remain_renew_time" version="1">
+        <function>dhcp_stub_hal_get_emta_remain_renew_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_config_attempts" version="1">
+        <function>dhcp_stub_hal_get_ert_config_attempts</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_dhcp_svr" version="1">
+        <function>dhcp_stub_hal_get_ert_dhcp_svr</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_dns_svrs" version="1">
+        <function>dhcp_stub_hal_get_ert_dns_svrs</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_fsm_state" version="1">
+        <function>dhcp_stub_hal_get_ert_fsm_state</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_gw" version="1">
+        <function>dhcp_stub_hal_get_ert_gw</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_ifname" version="1">
+        <function>dhcp_stub_hal_get_ert_ifname</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_ip_addr" version="1">
+        <function>dhcp_stub_hal_get_ert_ip_addr</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_lease_time" version="1">
+        <function>dhcp_stub_hal_get_ert_lease_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_mask" version="1">
+        <function>dhcp_stub_hal_get_ert_mask</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_remain_lease_time" version="1">
+        <function>dhcp_stub_hal_get_ert_remain_lease_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_remain_rebind_time" version="1">
+        <function>dhcp_stub_hal_get_ert_remain_rebind_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id="" name="dhcp_stub_hal_get_ert_remain_renew_time" version="1">
+        <function>dhcp_stub_hal_get_ert_remain_renew_time</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest name="erouter_ip_stub_GetIpAddress" id="" version="1">
+        <function>erouter_ip_stub_GetIpAddress</function>
+        <parameters/>
+      </primitiveTest>
+    </primitiveTests>
+  </module>
+</xml>
