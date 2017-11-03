@@ -228,6 +228,9 @@ if "SUCCESS" in loadmodulestatus.upper():
                                                         print "ACTUAL RESULT 12: %s" %newValues;
                                                         print "[TEST EXECUTION RESULT] : SUCCESS";
 
+							#Wait for the changes to reflect in client device
+				                        time.sleep(60);
+
                                                         #Send http request to LAN client from WAN clinet
                                                         print "TEST STEP 13: Connect to WLAN Client and send HTTP Request to LAN Client"
                                                         status = verifyNetworkConnectivity(lanIP,"WGET_HTTP",wlanIP,curIPAddress);
