@@ -19,7 +19,6 @@
 
 /* System Includes */
 #include <stdio.h>
-#include <error.h>
 #include <csignal>
 #include <stdlib.h>
 #include <string.h>
