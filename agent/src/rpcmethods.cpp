@@ -1174,8 +1174,7 @@ bool RpcMethods::RPCRestorePreviousState (const Json::Value& request, Json::Valu
         DEBUG_PRINT (DEBUG_LOG, "\nPerformance Configuration file %s found", SHOW_DEFINE (PERFORMANCE_CONFIG_FILE) );
 
         /* Parsing configuration file to get crash status */
-        pvReturnValue = getline (o_perfConfigFile, strPerfStatus);
-        if (!pvReturnValue)
+        if (!getline (o_perfConfigFile, strPerfStatus))
         {
             DEBUG_PRINT (DEBUG_ERROR, "Failed to retrieve status of performnace monitoring");
         }
@@ -1922,16 +1921,16 @@ bool RpcMethods::RPCPushLog (const Json::Value& request, Json::Value& response)
         DEBUG_PRINT (DEBUG_LOG, "\nConfiguration file %s found \n", SHOW_DEFINE (CONFIGURATION_FILE));
 
         /* Parsing configuration file to get manager IP */
-        pvReturnValue = getline (go_ConfigFile, strManagerIP);
-        go_ConfigFile.close();
-        if (pvReturnValue)
+        if (getline (go_ConfigFile, strManagerIP))
         {
+            go_ConfigFile.close();
             strManagerIP = GetSubString (strManagerIP, "@");
             RpcMethods::sm_szManagerIP = strManagerIP.c_str();
             DEBUG_PRINT (DEBUG_LOG, "Test Manager IP is %s \n", RpcMethods::sm_szManagerIP);
         }
         else
         {
+            go_ConfigFile.close();
             DEBUG_PRINT (DEBUG_ERROR, "Failed to extract Test Manager IP Address");
             response["result"] = "FAILURE";
             response["details"] = "Failed to extract Test Manager IP Address";
@@ -1972,7 +1971,6 @@ bool RpcMethods::RPCuploadLog (const Json::Value& request, Json::Value& response
     std::string strFilePath;
     std::string strManagerIP;
     std::fstream go_ConfigFile;
-    void *pvReturnValue;
     char szCommand[COMMAND_SIZE];
     const char* pszSTBFileName = NULL;
     const char* pszTMFileName = NULL;
@@ -2012,16 +2010,16 @@ bool RpcMethods::RPCuploadLog (const Json::Value& request, Json::Value& response
          DEBUG_PRINT (DEBUG_LOG, "\nConfiguration file %s found \n", SHOW_DEFINE (CONFIGURATION_FILE));
 
         /* Parsing configuration file to get manager IP */
-        pvReturnValue = getline (go_ConfigFile, strManagerIP);
-        go_ConfigFile.close();
-        if (pvReturnValue)
+        if (getline (go_ConfigFile, strManagerIP))
         {
+            go_ConfigFile.close();
             strManagerIP = GetSubString (strManagerIP, "@");
             RpcMethods::sm_szManagerIP = strManagerIP.c_str();
             DEBUG_PRINT (DEBUG_LOG, "Test Manager IP is %s \n", RpcMethods::sm_szManagerIP);
         }
         else
         {
+            go_ConfigFile.close();
             DEBUG_PRINT (DEBUG_ERROR, "Failed to extract Test Manager IP Address");
             response["result"] = "FAILURE";
             response["details"] = "Failed to extract Test Manager IP Address";
