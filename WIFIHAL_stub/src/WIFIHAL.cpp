@@ -18,13 +18,13 @@
 */
 
 #include "WIFIHAL.h"
-
+#if 0
 /*This is a constructor function for WIFIHAL class*/
 WIFIHAL::WIFIHAL()
 {
     DEBUG_PRINT(DEBUG_LOG,"TDK WIFIHAL Instance Created\n");
 }
-
+#endif
 
 /***************************************************************************
  *Function name : initialize
@@ -32,16 +32,17 @@ WIFIHAL::WIFIHAL()
  *                        with the agent so that wrapper function will be used in the script
  *
  *****************************************************************************/
-bool WIFIHAL::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool WIFIHAL::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::WIFIHAL Initialize\n");
     /*Register stub function for callback*/
-
+#if 0
     ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamBoolValue, "WIFIHAL_GetOrSetParamBoolValue");
     ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamULongValue,"WIFIHAL_GetOrSetParamULongValue");
     ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamStringValue,"WIFIHAL_GetOrSetParamStringValue");
     ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamIntValue,"WIFIHAL_GetOrSetParamIntValue");
     ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamUIntValue,"WIFIHAL_GetOrSetParamUIntValue");
+#endif    
     return TEST_SUCCESS;
 }
 
@@ -83,7 +84,7 @@ bool WIFIHAL::testmodulepost_requisites()
  * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
  *
  ********************************************************************************************/
-bool WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json::Value& response)
+void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamBoolValue --->Entry\n");
     char methodName[50] = {'\0'};
@@ -106,7 +107,9 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
             sprintf(details, "%s operation success", methodName);
             response["result"]="SUCCESS";
             response["details"]=details;
-            return TEST_SUCCESS;
+            //return TEST_SUCCESS;
+	    return;
+
         }
     }
     else
@@ -122,14 +125,16 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
             sprintf(details, "Enable state : %s", int(enable)? "Enabled" : "Disabled");
             response["result"]="SUCCESS";
             response["details"]=details;
-            return TEST_SUCCESS;
+            //return TEST_SUCCESS;
+	    return;
         }
      }
      sprintf(details, "%s operation failed", methodName);
      response["result"]="FAILURE";
      response["details"]=details;
      DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForBool --->Error in execution\n");
-     return  TEST_FAILURE;
+     //return  TEST_FAILURE;
+     return;
 }
 
 
@@ -146,7 +151,7 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
  * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
  *
  ********************************************************************************************/
-bool WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Json::Value& response)
+void WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamULongValue------>Entry\n");
     char methodName[50] = {'\0'};
@@ -170,7 +175,8 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
             sprintf(details, "%s operation success", methodName);
             response["result"]="SUCCESS";
             response["details"]=details;
-           return TEST_SUCCESS;
+           //return TEST_SUCCESS;
+	    return;
         }
     }
     else
@@ -186,14 +192,17 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
             sprintf(details, "Value returned is :%lu", uLongVar);
             response["result"]="SUCCESS";
             response["details"]=details;
-            return TEST_SUCCESS;
+            //return TEST_SUCCESS;
+	    return;
         }
      }
      sprintf(details, "%s operation failed", methodName);
      response["result"]="FAILURE";
      response["details"]=details;
      DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForULong --->Error in execution\n");
-     return  TEST_FAILURE;
+     //return  TEST_FAILURE;
+     return;
+
 }
 
 
@@ -210,7 +219,7 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
  * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
  *
  ********************************************************************************************/
-bool WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Json::Value& response)
+void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamStringValue----->Entry\n");
     char methodName[50] = {'\0'};
@@ -237,7 +246,8 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
         sprintf(details, "Value returned is :%s", output);
         response["result"]="SUCCESS";
         response["details"]=details;
-        return TEST_SUCCESS;
+        //return TEST_SUCCESS;
+	return;
     }
     else
     {
@@ -245,7 +255,8 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
         response["result"]="FAILURE";
         response["details"]=details;
         DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForULong --->Error in execution\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
 }
 
@@ -263,7 +274,7 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
  * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
  *
  ********************************************************************************************/
-bool WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json::Value& response)
+void WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamIntValue----->Entry\n");
     char methodName[50] = {'\0'};
@@ -289,7 +300,8 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json:
         sprintf(details, "Value returned is :%d", intParam);
         response["result"]="SUCCESS";
         response["details"]=details;
-        return TEST_SUCCESS;
+        //return TEST_SUCCESS;
+	return;
     }
     else
     {
@@ -297,7 +309,8 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json:
         response["result"]="FAILURE";
         response["details"]=details;
         DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForInt --->Error in execution\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
 }
 
@@ -314,7 +327,7 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json:
  * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
  *
  ********************************************************************************************/
-bool WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Json::Value& response)
+void WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamUIntValue----->Entry\n");
 
@@ -341,7 +354,8 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Jso
         sprintf(details, "Value returned is :%d", uintParam);
         response["result"]="SUCCESS";
         response["details"]=details;
-        return TEST_SUCCESS;
+        //return TEST_SUCCESS;
+	return;
     }
     else
     {
@@ -349,7 +363,8 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Jso
         response["result"]="FAILURE";
         response["details"]=details;
         DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForUInt --->Error in execution\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
 }
 /**************************************************************************
@@ -358,9 +373,9 @@ bool WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Jso
  *                class "WIFIHAL".
 *
  **************************************************************************/
-extern "C" WIFIHAL* CreateObject()
+extern "C" WIFIHAL* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new WIFIHAL();
+    return new WIFIHAL(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -368,9 +383,10 @@ extern "C" WIFIHAL* CreateObject()
  * Description   : This function will be used to clean the log details.
  *
  **************************************************************************/
-bool WIFIHAL::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool WIFIHAL::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"WIFIHAL shutting down\n");
+#if 0
     if(ptrAgentObj==NULL)
     {
         return TEST_FAILURE;
@@ -381,6 +397,7 @@ bool WIFIHAL::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamStringValue");
     ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamIntValue");
     ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamUIntValue");
+#endif
     return TEST_SUCCESS;
 }
 

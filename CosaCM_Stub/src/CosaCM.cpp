@@ -71,11 +71,12 @@ int ssp_CMHal_GetStructValues(char*, void*);
 };
 
 /*This is a constructor function for CosaCM class*/
+#if 0
 CosaCM::CosaCM()
 {
     DEBUG_PRINT(DEBUG_LOG,"CosaCM Instance Created\n");
 }
-
+#endif
 /***************************************************************************
  *Function name	: initialize
  *Description	: Initialize Function will be used for registering the wrapper method 
@@ -83,10 +84,11 @@ CosaCM::CosaCM()
  *  		  	  
  *****************************************************************************/ 
 
-bool CosaCM::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool CosaCM::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::CosaCM Initialize\n");
     /*Register stub function for callback*/
+#if 0
     ptrAgentObj->RegisterMethod(*this,&CosaCM::CosaCM_GetResetCount,"CosaCM_GetResetCount");
     ptrAgentObj->RegisterMethod(*this,&CosaCM::CosaCM_GetUpstreamChannelId,"CosaCM_GetUpstreamChannelId");
     ptrAgentObj->RegisterMethod(*this,&CosaCM::CosaCM_SetUpstreamChannelId,"CosaCM_SetUpstreamChannelId");
@@ -132,6 +134,7 @@ bool CosaCM::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&CosaCM::CMHal_GetCharValues,"CMHal_GetCharValues");
     ptrAgentObj->RegisterMethod(*this,&CosaCM::CMHal_GetUlongValues,"CMHal_GetUlongValues");
     ptrAgentObj->RegisterMethod(*this,&CosaCM::CMHal_GetStructValues,"CMHal_GetStructValues");
+#endif
     return TEST_SUCCESS;
 }
 
@@ -180,7 +183,7 @@ bool CosaCM::testmodulepost_requisites()
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetResetCount(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetResetCount(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetResetCount --->Entry \n");
 
@@ -194,19 +197,22 @@ bool CosaCM::CosaCM_GetResetCount(IN const Json::Value& req, OUT Json::Value& re
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
     if(&req["resetType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//       return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -225,10 +231,12 @@ bool CosaCM::CosaCM_GetResetCount(IN const Json::Value& req, OUT Json::Value& re
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the reset count";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetResetCount --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetResetCount  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -242,7 +250,7 @@ bool CosaCM::CosaCM_GetResetCount(IN const Json::Value& req, OUT Json::Value& re
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetUpstreamChannelId --->Entry \n");
 
@@ -254,7 +262,8 @@ bool CosaCM::CosaCM_GetUpstreamChannelId(IN const Json::Value& req, OUT Json::Va
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     
     handleType = req["handleType"].asInt();
@@ -270,10 +279,12 @@ bool CosaCM::CosaCM_GetUpstreamChannelId(IN const Json::Value& req, OUT Json::Va
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the upstream channel Id";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetUpstreamChannelId --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetUpstreamChannelId  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -286,7 +297,7 @@ bool CosaCM::CosaCM_GetUpstreamChannelId(IN const Json::Value& req, OUT Json::Va
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_SetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_SetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_SetUpstreamChannelId --->Entry \n");
 
@@ -299,14 +310,16 @@ bool CosaCM::CosaCM_SetUpstreamChannelId(IN const Json::Value& req, OUT Json::Va
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["channelId"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
     
     handleType = req["handleType"].asInt();
@@ -323,10 +336,12 @@ bool CosaCM::CosaCM_SetUpstreamChannelId(IN const Json::Value& req, OUT Json::Va
         response["result"]="FAILURE";
         response["details"]="Failed to lock channel for the upstream channel Id";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_SetUpstreamChannelId --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_SetUpstreamChannelId  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -340,7 +355,7 @@ bool CosaCM::CosaCM_SetUpstreamChannelId(IN const Json::Value& req, OUT Json::Va
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetStartDSFrequency --->Entry \n");
 
@@ -352,7 +367,8 @@ bool CosaCM::CosaCM_GetStartDSFrequency(IN const Json::Value& req, OUT Json::Val
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     
     handleType = req["handleType"].asInt();
@@ -368,10 +384,12 @@ bool CosaCM::CosaCM_GetStartDSFrequency(IN const Json::Value& req, OUT Json::Val
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the downstream ferquency";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetStartDSFrequency --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetStartDSFrequency  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -385,7 +403,7 @@ bool CosaCM::CosaCM_GetStartDSFrequency(IN const Json::Value& req, OUT Json::Val
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_SetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_SetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_SetStartDSFrequency --->Entry \n");
 
@@ -398,14 +416,16 @@ bool CosaCM::CosaCM_SetStartDSFrequency(IN const Json::Value& req, OUT Json::Val
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["frequency"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
     
     handleType = req["handleType"].asInt();
@@ -422,10 +442,12 @@ bool CosaCM::CosaCM_SetStartDSFrequency(IN const Json::Value& req, OUT Json::Val
         response["result"]="FAILURE";
         response["details"]="Failed to set the downstream frequency";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_SetStartDSFrequency --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_SetStartDSFrequency  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -440,7 +462,7 @@ bool CosaCM::CosaCM_SetStartDSFrequency(IN const Json::Value& req, OUT Json::Val
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetProvType(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetProvType(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetProvType --->Entry \n");
 
@@ -453,14 +475,16 @@ bool CosaCM::CosaCM_GetProvType(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
     
     handleType = req["handleType"].asInt();
@@ -477,10 +501,12 @@ bool CosaCM::CosaCM_GetProvType(IN const Json::Value& req, OUT Json::Value& resp
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the provisioning type";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetProvType --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetProvType  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -494,7 +520,7 @@ bool CosaCM::CosaCM_GetProvType(IN const Json::Value& req, OUT Json::Value& resp
 *
 *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetIPv6DHCPInfo(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetIPv6DHCPInfo(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetIPv6DHCPInfo --->Entry \n");
 
@@ -507,14 +533,16 @@ bool CosaCM::CosaCM_GetIPv6DHCPInfo(IN const Json::Value& req, OUT Json::Value& 
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -531,10 +559,12 @@ bool CosaCM::CosaCM_GetIPv6DHCPInfo(IN const Json::Value& req, OUT Json::Value& 
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the DHCP information of IPv6";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetIPv6DHCPInfo --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetIPv6DHCPInfo  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -548,7 +578,7 @@ bool CosaCM::CosaCM_GetIPv6DHCPInfo(IN const Json::Value& req, OUT Json::Value& 
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetMarket(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetMarket(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMarket--->Entry \n");
 
@@ -566,12 +596,14 @@ bool CosaCM::COSACM_GetMarket(IN const Json::Value& req, OUT Json::Value& respon
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the DUT Market Information";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMarket --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMarket --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -584,7 +616,7 @@ bool CosaCM::COSACM_GetMarket(IN const Json::Value& req, OUT Json::Value& respon
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_SetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_SetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_SetMDDIPOverride --->Entry \n");
 
@@ -595,7 +627,8 @@ bool CosaCM::COSACM_SetMDDIPOverride(IN const Json::Value& req, OUT Json::Value&
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     strcpy(value,req["value"].asCString());
@@ -613,12 +646,14 @@ bool CosaCM::COSACM_SetMDDIPOverride(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="Failed to Set the MDD IP Override Function";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_SetMDDIPOverride --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_SetMDDIPOverride --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -631,7 +666,7 @@ bool CosaCM::COSACM_SetMDDIPOverride(IN const Json::Value& req, OUT Json::Value&
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMDDIPOverride --->Entry \n");
 
@@ -652,12 +687,14 @@ bool CosaCM::COSACM_GetMDDIPOverride(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="Failed to Get the MDD IP Override Function";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMDDIPOverride --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMDDIPOverride --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -670,7 +707,7 @@ bool CosaCM::COSACM_GetMDDIPOverride(IN const Json::Value& req, OUT Json::Value&
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetCMCert(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetCMCert(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCert --->Entry \n");
 
@@ -688,12 +725,14 @@ bool CosaCM::COSACM_GetCMCert(IN const Json::Value& req, OUT Json::Value& respon
         response["result"]="FAILURE";
         response["details"]="Failed to Get the CM Certificate";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCert --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCert --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -706,7 +745,7 @@ bool CosaCM::COSACM_GetCMCert(IN const Json::Value& req, OUT Json::Value& respon
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetCMCertStatus(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetCMCertStatus(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCertStatus --->Entry \n");
 
@@ -724,12 +763,14 @@ bool CosaCM::COSACM_GetCMCertStatus(IN const Json::Value& req, OUT Json::Value& 
         response["result"]="FAILURE";
         response["details"]="Failed to Get the CM Certificate Status Information";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCertStatus --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCertStatus --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -742,7 +783,7 @@ bool CosaCM::COSACM_GetCMCertStatus(IN const Json::Value& req, OUT Json::Value& 
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetCMErrorCodewords(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetCMErrorCodewords(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMErrorCodewords --->Entry \n");
 
@@ -760,12 +801,14 @@ bool CosaCM::COSACM_GetCMErrorCodewords(IN const Json::Value& req, OUT Json::Val
         response["result"]="FAILURE";
         response["details"]="Failed to Get the CM Error Code Words Info";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMErrorCodewords --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMErrorCodewords --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -779,7 +822,7 @@ bool CosaCM::COSACM_GetCMErrorCodewords(IN const Json::Value& req, OUT Json::Val
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetCPEList(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetCPEList(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCPEList --->Entry \n");
 
@@ -797,12 +840,14 @@ bool CosaCM::COSACM_GetCPEList(IN const Json::Value& req, OUT Json::Value& respo
         response["result"]="FAILURE";
         response["details"]="Failed to Get the CPE List Information";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCPEList --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCPEList --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -817,7 +862,7 @@ bool CosaCM::COSACM_GetCPEList(IN const Json::Value& req, OUT Json::Value& respo
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetMarket_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetMarket_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMarket_ArgMemory_unalloc --->Entry \n");
 
@@ -835,12 +880,14 @@ bool CosaCM::COSACM_GetMarket_ArgMemory_unalloc(IN const Json::Value& req, OUT J
         response["result"]="FAILURE";
         response["details"]="Failed to handle the input memory unallocated case";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMarket_ArgMemory_unalloc --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMarket_ArgMemory_unalloc --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -853,7 +900,7 @@ bool CosaCM::COSACM_GetMarket_ArgMemory_unalloc(IN const Json::Value& req, OUT J
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_SetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_SetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_SetMDDIPOverride_ArgMemory_unalloc --->Entry \n");
 
@@ -871,12 +918,14 @@ bool CosaCM::COSACM_SetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req
         response["result"]="FAILURE";
         response["details"]="Failed to handle the input memory unallocated case";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_SetMDDIPOverride_ArgMemory_unalloc --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_SetMDDIPOverride_ArgMemory_unalloc --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -889,7 +938,7 @@ bool CosaCM::COSACM_SetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMDDIPOverride --->Entry \n");
 
@@ -907,12 +956,14 @@ bool CosaCM::COSACM_GetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req
         response["result"]="FAILURE";
         response["details"]="Failed to handle the input memory unallocated case";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMDDIPOverride_ArgMemory_unalloc --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetMDDIPOverride_ArgMemory_unalloc --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -925,7 +976,7 @@ bool CosaCM::COSACM_GetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetCMCert_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetCMCert_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCert_ArgMemory_unalloc --->Entry \n");
 
@@ -943,12 +994,14 @@ bool CosaCM::COSACM_GetCMCert_ArgMemory_unalloc(IN const Json::Value& req, OUT J
         response["result"]="FAILURE";
         response["details"]="Failed to handle the input memory unallocated case";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCert_ArgMemory_unalloc --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCert_ArgMemory_unalloc --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -961,7 +1014,7 @@ bool CosaCM::COSACM_GetCMCert_ArgMemory_unalloc(IN const Json::Value& req, OUT J
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetCMCertStatus_InvalidArg(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetCMCertStatus_InvalidArg(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCertStatus_InvalidArg--->Entry \n");
 
@@ -979,12 +1032,14 @@ bool CosaCM::COSACM_GetCMCertStatus_InvalidArg(IN const Json::Value& req, OUT Js
         response["result"]="FAILURE";
         response["details"]="Failed to handle the invalid input argument";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCertStatus_InvalidArg --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMCertStatus_InvalidArg--->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -997,7 +1052,7 @@ bool CosaCM::COSACM_GetCMCertStatus_InvalidArg(IN const Json::Value& req, OUT Js
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetCMErrorCodewords_InvalidArg(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetCMErrorCodewords_InvalidArg(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMErrorCodewords_InvalidArg --->Entry \n");
 
@@ -1015,12 +1070,14 @@ bool CosaCM::COSACM_GetCMErrorCodewords_InvalidArg(IN const Json::Value& req, OU
         response["result"]="FAILURE";
         response["details"]="Failed to handle the invalid input argument";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMErrorCodewords_InvalidArg --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCMErrorCodewords_InvalidArg --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -1034,7 +1091,7 @@ bool CosaCM::COSACM_GetCMErrorCodewords_InvalidArg(IN const Json::Value& req, OU
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetCPEList_InvalidArg(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetCPEList_InvalidArg(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCPEList_InvalidArg --->Entry \n");
 
@@ -1052,12 +1109,14 @@ bool CosaCM::COSACM_GetCPEList_InvalidArg(IN const Json::Value& req, OUT Json::V
         response["result"]="FAILURE";
         response["details"]="Failed to handle the invalid input argument";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCPEList_InvalidArg --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetCPEList_InvalidArg --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1071,7 +1130,7 @@ bool CosaCM::COSACM_GetCPEList_InvalidArg(IN const Json::Value& req, OUT Json::V
 *
 *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetStatus(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetStatus(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetStatus --->Entry \n");
 
@@ -1084,14 +1143,16 @@ bool CosaCM::CosaCM_GetStatus(IN const Json::Value& req, OUT Json::Value& respon
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1108,10 +1169,12 @@ bool CosaCM::CosaCM_GetStatus(IN const Json::Value& req, OUT Json::Value& respon
         response["result"]="FAILURE";
         response["details"]="Failed to get CM Status";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetStatus --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetStatus  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1124,7 +1187,7 @@ bool CosaCM::CosaCM_GetStatus(IN const Json::Value& req, OUT Json::Value& respon
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetLoopDiagnosticsStart --->Entry \n");
 
@@ -1137,14 +1200,16 @@ bool CosaCM::CosaCM_GetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json:
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1161,10 +1226,12 @@ bool CosaCM::CosaCM_GetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json:
         response["result"]="FAILURE";
         response["details"]="Failed to get the Loop Diagnostics Start";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetLoopDiagnosticsStart --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetLoopDiagnosticsStart  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1177,7 +1244,7 @@ bool CosaCM::CosaCM_GetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json:
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetLoopDiagnosticsDetails(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetLoopDiagnosticsDetails(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetLoopDiagnosticsDetails --->Entry \n");
 
@@ -1190,13 +1257,15 @@ bool CosaCM::CosaCM_GetLoopDiagnosticsDetails(IN const Json::Value& req, OUT Jso
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1213,10 +1282,12 @@ bool CosaCM::CosaCM_GetLoopDiagnosticsDetails(IN const Json::Value& req, OUT Jso
         response["result"]="FAILURE";
         response["details"]="Failed to get the Loop Diagnostics Details";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetLoopDiagnosticsDetails --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetLoopDiagnosticsDetails  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1229,7 +1300,7 @@ bool CosaCM::CosaCM_GetLoopDiagnosticsDetails(IN const Json::Value& req, OUT Jso
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetTelephonyRegistrationStatus(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetTelephonyRegistrationStatus(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetTelephonyRegistrationStatus --->Entry \n");
 
@@ -1242,13 +1313,15 @@ bool CosaCM::CosaCM_GetTelephonyRegistrationStatus(IN const Json::Value& req, OU
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1265,10 +1338,12 @@ bool CosaCM::CosaCM_GetTelephonyRegistrationStatus(IN const Json::Value& req, OU
         response["result"]="FAILURE";
         response["details"]="Failed to get Telephony Registration Status";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetTelephonyRegistrationStatus --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetTelephonyRegistrationStatus  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1281,7 +1356,7 @@ bool CosaCM::CosaCM_GetTelephonyRegistrationStatus(IN const Json::Value& req, OU
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetTelephonyTftpStatus(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetTelephonyTftpStatus(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetTelephonyTftpStatus --->Entry \n");
 
@@ -1294,13 +1369,15 @@ bool CosaCM::CosaCM_GetTelephonyTftpStatus(IN const Json::Value& req, OUT Json::
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1317,10 +1394,12 @@ bool CosaCM::CosaCM_GetTelephonyTftpStatus(IN const Json::Value& req, OUT Json::
         response["result"]="FAILURE";
         response["details"]="Failed to get Telephony Tftp Status";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetTelephonyTftpStatus --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetTelephonyTftpStatus  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1332,7 +1411,7 @@ bool CosaCM::CosaCM_GetTelephonyTftpStatus(IN const Json::Value& req, OUT Json::
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_GetTelephonyDHCPStatus(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_GetTelephonyDHCPStatus(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetTelephonyDHCPStatus --->Entry \n");
 
@@ -1345,13 +1424,15 @@ bool CosaCM::CosaCM_GetTelephonyDHCPStatus(IN const Json::Value& req, OUT Json::
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1368,10 +1449,12 @@ bool CosaCM::CosaCM_GetTelephonyDHCPStatus(IN const Json::Value& req, OUT Json::
         response["result"]="FAILURE";
         response["details"]="Failed to get Telephony DHCP Status";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetTelephonyDHCPStatus --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_GetTelephonyDHCPStatus  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1383,7 +1466,7 @@ bool CosaCM::CosaCM_GetTelephonyDHCPStatus(IN const Json::Value& req, OUT Json::
  *
  *******************************************************************************************/
 
-bool CosaCM::CosaCM_SetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CosaCM_SetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_SetLoopDiagnosticsStart --->Entry \n");
 
@@ -1396,13 +1479,15 @@ bool CosaCM::CosaCM_SetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json:
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1419,10 +1504,12 @@ bool CosaCM::CosaCM_SetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json:
         response["result"]="FAILURE";
         response["details"]="Failed to Set Loop Diagnostics Start value";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_SetLoopDiagnosticsStart --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaCM_SetLoopDiagnosticsStart  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1436,7 +1523,7 @@ bool CosaCM::CosaCM_SetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json:
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDHCPInfo --->Entry \n");
 
@@ -1449,14 +1536,16 @@ bool CosaCM::COSACM_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;	
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1472,10 +1561,12 @@ bool CosaCM::COSACM_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& resp
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the DHCP information";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDHCPInfo --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDHCPInfo  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1489,7 +1580,7 @@ bool CosaCM::COSACM_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& resp
 *
 *******************************************************************************************/
 
-bool CosaCM::COSACM_GetDOCSISInfo(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetDOCSISInfo(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDOCSISInfo --->Entry \n");
 
@@ -1502,14 +1593,16 @@ bool CosaCM::COSACM_GetDOCSISInfo(IN const Json::Value& req, OUT Json::Value& re
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1526,10 +1619,12 @@ bool CosaCM::COSACM_GetDOCSISInfo(IN const Json::Value& req, OUT Json::Value& re
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the DOCSIS information";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDOCSISInfo --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDOCSISInfo  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1543,7 +1638,7 @@ bool CosaCM::COSACM_GetDOCSISInfo(IN const Json::Value& req, OUT Json::Value& re
  *
  *******************************************************************************************/
 
-bool CosaCM::COSACM_GetLog(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetLog(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetLog --->Entry \n");
 
@@ -1556,14 +1651,16 @@ bool CosaCM::COSACM_GetLog(IN const Json::Value& req, OUT Json::Value& response)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1579,10 +1676,12 @@ bool CosaCM::COSACM_GetLog(IN const Json::Value& req, OUT Json::Value& response)
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Log information";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetLog --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetLog  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1596,7 +1695,7 @@ bool CosaCM::COSACM_GetLog(IN const Json::Value& req, OUT Json::Value& response)
  *
  *******************************************************************************************/
 
-bool CosaCM::COSACM_SetLog(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_SetLog(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_SetLog --->Entry \n");
 
@@ -1609,14 +1708,16 @@ bool CosaCM::COSACM_SetLog(IN const Json::Value& req, OUT Json::Value& response)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1633,10 +1734,12 @@ bool CosaCM::COSACM_SetLog(IN const Json::Value& req, OUT Json::Value& response)
         response["result"]="FAILURE";
         response["details"]="Failed to set the log information";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_SetLog --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_SetLog  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1650,7 +1753,7 @@ bool CosaCM::COSACM_SetLog(IN const Json::Value& req, OUT Json::Value& response)
  *
  *******************************************************************************************/
 
-bool CosaCM::COSACM_GetDocsisLog(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetDocsisLog(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDocsisLog --->Entry \n");
 
@@ -1662,14 +1765,16 @@ bool CosaCM::COSACM_GetDocsisLog(IN const Json::Value& req, OUT Json::Value& res
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1686,10 +1791,12 @@ bool CosaCM::COSACM_GetDocsisLog(IN const Json::Value& req, OUT Json::Value& res
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the DOCSIS Log information";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDocsisLog --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDocsisLog  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1703,7 +1810,7 @@ bool CosaCM::COSACM_GetDocsisLog(IN const Json::Value& req, OUT Json::Value& res
  *
  *******************************************************************************************/
 
-bool CosaCM::COSACM_GetDownstreamChannel(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetDownstreamChannel(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDownstreamChannel --->Entry \n");
 
@@ -1716,14 +1823,16 @@ bool CosaCM::COSACM_GetDownstreamChannel(IN const Json::Value& req, OUT Json::Va
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1742,10 +1851,12 @@ bool CosaCM::COSACM_GetDownstreamChannel(IN const Json::Value& req, OUT Json::Va
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Downstream channel information";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDownstreamChannel --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetDownstreamChannel  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 /*******************************************************************************************
  *
@@ -1757,7 +1868,7 @@ bool CosaCM::COSACM_GetDownstreamChannel(IN const Json::Value& req, OUT Json::Va
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-bool CosaCM::COSACM_GetUpstreamChannel(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_GetUpstreamChannel(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetUpstreamChannel --->Entry \n");
 
@@ -1770,14 +1881,16 @@ bool CosaCM::COSACM_GetUpstreamChannel(IN const Json::Value& req, OUT Json::Valu
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1796,10 +1909,12 @@ bool CosaCM::COSACM_GetUpstreamChannel(IN const Json::Value& req, OUT Json::Valu
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Upstream channel information";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetUpstreamChannel --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_GetUpstreamChannel  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1813,7 +1928,7 @@ bool CosaCM::COSACM_GetUpstreamChannel(IN const Json::Value& req, OUT Json::Valu
  *
  *******************************************************************************************/
  
-bool CosaCM::COSACM_CableModemCreate(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_CableModemCreate(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_CableModemCreate --->Entry \n");
 
@@ -1829,10 +1944,12 @@ bool CosaCM::COSACM_CableModemCreate(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="Failed to execute Cable Modem Create";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_CableModemCreate --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_CableModemCreate  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1846,7 +1963,7 @@ bool CosaCM::COSACM_CableModemCreate(IN const Json::Value& req, OUT Json::Value&
  *
  *******************************************************************************************/
  
-bool CosaCM::COSACM_CableModemInitialize(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_CableModemInitialize(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_CableModemInitialize --->Entry \n");
 
@@ -1857,7 +1974,8 @@ bool CosaCM::COSACM_CableModemInitialize(IN const Json::Value& req, OUT Json::Va
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1873,10 +1991,12 @@ bool CosaCM::COSACM_CableModemInitialize(IN const Json::Value& req, OUT Json::Va
         response["result"]="FAILURE";
         response["details"]="Failed to execute Cable Modem Initialize";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_CableModemInitialize --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_CableModemInitialize  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1890,7 +2010,7 @@ bool CosaCM::COSACM_CableModemInitialize(IN const Json::Value& req, OUT Json::Va
  *
  *******************************************************************************************/
  
-bool CosaCM::COSACM_CableModemRemove(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::COSACM_CableModemRemove(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_CableModemRemove  --->Entry \n");
 
@@ -1909,10 +2029,12 @@ bool CosaCM::COSACM_CableModemRemove(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="Failed to execute Cable Modem Remove";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_CableModemRemove --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSACM_CableModemRemove --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1926,7 +2048,7 @@ bool CosaCM::COSACM_CableModemRemove(IN const Json::Value& req, OUT Json::Value&
  *
  *******************************************************************************************/
 
-bool CosaCM::CMHal_GetCharValues(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CMHal_GetCharValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetCharValues  --->Entry \n");
 
@@ -1939,7 +2061,8 @@ bool CosaCM::CMHal_GetCharValues(IN const Json::Value& req, OUT Json::Value& res
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     strcpy(paramName,req["paramName"].asCString());
 
@@ -1955,10 +2078,12 @@ bool CosaCM::CMHal_GetCharValues(IN const Json::Value& req, OUT Json::Value& res
         response["result"]="FAILURE";
         response["details"]="Failed to get the value";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetCharValues --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetCharValues --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1972,7 +2097,7 @@ bool CosaCM::CMHal_GetCharValues(IN const Json::Value& req, OUT Json::Value& res
  *
  *******************************************************************************************/
 
-bool CosaCM::CMHal_GetUlongValues(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CMHal_GetUlongValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetUlongValues  --->Entry \n");
 
@@ -1985,7 +2110,8 @@ bool CosaCM::CMHal_GetUlongValues(IN const Json::Value& req, OUT Json::Value& re
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     strcpy(paramName,req["paramName"].asCString());
 
@@ -2001,10 +2127,12 @@ bool CosaCM::CMHal_GetUlongValues(IN const Json::Value& req, OUT Json::Value& re
         response["result"]="FAILURE";
         response["details"]="Failed to get the value";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetUlongValues --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetUlongValues --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -2016,7 +2144,7 @@ bool CosaCM::CMHal_GetUlongValues(IN const Json::Value& req, OUT Json::Value& re
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-bool CosaCM::CMHal_GetStructValues(IN const Json::Value& req, OUT Json::Value& response)
+void CosaCM::CMHal_GetStructValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n  CMHal_GetStructValues--->Entry \n");
     int returnValue = 0;
@@ -2032,7 +2160,8 @@ bool CosaCM::CMHal_GetStructValues(IN const Json::Value& req, OUT Json::Value& r
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     strcpy(paramName,req["paramName"].asCString());
     printf("paramName received as %s\n", paramName);
@@ -2161,17 +2290,20 @@ bool CosaCM::CMHal_GetStructValues(IN const Json::Value& req, OUT Json::Value& r
     {
         response["result"]="FAILURE";
         response["details"]="invalid parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
     if (0 != returnValue)
     {
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the value";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetStructValues --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CMHal_GetStructValues --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 /**************************************************************************
  * Function Name	: CreateObject
@@ -2180,9 +2312,9 @@ bool CosaCM::CMHal_GetStructValues(IN const Json::Value& req, OUT Json::Value& r
  *
  **************************************************************************/
 
-extern "C" CosaCM* CreateObject()
+extern "C" CosaCM* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new CosaCM();
+    return new CosaCM(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -2191,9 +2323,10 @@ extern "C" CosaCM* CreateObject()
  *
  **************************************************************************/
 
-bool CosaCM::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool CosaCM::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"CosaCM shutting down\n");
+#if 0
     if(ptrAgentObj==NULL)
     {
         return TEST_FAILURE;
@@ -2245,6 +2378,7 @@ bool CosaCM::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("CMHal_GetCharValues");
     ptrAgentObj->UnregisterMethod("CMHal_GetUlongValues");
     ptrAgentObj->UnregisterMethod("CMHal_GetStructValues");
+#endif
     return TEST_SUCCESS;
 }
 

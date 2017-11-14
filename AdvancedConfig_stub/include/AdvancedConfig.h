@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <fstream>
@@ -41,32 +42,49 @@
 
 class RDKTestAgent;
 
-class AdvancedConfig : public RDKTestStubInterface
+class AdvancedConfig : public RDKTestStubInterface, public AbstractServer<AdvancedConfig>
 {
 	public:
-		/*Ctor*/
-		AdvancedConfig();
+		
+		AdvancedConfig(TcpSocketServer &ptrRpcServer) : AbstractServer <AdvancedConfig>(ptrRpcServer)
+		{
+			this->bindAndAddMethod(Procedure("AdvancedConfig_Start", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_Start);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_Get", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_Get);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_GetAttr", PARAMS_BY_NAME, JSON_STRING, "paramname", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_GetAttr);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_SetAttr", PARAMS_BY_NAME, JSON_STRING, "paramname", JSON_STRING, "notification", JSON_STRING, "accessControlChanged", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_SetAttr);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_GetNames", PARAMS_BY_NAME, JSON_STRING, "pathname", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_GetNames);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_Set", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, "paramValue", JSON_STRING, "paramType", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_Set);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_Set_Get", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, "paramValue", JSON_STRING, "paramType", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_Set_Get);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_AddObject", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_AddObject);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_DelObject", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_DelObject);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_SetCommit", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_SetCommit);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_GetHealth", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_GetHealth);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_SetSessionId", PARAMS_BY_NAME, JSON_STRING, "priority", JSON_INTEGER, "sessionId", JSON_INTEGER, NULL), &AdvancedConfig::AdvancedConfig_SetSessionId);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_Stop", PARAMS_BY_NAME, JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_Stop);
+			this->bindAndAddMethod(Procedure("AdvancedConfig_SetMultiple", PARAMS_BY_NAME, JSON_STRING, "paramList", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_SetMultiple);
+		}
 
 		/*inherited functions*/
-		bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-                bool cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj);
+		bool initialize(IN const char* szVersion);
+        bool cleanup(IN const char* szVersion);
 		std::string testmodulepre_requisites();
-                bool testmodulepost_requisites();
+        bool testmodulepost_requisites();
+				
 		/*Advance Config Stub Wrapper functions*/
-		bool AdvancedConfig_Start(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_GetAttr(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_SetAttr(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_GetNames(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_Set(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_AddObject(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_DelObject(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_SetCommit(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_GetHealth(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_SetSessionId(IN const Json::Value& req, OUT Json::Value& response);
-		bool AdvancedConfig_Stop(IN const Json::Value& req, OUT Json::Value& response);
-                bool AdvancedConfig_SetMultiple(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_Start(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_GetAttr(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_SetAttr(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_GetNames(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_Set(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_AddObject(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_DelObject(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_SetCommit(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_GetHealth(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_SetSessionId(IN const Json::Value& req, OUT Json::Value& response);
+		void AdvancedConfig_Stop(IN const Json::Value& req, OUT Json::Value& response);
+        void AdvancedConfig_SetMultiple(IN const Json::Value& req, OUT Json::Value& response);
 };
-extern "C" AdvancedConfig* CreateObject();
-#endif //
+
+#endif

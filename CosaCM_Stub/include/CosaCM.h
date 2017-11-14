@@ -24,6 +24,7 @@
 #include <string.h>
 #include <dlfcn.h>
 #include <stdlib.h>
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
 #include <sys/types.h>
@@ -40,62 +41,106 @@
 
 class RDKTestAgent;
 
-class CosaCM : public RDKTestStubInterface
+class CosaCM : public RDKTestStubInterface, public AbstractServer<CosaCM>
 {
 	public:
 		
+                 CosaCM(TcpSocketServer &ptrRpcServer) : AbstractServer <CosaCM>(ptrRpcServer)
+                {
+                  this->bindAndAddMethod(Procedure("CosaCM_GetResetCount", PARAMS_BY_NAME,JSON_STRING, "handleType",JSON_INTEGER,"bufferType",JSON_INTEGER,"resetType",JSON_STRING,NULL), &CosaCM::CosaCM_GetResetCount);
+                  this->bindAndAddMethod(Procedure("CosaCM_GetUpstreamChannelId", PARAMS_BY_NAME,JSON_STRING,"handleType",JSON_INTEGER,NULL), &CosaCM::CosaCM_GetUpstreamChannelId);
+                  this->bindAndAddMethod(Procedure("CosaCM_SetUpstreamChannelId", PARAMS_BY_NAME,JSON_STRING,"handleType", JSON_INTEGER,"channelId", JSON_INTEGER,NULL), &CosaCM::CosaCM_SetUpstreamChannelId);
+                  this->bindAndAddMethod(Procedure("CosaCM_GetStartDSFrequency", PARAMS_BY_NAME,JSON_STRING,"handleType",JSON_INTEGER,NULL), &CosaCM::CosaCM_GetStartDSFrequency);
+                  this->bindAndAddMethod(Procedure("CosaCM_SetStartDSFrequency", PARAMS_BY_NAME,JSON_STRING,"handleType", JSON_INTEGER,"frequency",JSON_INTEGER,NULL), &CosaCM::CosaCM_SetStartDSFrequency);
+                  this->bindAndAddMethod(Procedure("CosaCM_GetProvType", PARAMS_BY_NAME,JSON_STRING,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::CosaCM_GetProvType);
+                  this->bindAndAddMethod(Procedure("CosaCM_GetIPv6DHCPInfo", PARAMS_BY_NAME,JSON_STRING,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::CosaCM_GetIPv6DHCPInfo);
+                  this->bindAndAddMethod(Procedure("COSACM_GetMarket", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetMarket);
+                  this->bindAndAddMethod(Procedure("COSACM_SetMDDIPOverride", PARAMS_BY_NAME, JSON_STRING,"value", JSON_STRING,NULL), &CosaCM::COSACM_SetMDDIPOverride);
+                  this->bindAndAddMethod(Procedure("COSACM_GetMDDIPOverride", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetMDDIPOverride);
+                  this->bindAndAddMethod(Procedure("COSACM_GetCMCert", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetCMCert);
+                  this->bindAndAddMethod(Procedure("COSACM_GetCMErrorCodewords", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetCMErrorCodewords);
+                  this->bindAndAddMethod(Procedure("COSACM_GetCMCertStatus", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetCMCertStatus);
+                  this->bindAndAddMethod(Procedure("COSACM_GetCPEList", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetCPEList);
+                  this->bindAndAddMethod(Procedure("COSACM_GetMarket_ArgMemory_unalloc", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetMarket_ArgMemory_unalloc);
+                  this->bindAndAddMethod(Procedure("COSACM_SetMDDIPOverride_ArgMemory_unalloc", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_SetMDDIPOverride_ArgMemory_unalloc);
+                  this->bindAndAddMethod(Procedure("COSACM_GetMDDIPOverride_ArgMemory_unalloc", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetMDDIPOverride_ArgMemory_unalloc);
+                  this->bindAndAddMethod(Procedure("COSACM_GetCMCert_ArgMemory_unalloc", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetCMCert_ArgMemory_unalloc);
+                  this->bindAndAddMethod(Procedure("COSACM_GetCMErrorCodewords_InvalidArg", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetCMErrorCodewords_InvalidArg);
+                  this->bindAndAddMethod(Procedure("COSACM_GetCMCertStatus_InvalidArg", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetCMCertStatus_InvalidArg);
+                  this->bindAndAddMethod(Procedure("COSACM_GetCPEList_InvalidArg", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_GetCPEList_InvalidArg);
+                  this->bindAndAddMethod(Procedure("CosaCM_GetStatus", PARAMS_BY_NAME,JSON_STRING,"handleType", JSON_INTEGER,"Value",JSON_INTEGER,NULL), &CosaCM::CosaCM_GetStatus);
+                  this->bindAndAddMethod(Procedure("CosaCM_GetLoopDiagnosticsStart", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"boolValue", JSON_INTEGER,NULL), &CosaCM::CosaCM_GetLoopDiagnosticsStart);
+                  this->bindAndAddMethod(Procedure("CosaCM_GetLoopDiagnosticsDetails", PARAMS_BY_NAME, JSON_STRING,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::CosaCM_GetLoopDiagnosticsDetails);
+                  this->bindAndAddMethod(Procedure("CosaCM_GetTelephonyRegistrationStatus", PARAMS_BY_NAME,JSON_STRING,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::CosaCM_GetTelephonyRegistrationStatus);
+                  this->bindAndAddMethod(Procedure("CosaCM_GetTelephonyDHCPStatus", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"Value", JSON_INTEGER,NULL), &CosaCM::CosaCM_GetTelephonyDHCPStatus);
+                  this->bindAndAddMethod(Procedure("CosaCM_GetTelephonyTftpStatus", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"Value", JSON_INTEGER,NULL), &CosaCM::CosaCM_GetTelephonyTftpStatus);
+                  this->bindAndAddMethod(Procedure("CosaCM_SetLoopDiagnosticsStart", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"boolValue", JSON_INTEGER,NULL), &CosaCM::CosaCM_SetLoopDiagnosticsStart);
+                  this->bindAndAddMethod(Procedure("COSACM_GetDHCPInfo", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::COSACM_GetDHCPInfo);
+                  this->bindAndAddMethod(Procedure("COSACM_GetDOCSISInfo", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::COSACM_GetDOCSISInfo);
+                  this->bindAndAddMethod(Procedure("COSACM_GetLog", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::COSACM_GetLog);
+                  this->bindAndAddMethod(Procedure("COSACM_SetLog", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::COSACM_SetLog);
+                  this->bindAndAddMethod(Procedure("COSACM_GetDocsisLog", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::COSACM_GetDocsisLog);
+                  this->bindAndAddMethod(Procedure("COSACM_GetDownstreamChannel", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::COSACM_GetDownstreamChannel);
+                  this->bindAndAddMethod(Procedure("COSACM_GetUpstreamChannel", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,"bufferType", JSON_INTEGER,NULL), &CosaCM::COSACM_GetUpstreamChannel);
+                  this->bindAndAddMethod(Procedure("COSACM_CableModemCreate", PARAMS_BY_NAME, JSON_STRING,NULL), &CosaCM::COSACM_CableModemCreate);
+                  this->bindAndAddMethod(Procedure("COSACM_CableModemInitialize", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,NULL), &CosaCM::COSACM_CableModemInitialize);
+                  this->bindAndAddMethod(Procedure("COSACM_CableModemRemove", PARAMS_BY_NAME,JSON_STRING ,"handleType", JSON_INTEGER,NULL), &CosaCM::COSACM_CableModemRemove);
+                  this->bindAndAddMethod(Procedure("CMHal_GetCharValues", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,NULL), &CosaCM::CMHal_GetCharValues);
+                  this->bindAndAddMethod(Procedure("CMHal_GetUlongValues", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,NULL), &CosaCM::CMHal_GetUlongValues);
+                  this->bindAndAddMethod(Procedure("CMHal_GetStructValues", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,NULL), &CosaCM::CMHal_GetStructValues);
+		}
         /*Ctor*/
-		CosaCM ();
+//		CosaCM ();
 
 		/*inherited functions*/
-		bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
+		bool initialize(IN const char* szVersion);
 
-		bool cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj);
+		bool cleanup(IN const char* szVersion);
 		std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
 		
         /*CosaCM Stub Wrapper functions*/
-		bool CosaCM_GetResetCount(IN const Json::Value& req, OUT Json::Value& response);	
-		bool CosaCM_GetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response);	
-		bool CosaCM_SetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response);	
-		bool CosaCM_GetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response);
-        bool CosaCM_SetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response);	
-		bool CosaCM_GetProvType(IN const Json::Value& req, OUT Json::Value& response);	
-        bool CosaCM_GetIPv6DHCPInfo(IN const Json::Value& req, OUT Json::Value& response);
-        bool CosaCM_GetStatus(IN const Json::Value& req, OUT Json::Value& response);
-        bool CosaCM_GetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json::Value& response);
-        bool CosaCM_GetLoopDiagnosticsDetails(IN const Json::Value& req, OUT Json::Value& response);
-        bool CosaCM_GetTelephonyRegistrationStatus(IN const Json::Value& req, OUT Json::Value& response);
-        bool CosaCM_GetTelephonyTftpStatus(IN const Json::Value& req, OUT Json::Value& response);
-        bool CosaCM_GetTelephonyDHCPStatus(IN const Json::Value& req, OUT Json::Value& response);
-        bool CosaCM_SetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_GetDOCSISInfo(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_GetLog(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_SetLog(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_GetDocsisLog(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_GetDownstreamChannel(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_GetUpstreamChannel(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_CableModemCreate(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_CableModemInitialize(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_CableModemRemove(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_GetMarket_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);  
-        bool COSACM_SetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);   
-        bool COSACM_GetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);   
-        bool COSACM_GetCMCert_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_GetCMErrorCodewords_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);   
-        bool COSACM_GetCMCertStatus_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);   
-        bool COSACM_GetCPEList_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_GetMarket(IN const Json::Value& req, OUT Json::Value& response);    
-        bool COSACM_SetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response); 
-        bool COSACM_GetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response); 
-        bool COSACM_GetCMCert(IN const Json::Value& req, OUT Json::Value& response);
-        bool COSACM_GetCMErrorCodewords(IN const Json::Value& req, OUT Json::Value& response);  
-        bool COSACM_GetCMCertStatus(IN const Json::Value& req, OUT Json::Value& response);  
-        bool COSACM_GetCPEList(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMHal_GetCharValues(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMHal_GetUlongValues(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMHal_GetStructValues(IN const Json::Value& req, OUT Json::Value& response);
+		void CosaCM_GetResetCount(IN const Json::Value& req, OUT Json::Value& response);	
+		void CosaCM_GetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response);	
+		void CosaCM_SetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response);	
+		void CosaCM_GetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response);
+       		void CosaCM_SetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response);	
+		void CosaCM_GetProvType(IN const Json::Value& req, OUT Json::Value& response);	
+                void CosaCM_GetIPv6DHCPInfo(IN const Json::Value& req, OUT Json::Value& response);
+                void CosaCM_GetStatus(IN const Json::Value& req, OUT Json::Value& response);
+                void CosaCM_GetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json::Value& response);
+                void CosaCM_GetLoopDiagnosticsDetails(IN const Json::Value& req, OUT Json::Value& response);
+                void CosaCM_GetTelephonyRegistrationStatus(IN const Json::Value& req, OUT Json::Value& response);
+                void CosaCM_GetTelephonyTftpStatus(IN const Json::Value& req, OUT Json::Value& response);
+                void CosaCM_GetTelephonyDHCPStatus(IN const Json::Value& req, OUT Json::Value& response);
+                void CosaCM_SetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetDOCSISInfo(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetLog(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_SetLog(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetDocsisLog(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetDownstreamChannel(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetUpstreamChannel(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_CableModemCreate(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_CableModemInitialize(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_CableModemRemove(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetMarket_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);  
+                void COSACM_SetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);   
+                void COSACM_GetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);   
+                void COSACM_GetCMCert_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetCMErrorCodewords_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);   
+                void COSACM_GetCMCertStatus_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);   
+                void COSACM_GetCPEList_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetMarket(IN const Json::Value& req, OUT Json::Value& response);    
+                void COSACM_SetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response); 
+                void COSACM_GetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response); 
+                void COSACM_GetCMCert(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetCMErrorCodewords(IN const Json::Value& req, OUT Json::Value& response);  
+                void COSACM_GetCMCertStatus(IN const Json::Value& req, OUT Json::Value& response);  
+                void COSACM_GetCPEList(IN const Json::Value& req, OUT Json::Value& response);
+                void CMHal_GetCharValues(IN const Json::Value& req, OUT Json::Value& response);
+                void CMHal_GetUlongValues(IN const Json::Value& req, OUT Json::Value& response);
+                void CMHal_GetStructValues(IN const Json::Value& req, OUT Json::Value& response);
 
 };
 #endif //__CosaCM_STUB_H__

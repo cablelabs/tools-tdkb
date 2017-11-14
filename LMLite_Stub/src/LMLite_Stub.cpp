@@ -30,13 +30,6 @@ extern "C"
     
 };
 
-/*This is a constructor function for LMLiteStub class*/
-LMLiteStub::LMLiteStub()
-{
-    DEBUG_PRINT(DEBUG_LOG,"TDK LMLiteStub Instance Created\n");
-}
-
-
 /***************************************************************************
  *Function name : initialize
  *Description   : Initialize Function will be used for registering the wrapper method
@@ -44,13 +37,10 @@ LMLiteStub::LMLiteStub()
  *
  *****************************************************************************/
 
-bool LMLiteStub::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool LMLiteStub::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::LMLiteStub Initialize\n");
-    /*Register stub function for callback*/
-    ptrAgentObj->RegisterMethod(*this,&LMLiteStub::LMLiteStub_Get, "LMLiteStub_Get");
-    ptrAgentObj->RegisterMethod(*this,&LMLiteStub::LMLiteStub_Set, "LMLiteStub_Set");
-    
+   
     return TEST_SUCCESS;
 
 }
@@ -108,7 +98,7 @@ bool LMLiteStub::testmodulepost_requisites()
  *                         ssp_getParameterValue
  ********************************************************************************************/
 
-bool LMLiteStub::LMLiteStub_Get(IN const Json::Value& req, OUT Json::Value& response)
+void LMLiteStub::LMLiteStub_Get(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n LMLiteStub_Get --->Entry\n");
 
@@ -127,7 +117,7 @@ bool LMLiteStub::LMLiteStub_Get(IN const Json::Value& req, OUT Json::Value& resp
         response["result"]="FAILURE";
         response["details"]="Get Parameter Value API Validation Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n LMLiteStub_Get --->Exit\n");
-        return TEST_FAILURE;
+        return;
     }
     else
     {
@@ -142,7 +132,7 @@ bool LMLiteStub::LMLiteStub_Get(IN const Json::Value& req, OUT Json::Value& resp
 
     DEBUG_PRINT(DEBUG_TRACE,"\n LMLiteStub_Get --->Exit\n");
 
-    return TEST_SUCCESS;
+    return;
 }
 /***************************************************************************
  *Function name : LMLiteStub_Set
@@ -153,7 +143,7 @@ bool LMLiteStub::LMLiteStub_Get(IN const Json::Value& req, OUT Json::Value& resp
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool LMLiteStub::LMLiteStub_Set(IN const Json::Value& req, OUT Json::Value& response)
+void LMLiteStub::LMLiteStub_Set(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"LMLiteStub_Set --->Entry \n");
 
@@ -162,7 +152,7 @@ bool LMLiteStub::LMLiteStub_Set(IN const Json::Value& req, OUT Json::Value& resp
     char ParamValue[MAX_PARAM_SIZE];
     char Type[MAX_PARAM_SIZE];
     strcpy(ParamName,req["ParamName"].asCString());
-           strcpy(ParamValue,req["ParamValue"].asCString());
+    strcpy(ParamValue,req["ParamValue"].asCString());
     strcpy(Type,req["Type"].asCString());
 
     GETPARAMVALUES *DataParamValue1;
@@ -177,7 +167,7 @@ bool LMLiteStub::LMLiteStub_Set(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
-        return TEST_FAILURE;
+        return;
     }
 
     if((DataParamValue1== NULL))
@@ -192,7 +182,7 @@ bool LMLiteStub::LMLiteStub_Set(IN const Json::Value& req, OUT Json::Value& resp
             free_Memory_val(size_ret,DataParamValue1);
             response["result"] = "SUCCESS";
             response["details"] = "Set has been validated successfully";
-            return TEST_SUCCESS;
+            return;
         }
         else
         {
@@ -204,7 +194,7 @@ bool LMLiteStub::LMLiteStub_Set(IN const Json::Value& req, OUT Json::Value& resp
 
     response["result"] = "FAILURE";
     response["details"] = "FAILURE : Parameter Value has not changed after a proper Set";
-    return TEST_FAILURE;
+    return;
 }
 
 
@@ -216,10 +206,10 @@ bool LMLiteStub::LMLiteStub_Set(IN const Json::Value& req, OUT Json::Value& resp
  *
  **************************************************************************/
 
-extern "C" LMLiteStub* CreateObject()
+extern "C" LMLiteStub* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new LMLiteStub();
-       }
+    return new LMLiteStub(ptrtcpServer); 
+}
 
 /**************************************************************************
  * Function Name : cleanup
@@ -227,17 +217,9 @@ extern "C" LMLiteStub* CreateObject()
  *
  **************************************************************************/
 
-bool LMLiteStub::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool LMLiteStub::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"LMLiteStub shutting down\n");
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-    /*unRegister stub function for callback*/
-
-    ptrAgentObj->UnregisterMethod("LMLiteStub_Get");
-    ptrAgentObj->UnregisterMethod("LMLiteStub_Set");
     return TEST_SUCCESS;
 }
 

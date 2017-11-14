@@ -40,12 +40,6 @@ extern "C"
     void free_Memory_Attr(int size,GETPARAMATTR *Freestruct);
 };
 
-/*This is a constructor function for WECB class*/
-WECB::WECB()
-{
-    DEBUG_PRINT(DEBUG_LOG,"WECB Instance Created\n");
-}
-
 /***************************************************************************
  *Function name	: initialize
  *Description	: Initialize Function will be used for registering the wrapper method 
@@ -53,20 +47,9 @@ WECB::WECB()
  *  		  	  
  *****************************************************************************/ 
 
-bool WECB::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool WECB::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"WECB Initialize\n");
-    /*Register stub function for callback*/
-    ptrAgentObj->RegisterMethod(*this,&WECB::WECB_GetParamNames, "WECB_GetParamNames");
-    ptrAgentObj->RegisterMethod(*this,&WECB::WECB_GetParamValues, "WECB_GetParamValues");
-    ptrAgentObj->RegisterMethod(*this,&WECB::WECB_GetParamAttributes, "WECB_GetParamAttributes");
-    ptrAgentObj->RegisterMethod(*this,&WECB::WECB_SetParamValues, "WECB_SetParamValues");
-    ptrAgentObj->RegisterMethod(*this,&WECB::WECB_SetParamAttribute, "WECB_SetParamAttribute");
-    ptrAgentObj->RegisterMethod(*this,&WECB::WECB_SetSessionId, "WECB_SetSessionId");
-    ptrAgentObj->RegisterMethod(*this,&WECB::WECB_AddObject, "WECB_AddObject");
-    ptrAgentObj->RegisterMethod(*this,&WECB::WECB_DelObject, "WECB_DelObject");
-    ptrAgentObj->RegisterMethod(*this,&WECB::WECB_SetCommit, "WECB_SetCommit");
-
     return TEST_SUCCESS;
 }
 
@@ -133,7 +116,7 @@ bool WECB::testmodulepost_requisites()
  * @param [out] response - SUCCESS - All parameter names are retrieved
  *			   FAILURE - Failed to retrieve the parameter names
  ********************************************************************************************/
-bool WECB::WECB_GetParamNames(IN const Json::Value& req, OUT Json::Value& response)
+void WECB::WECB_GetParamNames(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_GetParamNames --->Entry\n");
 
@@ -152,21 +135,21 @@ bool WECB::WECB_GetParamNames(IN const Json::Value& req, OUT Json::Value& respon
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["paramList"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["recursive"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -197,14 +180,14 @@ bool WECB::WECB_GetParamNames(IN const Json::Value& req, OUT Json::Value& respon
                         printf("Parameter Name has been fetched successfully and it matched with parameter List\n");
                         response["result"] = "SUCCESS";
                         response["details"] = "Parameter Name has been fetched successfully";
-                        return TEST_SUCCESS;
+                        return;
                     }
                     else
                     {
                         printf("Writeable parameter of the parameter name not matching with the parameter list\n");
                         response["result"] = "FAILURE";
                         response["details"] = "Writeable parameter of the parameter name not matching with the parameter list";
-                        return TEST_FAILURE;
+                        return;
                     }
                 }
             }
@@ -214,7 +197,7 @@ bool WECB::WECB_GetParamNames(IN const Json::Value& req, OUT Json::Value& respon
                 printf("Parameter name not matching with the parameter list\n");
                 response["result"] = "FAILURE";
                 response["details"] = "Parameter name not matching with the parameter list";
-                return TEST_FAILURE;
+                return;
             }
         }
         else
@@ -231,7 +214,7 @@ bool WECB::WECB_GetParamNames(IN const Json::Value& req, OUT Json::Value& respon
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_GetParamNames --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -245,7 +228,7 @@ bool WECB::WECB_GetParamNames(IN const Json::Value& req, OUT Json::Value& respon
  * @param [out] response - SUCCESS - All parameter values are retrieved
  *                         FAILURE - Failed to retrieve the parameter values
  ********************************************************************************************/
-bool WECB::WECB_GetParamValues(IN const Json::Value& req, OUT Json::Value& response)
+void WECB::WECB_GetParamValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_GetParamValues --->Entry\n");
 
@@ -259,7 +242,7 @@ bool WECB::WECB_GetParamValues(IN const Json::Value& req, OUT Json::Value& respo
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -293,7 +276,7 @@ bool WECB::WECB_GetParamValues(IN const Json::Value& req, OUT Json::Value& respo
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_GetParamValues --->Exit\n");
 
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -306,7 +289,7 @@ bool WECB::WECB_GetParamValues(IN const Json::Value& req, OUT Json::Value& respo
  * @param [out] response - SUCCESS - All attributes associated with the param name are retrieved
  *                         FAILURE - Failed to retrieve the parameter attributes
  ********************************************************************************************/
-bool WECB::WECB_GetParamAttributes(IN const Json::Value& req, OUT Json::Value& response)
+void WECB::WECB_GetParamAttributes(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_GetParamAttributes --->Entry\n");
 
@@ -320,7 +303,7 @@ bool WECB::WECB_GetParamAttributes(IN const Json::Value& req, OUT Json::Value& r
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -353,7 +336,7 @@ bool WECB::WECB_GetParamAttributes(IN const Json::Value& req, OUT Json::Value& r
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_GetParamAttributes --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -368,7 +351,7 @@ bool WECB::WECB_GetParamAttributes(IN const Json::Value& req, OUT Json::Value& r
  * @param [out] response - SUCCESS - Value for the parameter name is set
  *                         FAILURE - Failed to set the value to the parameter name
  ********************************************************************************************/
-bool WECB::WECB_SetParamValues(IN const Json::Value& req, OUT Json::Value& response)
+void WECB::WECB_SetParamValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_SetParamValues --->Entry\n");
 
@@ -385,28 +368,28 @@ bool WECB::WECB_SetParamValues(IN const Json::Value& req, OUT Json::Value& respo
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["paramValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["paramType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["commit"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -465,7 +448,7 @@ bool WECB::WECB_SetParamValues(IN const Json::Value& req, OUT Json::Value& respo
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_SetParamValues --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -481,7 +464,7 @@ bool WECB::WECB_SetParamValues(IN const Json::Value& req, OUT Json::Value& respo
  * @param [out] response - SUCCESS - Parameter attributes are set
  *                         FAILURE - Failed to set the Parameter attributes
  ********************************************************************************************/
-bool WECB::WECB_SetParamAttribute(IN const Json::Value& req, OUT Json::Value& response)
+void WECB::WECB_SetParamAttribute(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_SetParamAttribute --->Entry\n");
 
@@ -499,21 +482,21 @@ bool WECB::WECB_SetParamAttribute(IN const Json::Value& req, OUT Json::Value& re
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["notify"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["accessControl"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -531,7 +514,7 @@ bool WECB::WECB_SetParamAttribute(IN const Json::Value& req, OUT Json::Value& re
     {
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the attributes of the parameter name";
-        return TEST_FAILURE;
+        return;
     }
 
     /* Set attributes for the specified parameter */
@@ -599,7 +582,7 @@ bool WECB::WECB_SetParamAttribute(IN const Json::Value& req, OUT Json::Value& re
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_SetParamAttribute --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -612,7 +595,7 @@ bool WECB::WECB_SetParamAttribute(IN const Json::Value& req, OUT Json::Value& re
  * @param [out] response - SUCCESS - Session Id is set
  *                         FAILURE - Failed to set the session Id
  ********************************************************************************************/
-bool WECB::WECB_SetSessionId(IN const Json::Value& req, OUT Json::Value& response)
+void WECB::WECB_SetSessionId(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_SetSessionId --->Entry\n");
 
@@ -625,7 +608,7 @@ bool WECB::WECB_SetSessionId(IN const Json::Value& req, OUT Json::Value& respons
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -647,7 +630,7 @@ bool WECB::WECB_SetSessionId(IN const Json::Value& req, OUT Json::Value& respons
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_SetSessionId --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -660,7 +643,7 @@ bool WECB::WECB_SetSessionId(IN const Json::Value& req, OUT Json::Value& respons
  * @param [out] response - SUCCESS - Added entry to the table object
  *                         FAILURE - Failed to add entry to the table object
  ********************************************************************************************/
-bool WECB::WECB_AddObject(IN const Json::Value& req, OUT Json::Value& response)
+void WECB::WECB_AddObject(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_AddObject --->Entry\n");
 
@@ -673,7 +656,7 @@ bool WECB::WECB_AddObject(IN const Json::Value& req, OUT Json::Value& response)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -696,7 +679,7 @@ bool WECB::WECB_AddObject(IN const Json::Value& req, OUT Json::Value& response)
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_AddObject --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -709,7 +692,7 @@ bool WECB::WECB_AddObject(IN const Json::Value& req, OUT Json::Value& response)
  * @param [out] response - SUCCESS - Deleted entry from the table object
  *                         FAILURE - Failed to delete entry from the table object
  ********************************************************************************************/
-bool WECB::WECB_DelObject(IN const Json::Value& req, OUT Json::Value& response)
+void WECB::WECB_DelObject(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_DelObject --->Entry\n");
 
@@ -721,7 +704,7 @@ bool WECB::WECB_DelObject(IN const Json::Value& req, OUT Json::Value& response)
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+        return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -743,7 +726,7 @@ bool WECB::WECB_DelObject(IN const Json::Value& req, OUT Json::Value& response)
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_DelObject --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -756,7 +739,7 @@ bool WECB::WECB_DelObject(IN const Json::Value& req, OUT Json::Value& response)
  * @param [out] response - SUCCESS - Changes to the component committed
  *                         FAILURE - Failed to commit the changes
  ********************************************************************************************/
-bool WECB::WECB_SetCommit(IN const Json::Value& req, OUT Json::Value& response)
+void WECB::WECB_SetCommit(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_SetCommit --->Entry\n");
 
@@ -768,7 +751,7 @@ bool WECB::WECB_SetCommit(IN const Json::Value& req, OUT Json::Value& response)
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+        return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -790,7 +773,7 @@ bool WECB::WECB_SetCommit(IN const Json::Value& req, OUT Json::Value& response)
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_SetCommit --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /**************************************************************************
@@ -799,9 +782,9 @@ bool WECB::WECB_SetCommit(IN const Json::Value& req, OUT Json::Value& response)
  *		              class "WECB".
  *
  **************************************************************************/
-extern "C" WECB* CreateObject()
+extern "C" WECB* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new WECB();
+    return new WECB(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -809,28 +792,9 @@ extern "C" WECB* CreateObject()
  * Description   : This function will be used to clean the log details. 
  *
  **************************************************************************/
-bool WECB::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool WECB::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"WECB cleanup --> Entry \n");
-
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-
-    /*unRegister stub function for callback*/
-    ptrAgentObj->UnregisterMethod("WECB_GetParamNames");
-    ptrAgentObj->UnregisterMethod("WECB_GetParamValues");
-    ptrAgentObj->UnregisterMethod("WECB_GetParamAttributes");
-    ptrAgentObj->UnregisterMethod("WECB_SetParamValuesParamValues");
-    ptrAgentObj->UnregisterMethod("WECB_SetParamValuesParamAttribute");
-    ptrAgentObj->UnregisterMethod("WECB_SetSessionId");
-    ptrAgentObj->UnregisterMethod("WECB_AddObject");
-    ptrAgentObj->UnregisterMethod("WECB_DelObject");
-    ptrAgentObj->UnregisterMethod("WECB_SetCommit");
-
-    DEBUG_PRINT(DEBUG_LOG,"WECB cleanup --> Exit \n");
-
     return TEST_SUCCESS;
 }
 

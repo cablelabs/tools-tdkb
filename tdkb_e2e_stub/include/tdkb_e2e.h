@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <fstream>
@@ -45,20 +46,28 @@ extern "C"
     int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType,int commit);
     int ssp_setMultipleParameterValue(char **paramList, int size);
 };
+
 class RDKTestAgent;
-class TDKB_E2E : public RDKTestStubInterface
+class TDKB_E2E : public RDKTestStubInterface, public AbstractServer<TDKB_E2E>
 {
     public:
-        /*Ctor*/
-        TDKB_E2E();
+
+		TDKB_E2E(TcpSocketServer &ptrRpcServer) : AbstractServer <TDKB_E2E>(ptrRpcServer)
+		{
+			this->bindAndAddMethod(Procedure("tdkb_e2e_Get", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &TDKB_E2E::tdkb_e2e_Get);
+			this->bindAndAddMethod(Procedure("tdkb_e2e_Set", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, "paramValue", JSON_STRING, "paramType", JSON_STRING, NULL), &TDKB_E2E::tdkb_e2e_Set);
+			this->bindAndAddMethod(Procedure("tdkb_e2e_SetMultipleParams", PARAMS_BY_NAME, JSON_STRING, "paramList", JSON_STRING, NULL), &TDKB_E2E::tdkb_e2e_SetMultipleParams);
+		}
+	
         /*inherited functions*/
-        bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-        bool cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj);
+        bool initialize(IN const char* szVersion);
+        bool cleanup(IN const char* szVersion);
         std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
+		
         /*TDKB_E2E Stub Wrapper functions*/
-        bool tdkb_e2e_Get(IN const Json::Value& req, OUT Json::Value& response);
-        bool tdkb_e2e_Set(IN const Json::Value& req, OUT Json::Value& response);
-        bool tdkb_e2e_SetMultipleParams(IN const Json::Value& req, OUT Json::Value& response);
+        void tdkb_e2e_Get(IN const Json::Value& req, OUT Json::Value& response);
+        void tdkb_e2e_Set(IN const Json::Value& req, OUT Json::Value& response);
+        void tdkb_e2e_SetMultipleParams(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__TDKB_E2E_STUB_H__

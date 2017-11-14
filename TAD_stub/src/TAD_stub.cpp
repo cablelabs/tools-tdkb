@@ -38,13 +38,6 @@ extern "C"
 
 };
 
-/*This is a constructor function for TADstub class*/
-TADstub::TADstub()
-{
-    DEBUG_PRINT(DEBUG_LOG,"TDK TADstub Instance Created\n");
-}
-
-
 /***************************************************************************
  *Function name : initialize
  *Description   : Initialize Function will be used for registering the wrapper method
@@ -52,20 +45,10 @@ TADstub::TADstub()
  *
  *****************************************************************************/
 
-bool TADstub::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool TADstub::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::TADstub Initialize\n");
-    /*Register stub function for callback*/
-    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Get, "TADstub_Get");
-    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Set, "TADstub_Set");
-    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_SetDiagnosticsState, "TADstub_SetDiagnosticsState");
-    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Init, "TADstub_Init");
-    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Start, "TADstub_Start");
-    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_Stop, "TADstub_Stop");
-    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_SetCfg, "TADstub_SetCfg");
-    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_GetCfg, "TADstub_GetCfg");
-    ptrAgentObj->RegisterMethod(*this,&TADstub::TADstub_GetState, "TADstub_GetState");
-    
+   
     return TEST_SUCCESS;
 
 }
@@ -123,7 +106,7 @@ bool TADstub::testmodulepost_requisites()
  *                         ssp_getParameterValue
  ********************************************************************************************/
 
-bool TADstub::TADstub_Get(IN const Json::Value& req, OUT Json::Value& response)
+void TADstub::TADstub_Get(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n TADstub_Get --->Entry\n");
 
@@ -142,7 +125,7 @@ bool TADstub::TADstub_Get(IN const Json::Value& req, OUT Json::Value& response)
         response["result"]="FAILURE";
         response["details"]="Get Parameter Value API Validation Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n TADstub_Get --->Exit\n");
-        return TEST_FAILURE;
+        return;
     }
     else
     {
@@ -157,7 +140,7 @@ bool TADstub::TADstub_Get(IN const Json::Value& req, OUT Json::Value& response)
 
     DEBUG_PRINT(DEBUG_TRACE,"\n TADstub_Get --->Exit\n");
 
-    return TEST_SUCCESS;
+    return;
 }
 /***************************************************************************
  *Function name : TADstub_Set
@@ -168,7 +151,7 @@ bool TADstub::TADstub_Get(IN const Json::Value& req, OUT Json::Value& response)
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool TADstub::TADstub_Set(IN const Json::Value& req, OUT Json::Value& response)
+void TADstub::TADstub_Set(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TADstub_Set --->Entry \n");
 
@@ -195,7 +178,7 @@ bool TADstub::TADstub_Set(IN const Json::Value& req, OUT Json::Value& response)
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
-        return TEST_FAILURE;
+        return;
     }
 
     if((DataParamValue1== NULL))
@@ -226,7 +209,7 @@ bool TADstub::TADstub_Set(IN const Json::Value& req, OUT Json::Value& response)
             free_Memory_val(size_ret,DataParamValue1);
             response["result"] = "SUCCESS";
             response["details"] = "Set has been validated successfully";
-            return TEST_SUCCESS;
+            return;
         }
         else
         {
@@ -238,7 +221,7 @@ bool TADstub::TADstub_Set(IN const Json::Value& req, OUT Json::Value& response)
 
     response["result"] = "FAILURE";
     response["details"] = "FAILURE : Parameter Value has not changed after a proper Set";
-    return TEST_FAILURE;
+    return;
 }
 
 
@@ -251,7 +234,7 @@ bool TADstub::TADstub_Set(IN const Json::Value& req, OUT Json::Value& response)
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool TADstub::TADstub_SetDiagnosticsState(IN const Json::Value& req, OUT Json::Value& response)
+void TADstub::TADstub_SetDiagnosticsState(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TADstub_SetDiagnosticsState --->Entry \n");
 
@@ -269,13 +252,13 @@ bool TADstub::TADstub_SetDiagnosticsState(IN const Json::Value& req, OUT Json::V
         DEBUG_PRINT(DEBUG_TRACE,"Parameter Values have been set.\n");
         response["result"] = "SUCCESS";
         response["details"] = "Set has been validated successfully";
-        return TEST_SUCCESS;
+        return;
     }
     else
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
-        return TEST_FAILURE;
+        return;
     }
 }
     
@@ -288,7 +271,7 @@ bool TADstub::TADstub_SetDiagnosticsState(IN const Json::Value& req, OUT Json::V
  *
  ********************************************************************************************/
 
-bool TADstub::TADstub_Init(IN const Json::Value& req, OUT Json::Value& response)
+void TADstub::TADstub_Init(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TADstub_Init --->Entry \n");
     int status;
@@ -299,14 +282,14 @@ bool TADstub::TADstub_Init(IN const Json::Value& req, OUT Json::Value& response)
         printf("TADstub_Init failed\n");
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Diag init failed";
-        return TEST_FAILURE;
+        return;
     }
     else
     {
         printf("TADstub_Init success\n");
         response["result"] = "SUCCESS";
         response["details"] = "SUCCESS : Diag init success";
-        return TEST_SUCCESS;
+        return;
     }
 }
 
@@ -319,7 +302,7 @@ bool TADstub::TADstub_Init(IN const Json::Value& req, OUT Json::Value& response)
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool TADstub::TADstub_Start(IN const Json::Value& req, OUT Json::Value& response)
+void TADstub::TADstub_Start(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TADstub_Start --->Entry \n");
     int status;
@@ -331,14 +314,14 @@ bool TADstub::TADstub_Start(IN const Json::Value& req, OUT Json::Value& response
         printf("TADstub_Start failed\n");
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Diag start failed";
-        return TEST_FAILURE;
+        return;
     }
     else
     {
         printf("TADstub_Start success\n");
         response["result"] = "SUCCESS";
         response["details"] = "SUCCESS : Diag start success";
-        return TEST_SUCCESS;
+        return;
     }
 }
 
@@ -351,7 +334,7 @@ bool TADstub::TADstub_Start(IN const Json::Value& req, OUT Json::Value& response
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool TADstub::TADstub_Stop(IN const Json::Value& req, OUT Json::Value& response)
+void TADstub::TADstub_Stop(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TADstub_Stop --->Entry \n");
     int status;
@@ -363,14 +346,14 @@ bool TADstub::TADstub_Stop(IN const Json::Value& req, OUT Json::Value& response)
         printf("TADstub_Stop failed\n");
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Diag stop failed";
-        return TEST_FAILURE;
+        return;
     }
     else
     {
         printf("TADstub_Stop success\n");
         response["result"] = "SUCCESS";
         response["details"] = "SUCCESS : Diag stop success";
-        return TEST_SUCCESS;
+        return;
     }
 }
 
@@ -385,7 +368,7 @@ bool TADstub::TADstub_Stop(IN const Json::Value& req, OUT Json::Value& response)
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool TADstub::TADstub_SetCfg(IN const Json::Value& req, OUT Json::Value& response)
+void TADstub::TADstub_SetCfg(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TADstub_Stop --->Entry \n");
     int status;
@@ -399,14 +382,14 @@ bool TADstub::TADstub_SetCfg(IN const Json::Value& req, OUT Json::Value& respons
         printf("TADstub_SetCfg failed\n");
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Diag setcfg failed";
-        return TEST_FAILURE;
+        return;
     }
     else
     {
         printf("TADstub_SetCfg success\n");
         response["result"] = "SUCCESS";
         response["details"] = "SUCCESS : Diag setCfg success";
-        return TEST_SUCCESS;
+        return;
     }
 }
 
@@ -420,7 +403,7 @@ bool TADstub::TADstub_SetCfg(IN const Json::Value& req, OUT Json::Value& respons
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool TADstub::TADstub_GetCfg(IN const Json::Value& req, OUT Json::Value& response)
+void TADstub::TADstub_GetCfg(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TADstub_Stop --->Entry \n");
     int status;
@@ -433,14 +416,14 @@ bool TADstub::TADstub_GetCfg(IN const Json::Value& req, OUT Json::Value& respons
         printf("TADstub_GetCfg failed\n");
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Diag getcfg failed";
-        return TEST_FAILURE;
+        return;
     }
     else
     {
         printf("TADstub_GetCfg success\n");
         response["result"] = "SUCCESS"; sprintf(result, "host fromcfg is %s", cfg.host);
         response["details"] = result;
-        return TEST_SUCCESS;
+        return;
     }
 }
 
@@ -455,7 +438,7 @@ bool TADstub::TADstub_GetCfg(IN const Json::Value& req, OUT Json::Value& respons
  *
  *****************************************************************************/
 
-bool TADstub::TADstub_GetState(IN const Json::Value& req, OUT Json::Value& response)
+void TADstub::TADstub_GetState(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TADstub_State --->Entry \n");
     int status;
@@ -470,14 +453,14 @@ bool TADstub::TADstub_GetState(IN const Json::Value& req, OUT Json::Value& respo
         printf("TADstub_GetState failed\n");
         response["result"] = "FAILURE";
         response["details"] = result;
-        return TEST_FAILURE;
+        return;
     }
     else
     {
         printf("TADstub_GetState success\n");
         response["result"] = "SUCCESS";
         response["details"] = result;
-        return TEST_SUCCESS;
+        return;
     }
 }
 
@@ -489,9 +472,9 @@ bool TADstub::TADstub_GetState(IN const Json::Value& req, OUT Json::Value& respo
  *
  **************************************************************************/
 
-extern "C" TADstub* CreateObject()
+extern "C" TADstub* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new TADstub();
+    return new TADstub(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -500,25 +483,10 @@ extern "C" TADstub* CreateObject()
  *
  **************************************************************************/
 
-bool TADstub::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool TADstub::cleanup(IN const char* szVersion)		
 {
     DEBUG_PRINT(DEBUG_LOG,"TADstub shutting down\n");
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-    /*unRegister stub function for callback*/
-
-    ptrAgentObj->UnregisterMethod("TADstub_Get");
-    ptrAgentObj->UnregisterMethod("TADstub_Set");
-    ptrAgentObj->UnregisterMethod("TADstub_SetDiagnosticsState");
-    ptrAgentObj->UnregisterMethod("TADstub_Init");
-    ptrAgentObj->UnregisterMethod("TADstub_Start");
-    ptrAgentObj->UnregisterMethod("TADstub_Stop");
-    ptrAgentObj->UnregisterMethod("TADstub_GetCfg");
-    ptrAgentObj->UnregisterMethod("TADstub_SetCfg");
-    ptrAgentObj->UnregisterMethod("TADstub_GetState");
-   
+  
     return TEST_SUCCESS;
 }
 

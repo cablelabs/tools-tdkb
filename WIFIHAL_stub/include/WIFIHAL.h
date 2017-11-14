@@ -29,6 +29,7 @@
 #include <sys/wait.h>
 #include <fstream>
 #include <sstream>
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #define IN
 #define OUT
 #define TEST_SUCCESS true
@@ -45,23 +46,32 @@ extern "C"
 };
 
 class RDKTestAgent;
-class WIFIHAL : public RDKTestStubInterface
+//class WIFIHAL : public RDKTestStubInterface
+class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
 {
     public:
+	 WIFIHAL(TcpSocketServer &ptrRpcServer) : AbstractServer <WIFIHAL>(ptrRpcServer)
+                {
+                  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetParamBoolValue", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER,"param", JSON_INTEGER, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetParamBoolValue);
+		  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetParamULongValue", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER,"param", JSON_INTEGER, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetParamULongValue);
+		  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetParamStringValue", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetParamStringValue);
+		  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetParamIntValue", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetParamIntValue);
+	 	  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetParamUIntValue", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetParamUIntValue);
+                }
         /*Ctor*/
-        WIFIHAL();
+//        WIFIHAL();
         /*inherited functions*/
-        bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-        bool cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj); 
+        bool initialize(IN const char* szVersion);
+        bool cleanup(IN const char* szVersion); 
         std::string testmodulepre_requisites(); 
         bool testmodulepost_requisites();
 
         /*WIFIHAL Stub Wrapper functions*/
-        bool WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Json::Value& response);
-        bool WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json::Value& response);
-        bool WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Json::Value& response);
-        bool WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json::Value& response);
-        bool WIFIHAL_GetOrSetParamUIntValue(IN const Json::Value& req, OUT Json::Value& response);
+        void WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Json::Value& response);
+        void WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json::Value& response);
+        void WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Json::Value& response);
+        void WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json::Value& response);
+        void WIFIHAL_GetOrSetParamUIntValue(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__WIFIHAL_STUB_H__
 

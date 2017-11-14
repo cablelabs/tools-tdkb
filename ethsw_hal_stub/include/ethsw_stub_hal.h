@@ -19,6 +19,8 @@
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
 #include "ssp_tdk_Ethsw_wrp.h"
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
+
 /* for reference added it,(IN) indicates accepting the request from Test Manager and (OUT) 
    indicates sending the response for the request back to the Manager */
 #ifndef IN
@@ -33,22 +35,34 @@ using namespace std;
 /* RDKTestAgent : This Class provides interface for the module to enable RPC mechanism. */
 class RDKTestAgent;
 /* RDKTestStubInterface : This Class provides provides interface for the modules.  */
-class ethsw_stub_hal : public RDKTestStubInterface
+class ethsw_stub_hal : public RDKTestStubInterface, public AbstractServer<ethsw_stub_hal>
 {
 	public:
-		/*Constructor*/
-		ethsw_stub_hal();
-		bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-		bool cleanup(const char*, RDKTestAgent*);
+		
+		ethsw_stub_hal(TcpSocketServer &ptrRpcServer) : AbstractServer <ethsw_stub_hal>(ptrRpcServer)
+		{
+			this->bindAndAddMethod(Procedure("ethsw_stub_hal_Get_Port_Admin_Status", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "flag", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_Get_Port_Admin_Status);
+			this->bindAndAddMethod(Procedure("ethsw_stub_hal_Get_Port_Cfg", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "flag", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_Get_Port_Cfg);
+			this->bindAndAddMethod(Procedure("ethsw_stub_hal_Get_Port_Status", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "flag", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_Get_Port_Status);
+			this->bindAndAddMethod(Procedure("ethsw_stub_hal_Init", PARAMS_BY_NAME, JSON_STRING,NULL), &ethsw_stub_hal::ethsw_stub_hal_Init);
+			this->bindAndAddMethod(Procedure("ethsw_stub_hal_LocatePort_By_MacAddress", PARAMS_BY_NAME, JSON_STRING, "macID", JSON_INTEGER, "flag", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_LocatePort_By_MacAddress);
+			this->bindAndAddMethod(Procedure("ethsw_stub_hal_SetAgingSpeed", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "AgingSpeed", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_SetAgingSpeed);
+			this->bindAndAddMethod(Procedure("ethsw_stub_hal_SetPortAdminStatus", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "adminstatus", JSON_STRING, NULL), &ethsw_stub_hal::ethsw_stub_hal_SetPortAdminStatus);
+			this->bindAndAddMethod(Procedure("ethsw_stub_hal_SetPortCfg", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "linkrate", JSON_INTEGER, "mode", JSON_STRING, NULL), &ethsw_stub_hal::ethsw_stub_hal_SetPortCfg);
+		}
+		
+		bool initialize(IN const char* szVersion);
+		bool cleanup(const char*);
 		std::string testmodulepre_requisites();
 		bool testmodulepost_requisites();
-		bool ethsw_stub_hal_Get_Port_Admin_Status(const Json::Value&, Json::Value&);
-		bool ethsw_stub_hal_Get_Port_Cfg(const Json::Value&, Json::Value&);
-		bool ethsw_stub_hal_Get_Port_Status(const Json::Value&, Json::Value&);
-		bool ethsw_stub_hal_Init(IN const Json::Value& req, OUT Json::Value& response);
-		bool ethsw_stub_hal_LocatePort_By_MacAddress(IN const Json::Value& req, OUT Json::Value& response);
-		bool ethsw_stub_hal_SetAgingSpeed(IN const Json::Value& req, OUT Json::Value& response);
-		bool ethsw_stub_hal_SetPortAdminStatus(IN const Json::Value& req, OUT Json::Value& response);
-		bool ethsw_stub_hal_SetPortCfg(IN const Json::Value& req, OUT Json::Value& response);
+		
+		void ethsw_stub_hal_Get_Port_Admin_Status(const Json::Value&, Json::Value&);
+		void ethsw_stub_hal_Get_Port_Cfg(const Json::Value&, Json::Value&);
+		void ethsw_stub_hal_Get_Port_Status(const Json::Value&, Json::Value&);
+		void ethsw_stub_hal_Init(IN const Json::Value& req, OUT Json::Value& response);
+		void ethsw_stub_hal_LocatePort_By_MacAddress(IN const Json::Value& req, OUT Json::Value& response);
+		void ethsw_stub_hal_SetAgingSpeed(IN const Json::Value& req, OUT Json::Value& response);
+		void ethsw_stub_hal_SetPortAdminStatus(IN const Json::Value& req, OUT Json::Value& response);
+		void ethsw_stub_hal_SetPortCfg(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif

@@ -67,13 +67,13 @@ extern "C"
     int ssp_mbus_unloadcfg();
 
 };
-
+#if 0
 /*This is a constructor function for CCSPMBUS class*/
 CCSPMBUS::CCSPMBUS()
 {
     DEBUG_PRINT(DEBUG_LOG,"CCSPMBUS Instance Created\n");
 }
-
+#endif
 /***************************************************************************
  *Function name	: initialize
  *Description	: Initialize Function will be used for registering the wrapper method 
@@ -81,10 +81,11 @@ CCSPMBUS::CCSPMBUS()
  *  		  	  
  *****************************************************************************/ 
 
-bool CCSPMBUS::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool CCSPMBUS::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"CCSPMBUS Initialize\n");
     /*Register stub function for callback*/
+#if 0
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_GetParamValues, "CCSPMBUS_GetParamValues");
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_SetParamValues, "CCSPMBUS_SetParamValues");
 
@@ -114,7 +115,7 @@ bool CCSPMBUS::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_BusCheck, "CCSPMBUS_BusCheck");
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_CheckNamespaceDataType, "CCSPMBUS_CheckNamespaceDataType");
     ptrAgentObj->RegisterMethod(*this,&CCSPMBUS::CCSPMBUS_UnloadCfg, "CCSPMBUS_UnloadCfg");
-
+#endif
     return TEST_SUCCESS;
 }
 
@@ -164,7 +165,7 @@ bool CCSPMBUS::testmodulepost_requisites()
  * @param [out] response - SUCCESS - All parameter values are retrieved
  *                         FAILURE - Failed to retrieve the parameter values
  ********************************************************************************************/
-bool CCSPMBUS::CCSPMBUS_GetParamValues(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_GetParamValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetParamValues --->Entry\n");
 
@@ -178,7 +179,8 @@ bool CCSPMBUS::CCSPMBUS_GetParamValues(IN const Json::Value& req, OUT Json::Valu
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        //return TEST_FAILURE;
+	return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -198,7 +200,8 @@ bool CCSPMBUS::CCSPMBUS_GetParamValues(IN const Json::Value& req, OUT Json::Valu
     else
     {
         DEBUG_PRINT(DEBUG_TRACE,"Failed to register with CR\n");
-        return "FAILURE";
+        //return "FAILURE";
+        return;
     }
 
     /* Retrieve the specified parameter value */
@@ -235,12 +238,14 @@ bool CCSPMBUS::CCSPMBUS_GetParamValues(IN const Json::Value& req, OUT Json::Valu
     else
     {
         DEBUG_PRINT(DEBUG_TRACE,"Failed to unregistered from CR\n");
-        return TEST_FAILURE;
+        //return TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetParamValues --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 
@@ -256,7 +261,7 @@ bool CCSPMBUS::CCSPMBUS_GetParamValues(IN const Json::Value& req, OUT Json::Valu
  * @param [out] response - SUCCESS - Value for the parameter name is set
  *                         FAILURE - Failed to set the value to the parameter name
  ********************************************************************************************/
-bool CCSPMBUS::CCSPMBUS_SetParamValues(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_SetParamValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_SetParamValues --->Entry\n");
 
@@ -274,28 +279,32 @@ bool CCSPMBUS::CCSPMBUS_SetParamValues(IN const Json::Value& req, OUT Json::Valu
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        //return TEST_FAILURE;
+	return;
     }
 
     if(&req["paramValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        //return TEST_FAILURE;
+	return;
     }
 
     if(&req["paramType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        //return TEST_FAILURE;
+	return;
     }
 
     if(&req["commit"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        //return TEST_FAILURE;
+	return;
     }
 
     /* Copy the input arguments to the local variables */
@@ -319,7 +328,8 @@ bool CCSPMBUS::CCSPMBUS_SetParamValues(IN const Json::Value& req, OUT Json::Valu
     else
     {
         DEBUG_PRINT(DEBUG_TRACE,"Failed to register with CR\n");
-        return "FAILURE";
+        //return "FAILURE";
+        return;
     }
 
     /* Set the value for the specified parameter name */
@@ -375,13 +385,15 @@ bool CCSPMBUS::CCSPMBUS_SetParamValues(IN const Json::Value& req, OUT Json::Valu
     else
     {
         DEBUG_PRINT(DEBUG_TRACE,"Failed to unregistered from CR\n");
-        return TEST_FAILURE;
+        //return TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetParamValues --->Exit\n");
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_SetParamValues --->Exit\n");
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 
@@ -397,7 +409,7 @@ bool CCSPMBUS::CCSPMBUS_SetParamValues(IN const Json::Value& req, OUT Json::Valu
  * 			               ssp_mbus_init
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_Init(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_Init(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_Init --->Entry \n");
 
@@ -422,11 +434,13 @@ bool CCSPMBUS::CCSPMBUS_Init(IN const Json::Value& req, OUT Json::Value& respons
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_Init :: Message Bus Initialization Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_mbus_init Error --->Exit\n");
-        return	TEST_FAILURE;
-    }
+        //return	TEST_FAILURE;
+	return;
+    }  
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_Init --->Exit\n");
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -439,7 +453,7 @@ bool CCSPMBUS::CCSPMBUS_Init(IN const Json::Value& req, OUT Json::Value& respons
  * 			               ssp_mbus_exit
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_Exit(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_Exit(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_Exit --->Entry\n");
 
@@ -467,11 +481,13 @@ bool CCSPMBUS::CCSPMBUS_Exit(IN const Json::Value& req, OUT Json::Value& respons
         }
 
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_Exit --->Error in  execution \n");
-        return	TEST_FAILURE;
+        //return	TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_Exit --->Exit\n");
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -484,7 +500,7 @@ bool CCSPMBUS::CCSPMBUS_Exit(IN const Json::Value& req, OUT Json::Value& respons
  * 			               ssp_mbus_exit
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_RegisterEvent(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_RegisterEvent(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_RegisterEvent --->Entry \n");
 
@@ -505,11 +521,13 @@ bool CCSPMBUS::CCSPMBUS_RegisterEvent(IN const Json::Value& req, OUT Json::Value
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_RegisterEvent :: MBUS Register Event Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n ssp_mbus_register_event Error --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_RegisterEvent --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -522,7 +540,7 @@ bool CCSPMBUS::CCSPMBUS_RegisterEvent(IN const Json::Value& req, OUT Json::Value
  * 			               ssp_mbus_exit
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_UnRegisterEvent(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_UnRegisterEvent(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_UnRegisterEvent --->Entry \n");
 
@@ -543,11 +561,13 @@ bool CCSPMBUS::CCSPMBUS_UnRegisterEvent(IN const Json::Value& req, OUT Json::Val
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_UnRegisterEvent :: MBUS UnRegister Event Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_mbus_unregister_event Error --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_UnRegisterEvent --->Exit\n");
 
-    return TEST_SUCCESS;
+   // return TEST_SUCCESS;
+	return;
 }
 
 
@@ -562,7 +582,7 @@ bool CCSPMBUS::CCSPMBUS_UnRegisterEvent(IN const Json::Value& req, OUT Json::Val
  * 			               ssp_mbus_loadcfg
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_LoadCfg(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_LoadCfg(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_LoadCfg --->Entry \n");
 
@@ -593,11 +613,13 @@ bool CCSPMBUS::CCSPMBUS_LoadCfg(IN const Json::Value& req, OUT Json::Value& resp
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_LoadCfg :: Component Config file loading FAILURE";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_mbus_loadcfg Error --->Exit\n");
-        return	TEST_FAILURE;
+        //return	TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_LoadCfg --->Exit \n");
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -612,7 +634,7 @@ bool CCSPMBUS::CCSPMBUS_LoadCfg(IN const Json::Value& req, OUT Json::Value& resp
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_LoadDmXml(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_LoadDmXml(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_LoadDmXml --->Entry \n");
 
@@ -642,11 +664,13 @@ bool CCSPMBUS::CCSPMBUS_LoadDmXml(IN const Json::Value& req, OUT Json::Value& re
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_LoadDmXml :: Component data model xml file loading FAILURE";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_mbus_load_dmlxml Error --->Exit\n");
-        return	TEST_FAILURE;
+        //return	TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_LoadDmXml --->Exit \n");
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 
@@ -662,7 +686,7 @@ bool CCSPMBUS::CCSPMBUS_LoadDmXml(IN const Json::Value& req, OUT Json::Value& re
  * 			               ssp_mbus_register_path
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_RegisterPath(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_RegisterPath(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_RegisterPath --->Entry \n");
 
@@ -680,11 +704,13 @@ bool CCSPMBUS::CCSPMBUS_RegisterPath(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_RegisterPath :: MBUS Register Path Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_mbus_register_path Error --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_RegisterPath --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 
@@ -700,7 +726,7 @@ bool CCSPMBUS::CCSPMBUS_RegisterPath(IN const Json::Value& req, OUT Json::Value&
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_QueryStatus(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_QueryStatus(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_QueryStatus --->Entry \n");
 
@@ -718,12 +744,14 @@ bool CCSPMBUS::CCSPMBUS_QueryStatus(IN const Json::Value& req, OUT Json::Value& 
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_QueryStatus :: MBUS Query Status Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_mbus_query_status Error --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_QueryStatus --->Exit\n");
 
-    return TEST_SUCCESS;
+   // return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -738,7 +766,7 @@ bool CCSPMBUS::CCSPMBUS_QueryStatus(IN const Json::Value& req, OUT Json::Value& 
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_GetAllocMemory(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_GetAllocMemory(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetAllocMemory --->Entry \n");
 
@@ -756,11 +784,13 @@ bool CCSPMBUS::CCSPMBUS_GetAllocMemory(IN const Json::Value& req, OUT Json::Valu
         response["result"]="FAILURE";
         response["details"]="Mbus_GetAllocMemory:: CCSPMBUS Get Allocated Memory Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_mbus_get_alloc_memory--->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetAllocMemory--->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -775,7 +805,7 @@ bool CCSPMBUS::CCSPMBUS_GetAllocMemory(IN const Json::Value& req, OUT Json::Valu
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_GetMaxMemory(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_GetMaxMemory(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetMaxMemory --->Entry \n");
 
@@ -793,11 +823,13 @@ bool CCSPMBUS::CCSPMBUS_GetMaxMemory(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_GetMaxMemory:: Mbus Get Max Memory Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetMaxMemory --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetMaxMemory --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -812,7 +844,7 @@ bool CCSPMBUS::CCSPMBUS_GetMaxMemory(IN const Json::Value& req, OUT Json::Value&
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_RegisterCapabilities(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_RegisterCapabilities(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_RegisterCapabilities --->Entry \n");
 
@@ -830,11 +862,13 @@ bool CCSPMBUS::CCSPMBUS_RegisterCapabilities(IN const Json::Value& req, OUT Json
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_RegisterCapabilities ::Mbus Register Capabilities Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_RegisterCapabilities --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_RegisterCapabilities --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -849,7 +883,7 @@ bool CCSPMBUS::CCSPMBUS_RegisterCapabilities(IN const Json::Value& req, OUT Json
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_UnRegisterNamespace(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_UnRegisterNamespace(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_UnRegisterNamespace --->Entry \n");
 
@@ -867,11 +901,13 @@ bool CCSPMBUS::CCSPMBUS_UnRegisterNamespace(IN const Json::Value& req, OUT Json:
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_UnRegisterNamespace :: UnRegister Namespace Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_UnRegisterNamespace --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_UnRegisterNamespace -->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -886,7 +922,7 @@ bool CCSPMBUS::CCSPMBUS_UnRegisterNamespace(IN const Json::Value& req, OUT Json:
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_UnRegisterComponent(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_UnRegisterComponent(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_UnRegisterComponent --->Entry \n");
 
@@ -904,11 +940,13 @@ bool CCSPMBUS::CCSPMBUS_UnRegisterComponent(IN const Json::Value& req, OUT Json:
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_UnRegisterComponent :: MBUS UnRegister Component Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_UnRegisterComponent ERROR --->Exit\n");
-        return  TEST_FAILURE;
+       // return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_UnRegisterComponent --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -923,7 +961,7 @@ bool CCSPMBUS::CCSPMBUS_UnRegisterComponent(IN const Json::Value& req, OUT Json:
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_DiskNamespaceSupportedByComponent(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_DiskNamespaceSupportedByComponent(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_DiskNamespaceSupportedByComponent --->Entry \n");
 
@@ -941,11 +979,13 @@ bool CCSPMBUS::CCSPMBUS_DiskNamespaceSupportedByComponent(IN const Json::Value& 
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_DiskNamespaceSupportedByComponent :: DiskNamespace Supported By Component Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_DiskNamespaceSupportedByComponent Error --->Exit\n");
-        return  TEST_FAILURE;
+      //  return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_DiskNamespaceSupportedByComponent --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -960,7 +1000,7 @@ bool CCSPMBUS::CCSPMBUS_DiskNamespaceSupportedByComponent(IN const Json::Value& 
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_DiskComponentSupportingDynamicTbl(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_DiskComponentSupportingDynamicTbl(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_DiskComponentSupportingDynamicTbl --->Entry \n");
 
@@ -978,11 +1018,13 @@ bool CCSPMBUS::CCSPMBUS_DiskComponentSupportingDynamicTbl(IN const Json::Value& 
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_DiskComponentSupportingDynamicTbl :: Disk Component Supporting Dynamic Tbl Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_DiskComponentSupportingDynamicTbl --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_DiskComponentSupportingDynamicTbl --->Exit\n");
 
-    return TEST_SUCCESS;
+   // return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -997,7 +1039,7 @@ bool CCSPMBUS::CCSPMBUS_DiskComponentSupportingDynamicTbl(IN const Json::Value& 
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_GetRegisteredComponents(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_GetRegisteredComponents(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetRegisteredComponents --->Entry \n");
 
@@ -1015,11 +1057,13 @@ bool CCSPMBUS::CCSPMBUS_GetRegisteredComponents(IN const Json::Value& req, OUT J
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_GetRegisteredComponents :: Get Registered Components Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetRegisteredComponents Error --->Exit\n");
-        return  TEST_FAILURE;
+       // return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetRegisteredComponents --->Exit\n");
 
-    return TEST_SUCCESS;
+   // return TEST_SUCCESS;
+	return;
 }
 
 
@@ -1035,7 +1079,7 @@ bool CCSPMBUS::CCSPMBUS_GetRegisteredComponents(IN const Json::Value& req, OUT J
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_GetHealth(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_GetHealth(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetHealth --->Entry \n");
 
@@ -1057,11 +1101,13 @@ bool CCSPMBUS::CCSPMBUS_GetHealth(IN const Json::Value& req, OUT Json::Value& re
     {
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_GetHealth :: Failed to retrievd the component health";
-        return  TEST_FAILURE;
+       // return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_GetHealth --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -1076,7 +1122,7 @@ bool CCSPMBUS::CCSPMBUS_GetHealth(IN const Json::Value& req, OUT Json::Value& re
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_DumpComponentRegistry(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_DumpComponentRegistry(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_DumpComponentRegistry --->Entry \n");
 
@@ -1093,11 +1139,13 @@ bool CCSPMBUS::CCSPMBUS_DumpComponentRegistry(IN const Json::Value& req, OUT Jso
     {
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_DumpComponentRegistry :: Dump Component Registry Failure";
-        return  TEST_FAILURE;
+     //   return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n tdk_mbus_DumpComponentRegistry --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -1112,7 +1160,7 @@ bool CCSPMBUS::CCSPMBUS_DumpComponentRegistry(IN const Json::Value& req, OUT Jso
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_IsSystemReady(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_IsSystemReady(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_IsSystemReady --->Entry \n");
 
@@ -1129,11 +1177,13 @@ bool CCSPMBUS::CCSPMBUS_IsSystemReady(IN const Json::Value& req, OUT Json::Value
     {
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_IsSystemReady :: IsSystem Ready Failure";
-        return  TEST_FAILURE;
+      //  return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_IsSystemReady --->Exit\n");
 
-    return TEST_SUCCESS;
+   // return TEST_SUCCESS;
+	return;
 }
 
 
@@ -1149,7 +1199,7 @@ bool CCSPMBUS::CCSPMBUS_IsSystemReady(IN const Json::Value& req, OUT Json::Value
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_SendSignal(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_SendSignal(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_SendSignal --->Entry \n");
 
@@ -1166,11 +1216,13 @@ bool CCSPMBUS::CCSPMBUS_SendSignal(IN const Json::Value& req, OUT Json::Value& r
     {
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_SendSignal :: Failed to send the event signal";
-        return  TEST_FAILURE;
+       // return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_SendSignal --->Exit\n");
 
-    return TEST_SUCCESS;
+   // return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -1185,7 +1237,7 @@ bool CCSPMBUS::CCSPMBUS_SendSignal(IN const Json::Value& req, OUT Json::Value& r
  * 			               ssp_mbus_load_dmlxml
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_RegisterBase(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_RegisterBase(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_RegisterBase--->Entry \n");
 
@@ -1203,11 +1255,13 @@ bool CCSPMBUS::CCSPMBUS_RegisterBase(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_RegisterBase :: Register Base Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_RegisterBase Error --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_RegisterBase --->Exit\n");
 
-    return TEST_SUCCESS;
+  //  return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -1222,7 +1276,7 @@ bool CCSPMBUS::CCSPMBUS_RegisterBase(IN const Json::Value& req, OUT Json::Value&
  *                                     ssp_mbus_req_sessionid
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_ReqSessionId(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_ReqSessionId(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_ReqSessionId --->Entry \n");
 
@@ -1240,12 +1294,14 @@ bool CCSPMBUS::CCSPMBUS_ReqSessionId(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_ReqSessionId :: MBUS ReqSession Id Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_ReqSessionId  Error --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_ReqSessionId --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -1259,7 +1315,7 @@ bool CCSPMBUS::CCSPMBUS_ReqSessionId(IN const Json::Value& req, OUT Json::Value&
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  *                                     ssp_mbus_inform_end_session
  ********************************************************************************************/
-bool CCSPMBUS::CCSPMBUS_InformEndSession(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_InformEndSession(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_InformEndSession --->Entry \n");
 
@@ -1277,11 +1333,13 @@ bool CCSPMBUS::CCSPMBUS_InformEndSession(IN const Json::Value& req, OUT Json::Va
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_InformEndOfSession :: MBus Inform End Of Session Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_InformEndSession Error --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_InformEndSession --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -1295,7 +1353,7 @@ bool CCSPMBUS::CCSPMBUS_InformEndSession(IN const Json::Value& req, OUT Json::Va
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  *                                     ssp_mbus_bus_check
  ********************************************************************************************/
-bool CCSPMBUS::CCSPMBUS_BusCheck(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_BusCheck(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_BusCheck --->Entry \n");
 
@@ -1314,11 +1372,13 @@ bool CCSPMBUS::CCSPMBUS_BusCheck(IN const Json::Value& req, OUT Json::Value& res
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_BusCheck :: MBus BusCheck Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_BusCheck --->Exit\n");
-        return  TEST_FAILURE;
+       // return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_BusCheck --->Exit\n");
 
-    return TEST_SUCCESS;
+    //return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -1333,7 +1393,7 @@ bool CCSPMBUS::CCSPMBUS_BusCheck(IN const Json::Value& req, OUT Json::Value& res
  *                                     ssp_mbus_check_namespace_datatype
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_CheckNamespaceDataType(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_CheckNamespaceDataType(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n  CCSPMBUS_CheckNamespaceDataType --->Entry \n");
 
@@ -1352,11 +1412,13 @@ bool CCSPMBUS::CCSPMBUS_CheckNamespaceDataType(IN const Json::Value& req, OUT Js
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_CheckNamespaceDataType :: MBus Check Namespace DataType Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_CheckNamespaceDataType Error --->Exit\n");
-        return  TEST_FAILURE;
+        //return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_CheckNamespaceDataType --->Exit\n");
 
-    return TEST_SUCCESS;
+   // return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -1369,7 +1431,7 @@ bool CCSPMBUS::CCSPMBUS_CheckNamespaceDataType(IN const Json::Value& req, OUT Js
  *                         ssp_mbus_unloadcfg
  ********************************************************************************************/
 
-bool CCSPMBUS::CCSPMBUS_UnloadCfg(IN const Json::Value& req, OUT Json::Value& response)
+void CCSPMBUS::CCSPMBUS_UnloadCfg(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n  CCSPMBUS_UnloadCfg --->Entry \n");
 
@@ -1387,11 +1449,13 @@ bool CCSPMBUS::CCSPMBUS_UnloadCfg(IN const Json::Value& req, OUT Json::Value& re
         response["result"]="FAILURE";
         response["details"]="CCSPMBUS_UnloadCfg :: Unloading cfg file failed";
         DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_UnloadCfg Error --->Exit\n");
-        return  TEST_FAILURE;
+       // return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CCSPMBUS_UnloadCfg --->Exit\n");
 
-    return TEST_SUCCESS;
+   // return TEST_SUCCESS;
+	return;
 }
 
 /**************************************************************************
@@ -1400,9 +1464,9 @@ bool CCSPMBUS::CCSPMBUS_UnloadCfg(IN const Json::Value& req, OUT Json::Value& re
  *		              class "CCSPMBUS".
  *
  **************************************************************************/
-extern "C" CCSPMBUS* CreateObject()
+extern "C" CCSPMBUS* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new CCSPMBUS();
+    return new CCSPMBUS(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -1410,11 +1474,11 @@ extern "C" CCSPMBUS* CreateObject()
  * Description   : This function will be used to clean the log details. 
  *
  **************************************************************************/
-bool CCSPMBUS::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool CCSPMBUS::cleanup(IN const char* szVersion)
 {
 
     DEBUG_PRINT(DEBUG_LOG,"CCSPMBUS cleanup --> Entry \n");
-
+#if 0
     if(ptrAgentObj==NULL)
     {
         return TEST_FAILURE;
@@ -1454,7 +1518,7 @@ bool CCSPMBUS::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("CCSPMBUS_UnloadCfg");
 
     DEBUG_PRINT(DEBUG_LOG,"CCSPMBUS cleanup --> Exit \n");
-
+#endif
     return TEST_SUCCESS;
 }
 

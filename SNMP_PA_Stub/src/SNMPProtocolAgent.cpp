@@ -22,19 +22,6 @@
 #define BUFFERMEMSIZE 512
 static std::string Command;
 
-/*************************************************************************
-  Function name : SNMPProtocolAgent::SNMPProtocolAgent
-
-Arguments     : NULL
-
-Description   : Constructor for SNMPProtocolAgent class
- ***************************************************************************/
-
-SNMPProtocolAgent::SNMPProtocolAgent()
-{
-	DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialized\n");
-}
-
 /***************************************************************************
  *Function name : testmodulepre_requisites
  *Descrption    : testmodulepre_requisites will  be used for setting the
@@ -64,13 +51,9 @@ Arguments     : Input arguments are Version string and SNMPProtocolAgent obj ptr
 
 Description   : Registering all the wrapper functions with the agent for using these functions in the script
  ***************************************************************************/
-bool SNMPProtocolAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool SNMPProtocolAgent::initialize(IN const char* szVersion)
 {
 	DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialize----->Entry\n");
-
-	ptrAgentObj->RegisterMethod(*this,&SNMPProtocolAgent::GetCommString, "GetCommString");
-	DEBUG_PRINT(DEBUG_TRACE, "SNMPProtocolAgent Initialize----->Exit\n");
-
 	return TEST_SUCCESS;
 }
 
@@ -81,7 +64,7 @@ bool SNMPProtocolAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptr
  *
  * @param [out] response- filled with SUCCESS or FAILURE and community string.
  ***************************************************************************/
-bool SNMPProtocolAgent::GetCommString(IN const Json::Value& req, OUT Json::Value& response)
+void SNMPProtocolAgent::GetCommString(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"GetCommString ------> Entry\n");
     char comm_string[50] = {'\0'};
@@ -103,7 +86,7 @@ bool SNMPProtocolAgent::GetCommString(IN const Json::Value& req, OUT Json::Value
         response["details"] = "popen() failure";
         DEBUG_PRINT(DEBUG_ERROR, "popen() failure\n");
 
-        return TEST_FAILURE;
+        return;
     }
     /*copy the response to a buffer */
     while (fgets(comm_string, sizeof(comm_string)-1, fp) != NULL)
@@ -115,7 +98,7 @@ bool SNMPProtocolAgent::GetCommString(IN const Json::Value& req, OUT Json::Value
     response["details"] = comm_string;
 
     DEBUG_PRINT(DEBUG_TRACE,"GetCommString ------> Exit");
-    return TEST_SUCCESS;
+    return;
 }
 
 /**************************************************************************
@@ -126,11 +109,11 @@ Arguments       : NULL
 Description     : This function is used to create a new object of the class "SNMPProtocolAgent".
  **************************************************************************/
 
-extern "C" SNMPProtocolAgent* CreateObject()
+extern "C" SNMPProtocolAgent* CreateObject(TcpSocketServer &ptrtcpServer)
 {
 	DEBUG_PRINT(DEBUG_TRACE, "Creating SNMP Protocol Agent Object\n");
 
-	return new SNMPProtocolAgent();
+	return new SNMPProtocolAgent(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -140,18 +123,9 @@ Arguments       : NULL
 
 Description     : This function will be used to the close things cleanly.
  **************************************************************************/
-bool SNMPProtocolAgent::cleanup(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj)
+bool SNMPProtocolAgent::cleanup(IN const char* szVersion)
 {
 	DEBUG_PRINT(DEBUG_TRACE, "cleaningup\n");
-
-	if(NULL == ptrAgentObj)
-	{
-		return TEST_FAILURE;
-	}
-
-	ptrAgentObj->UnregisterMethod("GetCommString");
-
-	DEBUG_PRINT(DEBUG_TRACE, "cleaningup done\n");
 
 	return TEST_SUCCESS;
 }

@@ -24,6 +24,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string.h>
+#include <unistd.h>
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #include <sys/sysinfo.h>
 #include <sys/utsname.h>
 #include <ifaddrs.h>
@@ -44,31 +46,48 @@
 using namespace std;
 
 class RDKTestAgent;
-class MTA_Agent : public RDKTestStubInterface
+class MTA_Agent : public RDKTestStubInterface, public AbstractServer<MTA_Agent>
 {
     public:
+
+                 MTA_Agent(TcpSocketServer &ptrRpcServer) : AbstractServer <MTA_Agent>(ptrRpcServer)
+                {
+                  this->bindAndAddMethod(Procedure("MTA_agent_Init", PARAMS_BY_NAME, JSON_STRING,NULL), &MTA_Agent::MTA_agent_Init);
+                  this->bindAndAddMethod(Procedure("MTA_agent_Terminate", PARAMS_BY_NAME, JSON_STRING,NULL), &MTA_Agent::MTA_agent_Terminate);
+                  this->bindAndAddMethod(Procedure("MTA_agent_GetParameterNames", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,"ParamList", JSON_STRING,NULL), &MTA_Agent::MTA_agent_GetParameterNames);
+                  this->bindAndAddMethod(Procedure("MTA_agent_SetParameterValues", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,"ParamValue", JSON_STRING,"Type", JSON_STRING,NULL), &MTA_Agent::MTA_agent_SetParameterValues);
+                  this->bindAndAddMethod(Procedure("MTA_agent_GetParameterValues", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,NULL), &MTA_Agent::MTA_agent_GetParameterValues);
+                  this->bindAndAddMethod(Procedure("MTA_agent_GetParameterAttr", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,NULL), &MTA_Agent::MTA_agent_GetParameterAttr);
+                  this->bindAndAddMethod(Procedure("MTA_agent_SetParameterAttr", PARAMS_BY_NAME,  JSON_STRING,"ParamName", JSON_STRING,"AccessControl", JSON_STRING,"Notify", JSON_STRING,NULL), &MTA_Agent::MTA_agent_SetParameterAttr);
+                  this->bindAndAddMethod(Procedure("MTA_agent_Commit", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,"ParamValue", JSON_STRING,"Type", JSON_STRING,NULL), &MTA_Agent::MTA_agent_Commit);
+                  this->bindAndAddMethod(Procedure("MTA_agent_GetParameterNames_NextLevel", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,NULL), &MTA_Agent::MTA_agent_GetParameterNames_NextLevel);
+                  this->bindAndAddMethod(Procedure("MTA_agent_DelTble", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,NULL), &MTA_Agent::MTA_agent_DelTble);
+                  this->bindAndAddMethod(Procedure("MTA_agent_AddTbl", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,NULL), &MTA_Agent::MTA_agent_AddTbl);
+                  this->bindAndAddMethod(Procedure("MTA_agent_SetSessionId", PARAMS_BY_NAME, JSON_STRING,"pathname",JSON_STRING,"priority", JSON_INTEGER,"sessionId", JSON_INTEGER,"override",JSON_INTEGER,NULL), &MTA_Agent::MTA_agent_SetSessionId);
+                  this->bindAndAddMethod(Procedure("MTA_agent_GetHealth", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,NULL), &MTA_Agent::MTA_agent_GetHealth);
+		}
         /*Constructor*/
-        MTA_Agent();
+//        MTA_Agent();
 
         /*Inherited functions*/
-        bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-        bool cleanup(const char*, RDKTestAgent*);
+        bool initialize(IN const char* szVersion);
+        bool cleanup(const char* szVersion);
         std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
 
-        bool MTA_agent_Init(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_Terminate(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_GetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_SetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);		
-        bool MTA_agent_Commit(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_GetParameterNames_NextLevel(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_AddTbl(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_DelTble(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_SetSessionId(IN const Json::Value& req, OUT Json::Value& response);
-        bool MTA_agent_GetHealth(IN const Json::Value& req, OUT Json::Value& response);	
+        void MTA_agent_Init(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_Terminate(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_GetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_SetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);		
+        void MTA_agent_Commit(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_GetParameterNames_NextLevel(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_AddTbl(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_DelTble(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_SetSessionId(IN const Json::Value& req, OUT Json::Value& response);
+        void MTA_agent_GetHealth(IN const Json::Value& req, OUT Json::Value& response);	
 
 };
 

@@ -34,16 +34,6 @@
       return TEST_FAILURE; \
 }
 
-/*************************************************************************
- *Function name : ethsw_stub_hal::ethsw_stub_hal
- *Description   : Constructor for Platform class
- *@param [in]   : None
- ***************************************************************************/
-ethsw_stub_hal::ethsw_stub_hal()
-{
-	DEBUG_PRINT(DEBUG_TRACE, "ethsw_stub_hal Initialized\n");
-}
-
 /********************************************************************************************
  *Function name : testmodulepre_requisites
  *Description   : testmodulepre_requisites will  be used for registering TDK with the CR 
@@ -75,31 +65,9 @@ bool ethsw_stub_hal::testmodulepost_requisites()
  *param [in]    : szVersion - version, ptrAgentObj - Agent obhect
  *@param [out]  : Return TEST_SUCCESS or TEST_FAILURE
  ***************************************************************************************/
-bool ethsw_stub_hal::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool ethsw_stub_hal::initialize(IN const char* szVersion)
 {
 	DEBUG_PRINT(DEBUG_TRACE, "ethsw_stub_hal Initialize----->Entry\n");
-	CHECK_PARAM_AND_RET(szVersion);
-	CHECK_PARAM_AND_RET(ptrAgentObj);
-
-	ptrAgentObj->RegisterMethod(*this,&ethsw_stub_hal::ethsw_stub_hal_Get_Port_Admin_Status,
-					"ethsw_stub_hal_Get_Port_Admin_Status");
-	ptrAgentObj->RegisterMethod(*this,&ethsw_stub_hal::ethsw_stub_hal_Get_Port_Cfg,
-					"ethsw_stub_hal_Get_Port_Cfg");
-	ptrAgentObj->RegisterMethod(*this,&ethsw_stub_hal::ethsw_stub_hal_Get_Port_Status,
-					"ethsw_stub_hal_Get_Port_Status");
-	ptrAgentObj->RegisterMethod(*this,&ethsw_stub_hal::ethsw_stub_hal_Init,
-					"ethsw_stub_hal_Init");
-	ptrAgentObj->RegisterMethod(*this,&ethsw_stub_hal::ethsw_stub_hal_LocatePort_By_MacAddress,
-					"ethsw_stub_hal_LocatePort_By_MacAddress");
-	ptrAgentObj->RegisterMethod(*this,&ethsw_stub_hal::ethsw_stub_hal_SetAgingSpeed,
-					"ethsw_stub_hal_SetAgingSpeed");
-	ptrAgentObj->RegisterMethod(*this,&ethsw_stub_hal::ethsw_stub_hal_SetPortAdminStatus,
-					"ethsw_stub_hal_SetPortAdminStatus");
-	ptrAgentObj->RegisterMethod(*this,&ethsw_stub_hal::ethsw_stub_hal_SetPortCfg,
-					"ethsw_stub_hal_SetPortCfg");
-
-	DEBUG_PRINT(DEBUG_TRACE, "ethsw_stub_hal Initialize----->Exit\n");
-
 	return TEST_SUCCESS;
 }
 
@@ -109,7 +77,7 @@ bool ethsw_stub_hal::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAge
  *@param [in]   : req - It will give port id (port number) and flag(for negative scenario)
  *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  *******************************************************************************************************/
-bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Admin_Status(IN const Json::Value& req, OUT Json::Value& response)
+void ethsw_stub_hal::ethsw_stub_hal_Get_Port_Admin_Status(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int portID = 0;
 	char getAdminStatus[MAX_STRING_SIZE] = {0};
@@ -120,7 +88,7 @@ bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Admin_Status(IN const Json::Value& 
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 	portID = req["PortID"].asInt();
 
@@ -134,13 +102,13 @@ bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Admin_Status(IN const Json::Value& 
 		DEBUG_PRINT(DEBUG_TRACE, "Successfully retrieved the admin status\n");
 		response["result"] = "SUCCESS";
 		response["details"] = getAdminStatus;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "ethsw_stub_hal_Get_Port_Admin_Status function has failed.Please check logs";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -151,7 +119,7 @@ bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Admin_Status(IN const Json::Value& 
  *@param [in]   : req - It will give port id (port number) and flag(for negative scenario)
  *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************/
-bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Cfg(IN const Json::Value& req, OUT Json::Value& response)
+void ethsw_stub_hal::ethsw_stub_hal_Get_Port_Cfg(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int portID = 0;
 	char duplexMode[MAX_STRING_SIZE] = {0};
@@ -164,7 +132,7 @@ bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Cfg(IN const Json::Value& req, OUT 
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 	portID = req["PortID"].asInt();
 	if(&req["flag"])
@@ -177,13 +145,13 @@ bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Cfg(IN const Json::Value& req, OUT 
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "/%d/%s/", maxBitRate, duplexMode);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "ethsw_stub_hal_Get_Port_Cfg function has failed.Please check logs";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -194,7 +162,7 @@ bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Cfg(IN const Json::Value& req, OUT 
  *@param [in]   : req - It will give port id (port number) and flag(for negative scenario)
  *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************/
-bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Status(IN const Json::Value& req, OUT Json::Value& response)
+void ethsw_stub_hal::ethsw_stub_hal_Get_Port_Status(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int portID = 0;
 	char linkStatus[MAX_STRING_SIZE] = {0};
@@ -208,7 +176,7 @@ bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Status(IN const Json::Value& req, O
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 	portID = req["PortID"].asInt();
 
@@ -222,13 +190,13 @@ bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Status(IN const Json::Value& req, O
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "/%d/%s/", bitRate, linkStatus);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "ethsw_stub_hal_Get_Port_Status function has failed.Please check logs";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -238,20 +206,20 @@ bool ethsw_stub_hal::ethsw_stub_hal_Get_Port_Status(IN const Json::Value& req, O
  *@param [in]   : req - request sent by Test Manager
  *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************/
-bool ethsw_stub_hal::ethsw_stub_hal_Init(IN const Json::Value& req, OUT Json::Value& response)
+void ethsw_stub_hal::ethsw_stub_hal_Init(IN const Json::Value& req, OUT Json::Value& response)
 {
 	DEBUG_PRINT(DEBUG_TRACE,"Inside Function ethsw_stub_hal_Init stub\n");
 	if(ssp_ethsw_stub_hal_Init() == RETURN_SUCCESS)
 	{
 		response["result"] = "SUCCESS";
 		response["details"] = "ethsw_stub_hal_Init function has been intailized successfully";
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "ethsw_stub_hal_Init function has failed.Please check logs";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -262,7 +230,7 @@ bool ethsw_stub_hal::ethsw_stub_hal_Init(IN const Json::Value& req, OUT Json::Va
  *@param [in]   : req - It will give MAC Address(MAC of associated device) and flag(for negative scenario)
  *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ****************************************************************************************************************/
-bool ethsw_stub_hal::ethsw_stub_hal_LocatePort_By_MacAddress(IN const Json::Value& req, OUT Json::Value& response)
+void ethsw_stub_hal::ethsw_stub_hal_LocatePort_By_MacAddress(IN const Json::Value& req, OUT Json::Value& response)
 {
 	char macID[MAX_STRING_SIZE] = {0};
 	int portId = 0;
@@ -275,7 +243,7 @@ bool ethsw_stub_hal::ethsw_stub_hal_LocatePort_By_MacAddress(IN const Json::Valu
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 	strncpy(macID,req["macID"].asCString(), MAX_STRING_SIZE);
 	if(&req["flag"])
@@ -288,13 +256,13 @@ bool ethsw_stub_hal::ethsw_stub_hal_LocatePort_By_MacAddress(IN const Json::Valu
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%d", portId);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "ethsw_stub_hal_LocatePort_By_MacAddress function has failed.Please check logs";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -304,7 +272,7 @@ bool ethsw_stub_hal::ethsw_stub_hal_LocatePort_By_MacAddress(IN const Json::Valu
  *@param [in]   : req - It will give port id and aging speed to be set
  *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ******************************************************************************************/
-bool ethsw_stub_hal::ethsw_stub_hal_SetAgingSpeed(IN const Json::Value& req, OUT Json::Value& response)
+void ethsw_stub_hal::ethsw_stub_hal_SetAgingSpeed(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int portID = 0;
 	int agingSpeed = 0;
@@ -315,13 +283,13 @@ bool ethsw_stub_hal::ethsw_stub_hal_SetAgingSpeed(IN const Json::Value& req, OUT
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 	if(&req["AgingSpeed"] == NULL)
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 
 	portID = req["PortID"].asInt();
@@ -333,13 +301,13 @@ bool ethsw_stub_hal::ethsw_stub_hal_SetAgingSpeed(IN const Json::Value& req, OUT
 	{
 		response["result"] = "SUCCESS";
 		response["details"] = "ethsw_stub_hal_SetAgingSpeed function has passed";
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "ethsw_stub_hal_SetAgingSpeed function has failed.Please check logs";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -349,7 +317,7 @@ bool ethsw_stub_hal::ethsw_stub_hal_SetAgingSpeed(IN const Json::Value& req, OUT
  *@param [in]   : req - It will give port id and admin status to be set
  *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  *******************************************************************************************/
-bool ethsw_stub_hal::ethsw_stub_hal_SetPortAdminStatus(IN const Json::Value& req, OUT Json::Value& response)
+void ethsw_stub_hal::ethsw_stub_hal_SetPortAdminStatus(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int portID = 0;
 	char adminStatus[MAX_STRING_SIZE] = {0};
@@ -360,14 +328,14 @@ bool ethsw_stub_hal::ethsw_stub_hal_SetPortAdminStatus(IN const Json::Value& req
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 
 	if(&req["adminstatus"] == NULL)
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 
 	portID = req["PortID"].asInt();
@@ -377,13 +345,13 @@ bool ethsw_stub_hal::ethsw_stub_hal_SetPortAdminStatus(IN const Json::Value& req
 	{
 		response["result"] = "SUCCESS";
 		response["details"] = "ethsw_stub_hal_SetPortAdminStatus function has been executed successfully";
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "ethsw_stub_hal_SetPortAdminStatus function has been failed";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -393,7 +361,7 @@ bool ethsw_stub_hal::ethsw_stub_hal_SetPortAdminStatus(IN const Json::Value& req
  *@param [in]   : req - It will give port id, linkrate and duplex mode to be set
  *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ********************************************************************************************/
-bool ethsw_stub_hal::ethsw_stub_hal_SetPortCfg(IN const Json::Value& req, OUT Json::Value& response)
+void ethsw_stub_hal::ethsw_stub_hal_SetPortCfg(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int portID = 0;
 	int linkRate = 0;
@@ -405,19 +373,19 @@ bool ethsw_stub_hal::ethsw_stub_hal_SetPortCfg(IN const Json::Value& req, OUT Js
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 	if(&req["linkrate"] == NULL)
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 	if(&req["mode"] == NULL)
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "NULL parameter as input argument";
-		return TEST_FAILURE;
+		return;
 	}
 
 	portID = req["PortID"].asInt();
@@ -428,13 +396,13 @@ bool ethsw_stub_hal::ethsw_stub_hal_SetPortCfg(IN const Json::Value& req, OUT Js
 	{
 		response["result"] = "SUCCESS";
 		response["details"] = "ethsw_stub_hal_SetPortCfg function has been executed successfully";
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "ethsw_stub_hal_SetPortCfg function has been failed";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -444,9 +412,9 @@ bool ethsw_stub_hal::ethsw_stub_hal_SetPortCfg(IN const Json::Value& req, OUT Js
  *Description     : This function is used to create a new object of the class "ethsw_stub_hal".
  *@param [in]     : None
  ***************************************************************************************************/
-extern "C" ethsw_stub_hal* CreateObject()
+extern "C" ethsw_stub_hal* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-	return new ethsw_stub_hal();
+	return new ethsw_stub_hal(ptrtcpServer);
 }
 
 /*************************************************************************************
@@ -455,22 +423,9 @@ extern "C" ethsw_stub_hal* CreateObject()
  *@param [in]   : szVersion - version, ptrAgentObj - Agent object
  *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  **************************************************************************************/
-bool ethsw_stub_hal::cleanup(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj)
+bool ethsw_stub_hal::cleanup(IN const char* szVersion)
 {
 	DEBUG_PRINT(DEBUG_TRACE, "cleaning up\n");
-
-	CHECK_PARAM_AND_RET(szVersion);
-	CHECK_PARAM_AND_RET(ptrAgentObj);
-
-	ptrAgentObj->UnregisterMethod("ethsw_stub_hal_Get_Port_Admin_Status");
-	ptrAgentObj->UnregisterMethod("ethsw_stub_hal_Get_Port_Cfg");
-	ptrAgentObj->UnregisterMethod("ethsw_stub_hal_Get_Port_Status");
-	ptrAgentObj->UnregisterMethod("ethsw_stub_hal_Init");
-	ptrAgentObj->UnregisterMethod("ethsw_stub_hal_LocatePort_By_MacAddress");
-	ptrAgentObj->UnregisterMethod("ethsw_stub_hal_SetAgingSpeed");
-	ptrAgentObj->UnregisterMethod("ethsw_stub_hal_SetPortAdminStatus");
-	ptrAgentObj->UnregisterMethod("ethsw_stub_hal_SetPortCfg");
-
 	return TEST_SUCCESS;
 }
 
