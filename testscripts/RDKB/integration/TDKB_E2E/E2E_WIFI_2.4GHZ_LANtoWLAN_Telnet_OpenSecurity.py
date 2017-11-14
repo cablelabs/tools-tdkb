@@ -119,13 +119,12 @@ if "SUCCESS" in loadmodulestatus.upper():
 
         #Assign the WIFI parameters names to a variable
         ssidName = "Device.WiFi.SSID.%s.SSID" %tdkbE2EUtility.ssid_2ghz_index
-        keyPassPhrase = "Device.WiFi.AccessPoint.%s.Security.KeyPassphrase" %tdkbE2EUtility.ssid_2ghz_index
         securityMode = "Device.WiFi.AccessPoint.%s.Security.ModeEnabled" %tdkbE2EUtility.ssid_2ghz_index
 	radioEnable = "Device.WiFi.Radio.%s.Enable" %tdkbE2EUtility.ssid_2ghz_index
 	ssidEnable = "Device.WiFi.SSID.%s.Enable" %tdkbE2EUtility.ssid_2ghz_index
 
         #Get the value of the wifi parameters that are currently set.
-        paramList=[ssidName,keyPassPhrase,securityMode,radioEnable,ssidEnable]
+        paramList=[ssidName,securityMode,radioEnable,ssidEnable]
         tdkTestObj,status,orgValue = getMultipleParameterValues(obj,paramList)
 
         if expectedresult in status:
@@ -136,17 +135,16 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "[TEST EXECUTION RESULT] : SUCCESS";
 
             # Set securityMode,radioEnable and ssidEnable for 2.4ghz"
-            setValuesList = [tdkbE2EUtility.ssid_2ghz_name,tdkbE2EUtility.ssid_2ghz_pwd,'None','true','true'];
+            setValuesList = [tdkbE2EUtility.ssid_2ghz_name,'None','true','true'];
             print "WIFI parameter values that are set: %s" %setValuesList
 
             list1 = [ssidName,tdkbE2EUtility.ssid_2ghz_name,'string']
-            list2 = [keyPassPhrase,tdkbE2EUtility.ssid_2ghz_pwd,'string']
-            list3 = [securityMode,'None','string']
-	    list4 = [radioEnable,'true','bool']
-	    list5 = [ssidEnable,'true','bool']
+            list2 = [securityMode,'None','string']
+	    list3 = [radioEnable,'true','bool']
+	    list4 = [ssidEnable,'true','bool']
 
             #Concatenate the lists with the elements separated by pipe
-            setParamList = list1 + list2 + list3 + list4 + list5
+            setParamList = list1 + list2 + list3 + list4
             setParamList = "|".join(map(str, setParamList))
 
             tdkTestObj,actualresult,details = setMultipleParameterValues(obj,setParamList)
@@ -158,7 +156,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 print "[TEST EXECUTION RESULT] : SUCCESS";
 
                 #Retrieve the values after set and compare
-                newParamList=[ssidName,keyPassPhrase,securityMode,radioEnable,ssidEnable]
+                newParamList=[ssidName,securityMode,radioEnable,ssidEnable]
                 tdkTestObj,status,newValues = getMultipleParameterValues(obj,newParamList)
 
                 if expectedresult in status and setValuesList == newValues:
@@ -270,13 +268,12 @@ if "SUCCESS" in loadmodulestatus.upper():
 
             #Prepare the list of parameter values to be reverted
             list1 = [ssidName,orgValue[0],'string']
-            list2 = [keyPassPhrase,orgValue[1],'string']
-	    list3 = [securityMode,orgValue[2],'string']
-            list4 = [radioEnable,orgValue[3],'bool']
-            list5 = [ssidEnable,orgValue[4],'bool']
+	    list2 = [securityMode,orgValue[1],'string']
+            list3 = [radioEnable,orgValue[2],'bool']
+            list4 = [ssidEnable,orgValue[3],'bool']
 
             #Concatenate the lists with the elements separated by pipe
-            revertParamList = list1 + list2 + list3 + list4 + list5
+            revertParamList = list1 + list2 + list3 + list4
             revertParamList = "|".join(map(str, revertParamList))
 
             #Revert the values to original

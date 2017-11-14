@@ -133,8 +133,28 @@ if "SUCCESS" in loadmodulestatus.upper():
                 #Retrieve the values after set and compare
                 newParamList=[ssidName,keyPassPhrase,operatingStandard]
                 tdkTestObj,status,newValues = getMultipleParameterValues(obj,newParamList)
-                
-                if expectedresult in status and setValuesList == newValues:
+
+		#separate operatingStandard values from the list           
+		setValuesSubList = setValuesList[0:2]
+		newValuesSubList = newValues[0:2]   
+		setStdList = setValuesList[-1].split(",")
+		getStdList = newValues[-1].split(",")
+		print "Lists: ", setValuesSubList,newValuesSubList,setStdList,getStdList
+
+                flag="false"
+                if len(setStdList)==len(getStdList):
+                     for i in getStdList:
+                         flag="false"
+                         for j in setStdList:
+                             if j==i:
+                                 flag="true"
+                                 break
+                         if flag=="false":
+                             break
+                    
+                #if expectedresult in status and setValuesList == newValues:
+                if expectedresult in status and setValuesSubList == newValuesSubList and flag == "true":
+
                     tdkTestObj.setResultStatus("SUCCESS");
                     print "TEST STEP 3: Get the current SSID, KeyPassphrase, operating standard"
                     print "EXPECTED RESULT 3: Should retrieve the current SSID, KeyPassphrase, operating standard"

@@ -17,28 +17,45 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <xml>
-  <id/>
-  <version>1</version>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>2</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>E2E_WIFI_2.4GHZ_AutoChannelEnabled</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id> </primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>tdkb_e2e_Get</primitive_test_name>
+  <!--  -->
   <primitive_test_version>2</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>Verify whether automatic channel selection can be enabled for 2.4GHZ radio band and client should be able to connect to one of the non interference channel</synopsis>
-  <groups_id/>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>15</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
   <advanced_script>false</advanced_script>
-  <remarks/>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
     <box_type>Emulator</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_TDKB_E2E_37</test_case_id>
@@ -59,11 +76,11 @@
     <test_stub_interface>tdkb_e2e</test_stub_interface>
     <test_script>E2E_WIFI_2.4GHZ_AutoChannelEnabled</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
@@ -226,7 +243,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             #Prepare the list of parameter values to be reverted
             list1 = [ssidName,orgValue[0],'string']
             list2 = [keyPassPhrase,orgValue[1],'string']
-            list3 = [autoChannelEnable,orgValue[2],'string']
+            list3 = [autoChannelEnable,orgValue[2],'bool']
 
             #Concatenate the lists with the elements separated by pipe
             revertParamList = list1 + list2 + list3 
