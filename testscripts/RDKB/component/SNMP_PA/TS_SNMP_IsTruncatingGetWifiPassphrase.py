@@ -135,7 +135,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiloadmodulestatus.u
 
 	#set 32+ passphrase using setparams()
 	temp_pass = "passwordpasswordpasswordpasswordpassword"
-        tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+        tdkTestObj = wifiObj.createTestStep('WIFIAgent_Set');
         tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
         tdkTestObj.addParameter("paramValue",temp_pass);
         tdkTestObj.addParameter("paramType","string");
@@ -169,7 +169,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiloadmodulestatus.u
 	        print "ACTUAL RESULT : FAILURE, snmpget for passphrase failed %s" %get_details;
 
 	    #setting passphrase back to original value
-            tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+            tdkTestObj = wifiObj.createTestStep('WIFIAgent_Set');
             tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
             tdkTestObj.addParameter("paramValue",orgPassphrase);
             tdkTestObj.addParameter("paramType","string");

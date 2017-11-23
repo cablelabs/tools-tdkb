@@ -143,7 +143,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiagentloadmodulesta
             orgSsid = tdkTestObj.getResultDetails().split("VALUE:")[1].split(' ')[0];
 
             #Disable Radio
-            tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+            tdkTestObj = wifiagentObj.createTestStep('WIFIAgent_Set');
             tdkTestObj.addParameter("paramName","Device.WiFi.Radio.1.Enable");
             tdkTestObj.addParameter("paramValue","true");
             tdkTestObj.addParameter("paramType","boolean");
@@ -198,7 +198,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiagentloadmodulesta
                         print "ACTUAL RESULT 1: FAILURE, snmpget failed"
 
                     #restore previous state of wifi.SSID
-                    tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+                    tdkTestObj = wifiagentObj.createTestStep('WIFIAgent_Set');
                     tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
                     tdkTestObj.addParameter("paramValue",orgSsid);
                     tdkTestObj.addParameter("paramType","boolean");
@@ -220,7 +220,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiagentloadmodulesta
                     print "ACTUAL RESULT 1: FAILURE, not enabled";
 
                 #Restore WiFi.Radio
-                tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+                tdkTestObj = wifiagentObj.createTestStep('WIFIAgent_Set');
                 tdkTestObj.addParameter("paramName","Device.WiFi.Radio.1.Enable");
                 tdkTestObj.addParameter("paramValue",orgRadio);
                 tdkTestObj.addParameter("paramType","boolean");

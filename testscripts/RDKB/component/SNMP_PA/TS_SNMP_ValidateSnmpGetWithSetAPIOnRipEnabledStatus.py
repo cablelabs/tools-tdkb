@@ -136,7 +136,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         print "[TEST EXECUTION RESULT] : SUCCESS"
         snmpgetstatus = actResponse.rsplit(None, 1)[-1];
 
-	tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+	tdkTestObj = pamObj.createTestStep('pam_SetParameterValues');
         tdkTestObj.addParameter("ParamName","Device.Routing.RIP.Enable");
         tdkTestObj.addParameter("Type","boolean");
 	tdkTestObj.addParameter("ParamValue","true");
@@ -186,7 +186,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
 	        boolean ="true";
 	    else:
 	        boolean="false";
-	    tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+	    tdkTestObj = pamObj.createTestStep('pam_SetParameterValues');
             tdkTestObj.addParameter("ParamName","Device.Routing.RIP.Enable");
             tdkTestObj.addParameter("Type","boolean");
             tdkTestObj.addParameter("ParamValue",boolean);

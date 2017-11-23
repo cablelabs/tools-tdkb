@@ -141,7 +141,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         #Set the status of MocaDevice as true
         actResponse =snmplib.SnmpExecuteCmd("snmpset", commSetStr, "-v 2c", "1.3.6.1.4.1.17270.50.3.1.1.0 i 1", ipaddress);
         sleep(5);
-	tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+	tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
         tdkTestObj.addParameter("ParamName","Device.ManagementServer.EnableCWMP");
         expectedresult="SUCCESS";
         #Execute the test case in DUT

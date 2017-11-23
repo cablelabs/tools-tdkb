@@ -139,7 +139,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         org_value = actResponse.rsplit(None, 1)[-1];
         print "Current Status is %s " %org_value;
         #Set the status of MocaDevice as true
-	tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+	tdkTestObj = pamObj.createTestStep('pam_SetParameterValues');
         tdkTestObj.addParameter("ParamName","Device.UserInterface.X_CISCO_COM_RemoteAccess.HttpEnable");
         tdkTestObj.addParameter("ParamValue","true");
         tdkTestObj.addParameter("Type","boolean");

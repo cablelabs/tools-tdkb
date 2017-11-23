@@ -118,7 +118,7 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiloadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
     ########## Script to Execute the snmp command ###########
-    tdkTestObj = obj.createTestStep('WIFIAgent_Get');
+    tdkTestObj = wifiObj.createTestStep('WIFIAgent_Get');
     tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
@@ -133,7 +133,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiloadmodulestatus.u
 	org_status=details.split("VALUE:")[1].split(' ')[0];
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS"
-        tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+        tdkTestObj = wifiObj.createTestStep('WIFIAgent_Set');
 	tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
         tdkTestObj.addParameter("paramValue","wifipassword");
         tdkTestObj.addParameter("paramType","string");
@@ -158,7 +158,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiloadmodulestatus.u
             ########## Script to Execute the snmp command ###########
 	    actResponse =snmplib.SnmpExecuteCmd("snmpset", communityString, "-v 2c", "1.3.6.1.4.1.17270.50.2.1.1.1002.0 i 3", ipaddress);
 	    sleep(180);
-	    tdkTestObj = obj.createTestStep('WIFIAgent_Get');
+	    tdkTestObj = wifiObj.createTestStep('WIFIAgent_Get');
 	    tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
@@ -180,7 +180,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in wifiloadmodulestatus.u
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : FAILURE"
             #set the previous value to WiFi.SSID if wifi reset is failed
-            tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+            tdkTestObj = wifiObj.createTestStep('WIFIAgent_Set');
             tdkTestObj.addParameter("paramName","Device.WiFi.AccessPoint.1.Security.KeyPassphrase");
             tdkTestObj.addParameter("paramValue",org_status);
             tdkTestObj.addParameter("paramType","string");

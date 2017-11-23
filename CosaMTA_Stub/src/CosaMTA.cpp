@@ -582,7 +582,7 @@ void CosaMTA::CosaMTA_GetServiceClass(IN const Json::Value& req, OUT Json::Value
  * Description      : This function will get the dect value
  *
  * @param [in]  req - handleType : Holds the message bus handle
- * @param [in]  req - boolValue : Holds whether the value is 0 or 1
+ * @param [in]  req - Value : Holds whether the value is 0 or 1
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
@@ -594,7 +594,7 @@ void CosaMTA::CosaMTA_DectGetEnable(IN const Json::Value& req, OUT Json::Value& 
 
     int returnValue = 0;
     int handleType = 0;
-    int boolValue = 0;
+    int Value = 0;
     char Details[64] = {'\0'};
 
     /* Validate the input arguments */
@@ -605,7 +605,7 @@ void CosaMTA::CosaMTA_DectGetEnable(IN const Json::Value& req, OUT Json::Value& 
         return;
     }
 
-    if(&req["boolValue"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -613,9 +613,9 @@ void CosaMTA::CosaMTA_DectGetEnable(IN const Json::Value& req, OUT Json::Value& 
     }
 
     handleType = req["handleType"].asInt();
-    boolValue = req["boolValue"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue = ssp_CosaDmlMTADectGetEnable(handleType,boolValue);
+    returnValue = ssp_CosaDmlMTADectGetEnable(handleType,Value);
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {
@@ -652,7 +652,7 @@ void CosaMTA::CosaMTA_DectSetEnable(IN const Json::Value& req, OUT Json::Value& 
 
     int returnValue = 0;
     int handleType = 0;
-    int boolValue = 0;
+    int Value = 0;
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -662,7 +662,7 @@ void CosaMTA::CosaMTA_DectSetEnable(IN const Json::Value& req, OUT Json::Value& 
         return;
     }
 
-    if(&req["boolValue"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -670,9 +670,9 @@ void CosaMTA::CosaMTA_DectSetEnable(IN const Json::Value& req, OUT Json::Value& 
     }
 
     handleType = req["handleType"].asInt();
-    boolValue = req["boolValue"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue = ssp_CosaDmlMTADectSetEnable(handleType,boolValue);
+    returnValue = ssp_CosaDmlMTADectSetEnable(handleType,Value);
     if(0 == returnValue)
     {
         response["result"]="SUCCESS";
@@ -695,7 +695,7 @@ void CosaMTA::CosaMTA_DectSetEnable(IN const Json::Value& req, OUT Json::Value& 
  * Description      : This function will get the dect registration mode
  *
  * @param [in]  req - handleType : Holds the message bus handle
- * @param [in]  req - boolValue : Holds whether boolvalue as 0 or 1
+ * @param [in]  req - Value : Holds whether boolvalue as 0 or 1
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
@@ -707,7 +707,7 @@ void CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Jso
 
     int returnValue = 0;
     int handleType = 0;
-    int boolValue = 0;
+    int Value = 0;
     char Details[64]={'\0'};
 
     /* Validate the input arguments */
@@ -718,7 +718,7 @@ void CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Jso
         return;
     }
 
-    if(&req["boolValue"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -726,9 +726,9 @@ void CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Jso
     }
 
     handleType = req["handleType"].asInt();
-    boolValue    = req["boolValue"].asInt();
+    Value    = req["Value"].asInt();
 
-    returnValue = ssp_CosaDmlMTADectGetRegistrationMode(handleType,boolValue);
+    returnValue = ssp_CosaDmlMTADectGetRegistrationMode(handleType,Value);
     if(0 == returnValue)
     {
 	sprintf(Details,"Registration mode is :%d",returnValue);
@@ -752,7 +752,7 @@ void CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Jso
  * Description      : This function will set the dect registration mode
  *
  * @param [in]  req - handleType : Holds the message bus handle
- * @param [in]  req - boolValue : Holds the boolValue as 0 or 1
+ * @param [in]  req - Value : Holds the Value as 0 or 1
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
@@ -764,7 +764,7 @@ void CosaMTA::CosaMTA_DectSetRegistrationMode(IN const Json::Value& req, OUT Jso
 
     int returnValue = 0;
     int handleType = 0;
-    int boolValue = 0;
+    int Value = 0;
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -774,7 +774,7 @@ void CosaMTA::CosaMTA_DectSetRegistrationMode(IN const Json::Value& req, OUT Jso
         return;
     }
 
-    if(&req["boolValue"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -782,9 +782,9 @@ void CosaMTA::CosaMTA_DectSetRegistrationMode(IN const Json::Value& req, OUT Jso
     }
 
     handleType = req["handleType"].asInt();
-    boolValue = req["boolValue"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue = ssp_CosaDmlMTADectSetRegistrationMode(handleType,boolValue);
+    returnValue = ssp_CosaDmlMTADectSetRegistrationMode(handleType,Value);
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {
@@ -1034,7 +1034,7 @@ void CosaMTA::CosaMTA_BatteryGetNumberofCycles(IN const Json::Value& req, OUT Js
  * Description      : This function will retrieve the enabled DSX log
  *
  * @param [in]  req - handleType : Holds the message bus handle
- * @param [in]  req - boolValue : Holds whether boolValue passed is 0 or 1
+ * @param [in]  req - Value : Holds whether Value passed is 0 or 1
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
@@ -1046,7 +1046,7 @@ void CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
 
     int returnValue = 0;
     int handleType = 0;
-    int boolValue = 0;
+    int Value = 0;
     int Bool=0;
     char Details[64] = {'\0'};
 
@@ -1058,7 +1058,7 @@ void CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
         return;
     }
 
-    if(&req["boolValue"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -1066,9 +1066,9 @@ void CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
     }
 
     handleType = req["handleType"].asInt();
-    boolValue = req["boolValue"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue = ssp_CosaDmlMTAGetDSXLogEnable(handleType,boolValue, &Bool);
+    returnValue = ssp_CosaDmlMTAGetDSXLogEnable(handleType,Value, &Bool);
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {
@@ -1093,7 +1093,7 @@ void CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
  * Description      : This function will enable the DSX Log
  *
  * @param [in]  req - handleType : Holds the message bus handle
- * @param [in]  req - boolValue : Holds whether boolvalue passed is 0 or 1
+ * @param [in]  req - Value : Holds whether boolvalue passed is 0 or 1
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
@@ -1105,7 +1105,7 @@ void CosaMTA::CosaMTA_SetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
 
     int returnValue = 0;
     int handleType = 0;
-    int boolValue = 0;
+    int Value = 0;
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -1115,7 +1115,7 @@ void CosaMTA::CosaMTA_SetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
         return;
     }
 
-    if(&req["boolValue"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -1123,9 +1123,9 @@ void CosaMTA::CosaMTA_SetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
     }
 
     handleType = req["handleType"].asInt();
-    boolValue = req["boolValue"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue = ssp_CosaDmlMTASetDSXLogEnable(handleType,boolValue);
+    returnValue = ssp_CosaDmlMTASetDSXLogEnable(handleType,Value);
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {
@@ -1148,7 +1148,7 @@ void CosaMTA::CosaMTA_SetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
  * Function Name    : CosaMTA_ClearDSXLog
  * Description      : This function will clear the DSX Log
  * @param [in]  req - handleType : Holds the message bus handle
- * @param [in]  req - boolValue : Holds whether boolvalue passed is 0 or 1
+ * @param [in]  req - Value : Holds whether boolvalue passed is 0 or 1
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
@@ -1160,7 +1160,7 @@ void CosaMTA::CosaMTA_ClearDSXLog(IN const Json::Value& req, OUT Json::Value& re
 
     int returnValue = 0;
     int handleType = 0;
-    int boolValue = 0;
+    int Value = 0;
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -1170,7 +1170,7 @@ void CosaMTA::CosaMTA_ClearDSXLog(IN const Json::Value& req, OUT Json::Value& re
         return;
     }
 
-    if(&req["boolValue"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -1178,9 +1178,9 @@ void CosaMTA::CosaMTA_ClearDSXLog(IN const Json::Value& req, OUT Json::Value& re
     }
 
     handleType = req["handleType"].asInt();
-    boolValue = req["boolValue"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue = ssp_CosaDmlMTAClearDSXLog(handleType,boolValue);
+    returnValue = ssp_CosaDmlMTAClearDSXLog(handleType,Value);
     if(0 == returnValue)
     {
         response["result"]="SUCCESS";
@@ -1203,7 +1203,7 @@ void CosaMTA::CosaMTA_ClearDSXLog(IN const Json::Value& req, OUT Json::Value& re
  * Description      : This function will get the enable value for call signalling log
  *
  * @param [in]  req - handleType : Holds the message bus handle
- * @param [in]  req - boolValue : Holds whether boolValue passed is 0 or 1
+ * @param [in]  req - Value : Holds whether Value passed is 0 or 1
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
@@ -1215,7 +1215,7 @@ void CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT 
 
     int returnValue = 0;
     int handleType = 0;
-    int boolValue = 0;
+    int Value = 0;
     int Bool=0;
     char Details[64] = {'\0'};
 
@@ -1227,7 +1227,7 @@ void CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT 
         return;
     }
 
-    if(&req["boolValue"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -1235,9 +1235,9 @@ void CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT 
     }
 
     handleType = req["handleType"].asInt();
-    boolValue = req["boolValue"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue = ssp_CosaDmlMTAGetCallSignallingLogEnable(handleType,boolValue, &Bool);
+    returnValue = ssp_CosaDmlMTAGetCallSignallingLogEnable(handleType,Value, &Bool);
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {
@@ -1262,7 +1262,7 @@ void CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT 
  * Description      : This function will enable the call signalling log
  *
  * @param [in]  req - handleType : Holds the message bus handle
- * @param [in]  req - boolValue : Holds whether boolValue passed is 0 or 1
+ * @param [in]  req - Value : Holds whether Value passed is 0 or 1
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
@@ -1274,7 +1274,7 @@ void CosaMTA::CosaMTA_SetCallSignallingLogEnable(IN const Json::Value& req, OUT 
 
     int returnValue = 0;
     int handleType = 0;
-    int boolValue = 0;
+    int Value = 0;
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -1292,9 +1292,9 @@ void CosaMTA::CosaMTA_SetCallSignallingLogEnable(IN const Json::Value& req, OUT 
     }
 
     handleType = req["handleType"].asInt();
-    boolValue = req["Value"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue = ssp_CosaDmlMTASetCallSignallingLogEnable(handleType,boolValue);
+    returnValue = ssp_CosaDmlMTASetCallSignallingLogEnable(handleType,Value);
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {
@@ -1318,7 +1318,7 @@ void CosaMTA::CosaMTA_SetCallSignallingLogEnable(IN const Json::Value& req, OUT 
  * Description      : This function will clear the call signalling log 
  *
  * @param [in]  req - handleType : Holds the message bus handle
- * @param [in]  req - boolvalue : Holds whether boolValue passed is 0 or 1
+ * @param [in]  req - boolvalue : Holds whether Value passed is 0 or 1
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
@@ -1330,7 +1330,7 @@ void CosaMTA::CosaMTA_ClearCallSignallingLog(IN const Json::Value& req, OUT Json
 
     int returnValue = 0;
     int handleType = 0;
-    int boolValue = 0;
+    int Value = 0;
 
     /* Validate the input arguments */
     if(&req["handleType"]==NULL)
@@ -1340,7 +1340,7 @@ void CosaMTA::CosaMTA_ClearCallSignallingLog(IN const Json::Value& req, OUT Json
         return;
     }
 
-    if(&req["boolValue"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
@@ -1348,9 +1348,9 @@ void CosaMTA::CosaMTA_ClearCallSignallingLog(IN const Json::Value& req, OUT Json
     }
 
     handleType = req["handleType"].asInt();
-    boolValue = req["boolValue"].asInt();
+    Value = req["Value"].asInt();
 
-    returnValue = ssp_CosaDmlMTAClearCallSignallingLog(handleType,boolValue);
+    returnValue = ssp_CosaDmlMTAClearCallSignallingLog(handleType,Value);
     printf("return value is %d\n",returnValue);
     if(0 == returnValue)
     {

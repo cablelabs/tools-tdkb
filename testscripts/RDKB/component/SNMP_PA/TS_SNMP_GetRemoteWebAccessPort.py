@@ -136,7 +136,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         print "ACTUAL RESULT 1: %s" %actResponse;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS"
-	tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+	tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
 	tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_DeviceControl.HTTPPort");
         expectedresult="SUCCESS";
         #Execute the test case in DUT

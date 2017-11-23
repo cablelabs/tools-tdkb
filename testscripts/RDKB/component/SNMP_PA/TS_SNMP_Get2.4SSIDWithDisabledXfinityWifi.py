@@ -140,7 +140,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
         org_value = actResponse.rsplit(None, 1)[-1];
         print "Current Status is %s " %org_value;
         if org_value != "2":
-            tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+            tdkTestObj = pamObj.createTestStep('pam_SetParameterValues');
             tdkTestObj.addParameter("ParamName","Device.DeviceInfo.X_COMCAST_COM_xfinitywifiEnable");
             tdkTestObj.addParameter("ParamValue","false");
             tdkTestObj.addParameter("Type","boolean");
@@ -180,7 +180,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
         if org_value != "2":
-            tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+            tdkTestObj = pamObj.createTestStep('pam_SetParameterValues');
             tdkTestObj.addParameter("ParamName","Device.DeviceInfo.X_COMCAST_COM_xfinitywifiEnable");
             tdkTestObj.addParameter("ParamValue","true");
             tdkTestObj.addParameter("Type","boolean");

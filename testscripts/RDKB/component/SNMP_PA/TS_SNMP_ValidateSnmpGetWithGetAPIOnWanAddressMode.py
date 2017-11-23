@@ -141,7 +141,7 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in pamloadmodulestatus.up
 	    snmpgetvalue ="DUALIP";
 
         print "ErouterResetCount via snmpget is %s " %snmpgetvalue;
-	tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+	tdkTestObj = pamObj.createTestStep('pam_GetParameterValues');
         tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_DeviceControl.WanAddressMode");
         expectedresult="SUCCESS";
         #Execute the test case in DUT

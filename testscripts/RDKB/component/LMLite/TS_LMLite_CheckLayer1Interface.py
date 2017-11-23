@@ -97,7 +97,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
     obj.setLoadModuleStatus("SUCCESS");
 
     #Disable WiFi before testing LMLite features
-    tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+    tdkTestObj = wifiobj.createTestStep('WIFIAgent_Set');
     tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
     tdkTestObj.addParameter("paramValue","false");
     tdkTestObj.addParameter("paramType","boolean");
@@ -108,7 +108,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
     actualresult1 = tdkTestObj.getResult();
     Details = tdkTestObj.getResultDetails();
 
-    tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+    tdkTestObj = wifiobj.createTestStep('WIFIAgent_Set');
     tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Enable");
     tdkTestObj.addParameter("paramValue","false");
     tdkTestObj.addParameter("paramType","boolean");
@@ -260,7 +260,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
             print "[TEST EXECUTION RESULT] : FAILURE";
 
         #Enabling WiFi before exiting the test
-        tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+        tdkTestObj = wifiobj.createTestStep('WIFIAgent_Set');
         tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
         tdkTestObj.addParameter("paramValue","true");
         tdkTestObj.addParameter("paramType","boolean");
@@ -270,7 +270,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
         actualresult1 = tdkTestObj.getResult();
         Details = tdkTestObj.getResultDetails();
 
-        tdkTestObj = obj.createTestStep('WIFIAgent_Set');
+        tdkTestObj = wifiobj.createTestStep('WIFIAgent_Set');
         tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Enable");
         tdkTestObj.addParameter("paramValue","true");
         tdkTestObj.addParameter("paramType","boolean");
