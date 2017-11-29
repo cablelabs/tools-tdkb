@@ -200,7 +200,6 @@ int SendInfo (char* strStringToSend, int nStringSize)
     int nValue = 0;
     int nDestination;
     int nInfoSockDesc;    
-    void *pvReturnValue;    
     std::string strFilePath;
     std::string strManagerIP;
     
@@ -227,16 +226,16 @@ int SendInfo (char* strStringToSend, int nStringSize)
         DEBUG_PRINT (DEBUG_LOG, "\nConfiguration file %s found \n", SHOW_DEFINE (CONFIGURATION_FILE));
 		
         /* Parsing configuration file to get manager IP */
-        pvReturnValue = getline (go_ConfigFile, strManagerIP); 
-        go_ConfigFile.close();
-        if (pvReturnValue)
+        if (getline (go_ConfigFile, strManagerIP))
         {
+            go_ConfigFile.close();
             strManagerIP = GetSubString (strManagerIP, "@");
             RpcMethods::sm_szManagerIP = strManagerIP.c_str();
             DEBUG_PRINT (DEBUG_LOG, "Test Manager IP is %s \n", RpcMethods::sm_szManagerIP);
         }
         else
         {
+            go_ConfigFile.close();
             DEBUG_PRINT (DEBUG_ERROR, "Failed to extract Test Manager IP Address");
 
             return DEVICE_INFO_FAILURE;     // Return when failed to extract Test Manager IP Address
@@ -371,11 +370,11 @@ static void SignalHandler (int nCode)
 *********************************************************************************************************************/
 int SendDetailsToManager()
 {
-    void *pvReturnValue;
     char szBoxInfo[INFO_STRING_SIZE];
     int nSendInfoStatus = 0;
     std::string strBoxName;
     std::string strFilePath;
+    bool foundDevice = false;
 
     /* Extracting path to file */
     strFilePath = RpcMethods::sm_strTDKPath;
@@ -389,22 +388,20 @@ int SendDetailsToManager()
         /* Parsing configuration file to get box name */
         for (int i=0; i<2; i++)
         {
-            pvReturnValue = getline (go_ConfigFile, strBoxName);
-
-            if (!pvReturnValue)
+            if (!getline (go_ConfigFile, strBoxName))
             {
                 DEBUG_PRINT (DEBUG_ERROR, "Unable to find device name \n");
 
                 nSendInfoStatus =  DEVICE_INFO_FAILURE;     // Info failure when failed to retrieve device name
                 break;
             }
-			
+	    foundDevice = true;
         }
 
         go_ConfigFile.close();
 
         /* Sending details to Test Manager */
-        if (pvReturnValue)
+        if (foundDevice)
         {
             strBoxName = GetSubString (strBoxName, "@");		
             RpcMethods::sm_szBoxName = strBoxName.c_str();
@@ -447,7 +444,6 @@ int SendDetailsToManager()
 *********************************************************************************************************************/
 void* ReportCrash (void*)
 {
-    void *pvReturnValue;
     int nCount = 0;
     int nCrashFlag = FLAG_SET;
     std::string strExecId;
@@ -473,8 +469,7 @@ void* ReportCrash (void*)
         DEBUG_PRINT (DEBUG_LOG, "\nConfiguration file %s found", SHOW_DEFINE (CRASH_STATUS_FILE) );
 		
         /* Parsing configuration file to get crash status */
-        pvReturnValue = getline (o_CrashStatusFile, strCrashStatus); 
-        if (!pvReturnValue)
+        if (!getline (o_CrashStatusFile, strCrashStatus))
         {
             DEBUG_PRINT (DEBUG_ERROR, "Failed to retrieve status on crash");
             nCrashFlag = FLAG_NOT_SET ;
@@ -490,8 +485,7 @@ void* ReportCrash (void*)
             DEBUG_PRINT (DEBUG_LOG, "Test Details :  ");
 	
             /* Parsing configuration file to get execution ID */
-            pvReturnValue = getline (o_CrashStatusFile, strExecId); 
-            if (!pvReturnValue)
+            if (!getline (o_CrashStatusFile, strExecId))
             {
                 DEBUG_PRINT (DEBUG_ERROR, "Failed to retrieve execution ID \n");
                 nCrashFlag = FLAG_NOT_SET ;
@@ -503,8 +497,7 @@ void* ReportCrash (void*)
             }
 		
             /* Parsing configuration file to get Device ID */
-            pvReturnValue = getline (o_CrashStatusFile, strDeviceId);
-            if (!pvReturnValue)
+            if (!getline (o_CrashStatusFile, strDeviceId))
             {
                 DEBUG_PRINT (DEBUG_ERROR, "Failed to retrieve Device ID \n");
                 nCrashFlag = FLAG_NOT_SET ;
@@ -516,8 +509,7 @@ void* ReportCrash (void*)
             }
             
             /* Parsing configuration file to get Testcase ID */
-            pvReturnValue = getline (o_CrashStatusFile, strTestcaseId); 
-            if (!pvReturnValue)
+            if (!getline (o_CrashStatusFile, strTestcaseId))
             {
                 DEBUG_PRINT (DEBUG_ERROR, "Failed to retrieve Testcase ID \n");
                 nCrashFlag = FLAG_NOT_SET ;
@@ -529,8 +521,7 @@ void* ReportCrash (void*)
             }
 			
             /* Parsing configuration file to get Execution Device ID */
-            pvReturnValue = getline (o_CrashStatusFile, strExecDeviceId); 
-            if (!pvReturnValue)
+            if (!getline (o_CrashStatusFile, strExecDeviceId))
             {
                 DEBUG_PRINT (DEBUG_ERROR, "Failed to retrieve Execution Device ID \n");
                 nCrashFlag = FLAG_NOT_SET ;
@@ -542,8 +533,7 @@ void* ReportCrash (void*)
             }
 					
             /* Parsing configuration file to get Result ID */
-            pvReturnValue = getline (o_CrashStatusFile, strResultId);
-            if (!pvReturnValue)
+            if (!getline (o_CrashStatusFile, strResultId))
             {
                 DEBUG_PRINT (DEBUG_ERROR, "Failed to retrieve Result ID \n");
                 nCrashFlag = FLAG_NOT_SET ;
@@ -700,10 +690,10 @@ void *CheckStatus (void *)
 void *ProcessDeviceDetails (void *)
 {
     int nCount = 0;
-    void *pvReturnValue;
     std::string strFilePath;
     int nDeviceInfoStatus = 0;
-    std::string strBoxInterface;	
+    std::string strBoxInterface;
+    bool deviceFound = false;
 
     DEBUG_PRINT (DEBUG_TRACE, "\nStarting Device Details Processing..\n");
 		
@@ -734,19 +724,19 @@ void *ProcessDeviceDetails (void *)
             /* Finding the box interface from configuration file */
             for (int i=0; i<3; i++)
             {
-                pvReturnValue = getline (go_ConfigFile, strBoxInterface);
-                if (!pvReturnValue)
+                if (!getline (go_ConfigFile, strBoxInterface))
                 {
                     DEBUG_PRINT (DEBUG_ERROR, "Unable to find device network interface \n");
                     break;
                 }
+		deviceFound = true;
 
             }
 
             go_ConfigFile.close();
 
             /* Communicate with Test Manager after retrieveng device IP address */
-            if (pvReturnValue)
+            if (deviceFound)
             {
                 strBoxInterface = GetSubString (strBoxInterface, "@");	
                 RpcMethods::sm_szBoxInterface = strBoxInterface.c_str();
