@@ -97,7 +97,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "[TEST EXECUTION RESULT] : %s" %actualresult ;
             print "IP address of ert gateway is %s" %details;
 
-            tdkTestObj = obj.createTestStep("erouter_ip_stub_GetIpAddress");
+            tdkTestObj = obj.createTestStep("erouter_ip_stub_get_ip_address");
             expectedresult="SUCCESS";
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();

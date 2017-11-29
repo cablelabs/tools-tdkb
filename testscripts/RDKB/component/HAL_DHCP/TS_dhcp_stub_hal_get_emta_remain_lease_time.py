@@ -49,7 +49,7 @@
 3. Get the value of lease time
 4. Validation of  the result is done within the python script and send the result status to Test Manager.
 5. Test Manager will publish the result in GUI as PASS/FAILURE based on the response from HAL_DHCP stub.</automation_approch>
-    <except_output>Value should be non zero.</except_output>
+    <except_output>Value should not be negative.</except_output>
     <priority>High</priority>
     <test_stub_interface>HAL_DHCP</test_stub_interface>
     <test_script>TS_dhcp_stub_hal_get_emta_remain_lease_time</test_script>

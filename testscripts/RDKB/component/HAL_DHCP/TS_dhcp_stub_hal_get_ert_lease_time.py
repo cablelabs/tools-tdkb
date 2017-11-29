@@ -88,7 +88,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
-        if (expectedresult == actualresult and details > "0"):
+        if (expectedresult == actualresult and int(details) > 0):
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 1: Retrieve the dhcp_stub_hal_get_ert_lease_time";

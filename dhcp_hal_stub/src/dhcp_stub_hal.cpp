@@ -99,10 +99,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_config_attempts(IN const Json::Value& 
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_config_attempts(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_config_attempts(&dhcp_pVal);
 	}
 	if(result == RETURN_SUCCESS)
@@ -110,12 +112,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_config_attempts(IN const Json::Value& 
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%d", dhcp_pVal);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_config_attempts has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -141,10 +147,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_dhcp_svr(IN const Json::Value& req, OU
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_dhcp_svr(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_dhcp_svr(&dhcpValue);
 	}
 
@@ -154,12 +162,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_dhcp_svr(IN const Json::Value& req, OU
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_dhcp_svr has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -188,10 +200,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_dns_svrs(IN const Json::Value& req, OU
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_dns_svrs(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_dns_svrs(&ipList);
 	}
 
@@ -205,12 +219,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_dns_svrs(IN const Json::Value& req, OU
 
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_dns_svrs has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -238,10 +256,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_fsm_state(IN const Json::Value& req, O
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_fsm_state(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_fsm_state(&dhcp_pVal);
 	}
 
@@ -250,12 +270,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_fsm_state(IN const Json::Value& req, O
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%d", dhcp_pVal);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_fsm_state has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -283,10 +307,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_gw(IN const Json::Value& req, OUT Json
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_gw(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_gw(&dhcpValue);
 	}
 	if(result == RETURN_SUCCESS)
@@ -295,12 +321,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_gw(IN const Json::Value& req, OUT Json
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_gw has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -327,10 +357,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_ifname(IN const Json::Value& req, OUT 
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_ifname(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_ifname(ifName);
 	}
 
@@ -338,12 +370,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_ifname(IN const Json::Value& req, OUT 
 	{
 		response["result"] = "SUCCESS";
 		response["details"] = ifName;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, ifName);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_ifname has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -370,10 +406,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_ip_addr(IN const Json::Value& req, OUT
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_ip_addr(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_ip_addr(&dhcpValue);
 	}
 
@@ -383,12 +421,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_ip_addr(IN const Json::Value& req, OUT
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_ip_addr has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -417,10 +459,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_lease_time(IN const Json::Value& req, 
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_lease_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_lease_time(&dhcpValue);
 	}
 
@@ -429,12 +473,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_lease_time(IN const Json::Value& req, 
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_lease_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -462,10 +510,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_mask(IN const Json::Value& req, OUT Js
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_mask(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_mask(&dhcpValue);
 	}
 	if(result == RETURN_SUCCESS)
@@ -474,12 +524,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_mask(IN const Json::Value& req, OUT Js
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_mask has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -508,10 +562,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_lease_time(IN const Json::Value
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_remain_lease_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_remain_lease_time(&dhcpValue);
 	}
 
@@ -520,12 +576,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_lease_time(IN const Json::Value
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_remain_lease_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -554,10 +614,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_rebind_time(IN const Json::Valu
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_remain_rebind_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_remain_rebind_time(&dhcpValue);
 	}
 
@@ -566,12 +628,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_rebind_time(IN const Json::Valu
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_remain_rebind_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -600,10 +666,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_renew_time(IN const Json::Value
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ecm_remain_renew_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ecm_remain_renew_time(&dhcpValue);
 	}
 
@@ -612,12 +680,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_renew_time(IN const Json::Value
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_remain_renew_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -646,10 +718,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_lease_time(IN const Json::Valu
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_emta_remain_lease_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_emta_remain_lease_time(&dhcpValue);
 	}
 
@@ -658,12 +732,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_lease_time(IN const Json::Valu
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_emta_remain_lease_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -691,10 +769,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_rebind_time(IN const Json::Val
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_emta_remain_rebind_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_emta_remain_rebind_time(&dhcpValue);
 	}
 	if(result == RETURN_SUCCESS)
@@ -702,12 +782,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_rebind_time(IN const Json::Val
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_emta_remain_rebind_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -735,10 +819,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_renew_time(IN const Json::Valu
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_emta_remain_renew_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_emta_remain_renew_time(&dhcpValue);
 	}
 
@@ -747,12 +833,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_renew_time(IN const Json::Valu
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_emta_remain_renew_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -781,10 +871,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_config_attempts(IN const Json::Value& 
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_config_attempts(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_config_attempts(&dhcp_pVal);
 	}
 
@@ -793,12 +885,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_config_attempts(IN const Json::Value& 
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%d", dhcp_pVal);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_config_attempts has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -826,10 +922,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_dhcp_svr(IN const Json::Value& req, OU
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_dhcp_svr(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_dhcp_svr(&dhcpValue);
 	}
 
@@ -839,12 +937,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_dhcp_svr(IN const Json::Value& req, OU
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_dhcp_svr has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -874,10 +976,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_dns_svrs(IN const Json::Value& req, OU
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_dns_svrs(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_dns_svrs(&ipList);
 	}
 
@@ -890,12 +994,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_dns_svrs(IN const Json::Value& req, OU
 		}
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_dns_svrs has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -924,10 +1032,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_fsm_state(IN const Json::Value& req, O
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_fsm_state(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_fsm_state(&dhcp_pVal);
 	}
 
@@ -936,12 +1046,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_fsm_state(IN const Json::Value& req, O
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%d", dhcp_pVal);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_fsm_state has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -970,10 +1084,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_gw(IN const Json::Value& req, OUT Json
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_gw(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_gw(&dhcpValue);
 	}
 
@@ -984,12 +1100,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_gw(IN const Json::Value& req, OUT Json
 
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_gw has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -1016,10 +1136,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_ifname(IN const Json::Value& req, OUT 
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_ifname(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_ifname(ifName);
 	}
 
@@ -1027,12 +1149,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_ifname(IN const Json::Value& req, OUT 
 	{
 		response["result"] = "SUCCESS";
 		response["details"] = ifName;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, ifName);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_ifname has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -1061,10 +1187,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_ip_addr(IN const Json::Value& req, OUT
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_ip_addr(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_ip_addr(&dhcpValue);
 	}
 
@@ -1074,12 +1202,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_ip_addr(IN const Json::Value& req, OUT
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_ip_addr has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -1108,10 +1240,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_lease_time(IN const Json::Value& req, 
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_lease_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_lease_time(&dhcpValue);
 	}
 
@@ -1120,12 +1254,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_lease_time(IN const Json::Value& req, 
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_lease_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -1152,10 +1290,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_mask(IN const Json::Value& req, OUT Js
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_mask(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_mask(&dhcpValue);
 	}
 
@@ -1165,12 +1305,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_mask(IN const Json::Value& req, OUT Js
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_mask has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -1198,10 +1342,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_lease_time(IN const Json::Value
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_remain_lease_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_remain_lease_time(&dhcpValue);
 	}
 
@@ -1210,12 +1356,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_lease_time(IN const Json::Value
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_remain_lease_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -1244,10 +1394,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_rebind_time(IN const Json::Valu
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_remain_rebind_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_remain_rebind_time(&dhcpValue);
 	}
 
@@ -1256,12 +1408,16 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_rebind_time(IN const Json::Valu
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_remain_rebind_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
@@ -1290,10 +1446,12 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_renew_time(IN const Json::Value
 
 	if(isNegativeScenario)
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
 		result = ssp_get_ert_remain_renew_time(NULL);
 	}
 	else
 	{
+		DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
 		result = ssp_get_ert_remain_renew_time(&dhcpValue);
 	}
 
@@ -1302,31 +1460,35 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_renew_time(IN const Json::Value
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, resultDetails);
 		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_remain_renew_time has been failure";
+
+		DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
 		return;
 	}
 }
 
 
 /*******************************************************************************************
- * Function Name    : erouter_ip_stub_GetIpAddress
+ * Function Name    : erouter_ip_stub_get_ip_address
  * Description      : This function is used to retrieve IP address of the erouter interface
  * @param [in]      : req - request sent by Test Manager
  * @param [out]     : response - filled with SUCCESS or FAILURE(if any error is detected)
  *******************************************************************************************/
-void dhcp_stub_hal::erouter_ip_stub_GetIpAddress(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::erouter_ip_stub_get_ip_address(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int fd;
 	struct ifreq ifrequest;
 	char interface[] = "erouter0";
 	char resultDetails[MAX_BUFFER_SIZE_TO_SEND] = {0};
 
-	DEBUG_PRINT(DEBUG_TRACE, "Inside Function erouter_ip_stub_GetIpAddress\n");
+	DEBUG_PRINT(DEBUG_TRACE, "Inside Function erouter_ip_stub_get_ip_address\n");
 
 	fd = socket(AF_INET, SOCK_DGRAM, 0);
 

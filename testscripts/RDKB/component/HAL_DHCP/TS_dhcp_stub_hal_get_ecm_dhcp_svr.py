@@ -88,7 +88,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         actualresult = tdkTestObj.getResult();
 
         details = tdkTestObj.getResultDetails();
-        if expectedresult in actualresult and int(details.split(".")[0] > 0):
+        if expectedresult in actualresult and (int(details.split(".")[0]) > 0):
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 1: Retrieve the dhcp_stub_hal_get_ecm_dhcp_svr";

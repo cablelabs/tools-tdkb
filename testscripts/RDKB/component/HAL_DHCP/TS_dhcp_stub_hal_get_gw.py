@@ -96,7 +96,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "EXPECTED RESULT 1: Should retrieve the dhcp_stub_hal_get_ert_gw successfully";
             print "[TEST EXECUTION RESULT] : %s" %actualresult;
             print "Erouter gateway address is %s" %details1;
-            tdkTestObj = obj.createTestStep("erouter_ip_stub_GetIpAddress");
+            tdkTestObj = obj.createTestStep("erouter_ip_stub_get_ip_address");
             expectedresult = "SUCCESS";
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();

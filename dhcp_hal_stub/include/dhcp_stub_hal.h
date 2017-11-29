@@ -41,34 +41,34 @@ class dhcp_stub_hal : public RDKTestStubInterface, public AbstractServer<dhcp_st
 	public:
 		dhcp_stub_hal(TcpSocketServer &ptrRpcServer) : AbstractServer <dhcp_stub_hal>(ptrRpcServer)
 		{
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_config_attempts", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_config_attempts);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_dhcp_svr", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_dhcp_svr);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_dns_svrs", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_dns_svrs);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_fsm_state", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_fsm_state);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_gw", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_gw);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_ifname", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_ifname);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_ip_addr", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_ip_addr);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_lease_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_lease_time);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_mask", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_mask);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_remain_lease_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_lease_time);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_remain_rebind_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_rebind_time);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_remain_renew_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_renew_time);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_emta_remain_lease_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_lease_time);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_emta_remain_rebind_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_rebind_time);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_emta_remain_renew_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_renew_time);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_config_attempts", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_config_attempts);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_dhcp_svr", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_dhcp_svr);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_dns_svrs", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_dns_svrs);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_fsm_state", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_fsm_state);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_gw", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_gw);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_ifname", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_ifname);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_ip_addr", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_ip_addr);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_lease_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_lease_time);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_mask", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_mask);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_remain_lease_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_lease_time);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_remain_rebind_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_rebind_time);
-			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_remain_renew_time", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_renew_time);
-			this->bindAndAddMethod(Procedure("erouter_ip_stub_GetIpAddress", PARAMS_BY_NAME, JSON_STRING, NULL), &dhcp_stub_hal::erouter_ip_stub_GetIpAddress);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_config_attempts", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_config_attempts);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_dhcp_svr", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER,NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_dhcp_svr);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_dns_svrs", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_dns_svrs);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_fsm_state", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_fsm_state);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_gw", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_gw);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_ifname", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_ifname);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_ip_addr", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_ip_addr);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_lease_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_lease_time);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_mask", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_mask);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_remain_lease_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_lease_time);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_remain_rebind_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_rebind_time);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ecm_remain_renew_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_renew_time);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_emta_remain_lease_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_lease_time);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_emta_remain_rebind_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_rebind_time);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_emta_remain_renew_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_renew_time);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_config_attempts", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_config_attempts);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_dhcp_svr", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_dhcp_svr);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_dns_svrs", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_dns_svrs);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_fsm_state", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_fsm_state);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_gw", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_gw);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_ifname", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_ifname);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_ip_addr", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_ip_addr);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_lease_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_lease_time);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_mask", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_mask);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_remain_lease_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_lease_time);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_remain_rebind_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_rebind_time);
+			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_remain_renew_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_renew_time);
+			this->bindAndAddMethod(Procedure("erouter_ip_stub_get_ip_address", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::erouter_ip_stub_get_ip_address);
 		}
 		
 		bool initialize(IN const char* szVersion);
@@ -103,6 +103,6 @@ class dhcp_stub_hal : public RDKTestStubInterface, public AbstractServer<dhcp_st
 		void dhcp_stub_hal_get_ert_remain_lease_time(IN const Json::Value& req, OUT Json::Value& response);
 		void dhcp_stub_hal_get_ert_remain_rebind_time(IN const Json::Value& req, OUT Json::Value& response);
 		void dhcp_stub_hal_get_ert_remain_renew_time(IN const Json::Value& req, OUT Json::Value& response);
-		void erouter_ip_stub_GetIpAddress(IN const Json::Value& req, OUT Json::Value& response);
+		void erouter_ip_stub_get_ip_address(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif
