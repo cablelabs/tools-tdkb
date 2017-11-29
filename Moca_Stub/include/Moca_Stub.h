@@ -44,7 +44,7 @@ class Mocastub : public RDKTestStubInterface, public AbstractServer<Mocastub>
 		Mocastub(TcpSocketServer &ptrRpcServer) : AbstractServer <Mocastub>(ptrRpcServer)
 		{
 			this->bindAndAddMethod(Procedure("Mocastub_Get", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &Mocastub::Mocastub_Get);
-			this->bindAndAddMethod(Procedure("Mocastub_Set", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, JSON_STRING, "ParamName", JSON_STRING, "ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &Mocastub::Mocastub_Set);
+			this->bindAndAddMethod(Procedure("Mocastub_Set", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, "ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &Mocastub::Mocastub_Set);
 			this->bindAndAddMethod(Procedure("Mocastub_SetKeypassphrase", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, "ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &Mocastub::Mocastub_SetKeypassphrase);
 		}
 		
