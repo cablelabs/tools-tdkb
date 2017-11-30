@@ -82,8 +82,8 @@ import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("lmlite","RDKB");
-wifiobj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
-sysObj = tdklib.TDKScriptingLibrary("wifiagent","1");
+sysObj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
+wifiobj = tdklib.TDKScriptingLibrary("wifiagent","1");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
