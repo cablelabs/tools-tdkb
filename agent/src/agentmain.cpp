@@ -415,7 +415,7 @@ int SendDetailsToManager()
             strcat(szBoxInfo, RpcMethods::sm_szBoxName);
             strcat(szBoxInfo, ",");
             strcat(szBoxInfo, RpcMethods::sm_strBoxIP.c_str());
-            nSendInfoStatus = SendInfo (szBoxInfo, strlen(szBoxInfo)); 
+            //nSendInfoStatus = SendInfo (szBoxInfo, strlen(szBoxInfo)); 
         }	
         
     }
