@@ -95,7 +95,7 @@ class RpcMethods : public AbstractServer<RpcMethods>
          this->bindAndAddMethod(Procedure("performanceBenchMarking", PARAMS_BY_NAME, JSON_STRING,NULL), &RpcMethods::RPCPerformanceBenchMarking);
          this->bindAndAddMethod(Procedure("executeLoggerScript", PARAMS_BY_NAME, JSON_STRING,"argument",JSON_STRING,NULL), &RpcMethods::RPCExecuteLoggerScript);
          this->bindAndAddMethod(Procedure("removeLogs", PARAMS_BY_NAME, JSON_STRING,"argument",JSON_STRING,NULL), &RpcMethods::RPCRemoveLogs);
-         this->bindAndAddMethod(Procedure("pushLog", PARAMS_BY_NAME, JSON_STRING,"STBfilename",JSON_STRING,"TMfilename",JSON_STRING,NULL), &RpcMethods::RPCPushLog);
+         this->bindAndAddMethod(Procedure("PushLog", PARAMS_BY_NAME, JSON_STRING,"STBfilename",JSON_STRING,"TMfilename",JSON_STRING,NULL), &RpcMethods::RPCPushLog);
          this->bindAndAddMethod(Procedure("uploadLog", PARAMS_BY_NAME, JSON_STRING,"STBfilename",JSON_STRING,"TMfilename",JSON_STRING,"logUploadURL",JSON_STRING,NULL), &RpcMethods::RPCuploadLog);
          this->bindAndAddMethod(Procedure("getImageName", PARAMS_BY_NAME, JSON_STRING,NULL), &RpcMethods::RPCGetImageName);
          this->bindAndAddMethod(Procedure("executeTestCase", PARAMS_BY_NAME,JSON_STRING,NULL), &RpcMethods::RPCExecuteTestCase);
