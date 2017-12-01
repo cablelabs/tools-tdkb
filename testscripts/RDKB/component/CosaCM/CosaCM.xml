@@ -99,7 +99,7 @@
         <function>CosaCM_SetStartDSFrequency</function>
         <parameters>
           <parameter name="handleType" value="0"/>
-          <parameter name="paramValue" value="0"/>
+          <parameter name="frequency" value="0"/>
           <parameter name="paramType" value="a"/>
         </parameters>
       </primitiveTest>
@@ -107,7 +107,7 @@
         <function>CosaCM_SetUpstreamChannelId</function>
         <parameters>
           <parameter name="handleType" value="0"/>
-          <parameter name="paramValue" value="0"/>
+          <parameter name="channelId" value="0"/>
           <parameter name="paramType" value="a"/>
         </parameters>
       </primitiveTest>

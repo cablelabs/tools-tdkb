@@ -224,7 +224,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamStringValue----->Entry\n");
     char methodName[50] = {'\0'};
     int radioIndex = 1;
-    char output[200] = {'\0'};
+    char output[1000] = {'\0'};
     int returnValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
