@@ -28,6 +28,7 @@
 
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 
 #define IN
 #define OUT
@@ -41,19 +42,21 @@
 using namespace std;
 
 class RDKTestAgent;
-class SysUtilAgent : public RDKTestStubInterface
+class SysUtilAgent : public RDKTestStubInterface, public AbstractServer<SysUtilAgent>
 {
         public:
-                /*Constructor*/
-                SysUtilAgent();
+                
+				SysUtilAgent(TcpSocketServer &ptrRpcServer) : AbstractServer <SysUtilAgent>(ptrRpcServer)
+				{
+					this->bindAndAddMethod(Procedure("TestMgr_ExecuteCmd", PARAMS_BY_NAME, JSON_STRING, "command", JSON_STRING, NULL), &SysUtilAgent::SysUtilAgent_ExecuteCmd);
+				}
 
                 /*Inherited functions*/
-                bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-                bool cleanup(const char*, RDKTestAgent*);
+                bool initialize(IN const char* szVersion);
+                bool cleanup(const char*);
                 std::string testmodulepre_requisites();
                 bool testmodulepost_requisites();
-                bool SysUtilAgent_ExecuteCmd(IN const Json::Value& req, OUT Json::Value& response);
+                void SysUtilAgent_ExecuteCmd(IN const Json::Value& req, OUT Json::Value& response);
 };
 
-extern "C" SysUtilAgent* CreateObject();
 #endif

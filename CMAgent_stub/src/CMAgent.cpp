@@ -39,11 +39,12 @@ extern "C"
 };
 
 /*This is a constructor function for CMAgent class*/
+#if 0
 CMAgent::CMAgent()
 {
     DEBUG_PRINT(DEBUG_LOG,"TDK CMAgent Instance Created\n");
 }
-
+#endif
 
 /***************************************************************************
  *Function name	: initialize
@@ -52,9 +53,10 @@ CMAgent::CMAgent()
  *  		  	  
  *****************************************************************************/ 
 
-bool CMAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool CMAgent::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::CMAgent Initialize\n");
+#if 0
     /*Register stub function for callback*/
     ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_Get, "CMAgent_Get");
     ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_GetAttr, "CMAgent_GetAttr");
@@ -67,7 +69,7 @@ bool CMAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_GetHealth, "CMAgent_GetHealth");
     ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_SetSessionId, "CMAgent_SetSessionId");
     ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_Set_Get, "CMAgent_Set_Get");
-
+#endif
     return TEST_SUCCESS;
 
 }
@@ -126,7 +128,7 @@ bool CMAgent::testmodulepost_requisites()
  * 			   ssp_getParameterValue
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_Get(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_Get(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Get --->Entry\n");
 
@@ -145,7 +147,8 @@ bool CMAgent::CMAgent_Get(IN const Json::Value& req, OUT Json::Value& response)
         response["result"]="FAILURE";
         response["details"]="Get Parameter Value API Validation Failure"; 		
         DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Get --->Exit\n");
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     else
     {
@@ -160,7 +163,8 @@ bool CMAgent::CMAgent_Get(IN const Json::Value& req, OUT Json::Value& response)
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Get --->Exit\n");
 
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -174,7 +178,7 @@ bool CMAgent::CMAgent_Get(IN const Json::Value& req, OUT Json::Value& response)
  * 			               ssp_setParameterValue
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_Set(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_Set(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set --->Entry\n");
 
@@ -203,11 +207,13 @@ bool CMAgent::CMAgent_Set(IN const Json::Value& req, OUT Json::Value& response)
         response["result"]="FAILURE";
         response["details"]="CMAgentStub::SET API Validation is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set --->Error in Set API Validation of CM Agent in DUT !!! \n");
-        return	TEST_FAILURE;
+    //    return	TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -222,7 +228,7 @@ bool CMAgent::CMAgent_Set(IN const Json::Value& req, OUT Json::Value& response)
  * 			               ssp_setParameterValue and ssp_getParameterValue
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set_Get --->Entry\n");
 
@@ -257,7 +263,8 @@ bool CMAgent::CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& respon
         response["result"]="FAILURE";
         response["details"]="CMAgentStub::SET API Validation is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set_Get --->Error in Set API Validation of CM Agent in DUT !!! \n");
-        return	TEST_FAILURE;
+    //    return	TEST_FAILURE;
+	return;
     }
 
 
@@ -268,7 +275,8 @@ bool CMAgent::CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& respon
         response["result"]="FAILURE";
         response["details"]="Get Parameter Value API Validation Failure"; 		
         DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set_Get --->Error in Get API Validation of CM Agent in DUT !!! \n");
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     if((strcmp(resultDetails[0].pParamValues,&ParamValue[0])) == 0)
@@ -295,7 +303,8 @@ bool CMAgent::CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& respon
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set_Get --->Exit\n");
-    return bReturn;
+//    return bReturn;
+    return;
 }
 
 /*******************************************************************************************
@@ -309,7 +318,7 @@ bool CMAgent::CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& respon
  * 			   ssp_getParameterAttr
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_GetAttr(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_GetAttr(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_GetAttr --->Entry\n");
     bool bReturn = TEST_FAILURE;
@@ -343,7 +352,8 @@ bool CMAgent::CMAgent_GetAttr(IN const Json::Value& req, OUT Json::Value& respon
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_GetAttr --->Exit\n");
-    return bReturn;
+//    return bReturn;
+    return;
 }
 
 /*******************************************************************************************
@@ -357,7 +367,7 @@ bool CMAgent::CMAgent_GetAttr(IN const Json::Value& req, OUT Json::Value& respon
  * 			   ssp_setParameterAttr
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_SetAttr(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_SetAttr(IN const Json::Value& req, OUT Json::Value& response)
 {
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_SetAttr --->Entry\n");
@@ -394,7 +404,8 @@ bool CMAgent::CMAgent_SetAttr(IN const Json::Value& req, OUT Json::Value& respon
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_SetAttr --->Exit\n");
-    return bReturn;
+    //return bReturn;
+    return;
 }
 
 /*******************************************************************************************
@@ -408,7 +419,7 @@ bool CMAgent::CMAgent_SetAttr(IN const Json::Value& req, OUT Json::Value& respon
  * 			   ssp_getParameterNames
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_GetNames(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_GetNames(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_GetNames --->Entry\n");
     int retParamNameSize = 0;
@@ -444,7 +455,8 @@ bool CMAgent::CMAgent_GetNames(IN const Json::Value& req, OUT Json::Value& respo
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_GetNames --->Exit\n");
-    return bReturn;
+   // return bReturn;
+    return;
 }
 
 /*******************************************************************************************
@@ -457,7 +469,7 @@ bool CMAgent::CMAgent_GetNames(IN const Json::Value& req, OUT Json::Value& respo
  * 			   ssp_addTableRow
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_AddObject(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_AddObject(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_AddObject --->Entry\n");
     bool bReturn = TEST_FAILURE;
@@ -469,7 +481,8 @@ bool CMAgent::CMAgent_AddObject(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -495,7 +508,8 @@ bool CMAgent::CMAgent_AddObject(IN const Json::Value& req, OUT Json::Value& resp
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_AddObject --->Exit\n");
-    return bReturn;
+//    return bReturn;
+    return;
 }
 
 /*******************************************************************************************
@@ -508,7 +522,7 @@ bool CMAgent::CMAgent_AddObject(IN const Json::Value& req, OUT Json::Value& resp
  * 			   ssp_deleteTableRow
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_DelObject(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_DelObject(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_DelObject --->Entry\n");
 
@@ -523,7 +537,8 @@ bool CMAgent::CMAgent_DelObject(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -565,7 +580,8 @@ bool CMAgent::CMAgent_DelObject(IN const Json::Value& req, OUT Json::Value& resp
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_DelObject --->Exit\n");
-    return bReturn;
+//    return bReturn;
+    return;
 }
 
 /*******************************************************************************************
@@ -578,7 +594,7 @@ bool CMAgent::CMAgent_DelObject(IN const Json::Value& req, OUT Json::Value& resp
  * 			   ssp_setCommit
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_SetCommit --->Entry\n");
     bool bReturn = TEST_FAILURE;
@@ -589,7 +605,8 @@ bool CMAgent::CMAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -613,7 +630,8 @@ bool CMAgent::CMAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& resp
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_SetCommit --->Exit\n");
-    return bReturn;
+//    return bReturn;
+    return;
 }
 
 /*******************************************************************************************
@@ -626,7 +644,7 @@ bool CMAgent::CMAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& resp
  * 			   ssp_getHealth
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_GetHealth --->Entry\n");
     bool bReturn = TEST_FAILURE;
@@ -637,7 +655,8 @@ bool CMAgent::CMAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="CMAgentStub::Error Invoking TDK Component";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -661,7 +680,8 @@ bool CMAgent::CMAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& resp
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_GetHealth --->Exit\n");
-    return bReturn;
+//    return bReturn;
+    return;
 }
 
 /*******************************************************************************************
@@ -674,7 +694,7 @@ bool CMAgent::CMAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& resp
  * 			   ssp_setSessionId
  ********************************************************************************************/
 
-bool CMAgent::CMAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& response)
+void CMAgent::CMAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_SetSessionId --->Entry\n");
     bool bReturn = TEST_FAILURE;
@@ -690,14 +710,16 @@ bool CMAgent::CMAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& r
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if(&req["sessionId"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     priority = req["priority"].asInt();
@@ -726,7 +748,8 @@ bool CMAgent::CMAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& r
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_SetSessionId --->Exit\n");
-    return bReturn;
+//    return bReturn;
+    return;
 }
 
 
@@ -738,9 +761,9 @@ bool CMAgent::CMAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& r
  *
  **************************************************************************/
 
-extern "C" CMAgent* CreateObject()
+extern "C" CMAgent* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new CMAgent();
+    return new CMAgent(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -749,9 +772,10 @@ extern "C" CMAgent* CreateObject()
  *
  **************************************************************************/
 
-bool CMAgent::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool CMAgent::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"CMAgent shutting down\n");
+#if 0
     if(ptrAgentObj==NULL)
     {
         return TEST_FAILURE;
@@ -770,7 +794,7 @@ bool CMAgent::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("CMAgent_SetCommit");
     ptrAgentObj->UnregisterMethod("CMAgent_GetHealth");
     ptrAgentObj->UnregisterMethod("CMAgent_SetSessionId");
-
+#endif
     return TEST_SUCCESS;
 }
 

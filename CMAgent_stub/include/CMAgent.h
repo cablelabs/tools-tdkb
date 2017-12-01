@@ -23,6 +23,7 @@
 #include <string.h>
 #include <dlfcn.h>
 #include <stdlib.h>
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
 #include <sys/types.h>
@@ -39,30 +40,46 @@
 
 class RDKTestAgent;
 
-class CMAgent : public RDKTestStubInterface
+class CMAgent : public RDKTestStubInterface, public AbstractServer<CMAgent>
 {
     public:
+
+                 CMAgent(TcpSocketServer &ptrRpcServer) : AbstractServer <CMAgent>(ptrRpcServer)
+                {
+                  this->bindAndAddMethod(Procedure("CMAgent_Get", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,NULL), &CMAgent::CMAgent_Get);
+                  this->bindAndAddMethod(Procedure("CMAgent_GetAttr", PARAMS_BY_NAME, JSON_STRING,"paramname", JSON_STRING,NULL), &CMAgent::CMAgent_GetAttr);
+                  this->bindAndAddMethod(Procedure("CMAgent_GetNames", PARAMS_BY_NAME, JSON_STRING,"pathname",JSON_STRING, "brecursive",JSON_INTEGER,NULL), &CMAgent::CMAgent_GetNames);
+                  this->bindAndAddMethod(Procedure("CMAgent_SetAttr", PARAMS_BY_NAME, JSON_STRING,"paramname", JSON_STRING,"notification", JSON_STRING,"accessControlChanged", JSON_STRING,NULL), &CMAgent::CMAgent_SetAttr);
+                  this->bindAndAddMethod(Procedure("CMAgent_Set", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,"paramValue", JSON_STRING,"paramType", JSON_STRING,NULL), &CMAgent::CMAgent_Set);
+                  this->bindAndAddMethod(Procedure("CMAgent_AddObject", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,NULL), &CMAgent::CMAgent_AddObject);
+                  this->bindAndAddMethod(Procedure("CMAgent_DelObject", PARAMS_BY_NAME, JSON_STRING,"paramName",JSON_STRING ,"apiTest", JSON_INTEGER,NULL), &CMAgent::CMAgent_DelObject);
+                  this->bindAndAddMethod(Procedure("CMAgent_SetCommit", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,NULL), &CMAgent::CMAgent_SetCommit);
+                  this->bindAndAddMethod(Procedure("CMAgent_GetHealth", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,NULL), &CMAgent::CMAgent_GetHealth);
+                  this->bindAndAddMethod(Procedure("CMAgent_SetSessionId", PARAMS_BY_NAME, JSON_STRING,"pathname",JSON_STRING, "priority",JSON_INTEGER,"sessionId", JSON_INTEGER,"override", JSON_INTEGER,NULL), &CMAgent::CMAgent_SetSessionId);
+                  this->bindAndAddMethod(Procedure("CMAgent_Set_Get", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,"paramValue", JSON_STRING,"paramType", JSON_STRING,NULL), &CMAgent::CMAgent_Set_Get);
+		}
+
         /*Ctor*/
-        CMAgent();
+//        CMAgent();
 
         /*inherited functions*/
-        bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
+        bool initialize(IN const char* szVersion);
 
-        bool cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj);
+        bool cleanup(IN const char* szVersion);
         std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
         /*CM Agent Stub Wrapper functions*/
-        bool CMAgent_Get(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMAgent_GetAttr(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMAgent_SetAttr(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMAgent_GetNames(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMAgent_Set(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMAgent_AddObject(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMAgent_DelObject(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_Get(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_GetAttr(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_SetAttr(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_GetNames(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_Set(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_AddObject(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_DelObject(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& response);
+        void CMAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& response);
 
 };
 #endif //__CMAGENT_STUB_H__

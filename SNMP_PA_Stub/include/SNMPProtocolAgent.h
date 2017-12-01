@@ -33,6 +33,7 @@
 
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 
 #define IN
 #define OUT
@@ -44,22 +45,24 @@
 using namespace std;
 
 class RDKTestAgent;
-class SNMPProtocolAgent : public RDKTestStubInterface
+class SNMPProtocolAgent : public RDKTestStubInterface, public AbstractServer<SNMPProtocolAgent>
 {
         public:
-		/*Constructor*/
-		SNMPProtocolAgent();
 
+		SNMPProtocolAgent(TcpSocketServer &ptrRpcServer) : AbstractServer <SNMPProtocolAgent>(ptrRpcServer)
+		{
+			this->bindAndAddMethod(Procedure("GetCommString", PARAMS_BY_NAME, JSON_STRING,NULL), &SNMPProtocolAgent::GetCommString);
+		}
+		
 		/*Inherited functions*/
-		bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-		bool cleanup(const char*, RDKTestAgent*);
+		bool initialize(IN const char* szVersion);
+		bool cleanup(const char*);
 		std::string testmodulepre_requisites();
 		bool testmodulepost_requisites();
 
-                /*Retreive community string*/
-                bool GetCommString(IN const Json::Value& req, OUT Json::Value& response);
+		/*Retreive community string*/
+		void GetCommString(IN const Json::Value& req, OUT Json::Value& response);
 };
 
-extern "C" SNMPProtocolAgent* CreateObject();
 #endif
 

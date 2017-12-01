@@ -41,17 +41,6 @@ limitations under the License.
 
 struct in_addr ip_addr1;
 
-/*************************************************************************
- *Function name : dhcp_stub_hal::dhcp_stub_hal
- *Description   : Constructor for dhcp_stub_hal class
- *@param [in]   : None
- ***************************************************************************/
-dhcp_stub_hal::dhcp_stub_hal()
-{
-	DEBUG_PRINT(DEBUG_TRACE, "dhcp_stub_hal Initialized\n");
-}
-
-
 /****************************************************************************************
  *Function name : testmodulepre_requisites
  *Description   : testmodulepre_requisites will  be used for registering TDK with the CR
@@ -82,71 +71,9 @@ bool dhcp_stub_hal::testmodulepost_requisites()
  *@param [in]   : szVersion - version, ptrAgentObj - Agent obhect
  *@param [out]  : response - filled with SUCCESS or FAILURE(if any error is detected)
  ************************************************************************************/
-bool dhcp_stub_hal::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool dhcp_stub_hal::initialize(IN const char* szVersion)
 {
-	DEBUG_PRINT(DEBUG_TRACE, "dhcp_stub_hal Initialize----->Entry\n");
-	CHECK_PARAM_AND_RET(szVersion);
-	CHECK_PARAM_AND_RET(ptrAgentObj);
-
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_config_attempts,
-					"dhcp_stub_hal_get_ecm_config_attempts");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_dhcp_svr,
-					"dhcp_stub_hal_get_ecm_dhcp_svr");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_dns_svrs,
-					"dhcp_stub_hal_get_ecm_dns_svrs");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_fsm_state,
-					"dhcp_stub_hal_get_ecm_fsm_state");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_gw,
-					"dhcp_stub_hal_get_ecm_gw");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_ifname,
-					"dhcp_stub_hal_get_ecm_ifname");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_ip_addr,
-					"dhcp_stub_hal_get_ecm_ip_addr");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_lease_time,
-					"dhcp_stub_hal_get_ecm_lease_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_mask,
-					"dhcp_stub_hal_get_ecm_mask");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_lease_time,
-					"dhcp_stub_hal_get_ecm_remain_lease_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_rebind_time,
-					"dhcp_stub_hal_get_ecm_remain_rebind_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_renew_time,
-					"dhcp_stub_hal_get_ecm_remain_renew_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_lease_time,
-					"dhcp_stub_hal_get_emta_remain_lease_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_rebind_time,
-					"dhcp_stub_hal_get_emta_remain_rebind_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_renew_time,
-					"dhcp_stub_hal_get_emta_remain_renew_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_config_attempts,
-					"dhcp_stub_hal_get_ert_config_attempts");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_dhcp_svr,
-					"dhcp_stub_hal_get_ert_dhcp_svr");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_dns_svrs,
-					"dhcp_stub_hal_get_ert_dns_svrs");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_fsm_state,
-					"dhcp_stub_hal_get_ert_fsm_state");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_gw,
-					"dhcp_stub_hal_get_ert_gw");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_ifname,
-					"dhcp_stub_hal_get_ert_ifname");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_ip_addr,
-					"dhcp_stub_hal_get_ert_ip_addr");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_lease_time,
-					"dhcp_stub_hal_get_ert_lease_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_mask,
-					"dhcp_stub_hal_get_ert_mask");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_lease_time,
-					"dhcp_stub_hal_get_ert_remain_lease_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_rebind_time,
-					"dhcp_stub_hal_get_ert_remain_rebind_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_renew_time,
-					"dhcp_stub_hal_get_ert_remain_renew_time");
-	ptrAgentObj->RegisterMethod(*this,&dhcp_stub_hal::erouter_ip_stub_GetIpAddress,
-					"erouter_ip_stub_GetIpAddress");
-
-	DEBUG_PRINT(DEBUG_TRACE, "dhcp_stub_hal Initialize----->Exit\n");
-
+	DEBUG_PRINT(DEBUG_TRACE, "dhcp_stub_hal Initialize\n");
 	return TEST_SUCCESS;
 }
 
@@ -156,7 +83,7 @@ bool dhcp_stub_hal::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgen
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_config_attempts(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_config_attempts(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int dhcp_pVal = 0;
 	int isNegativeScenario = 0;
@@ -183,13 +110,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_config_attempts(IN const Json::Value& 
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%d", dhcp_pVal);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_config_attempts has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -199,7 +126,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_config_attempts(IN const Json::Value& 
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_dhcp_svr(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_dhcp_svr(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -227,13 +154,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_dhcp_svr(IN const Json::Value& req, OU
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_dhcp_svr has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -244,7 +171,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_dhcp_svr(IN const Json::Value& req, OU
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_dns_svrs(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_dns_svrs(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int i = 0;
 	int isNegativeScenario = 0;
@@ -278,13 +205,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_dns_svrs(IN const Json::Value& req, OU
 
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_dns_svrs has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -295,7 +222,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_dns_svrs(IN const Json::Value& req, OU
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_fsm_state(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_fsm_state(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int dhcp_pVal = -1;
 	int isNegativeScenario = 0;
@@ -323,13 +250,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_fsm_state(IN const Json::Value& req, O
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%d", dhcp_pVal);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_fsm_state has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -340,7 +267,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_fsm_state(IN const Json::Value& req, O
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_gw(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_gw(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -368,13 +295,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_gw(IN const Json::Value& req, OUT Json
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_gw has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -385,7 +312,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_gw(IN const Json::Value& req, OUT Json
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_ifname(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_ifname(IN const Json::Value& req, OUT Json::Value& response)
 {
 	char ifName[MAX_STRING_SIZE] = {0};
 	int isNegativeScenario = 0;
@@ -411,13 +338,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_ifname(IN const Json::Value& req, OUT 
 	{
 		response["result"] = "SUCCESS";
 		response["details"] = ifName;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_ifname has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -427,7 +354,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_ifname(IN const Json::Value& req, OUT 
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_ip_addr(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_ip_addr(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -456,13 +383,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_ip_addr(IN const Json::Value& req, OUT
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_ip_addr has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -474,7 +401,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_ip_addr(IN const Json::Value& req, OUT
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_lease_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_lease_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -502,13 +429,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_lease_time(IN const Json::Value& req, 
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_lease_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -519,7 +446,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_lease_time(IN const Json::Value& req, 
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_mask(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_mask(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -547,13 +474,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_mask(IN const Json::Value& req, OUT Js
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_mask has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -565,7 +492,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_mask(IN const Json::Value& req, OUT Js
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_lease_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_lease_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -593,13 +520,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_lease_time(IN const Json::Value
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_remain_lease_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -611,7 +538,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_lease_time(IN const Json::Value
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_rebind_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_rebind_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -639,13 +566,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_rebind_time(IN const Json::Valu
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_remain_rebind_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -657,7 +584,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_rebind_time(IN const Json::Valu
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_renew_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_renew_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -685,13 +612,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_renew_time(IN const Json::Value
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ecm_remain_renew_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -703,7 +630,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_renew_time(IN const Json::Value
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_lease_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_lease_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -731,13 +658,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_lease_time(IN const Json::Valu
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_emta_remain_lease_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -748,7 +675,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_lease_time(IN const Json::Valu
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ******************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_rebind_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_rebind_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -775,13 +702,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_rebind_time(IN const Json::Val
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_emta_remain_rebind_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -792,7 +719,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_rebind_time(IN const Json::Val
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ******************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_renew_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_renew_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -820,13 +747,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_renew_time(IN const Json::Valu
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_emta_remain_renew_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -838,7 +765,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_renew_time(IN const Json::Valu
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  **************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_config_attempts(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_config_attempts(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int dhcp_pVal = 0;
 	int isNegativeScenario = 0;
@@ -866,13 +793,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_config_attempts(IN const Json::Value& 
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%d", dhcp_pVal);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_config_attempts has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -883,7 +810,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_config_attempts(IN const Json::Value& 
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_dhcp_svr(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_dhcp_svr(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -912,13 +839,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_dhcp_svr(IN const Json::Value& req, OU
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_dhcp_svr has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -930,7 +857,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_dhcp_svr(IN const Json::Value& req, OU
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  *******************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_dns_svrs(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_dns_svrs(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int i = 0;
 	dhcpv4c_ip_list_t ipList = {0};
@@ -963,13 +890,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_dns_svrs(IN const Json::Value& req, OU
 		}
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_dns_svrs has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -981,7 +908,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_dns_svrs(IN const Json::Value& req, OU
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ********************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_fsm_state(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_fsm_state(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int dhcp_pVal = 0;
 	int isNegativeScenario = 0;
@@ -1009,13 +936,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_fsm_state(IN const Json::Value& req, O
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%d", dhcp_pVal);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_fsm_state has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -1027,7 +954,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_fsm_state(IN const Json::Value& req, O
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  *************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_gw(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_gw(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -1057,13 +984,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_gw(IN const Json::Value& req, OUT Json
 
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_gw has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -1074,7 +1001,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_gw(IN const Json::Value& req, OUT Json
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ************************************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_ifname(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_ifname(IN const Json::Value& req, OUT Json::Value& response)
 {
 	char ifName[MAX_STRING_SIZE] = {0};
 	int isNegativeScenario = 0;
@@ -1100,13 +1027,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_ifname(IN const Json::Value& req, OUT 
 	{
 		response["result"] = "SUCCESS";
 		response["details"] = ifName;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_ifname has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -1118,7 +1045,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_ifname(IN const Json::Value& req, OUT 
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  ******************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_ip_addr(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_ip_addr(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -1147,13 +1074,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_ip_addr(IN const Json::Value& req, OUT
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_ip_addr has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -1165,7 +1092,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_ip_addr(IN const Json::Value& req, OUT
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  *********************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_lease_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_lease_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	char resultDetails[MAX_BUFFER_SIZE_TO_SEND] = {0};
@@ -1193,13 +1120,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_lease_time(IN const Json::Value& req, 
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_lease_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -1209,7 +1136,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_lease_time(IN const Json::Value& req, 
  * @param [in]      : req - request sent by Test Manager
  * @param [out]     : response - filled with SUCCESS or FAILURE based on the return value
  ********************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_mask(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_mask(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -1238,13 +1165,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_mask(IN const Json::Value& req, OUT Js
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%s", inet_ntoa(ip_addr1));
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_mask has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -1255,7 +1182,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_mask(IN const Json::Value& req, OUT Js
  * @param [in]      : req - request sent by Test Manager
  * @param [out]     : response - filled with SUCCESS or FAILURE based on the return value
  ****************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_lease_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_lease_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -1283,13 +1210,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_lease_time(IN const Json::Value
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_remain_lease_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -1301,7 +1228,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_lease_time(IN const Json::Value
  * @param [in]      : req - request sent by Test Manager
  * @param [out]     : response - filled with SUCCESS or FAILURE based on the return value
  *****************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_rebind_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_rebind_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -1329,13 +1256,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_rebind_time(IN const Json::Valu
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_remain_rebind_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -1347,7 +1274,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_rebind_time(IN const Json::Valu
  * @param [in]      : req - request sent by Test Manager
  * @param [out]     : response - filled with SUCCESS or FAILURE based on the return value
 ****************************************************************************************************************/
-bool dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_renew_time(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_renew_time(IN const Json::Value& req, OUT Json::Value& response)
 {
 	unsigned int dhcpValue = 0;
 	int isNegativeScenario = 0;
@@ -1375,13 +1302,13 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_renew_time(IN const Json::Value
 		snprintf(resultDetails, MAX_BUFFER_SIZE_TO_SEND, "%u", dhcpValue);
 		response["result"] = "SUCCESS";
 		response["details"] = resultDetails;
-		return TEST_SUCCESS;
+		return;
 	}
 	else
 	{
 		response["result"] = "FAILURE";
 		response["details"] = "get_ert_remain_renew_time has been failure";
-		return TEST_FAILURE;
+		return;
 	}
 }
 
@@ -1392,7 +1319,7 @@ bool dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_renew_time(IN const Json::Value
  * @param [in]      : req - request sent by Test Manager
  * @param [out]     : response - filled with SUCCESS or FAILURE(if any error is detected)
  *******************************************************************************************/
-bool dhcp_stub_hal::erouter_ip_stub_GetIpAddress(IN const Json::Value& req, OUT Json::Value& response)
+void dhcp_stub_hal::erouter_ip_stub_GetIpAddress(IN const Json::Value& req, OUT Json::Value& response)
 {
 	int fd;
 	struct ifreq ifrequest;
@@ -1412,7 +1339,7 @@ bool dhcp_stub_hal::erouter_ip_stub_GetIpAddress(IN const Json::Value& req, OUT 
 
 	response["result"] = "SUCCESS";
 	response["details"] = resultDetails;
-	return TEST_SUCCESS;
+	return;
 }
 
 
@@ -1421,9 +1348,9 @@ bool dhcp_stub_hal::erouter_ip_stub_GetIpAddress(IN const Json::Value& req, OUT 
  *Description   : This function is used to create a new object of the class "dhcp_stub_hal".
  *@param [in]   : None
  ********************************************************************************************/
-extern "C" dhcp_stub_hal* CreateObject()
+extern "C" dhcp_stub_hal* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-	return new dhcp_stub_hal();
+	return new dhcp_stub_hal(ptrtcpServer);
 }
 
 
@@ -1433,41 +1360,9 @@ extern "C" dhcp_stub_hal* CreateObject()
  *@param [in]   : szVersion - version, ptrAgentObj - Agent object
  *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
  **************************************************************************************/
-bool dhcp_stub_hal::cleanup(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj)
+bool dhcp_stub_hal::cleanup(IN const char* szVersion)
 {
 	DEBUG_PRINT(DEBUG_TRACE, "cleaning up\n");
-
-	CHECK_PARAM_AND_RET(ptrAgentObj);
-	CHECK_PARAM_AND_RET(szVersion);
-
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_config_attempts");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_dhcp_svr");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_dns_svrs");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_fsm_state");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_gw");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_ifname");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_ip_addr");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_lease_time");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_mask");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_remain_lease_time");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_remain_rebind_time");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ecm_remain_renew_time");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_emta_remain_lease_time");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_emta_remain_rebind_time(");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_emta_remain_renew_time");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_config_attempts");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_dhcp_svr");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_dns_svrs");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_fsm_state");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_gw");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_ifname");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_ip_addr");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_lease_time");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_mask");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_remain_lease_time");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_remain_rebind_time");
-	ptrAgentObj->UnregisterMethod("dhcp_stub_hal_get_ert_remain_renew_time");
-	ptrAgentObj->UnregisterMethod("erouter_ip_stub_GetIpAddress");
 	return TEST_SUCCESS;
 }
 

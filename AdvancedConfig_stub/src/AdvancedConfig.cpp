@@ -21,8 +21,6 @@
 #include "ssp_tdk_wrp.h"
 
 /* To provide external linkage to C Functions defined in TDKB Component folder */
-
-
 extern "C"
 {
     int ssp_register(bool);
@@ -39,13 +37,6 @@ extern "C"
     int ssp_setMultipleParameterValue(char **paramList, int size);
 };
 
-/*This is a constructor function for AdvancedConfig class*/
-AdvancedConfig::AdvancedConfig()
-{
-	DEBUG_PRINT(DEBUG_LOG,"TDK AdvancedConfig Instance Created\n");
-}
-
-
 /***************************************************************************
  *Function name	: initialize
  *Description	: Initialize Function will be used for registering the wrapper method 
@@ -53,25 +44,10 @@ AdvancedConfig::AdvancedConfig()
  *  		  	  
  *****************************************************************************/ 
 
-bool AdvancedConfig::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool AdvancedConfig::initialize(IN const char* szVersion)
 {
 	DEBUG_PRINT(DEBUG_TRACE,"TDK::AdvancedConfig Initialize\n");
-	/*Register stub function for callback*/
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_Start, "AdvancedConfig_Start");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_Get, "AdvancedConfig_Get");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_GetAttr, "AdvancedConfig_GetAttr");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_GetNames, "AdvancedConfig_GetNames");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_SetAttr, "AdvancedConfig_SetAttr");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_Set, "AdvancedConfig_Set");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_AddObject, "AdvancedConfig_AddObject");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_DelObject, "AdvancedConfig_DelObject");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_SetCommit, "AdvancedConfig_SetCommit");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_GetHealth, "AdvancedConfig_GetHealth");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_SetSessionId, "AdvancedConfig_SetSessionId");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_Set_Get, "AdvancedConfig_Set_Get");
-	ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_Stop, "AdvancedConfig_Stop");
-        ptrAgentObj->RegisterMethod(*this,&AdvancedConfig::AdvancedConfig_SetMultiple, "AdvancedConfig_SetMultiple");
-		
+	
 	return TEST_SUCCESS;
 
 }
@@ -120,7 +96,7 @@ bool AdvancedConfig::testmodulepost_requisites()
  * 			   ssp_register
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_Start(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_Start(IN const Json::Value& req, OUT Json::Value& response)
 {
 	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_start --->Entry \n");
 
@@ -142,7 +118,7 @@ bool AdvancedConfig::AdvancedConfig_Start(IN const Json::Value& req, OUT Json::V
 	}
 	
 	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_start --->Exit\n");
-	return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -156,7 +132,7 @@ bool AdvancedConfig::AdvancedConfig_Start(IN const Json::Value& req, OUT Json::V
  * 			   ssp_getParameterValue
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Value& response)
 {
 	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_get --->Entry\n");
 
@@ -190,7 +166,7 @@ bool AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Val
 	
 	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_get --->Exit\n");
 
-	return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -204,7 +180,7 @@ bool AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Val
  * 		            	   ssp_setParameterValue
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_Set(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_Set(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set --->Entry\n");
 
@@ -236,7 +212,7 @@ bool AdvancedConfig::AdvancedConfig_Set(IN const Json::Value& req, OUT Json::Val
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n tdk_AdvancedConfig_set --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -251,7 +227,7 @@ bool AdvancedConfig::AdvancedConfig_Set(IN const Json::Value& req, OUT Json::Val
  * 			               ssp_setParameterValue and ssp_getParameterValue
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json::Value& response)
 {
 	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set_get --->Entry\n");
 
@@ -288,7 +264,7 @@ bool AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json:
         response["result"]="FAILURE";
         response["details"]="AdvancedConfigStub::SET API Validation is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set_get --->Error in Set API Validation of Advanced config in DUT !!! \n");
-        return	TEST_FAILURE;
+        return;
 	}
 
 
@@ -299,7 +275,7 @@ bool AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json:
 	    response["result"]="FAILURE";
 	    response["details"]="Get Parameter Value API Validation Failure"; 		
 	    DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set_get --->Error in Get API Validation of Advanced config in DUT !!! \n");
-	    return TEST_FAILURE;
+	    return;
 	}
 
 	if((strcmp(resultDetails[0].pParamValues,&ParamValue[0])) == 0)
@@ -324,7 +300,7 @@ bool AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json:
 	    }
 	}
 	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set_get --->Exit\n");
-	return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -338,7 +314,7 @@ bool AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json:
  * 		            	   ssp_getParameterAttr
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_GetAttr(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_GetAttr(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_getattr --->Entry\n");
     int attrCnt=0;
@@ -370,7 +346,7 @@ bool AdvancedConfig::AdvancedConfig_GetAttr(IN const Json::Value& req, OUT Json:
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_getattr --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -384,7 +360,7 @@ bool AdvancedConfig::AdvancedConfig_GetAttr(IN const Json::Value& req, OUT Json:
              * 			   ssp_setParameterAttr
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_SetAttr(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_SetAttr(IN const Json::Value& req, OUT Json::Value& response)
 {
 
 	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_setattr --->Entry\n");
@@ -419,7 +395,7 @@ bool AdvancedConfig::AdvancedConfig_SetAttr(IN const Json::Value& req, OUT Json:
 	}
 
 	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_setattr --->Exit\n");
-	return TEST_SUCCESS;
+	return;
 }
 
 /*******************************************************************************************
@@ -433,7 +409,7 @@ bool AdvancedConfig::AdvancedConfig_SetAttr(IN const Json::Value& req, OUT Json:
  * 		            	   ssp_getParameterNames
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_GetNames(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_GetNames(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_getnames --->Entry\n");
     int retParamNameSize = 0;
@@ -469,7 +445,7 @@ bool AdvancedConfig::AdvancedConfig_GetNames(IN const Json::Value& req, OUT Json
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_getnames --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -482,7 +458,7 @@ bool AdvancedConfig::AdvancedConfig_GetNames(IN const Json::Value& req, OUT Json
  * 			   ssp_addTableRow
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_AddObject(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_AddObject(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_AddObject --->Entry\n");
 
@@ -495,7 +471,7 @@ bool AdvancedConfig::AdvancedConfig_AddObject(IN const Json::Value& req, OUT Jso
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+        return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -521,7 +497,7 @@ bool AdvancedConfig::AdvancedConfig_AddObject(IN const Json::Value& req, OUT Jso
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_AddObject --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -534,7 +510,7 @@ bool AdvancedConfig::AdvancedConfig_AddObject(IN const Json::Value& req, OUT Jso
  * 			   ssp_deleteTableRow
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_DelObject(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_DelObject(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_DelObject --->Entry\n");
 
@@ -549,7 +525,7 @@ bool AdvancedConfig::AdvancedConfig_DelObject(IN const Json::Value& req, OUT Jso
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+        return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -590,7 +566,7 @@ bool AdvancedConfig::AdvancedConfig_DelObject(IN const Json::Value& req, OUT Jso
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_DelObject --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -603,7 +579,7 @@ bool AdvancedConfig::AdvancedConfig_DelObject(IN const Json::Value& req, OUT Jso
  * 			   ssp_setCommit
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_SetCommit(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_SetCommit(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_SetCommit --->Entry\n");
 
@@ -614,7 +590,7 @@ bool AdvancedConfig::AdvancedConfig_SetCommit(IN const Json::Value& req, OUT Jso
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+        return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -637,7 +613,7 @@ bool AdvancedConfig::AdvancedConfig_SetCommit(IN const Json::Value& req, OUT Jso
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_SetCommit --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -650,7 +626,7 @@ bool AdvancedConfig::AdvancedConfig_SetCommit(IN const Json::Value& req, OUT Jso
  * 			   ssp_getHealth
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_GetHealth(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_GetHealth(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_GetHealth --->Entry\n");
 
@@ -661,7 +637,7 @@ bool AdvancedConfig::AdvancedConfig_GetHealth(IN const Json::Value& req, OUT Jso
     {
         response["result"]="FAILURE";
         response["details"]="AdvancedConfigStub::Error Invoking TDK Component";
-        return TEST_FAILURE;
+        return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -684,7 +660,7 @@ bool AdvancedConfig::AdvancedConfig_GetHealth(IN const Json::Value& req, OUT Jso
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_GetHealth --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -697,7 +673,7 @@ bool AdvancedConfig::AdvancedConfig_GetHealth(IN const Json::Value& req, OUT Jso
  *          			   ssp_setSessionId
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_SetSessionId(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_SetSessionId(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_SetSessionId --->Entry\n");
 
@@ -709,14 +685,14 @@ bool AdvancedConfig::AdvancedConfig_SetSessionId(IN const Json::Value& req, OUT 
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["sessionId"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-        return TEST_FAILURE;
+        return;
     }
 
     priority = req["priority"].asInt();
@@ -741,7 +717,7 @@ bool AdvancedConfig::AdvancedConfig_SetSessionId(IN const Json::Value& req, OUT 
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_SetSessionId --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -757,7 +733,7 @@ bool AdvancedConfig::AdvancedConfig_SetSessionId(IN const Json::Value& req, OUT 
  * 			               ssp_register
 ********************************************************************************************/
 
-bool AdvancedConfig::AdvancedConfig_Stop(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_Stop(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_stop --->Entry\n");
     int returnValue;
@@ -784,7 +760,7 @@ bool AdvancedConfig::AdvancedConfig_Stop(IN const Json::Value& req, OUT Json::Va
     free(resultDetails);
 
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_stop --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -797,7 +773,7 @@ bool AdvancedConfig::AdvancedConfig_Stop(IN const Json::Value& req, OUT Json::Va
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  *                         ssp_setMultipleParameterValue
 ********************************************************************************************/
-bool AdvancedConfig::AdvancedConfig_SetMultiple(IN const Json::Value& req, OUT Json::Value& response)
+void AdvancedConfig::AdvancedConfig_SetMultiple(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_SetMultiple --->Entry\n");
 
@@ -816,7 +792,7 @@ bool AdvancedConfig::AdvancedConfig_SetMultiple(IN const Json::Value& req, OUT J
     while (list) {
     paramlist = (char **) realloc (paramlist, ++num_spaces * sizeof(char *));
     if (paramlist == NULL)
-    return 0; /* memory allocation failed */
+    return; /* memory allocation failed */
 
     paramlist[num_spaces-1] = list;
     list = strtok (NULL, "|");
@@ -855,7 +831,7 @@ bool AdvancedConfig::AdvancedConfig_SetMultiple(IN const Json::Value& req, OUT J
 
    DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_SetMultiple --->Exit\n");
 
-   return TEST_SUCCESS;
+   return;
 }
 
 
@@ -867,9 +843,9 @@ bool AdvancedConfig::AdvancedConfig_SetMultiple(IN const Json::Value& req, OUT J
  *
  **************************************************************************/
 
-extern "C" AdvancedConfig* CreateObject()
+extern "C" AdvancedConfig* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-	return new AdvancedConfig();
+	return new AdvancedConfig(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -878,29 +854,9 @@ extern "C" AdvancedConfig* CreateObject()
  *
  **************************************************************************/
 
-bool AdvancedConfig::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool AdvancedConfig::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"AdvancedConfig shutting down\n");
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-    /*unRegister stub function for callback*/
-
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_Start");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_Get");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_GetAttr");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_GetNames");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_SetAttr");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_Set");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_Set_Get");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_AddObject");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_DelObject");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_SetCommit");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_GetHealth");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_SetSessionId");
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_Stop");	
-    ptrAgentObj->UnregisterMethod("AdvancedConfig_SetMultiple");
     return TEST_SUCCESS;
 }
 

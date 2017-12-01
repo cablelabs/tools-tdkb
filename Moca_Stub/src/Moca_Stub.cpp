@@ -27,24 +27,17 @@ extern "C"
     int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType, int commit);
     void free_Memory_val(int size,GETPARAMVALUES *Freestruct);
 };
-/*This is a constructor function for Mocastub class*/
-Mocastub::Mocastub()
-{
-    DEBUG_PRINT(DEBUG_LOG,"TDK Mocastub Instance Created\n");
-}
+
+
 /***************************************************************************
  *Function name : initialize
  *Description   : Initialize Function will be used for registering the wrapper method
  *                with the agent so that wrapper function will be used in the script
  *
  *****************************************************************************/
-bool Mocastub::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool Mocastub::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::Mocastub Initialize\n");
-    /*Register stub function for callback*/
-    ptrAgentObj->RegisterMethod(*this,&Mocastub::Mocastub_Get, "Mocastub_Get");
-    ptrAgentObj->RegisterMethod(*this,&Mocastub::Mocastub_Set, "Mocastub_Set");
-    ptrAgentObj->RegisterMethod(*this,&Mocastub::Mocastub_SetKeypassphrase, "Mocastub_SetKeypassphrase");
     return TEST_SUCCESS;
 }
 /***************************************************************************
@@ -93,7 +86,7 @@ bool Mocastub::testmodulepost_requisites()
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  *                         ssp_getParameterValue
  ********************************************************************************************/
-bool Mocastub::Mocastub_Get(IN const Json::Value& req, OUT Json::Value& response)
+void Mocastub::Mocastub_Get(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n Mocastub_Get --->Entry\n");
     char ParamNames[MAX_PARAM_SIZE];
@@ -107,7 +100,7 @@ bool Mocastub::Mocastub_Get(IN const Json::Value& req, OUT Json::Value& response
         response["result"]="FAILURE";
         response["details"]="Get Parameter Value API Validation Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n Mocastub_Get --->Exit\n");
-        return TEST_FAILURE;
+        return;
     }
     else
     {
@@ -119,7 +112,7 @@ bool Mocastub::Mocastub_Get(IN const Json::Value& req, OUT Json::Value& response
         }
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n Mocastub_Get --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 /***************************************************************************
  *Function name : Mocastub_Set
@@ -130,7 +123,7 @@ bool Mocastub::Mocastub_Get(IN const Json::Value& req, OUT Json::Value& response
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool Mocastub::Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response)
+void Mocastub::Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"Mocastub_Set --->Entry \n");
     int size_ret=0,i=0,setResult=0;
@@ -151,7 +144,7 @@ bool Mocastub::Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
-        return TEST_FAILURE;
+        return;
     }
     if((DataParamValue1== NULL))
     {
@@ -165,7 +158,7 @@ bool Mocastub::Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response
             free_Memory_val(size_ret,DataParamValue1);
             response["result"] = "SUCCESS";
             response["details"] = "Set has been validated successfully";
-            return TEST_SUCCESS;
+            return;
         }
         else
         {
@@ -175,7 +168,7 @@ bool Mocastub::Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response
     }
     response["result"] = "FAILURE";
     response["details"] = "FAILURE : Parameter Value has not changed after a proper Set";
-    return TEST_FAILURE;
+    return;
 }
 
 /***************************************************************************
@@ -187,7 +180,7 @@ bool Mocastub::Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool Mocastub::Mocastub_SetKeypassphrase(IN const Json::Value& req, OUT Json::Value& response)
+void Mocastub::Mocastub_SetKeypassphrase(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"Mocastub_SetKeypassphrase --->Entry \n");
     int setResult=0;
@@ -203,13 +196,13 @@ bool Mocastub::Mocastub_SetKeypassphrase(IN const Json::Value& req, OUT Json::Va
         DEBUG_PRINT(DEBUG_TRACE,"New Parameter Values have been set.\n");
        response["result"] = "SUCCESS";
         response["details"] = "Set has been validated successfully";
-       return TEST_SUCCESS;
+       return;
     }
     else
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
-        return TEST_FAILURE;
+        return;
     }
 }
 
@@ -219,26 +212,18 @@ bool Mocastub::Mocastub_SetKeypassphrase(IN const Json::Value& req, OUT Json::Va
  *                class "Mocastub".
  *
  **************************************************************************/
-extern "C" Mocastub* CreateObject()
+extern "C" Mocastub* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new Mocastub();
+    return new Mocastub(ptrtcpServer);
 }
 /**************************************************************************
  * Function Name : cleanup
  * Description   : This function will be used to clean the log details.
  *
  **************************************************************************/
-bool Mocastub::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool Mocastub::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"Mocastub shutting down\n");
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-    /*unRegister stub function for callback*/
-    ptrAgentObj->UnregisterMethod("Mocastub_Get");
-    ptrAgentObj->UnregisterMethod("Mocastub_Set");
-    ptrAgentObj->UnregisterMethod("Mocastub_SetKeypassphrase");
     return TEST_SUCCESS;
 }
 /**************************************************************************

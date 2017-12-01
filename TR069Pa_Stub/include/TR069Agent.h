@@ -33,17 +33,10 @@
 
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 
 #define IN
 #define OUT
-
-#define BUFF_LENGTH 512
-#define CMD ("curl -d '{\"paramList\":[{\"name\":\"")
-#define HTTP ("\"}]}' http://127.0.0.1:10999")
-#define GET_NUM_OF_ACTIVE_PORTS "cat /proc/net/tcp | awk '$4 == \"0A\" || $4 == \"01\" {print $2" "$3" "$4}' | wc -l"
-#define GET_IMAGE_VERSION "cat /version.txt | grep imagename: | cut -d \":\" -f 2"
-#define GET_IPV4_ENABLE_STATUS "ifconfig | egrep 'inet addr:' | wc -l"
-#define GET_STB_MAC "ifconfig | grep eth1 | head -n 1 | cut -b 39-"
 
 #define TEST_SUCCESS true
 #define TEST_FAILURE false
@@ -52,34 +45,34 @@
 using namespace std;
 
 class RDKTestAgent;
-class TR069Agent : public RDKTestStubInterface
+class TR069Agent : public RDKTestStubInterface, public AbstractServer<TR069Agent>
 {
         public:
-                /*Constructor*/
-                TR069Agent();
+        
+		TR069Agent(TcpSocketServer &ptrRpcServer) : AbstractServer <TR069Agent>(ptrRpcServer)
+		{
+			this->bindAndAddMethod(Procedure("TR069Agent_Init", PARAMS_BY_NAME, JSON_STRING,NULL), &TR069Agent::TR069Agent_Init);
+			this->bindAndAddMethod(Procedure("TR069Agent_Terminate", PARAMS_BY_NAME, JSON_STRING,NULL), &TR069Agent::TR069Agent_Terminate);
+			this->bindAndAddMethod(Procedure("TR069Agent_GetParameterNames", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, "ParamList", JSON_STRING, NULL), &TR069Agent::TR069Agent_GetParameterNames);
+			this->bindAndAddMethod(Procedure("TR069Agent_SetParameterValues", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, "ParamValue", JSON_STRING, "Type", JSON_STRING,NULL), &TR069Agent::TR069Agent_SetParameterValues);
+			this->bindAndAddMethod(Procedure("TR069Agent_GetParameterValues", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, NULL), &TR069Agent::TR069Agent_GetParameterValues);
+			this->bindAndAddMethod(Procedure("TR069Agent_GetParameterAttr", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, NULL), &TR069Agent::TR069Agent_GetParameterAttr);
+			this->bindAndAddMethod(Procedure("TR069Agent_SetParameterAttr", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, "AccessControl", JSON_STRING, "Notify", JSON_STRING, NULL), &TR069Agent::TR069Agent_SetParameterAttr);
+		}
 
-                /*Inherited functions*/
-        bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-        bool cleanup(const char*, RDKTestAgent*);
+        /*Inherited functions*/
+        bool initialize(IN const char* szVersion);
+        bool cleanup(const char*);
 		std::string testmodulepre_requisites();
 		bool testmodulepost_requisites();
 
-		/*Query Get Parameter Value */
-		//bool TR069Agent_GetParameterValue(IN const Json::Value& req, OUT Json::Value& response);
-		//bool TR069Agent_VerifyParameterValue(IN const Json::Value& req, OUT Json::Value& response);
-		/*Query Set Parameter Value */
-		//bool TR069Agent_SetParameterValue(IN const Json::Value& req, OUT Json::Value& response);
-		bool TR069Agent_Init(IN const Json::Value& req, OUT Json::Value& response);
-		bool TR069Agent_Terminate(IN const Json::Value& req, OUT Json::Value& response);
-		bool TR069Agent_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response);
-		bool TR069Agent_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
-		bool TR069Agent_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
-		bool TR069Agent_GetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);
-	    bool TR069Agent_SetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);
-
-	
-
+		void TR069Agent_Init(IN const Json::Value& req, OUT Json::Value& response);
+		void TR069Agent_Terminate(IN const Json::Value& req, OUT Json::Value& response);
+		void TR069Agent_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response);
+		void TR069Agent_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
+		void TR069Agent_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
+		void TR069Agent_GetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);
+	    void TR069Agent_SetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);
 };
 
-extern "C" TR069Agent* CreateObject();
 #endif 

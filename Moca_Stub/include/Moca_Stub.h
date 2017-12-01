@@ -16,8 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 */
-#ifndef __CMAGENT_STUB_H__
-#define __CMAGENT_STUB_H__
+#ifndef __MOCA_STUB_H__
+#define __MOCA_STUB_H__
 #include <json/json.h>
 #include <unistd.h>
 #include <string.h>
@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <fstream>
@@ -36,20 +37,27 @@
 #define MAX_PARAM_SIZE  100
 #define MAX_PARAM_NAMES_ARRAY   1000
 class RDKTestAgent;
-class Mocastub : public RDKTestStubInterface
+class Mocastub : public RDKTestStubInterface, public AbstractServer<Mocastub>
 {
     public:
-        /*Ctor*/
-        Mocastub();
+        
+		Mocastub(TcpSocketServer &ptrRpcServer) : AbstractServer <Mocastub>(ptrRpcServer)
+		{
+			this->bindAndAddMethod(Procedure("Mocastub_Get", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &Mocastub::Mocastub_Get);
+			this->bindAndAddMethod(Procedure("Mocastub_Set", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, JSON_STRING, "ParamName", JSON_STRING, "ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &Mocastub::Mocastub_Set);
+			this->bindAndAddMethod(Procedure("Mocastub_SetKeypassphrase", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, "ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &Mocastub::Mocastub_SetKeypassphrase);
+		}
+		
         /*inherited functions*/
-        bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-        bool cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj);
+        bool initialize(IN const char* szVersion);
+        bool cleanup(IN const char* szVersion);
         std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
+		
         /*Moca stub Wrapper functions*/
-        bool Mocastub_Get(IN const Json::Value& req, OUT Json::Value& response);
-        bool Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response);
-	bool Mocastub_SetKeypassphrase(IN const Json::Value& req, OUT Json::Value& response);
+        void Mocastub_Get(IN const Json::Value& req, OUT Json::Value& response);
+        void Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response);
+	void Mocastub_SetKeypassphrase(IN const Json::Value& req, OUT Json::Value& response);
 };
-#endif //__CMAGENT_STUB_H__
+#endif //__MOCA_STUB_H__
 

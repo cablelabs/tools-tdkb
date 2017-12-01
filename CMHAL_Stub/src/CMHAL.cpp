@@ -20,11 +20,12 @@
 #include "CMHAL.h"
 
 /*This is a constructor function for CMHAL class*/
+#if 0
 CMHAL::CMHAL()
 {
     DEBUG_PRINT(DEBUG_LOG,"CMHAL Instance Created\n");
 }
-
+#endif
 /***************************************************************************
  *Function name : initialize
  *Description   : Initialize Function will be used for registering the wrapper method
@@ -32,11 +33,12 @@ CMHAL::CMHAL()
  *
  *****************************************************************************/
 
-bool CMHAL::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool CMHAL::initialize(IN const char* szVersion)
 {
+#if 0
     ptrAgentObj->RegisterMethod(*this,&CMHAL::CMHAL_GetParamCharValue,"CMHAL_GetParamCharValue");
     ptrAgentObj->RegisterMethod(*this,&CMHAL::CMHAL_GetParamUlongValue,"CMHAL_GetParamUlongValue");
-    
+#endif
     return TEST_SUCCESS;
 }
 
@@ -77,7 +79,7 @@ bool CMHAL::testmodulepost_requisites()
  *
  *******************************************************************************************/
 
-bool CMHAL::CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& response)
+void CMHAL::CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_GetParamCharValue  --->Entry \n");
 
@@ -92,7 +94,8 @@ bool CMHAL::CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& 
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     strcpy(paramName,req["paramName"].asCString());
     strcpy(paramType, req["paramType"].asCString());
@@ -113,10 +116,12 @@ bool CMHAL::CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& 
        response["result"]="FAILURE";
        response["details"]="Failed to get the value";
        DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_GetParamCharValue --->Exit\n");
-       return  TEST_FAILURE;
+//       return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_GetParamCharValue --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -128,7 +133,7 @@ bool CMHAL::CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& 
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
 *
  *******************************************************************************************/
-bool CMHAL::CMHAL_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response)
+void CMHAL::CMHAL_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_GetParamUlongValue  --->Entry \n");
     int returnValue = 0;
@@ -142,7 +147,8 @@ bool CMHAL::CMHAL_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value&
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
     strcpy(paramName,req["paramName"].asCString());
     strcpy(paramType, req["paramType"].asCString());
@@ -164,10 +170,12 @@ bool CMHAL::CMHAL_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="Failed to get the value";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_GetParamUlongValue --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_GetParamUlongValue --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -178,9 +186,9 @@ bool CMHAL::CMHAL_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value&
 *
 + **************************************************************************/
 
-extern "C" CMHAL* CreateObject()
+extern "C" CMHAL* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new CMHAL();
+    return new CMHAL(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -189,9 +197,10 @@ extern "C" CMHAL* CreateObject()
  *
  **************************************************************************/
 
-bool CMHAL::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool CMHAL::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"CMHAL shutting down\n");
+#if 0
     if(ptrAgentObj==NULL)
     {
         return TEST_FAILURE;
@@ -200,6 +209,7 @@ bool CMHAL::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("CMHAL_GetParamCharValue");
     ptrAgentObj->UnregisterMethod("CMHAL_GetParamUlongValue");
    
+#endif
     return TEST_SUCCESS;
 }
 

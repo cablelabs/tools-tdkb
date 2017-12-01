@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #include "rdk_debug.h"
 #include "rdk_utils.h"
 #include <fstream>
@@ -36,33 +37,52 @@
 #define SIZE    		256
 using namespace std;
 class RDKTestAgent;
-class RDKBLoggerAgent : public RDKTestStubInterface
+class RDKBLoggerAgent : public RDKTestStubInterface, public AbstractServer<RDKBLoggerAgent>
 {
         public:
-                //Constructor
-                RDKBLoggerAgent();
-                //Inherited functions
-                bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-                bool cleanup(const char*, RDKTestAgent*);
+
+		 RDKBLoggerAgent(TcpSocketServer &ptrRpcServer) : AbstractServer <RDKBLoggerAgent>(ptrRpcServer)
+		{
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Init", PARAMS_BY_NAME, JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Init);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,"level",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Dbg_Enabled_Status", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,"level",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Dbg_Enabled_Status);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_EnvGet", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_EnvGet);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_EnvGetNum", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_EnvGetNum);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_EnvGetValueFromNum", PARAMS_BY_NAME, JSON_STRING,"number",JSON_INTEGER,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_EnvGetValueFromNum);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_EnvGetModFromNum", PARAMS_BY_NAME, JSON_STRING,"number",JSON_INTEGER,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_EnvGetModFromNum);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_CheckMPELogEnabled", PARAMS_BY_NAME, JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_CheckMPELogEnabled);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_All", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_All);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_None", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_None);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_Trace", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_Trace);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_InverseTrace", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_InverseTrace);   
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_Msg", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,"level",JSON_STRING,"msg",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_Msg);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_SetLogLevel", PARAMS_BY_NAME, JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_SetLogLevel);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_GetLogLevel", PARAMS_BY_NAME, JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_GetLogLevel);
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_MPEOSDisabled", PARAMS_BY_NAME, JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_MPEOSDisabled);
+		}
+
+		//Inherited functions
+		bool initialize(IN const char* szVersion);
+		bool cleanup(const char*);
 		std::string testmodulepre_requisites();
-                bool testmodulepost_requisites();
-                //RDKBLoggerAgent Wrapper functions
-		bool RDKBLoggerAgent_Init(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_Log(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_Dbg_Enabled_Status(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_EnvGet(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_EnvGetNum(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_EnvGetValueFromNum(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_EnvGetModFromNum(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_CheckMPELogEnabled(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_Log_All(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_Log_None(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_Log_Trace(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_Log_InverseTrace(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_Log_Msg(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_SetLogLevel(IN const Json::Value& req, OUT Json::Value& response);
-		bool RDKBLoggerAgent_GetLogLevel(IN const Json::Value& req, OUT Json::Value& response);
-                bool RDKBLoggerAgent_Log_MPEOSDisabled(IN const Json::Value& req, OUT Json::Value& response);
+		bool testmodulepost_requisites();
+		//RDKBLoggerAgent Wrapper functions
+		void RDKBLoggerAgent_Init(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_Log(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_Dbg_Enabled_Status(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_EnvGet(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_EnvGetNum(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_EnvGetValueFromNum(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_EnvGetModFromNum(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_CheckMPELogEnabled(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_Log_All(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_Log_None(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_Log_Trace(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_Log_InverseTrace(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_Log_Msg(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_SetLogLevel(IN const Json::Value& req, OUT Json::Value& response);
+		void RDKBLoggerAgent_GetLogLevel(IN const Json::Value& req, OUT Json::Value& response);
+        void RDKBLoggerAgent_Log_MPEOSDisabled(IN const Json::Value& req, OUT Json::Value& response);
 };
-        extern "C" RDKBLoggerAgent* CreateObject();
+
 #endif //__RDKLOGGER_STUB_H__

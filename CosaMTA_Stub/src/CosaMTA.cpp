@@ -59,13 +59,6 @@ extern "C"
     int ssp_CosaDmlMtaInit(void);
 };
 
-/*This is a constructor function for CosaMTA class*/
-CosaMTA::CosaMTA()
-{
-    //return new COSAMTA();
-    DEBUG_PRINT(DEBUG_LOG,"CosaMTA Instance Created\n");
-}
-
 /***************************************************************************
  *Function name : initialize
  *Description  : Initialize Function will be used for registering the wrapper method 
@@ -73,39 +66,9 @@ CosaMTA::CosaMTA()
  *             
  *****************************************************************************/ 
 
-bool CosaMTA::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool CosaMTA::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::CosaMTA Initialize\n");
-    /*Register stub function for callback*/
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_GetResetCount,"CosaMTA_GetResetCount");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_GetDHCPInfo,"CosaMTA_GetDHCPInfo");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_Triggerdiagnostics,"CosaMTA_Triggerdiagnostics");
-    
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_BatteryGetInfo,"CosaMTA_BatteryGetInfo");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_BatteryGetStatus,"CosaMTA_BatteryGetStatus");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_BatteryGetPowerStatus,"CosaMTA_BatteryGetPowerStatus");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_LineTableGetNumberOfEntries,"CosaMTA_LineTableGetNumberOfEntries");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_LineTableGetEntry,"CosaMTA_LineTableGetEntry");
-    
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_GetServiceClass,"CosaMTA_GetServiceClass");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_DectGetEnable,"CosaMTA_DectGetEnable");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_DectSetEnable,"CosaMTA_DectSetEnable");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_DectGetRegistrationMode,"CosaMTA_DectGetRegistrationMode");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_DectSetRegistrationMode,"CosaMTA_DectSetRegistrationMode");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_GetDect,"CosaMTA_GetDect");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_GetDectPIN,"CosaMTA_GetDectPIN");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_SetDectPIN,"CosaMTA_SetDectPIN");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_GetDSXLogEnable,"CosaMTA_GetDSXLogEnable");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_SetDSXLogEnable,"CosaMTA_SetDSXLogEnable");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_ClearDSXLog,"CosaMTA_ClearDSXLog");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_GetCallSignallingLogEnable,"CosaMTA_GetCallSignallingLogEnable");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_SetCallSignallingLogEnable,"CosaMTA_SetCallSignallingLogEnable");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_ClearCallSignallingLog,"CosaMTA_ClearCallSignallingLog");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_BatteryGetNumberofCycles,"CosaMTA_BatteryGetNumberofCycles");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_BatteryGetRemainingTime,"CosaMTA_BatteryGetRemainingTime");
-
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_BatteryGetLife,"CosaMTA_BatteryGetLife");
-    ptrAgentObj->RegisterMethod(*this,&CosaMTA::CosaMTA_BatteryGetCondition,"CosaMTA_BatteryGetCondition");
     return TEST_SUCCESS;
 }
 
@@ -158,7 +121,7 @@ bool CosaMTA::testmodulepost_requisites()
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-bool CosaMTA::CosaMTA_GetResetCount(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_GetResetCount(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetResetCount --->Entry \n");
 
@@ -174,19 +137,19 @@ bool CosaMTA::CosaMTA_GetResetCount(IN const Json::Value& req, OUT Json::Value& 
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
     if(&req["resetType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -206,10 +169,10 @@ bool CosaMTA::CosaMTA_GetResetCount(IN const Json::Value& req, OUT Json::Value& 
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the reset count";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetResetCount --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetResetCount  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 /*******************************************************************************************
  *
@@ -222,7 +185,7 @@ bool CosaMTA::CosaMTA_GetResetCount(IN const Json::Value& req, OUT Json::Value& 
  *
  *******************************************************************************************/
 
-bool CosaMTA::CosaMTA_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDHCPInfo --->Entry \n");
 
@@ -237,14 +200,14 @@ bool CosaMTA::CosaMTA_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& re
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -261,10 +224,10 @@ bool CosaMTA::CosaMTA_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& re
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the DHCP information";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDHCPInfo --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDHCPInfo  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -277,7 +240,7 @@ bool CosaMTA::CosaMTA_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& re
  *
  *******************************************************************************************/
 
-bool CosaMTA::CosaMTA_Triggerdiagnostics(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_Triggerdiagnostics(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_TriggerDiagnostics --->Entry \n");
 
@@ -293,10 +256,10 @@ bool CosaMTA::CosaMTA_Triggerdiagnostics(IN const Json::Value& req, OUT Json::Va
         response["result"]="FAILURE";
         response["details"]="Failed to check the index value of trigger diagnostics";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_TriggerDiagnostics --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_TriggerDiagnostics  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 /*******************************************************************************************
  *
@@ -308,7 +271,7 @@ bool CosaMTA::CosaMTA_Triggerdiagnostics(IN const Json::Value& req, OUT Json::Va
  *
  *******************************************************************************************/
 
-bool CosaMTA::CosaMTA_BatteryGetInfo(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_BatteryGetInfo(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetInfo --->Entry \n");
 
@@ -324,13 +287,13 @@ bool CosaMTA::CosaMTA_BatteryGetInfo(IN const Json::Value& req, OUT Json::Value&
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
 
@@ -350,10 +313,10 @@ bool CosaMTA::CosaMTA_BatteryGetInfo(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Battery info";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetInfo --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetResetCount  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -365,7 +328,7 @@ bool CosaMTA::CosaMTA_BatteryGetInfo(IN const Json::Value& req, OUT Json::Value&
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-bool CosaMTA::CosaMTA_BatteryGetStatus(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_BatteryGetStatus(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetStatus --->Entry \n");
 
@@ -380,13 +343,13 @@ bool CosaMTA::CosaMTA_BatteryGetStatus(IN const Json::Value& req, OUT Json::Valu
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
   
     handleType = req["handleType"].asInt();
@@ -404,10 +367,10 @@ bool CosaMTA::CosaMTA_BatteryGetStatus(IN const Json::Value& req, OUT Json::Valu
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Battery Status";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetStatus --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetStatus  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -422,7 +385,7 @@ bool CosaMTA::CosaMTA_BatteryGetStatus(IN const Json::Value& req, OUT Json::Valu
  *
  *******************************************************************************************/
 
-bool CosaMTA::CosaMTA_BatteryGetPowerStatus(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_BatteryGetPowerStatus(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetPowerStatus --->Entry \n");
 
@@ -438,13 +401,13 @@ bool CosaMTA::CosaMTA_BatteryGetPowerStatus(IN const Json::Value& req, OUT Json:
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
     handleType = req["handleType"].asInt();
     bufferType = req["bufferType"].asInt();
@@ -460,10 +423,10 @@ bool CosaMTA::CosaMTA_BatteryGetPowerStatus(IN const Json::Value& req, OUT Json:
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the battery power status";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetPowerStatus --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetPowerStatus  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -474,7 +437,7 @@ bool CosaMTA::CosaMTA_BatteryGetPowerStatus(IN const Json::Value& req, OUT Json:
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-bool CosaMTA::CosaMTA_LineTableGetNumberOfEntries(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_LineTableGetNumberOfEntries(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_LineTableGetNumberOfEntries --->Entry \n");
 
@@ -488,7 +451,7 @@ bool CosaMTA::CosaMTA_LineTableGetNumberOfEntries(IN const Json::Value& req, OUT
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
     handleType = req["handleType"].asInt();
     returnValue = ssp_CosaDmlMtaLineTableGetNumberOfEntries(handleType, &Num);
@@ -504,10 +467,10 @@ bool CosaMTA::CosaMTA_LineTableGetNumberOfEntries(IN const Json::Value& req, OUT
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Line Table Entries";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_LineTableGetNumberOfEntries --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_LineTableGetNumberOfEntries  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -520,7 +483,7 @@ bool CosaMTA::CosaMTA_LineTableGetNumberOfEntries(IN const Json::Value& req, OUT
  *
  *******************************************************************************************/
 
-bool CosaMTA::CosaMTA_LineTableGetEntry(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_LineTableGetEntry(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_LineTableGetEntry --->Entry \n");
 
@@ -536,13 +499,13 @@ bool CosaMTA::CosaMTA_LineTableGetEntry(IN const Json::Value& req, OUT Json::Val
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
     handleType = req["handleType"].asInt();
     bufferType = req["bufferType"].asInt();
@@ -558,10 +521,10 @@ bool CosaMTA::CosaMTA_LineTableGetEntry(IN const Json::Value& req, OUT Json::Val
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Line Table Entries";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_LineTableGetEntry --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_LineTableGetEntry  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -576,7 +539,7 @@ bool CosaMTA::CosaMTA_LineTableGetEntry(IN const Json::Value& req, OUT Json::Val
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_GetServiceClass(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_GetServiceClass(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetServiceClass --->Entry \n");
 
@@ -590,7 +553,7 @@ bool CosaMTA::CosaMTA_GetServiceClass(IN const Json::Value& req, OUT Json::Value
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -607,10 +570,10 @@ bool CosaMTA::CosaMTA_GetServiceClass(IN const Json::Value& req, OUT Json::Value
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Service class";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetServiceClass --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetServiceClass  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -625,7 +588,7 @@ bool CosaMTA::CosaMTA_GetServiceClass(IN const Json::Value& req, OUT Json::Value
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_DectGetEnable(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_DectGetEnable(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectGetEnable --->Entry \n");
 
@@ -639,14 +602,14 @@ bool CosaMTA::CosaMTA_DectGetEnable(IN const Json::Value& req, OUT Json::Value& 
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -665,10 +628,10 @@ bool CosaMTA::CosaMTA_DectGetEnable(IN const Json::Value& req, OUT Json::Value& 
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Enable value of Dect";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectGetEnable --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectGetEnable  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -683,7 +646,7 @@ bool CosaMTA::CosaMTA_DectGetEnable(IN const Json::Value& req, OUT Json::Value& 
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_DectSetEnable(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_DectSetEnable(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectSetEnable --->Entry \n");
 
@@ -696,14 +659,14 @@ bool CosaMTA::CosaMTA_DectSetEnable(IN const Json::Value& req, OUT Json::Value& 
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -720,10 +683,10 @@ bool CosaMTA::CosaMTA_DectSetEnable(IN const Json::Value& req, OUT Json::Value& 
         response["result"]="FAILURE";
         response["details"]="Failed to set the Dect enable";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectSetEnable --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectSetEnable  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -738,7 +701,7 @@ bool CosaMTA::CosaMTA_DectSetEnable(IN const Json::Value& req, OUT Json::Value& 
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectGetRegistrationMode --->Entry \n");
 
@@ -752,14 +715,14 @@ bool CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Jso
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -777,10 +740,10 @@ bool CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Jso
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the dect registration mode";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectGetRegistrationMode --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectGetRegistrationMode  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -795,7 +758,7 @@ bool CosaMTA::CosaMTA_DectGetRegistrationMode(IN const Json::Value& req, OUT Jso
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_DectSetRegistrationMode(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_DectSetRegistrationMode(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectSetRegistrationMode --->Entry \n");
 
@@ -808,14 +771,14 @@ bool CosaMTA::CosaMTA_DectSetRegistrationMode(IN const Json::Value& req, OUT Jso
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -833,10 +796,10 @@ bool CosaMTA::CosaMTA_DectSetRegistrationMode(IN const Json::Value& req, OUT Jso
         response["result"]="FAILURE";
         response["details"]="Failed to set the dect registration mode";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectSetRegistrationMode --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_DectSetRegistrationMode  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -851,7 +814,7 @@ bool CosaMTA::CosaMTA_DectSetRegistrationMode(IN const Json::Value& req, OUT Jso
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_GetDect(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_GetDect(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDect --->Entry \n");
 
@@ -866,14 +829,14 @@ bool CosaMTA::CosaMTA_GetDect(IN const Json::Value& req, OUT Json::Value& respon
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -893,10 +856,10 @@ bool CosaMTA::CosaMTA_GetDect(IN const Json::Value& req, OUT Json::Value& respon
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Dect information";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDect --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDect  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -909,7 +872,7 @@ bool CosaMTA::CosaMTA_GetDect(IN const Json::Value& req, OUT Json::Value& respon
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-bool CosaMTA::CosaMTA_GetDectPIN(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_GetDectPIN(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDectPIN --->Entry \n");
 
@@ -924,14 +887,14 @@ bool CosaMTA::CosaMTA_GetDectPIN(IN const Json::Value& req, OUT Json::Value& res
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -949,10 +912,10 @@ bool CosaMTA::CosaMTA_GetDectPIN(IN const Json::Value& req, OUT Json::Value& res
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the Dect pin information";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDectPIN --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDectPIN  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -965,7 +928,7 @@ bool CosaMTA::CosaMTA_GetDectPIN(IN const Json::Value& req, OUT Json::Value& res
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-bool CosaMTA::CosaMTA_SetDectPIN(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_SetDectPIN(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_SetDectPIN --->Entry \n");
 
@@ -979,21 +942,21 @@ bool CosaMTA::CosaMTA_SetDectPIN(IN const Json::Value& req, OUT Json::Value& res
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["bufferType"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1011,10 +974,10 @@ bool CosaMTA::CosaMTA_SetDectPIN(IN const Json::Value& req, OUT Json::Value& res
         response["result"]="FAILURE";
         response["details"]="Failed to set the Dect pin information";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_SetDectPIN --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_SetDectPIN  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1027,7 +990,7 @@ bool CosaMTA::CosaMTA_SetDectPIN(IN const Json::Value& req, OUT Json::Value& res
  *
  *******************************************************************************************/
 
-bool CosaMTA::CosaMTA_BatteryGetNumberofCycles(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_BatteryGetNumberofCycles(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetNumberofCycles --->Entry \n");
 
@@ -1041,7 +1004,7 @@ bool CosaMTA::CosaMTA_BatteryGetNumberofCycles(IN const Json::Value& req, OUT Js
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
 
@@ -1059,10 +1022,10 @@ bool CosaMTA::CosaMTA_BatteryGetNumberofCycles(IN const Json::Value& req, OUT Js
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the number of cycles in battery";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetNumberofCycles --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetNumberofCycles  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1077,7 +1040,7 @@ bool CosaMTA::CosaMTA_BatteryGetNumberofCycles(IN const Json::Value& req, OUT Js
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDSXLogEnable --->Entry \n");
 
@@ -1092,14 +1055,14 @@ bool CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1118,10 +1081,10 @@ bool CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the enabled DSX log information";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDSXLogEnable --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetDSXLogEnable  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1136,7 +1099,7 @@ bool CosaMTA::CosaMTA_GetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_SetDSXLogEnable(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_SetDSXLogEnable(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_SetDSXLogEnable --->Entry \n");
 
@@ -1149,14 +1112,14 @@ bool CosaMTA::CosaMTA_SetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1174,10 +1137,10 @@ bool CosaMTA::CosaMTA_SetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
         response["result"]="FAILURE";
         response["details"]="Failed to enable the DSX Log";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_SetDSXLogEnable --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_SetDSXLogEnable  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1191,7 +1154,7 @@ bool CosaMTA::CosaMTA_SetDSXLogEnable(IN const Json::Value& req, OUT Json::Value
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_ClearDSXLog(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_ClearDSXLog(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_ClearDSXLog --->Entry \n");
 
@@ -1204,14 +1167,14 @@ bool CosaMTA::CosaMTA_ClearDSXLog(IN const Json::Value& req, OUT Json::Value& re
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1228,10 +1191,10 @@ bool CosaMTA::CosaMTA_ClearDSXLog(IN const Json::Value& req, OUT Json::Value& re
         response["result"]="FAILURE";
         response["details"]="Failed to clear the DSX Log";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_ClearDSXLog --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_ClearDSXLog  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1246,7 +1209,7 @@ bool CosaMTA::CosaMTA_ClearDSXLog(IN const Json::Value& req, OUT Json::Value& re
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetCallSignallingLogEnable --->Entry \n");
 
@@ -1261,14 +1224,14 @@ bool CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT 
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1287,10 +1250,10 @@ bool CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT 
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the enable value for call signalling log";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetCallSignallingLogEnable --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_GetCallSignallingLogEnable  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1305,7 +1268,7 @@ bool CosaMTA::CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT 
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_SetCallSignallingLogEnable(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_SetCallSignallingLogEnable(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_SetCallSignallingLogEnable --->Entry \n");
 
@@ -1318,18 +1281,18 @@ bool CosaMTA::CosaMTA_SetCallSignallingLogEnable(IN const Json::Value& req, OUT 
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
-    if(&req["boolValue"]==NULL)
+    if(&req["Value"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
-    boolValue = req["boolValue"].asInt();
+    boolValue = req["Value"].asInt();
 
     returnValue = ssp_CosaDmlMTASetCallSignallingLogEnable(handleType,boolValue);
     printf("return value is %d\n",returnValue);
@@ -1343,10 +1306,10 @@ bool CosaMTA::CosaMTA_SetCallSignallingLogEnable(IN const Json::Value& req, OUT 
         response["result"]="FAILURE";
         response["details"]="Failed to enable the call signalling log";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_SetCallSignallingLogEnable --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_SetCallSignallingLogEnable  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 /*******************************************************************************************
@@ -1361,7 +1324,7 @@ bool CosaMTA::CosaMTA_SetCallSignallingLogEnable(IN const Json::Value& req, OUT 
  *******************************************************************************************/
 
 
-bool CosaMTA::CosaMTA_ClearCallSignallingLog(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_ClearCallSignallingLog(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_ClearCallSignallingLog --->Entry \n");
 
@@ -1374,14 +1337,14 @@ bool CosaMTA::CosaMTA_ClearCallSignallingLog(IN const Json::Value& req, OUT Json
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     if(&req["boolValue"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+        return;
     }
 
     handleType = req["handleType"].asInt();
@@ -1399,10 +1362,10 @@ bool CosaMTA::CosaMTA_ClearCallSignallingLog(IN const Json::Value& req, OUT Json
         response["result"]="FAILURE";
         response["details"]="Failed to clear the call signalling log";
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_ClearCallSignallingLog --->Exit\n");
-        return  TEST_FAILURE;
+        return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_ClearCallSignallingLog  --->Exit\n");
-    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -1416,7 +1379,7 @@ bool CosaMTA::CosaMTA_ClearCallSignallingLog(IN const Json::Value& req, OUT Json
  *
  *******************************************************************************************/
 
-bool CosaMTA::CosaMTA_BatteryGetRemainingTime(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_BatteryGetRemainingTime(IN const Json::Value& req, OUT Json::Value& response)
 {
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetRemainingTime --->Entry \n");
 
@@ -1432,7 +1395,7 @@ bool CosaMTA::CosaMTA_BatteryGetRemainingTime(IN const Json::Value& req, OUT Jso
         {
             response["result"]="FAILURE";
             response["details"]="NULL parameter as input argument";
-            return TEST_FAILURE;
+            return;
         }
 
 
@@ -1450,10 +1413,10 @@ bool CosaMTA::CosaMTA_BatteryGetRemainingTime(IN const Json::Value& req, OUT Jso
             response["result"]="FAILURE";
             response["details"]="Failed to retrieve the battery remaining time";
             DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetRemainingTime --->Exit\n");
-            return  TEST_FAILURE;
+            return;
         }
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetRemainingTime --->Exit\n");
-        return TEST_SUCCESS;
+        return;
 }
 
 
@@ -1467,7 +1430,7 @@ bool CosaMTA::CosaMTA_BatteryGetRemainingTime(IN const Json::Value& req, OUT Jso
  *
  *******************************************************************************************/
 
-bool CosaMTA::CosaMTA_BatteryGetCondition(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_BatteryGetCondition(IN const Json::Value& req, OUT Json::Value& response)
 {
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetCondition --->Entry \n");
 
@@ -1482,13 +1445,13 @@ bool CosaMTA::CosaMTA_BatteryGetCondition(IN const Json::Value& req, OUT Json::V
             {
                 response["result"]="FAILURE";
                 response["details"]="NULL parameter as input argument";
-                return TEST_FAILURE;
+                return;
             }
         if(&req["bufferType"]==NULL)
         {
             response["result"]="FAILURE";
             response["details"]="NULL parameter as input argument";
-            return TEST_FAILURE;
+            return;
         }
 
         handleType = req["handleType"].asInt();
@@ -1506,10 +1469,10 @@ bool CosaMTA::CosaMTA_BatteryGetCondition(IN const Json::Value& req, OUT Json::V
             response["result"]="FAILURE";
             response["details"]="Failed to retrieve the Battery Condition";
             DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetCondition --->Exit\n");
-                                                                                                                                                                         return  TEST_FAILURE;
+            return;
         }
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetCondition  --->Exit\n");
-        return TEST_SUCCESS;
+        return;
 }
                         
 
@@ -1523,7 +1486,7 @@ bool CosaMTA::CosaMTA_BatteryGetCondition(IN const Json::Value& req, OUT Json::V
  *
  *******************************************************************************************/
 
-bool CosaMTA::CosaMTA_BatteryGetLife(IN const Json::Value& req, OUT Json::Value& response)
+void CosaMTA::CosaMTA_BatteryGetLife(IN const Json::Value& req, OUT Json::Value& response)
 {
             DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetLife --->Entry \n");
 
@@ -1538,13 +1501,13 @@ bool CosaMTA::CosaMTA_BatteryGetLife(IN const Json::Value& req, OUT Json::Value&
                 {
                     response["result"]="FAILURE";
                     response["details"]="NULL parameter as input argument";
-                    return TEST_FAILURE;
+                    return;
                 }
             if(&req["bufferType"]==NULL)
             {
                 response["result"]="FAILURE";
                 response["details"]="NULL parameter as input argument";
-                return TEST_FAILURE;
+                return;
             }
 
             handleType = req["handleType"].asInt();
@@ -1554,7 +1517,7 @@ bool CosaMTA::CosaMTA_BatteryGetLife(IN const Json::Value& req, OUT Json::Value&
             returnValue = ssp_CosaDmlMtaBatteryGetLife(handleType,bufferType,Life);
             if(0 == returnValue)
             {
-		sprintf(Details,"Battery life retrieved is: %s",Life);
+				sprintf(Details,"Battery life retrieved is: %s",Life);
                 response["result"]="SUCCESS";         
                 response["details"]=Details;
             }
@@ -1563,10 +1526,10 @@ bool CosaMTA::CosaMTA_BatteryGetLife(IN const Json::Value& req, OUT Json::Value&
                 response["result"]="FAILURE";               
                 response["details"]="Failed to retrieve the Battery Life";
                 DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetLife --->Exit\n");
-                return  TEST_FAILURE;                  
+                return;                  
             }               
             DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetLife  --->Exit\n");
-            return TEST_SUCCESS;                  
+            return;                  
 }
 
 
@@ -1578,9 +1541,9 @@ bool CosaMTA::CosaMTA_BatteryGetLife(IN const Json::Value& req, OUT Json::Value&
  *
  **************************************************************************/
 
-extern "C" CosaMTA* CreateObject()
+extern "C" CosaMTA* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new CosaMTA();
+    return new CosaMTA(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -1589,41 +1552,9 @@ extern "C" CosaMTA* CreateObject()
  *
  **************************************************************************/
 
-bool CosaMTA::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool CosaMTA::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"CosaMTA shutting down\n");
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-    /*unRegister stub function for callback*/
-
-    ptrAgentObj->UnregisterMethod("CosaMTA_GetResetCount");
-    ptrAgentObj->UnregisterMethod("CosaMTA_GetDHCPInfo");
-    ptrAgentObj->UnregisterMethod("CosaMTA_Triggerdiagnostics");
-    ptrAgentObj->UnregisterMethod("CosaMTA_BatteryGetInfo");
-    ptrAgentObj->UnregisterMethod("CosaMTA_BatteryGetStatus");
-    ptrAgentObj->UnregisterMethod("CosaMTA_BatteryGetPowerStatus");
-    ptrAgentObj->UnregisterMethod("CosaMTA_LineTableGetNumberOfEntries");
-    ptrAgentObj->UnregisterMethod("CosaMTA_LineTableGetEntry");
-    ptrAgentObj->UnregisterMethod("CosaMTA_GetServiceClass");
-    ptrAgentObj->UnregisterMethod("CosaMTA_DectGetEnable");
-    ptrAgentObj->UnregisterMethod("CosaMTA_DectSetEnable");
-    ptrAgentObj->UnregisterMethod("CosaMTA_DectGetRegistrationMode");
-    ptrAgentObj->UnregisterMethod("CosaMTA_DectSetRegistrationMode");
-    ptrAgentObj->UnregisterMethod("CosaMTA_GetDect");
-    ptrAgentObj->UnregisterMethod("CosaMTA_GetDectPIN");
-    ptrAgentObj->UnregisterMethod("CosaMTA_SetDectPIN");
-    ptrAgentObj->UnregisterMethod("CosaMTA_GetDSXLogEnable");
-    ptrAgentObj->UnregisterMethod("CosaMTA_SetDSXLogEnable");
-    ptrAgentObj->UnregisterMethod("CosaMTA_ClearDSXLog");
-    ptrAgentObj->UnregisterMethod("CosaMTA_GetCallSignallingLogEnable");
-    ptrAgentObj->UnregisterMethod("CosaMTA_SetCallSignallingLogEnable");
-    ptrAgentObj->UnregisterMethod("CosaMTA_ClearCallSignallingLog");
-    ptrAgentObj->UnregisterMethod("CosaMTA_BatteryGetNumberofCycles");
-    ptrAgentObj->UnregisterMethod("CosaMTA_BatteryGetRemainingTime");
-    ptrAgentObj->UnregisterMethod("CosaMTA_BatteryGetLife");
-    ptrAgentObj->UnregisterMethod("CosaMTA_BatteryGetCondition");
     return TEST_SUCCESS;
 }
 

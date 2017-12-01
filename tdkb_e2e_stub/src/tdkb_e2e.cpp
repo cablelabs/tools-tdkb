@@ -19,24 +19,15 @@
 #include <sstream>
 #include "tdkb_e2e.h"
 
-/*This is a constructor function for TDKB_E2E class*/
-TDKB_E2E::TDKB_E2E()
-{
-    DEBUG_PRINT(DEBUG_LOG,"TDKB_E2E Instance Created\n");
-}
 /***************************************************************************
  *Function name : initialize
  *Description   : Initialize Function will be used for registering the wrapper method
  *                        with the agent so that wrapper function will be used in the script
  *
  *****************************************************************************/
-bool TDKB_E2E::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool TDKB_E2E::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::TDKB_E2E Initialize\n");
-    /*Register stub function for callback*/
-    ptrAgentObj->RegisterMethod(*this,&TDKB_E2E::tdkb_e2e_Get, "tdkb_e2e_Get");
-    ptrAgentObj->RegisterMethod(*this,&TDKB_E2E::tdkb_e2e_Set, "tdkb_e2e_Set");
-    ptrAgentObj->RegisterMethod(*this,&TDKB_E2E::tdkb_e2e_SetMultipleParams, "tdkb_e2e_SetMultipleParams");
     return TEST_SUCCESS;
 }
 /***************************************************************************
@@ -86,7 +77,7 @@ bool TDKB_E2E::testmodulepost_requisites()
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  *                                 ssp_getParameterValue
  ********************************************************************************************/
-bool TDKB_E2E::tdkb_e2e_Get(IN const Json::Value& req, OUT Json::Value& response)
+void TDKB_E2E::tdkb_e2e_Get(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n tdkb_e2e_Get --->Entry\n");
     bool bReturn = TEST_FAILURE;
@@ -118,7 +109,7 @@ bool TDKB_E2E::tdkb_e2e_Get(IN const Json::Value& req, OUT Json::Value& response
         }
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n tdkb_e2e_Get --->Exit\n");
-    return bReturn;
+    return;
 }
 /*******************************************************************************************
  *
@@ -130,7 +121,7 @@ bool TDKB_E2E::tdkb_e2e_Get(IN const Json::Value& req, OUT Json::Value& response
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  *                                 ssp_setParameterValue
  ********************************************************************************************/
-bool TDKB_E2E::tdkb_e2e_Set(IN const Json::Value& req, OUT Json::Value& response)
+void TDKB_E2E::tdkb_e2e_Set(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n tdkb_e2e_Set --->Entry\n");
     bool bReturn = TEST_FAILURE;
@@ -182,7 +173,7 @@ bool TDKB_E2E::tdkb_e2e_Set(IN const Json::Value& req, OUT Json::Value& response
         DEBUG_PRINT(DEBUG_TRACE,"\n tdkb_e2e_Set --->Error in Set API Validation in DUT !!! \n");
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n tdkb_e2e_Set --->Exit\n");
-    return bReturn;
+    return;
 }
 
 /*******************************************************************************************
@@ -195,7 +186,7 @@ bool TDKB_E2E::tdkb_e2e_Set(IN const Json::Value& req, OUT Json::Value& response
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  *                         ssp_setMultipleParameterValue
 ********************************************************************************************/
-bool TDKB_E2E::tdkb_e2e_SetMultipleParams(IN const Json::Value& req, OUT Json::Value& response)
+void TDKB_E2E::tdkb_e2e_SetMultipleParams(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n tdkb_e2e_SetMultipleParams --->Entry\n");
     int returnValue = 0;
@@ -213,7 +204,7 @@ bool TDKB_E2E::tdkb_e2e_SetMultipleParams(IN const Json::Value& req, OUT Json::V
     paramlist = (char **) realloc (paramlist, ++num_spaces * sizeof(char *));
     if (paramlist == NULL)
     {
-       return 0; /* memory allocation failed */
+       return; /* memory allocation failed */
     }
     paramlist[num_spaces-1] = list;
     list = strtok (NULL, "|");
@@ -265,7 +256,7 @@ bool TDKB_E2E::tdkb_e2e_SetMultipleParams(IN const Json::Value& req, OUT Json::V
     /* free the memory allocated */
    free(paramlist);
    DEBUG_PRINT(DEBUG_TRACE,"\n tdkb_e2e_SetMultipleParams --->Exit\n");
-   return TEST_SUCCESS;
+   return;
 }
 /**************************************************************************
  * Function Name        : CreateObject
@@ -273,26 +264,18 @@ bool TDKB_E2E::tdkb_e2e_SetMultipleParams(IN const Json::Value& req, OUT Json::V
  *                class "TDKB_E2E".
  *
  **************************************************************************/
-extern "C" TDKB_E2E* CreateObject()
+extern "C" TDKB_E2E* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new TDKB_E2E();
+    return new TDKB_E2E(ptrtcpServer);
 }
 /**************************************************************************
  * Function Name : cleanup
  * Description   : This function will be used to clean the log details.
  *
  **************************************************************************/
-bool TDKB_E2E::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool TDKB_E2E::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"TDKB_E2E shutting down\n");
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-    /*unRegister stub function for callback*/
-    ptrAgentObj->UnregisterMethod("tdkb_e2e_Get");
-    ptrAgentObj->UnregisterMethod("tdkb_e2e_Set");
-    ptrAgentObj->UnregisterMethod("tdkb_e2e_SetMultipleParams");
     return TEST_SUCCESS;
 }
 /**************************************************************************

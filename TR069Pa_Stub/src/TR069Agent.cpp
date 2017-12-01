@@ -32,19 +32,6 @@ extern "C" {
     void free_Memory_Attr(int size,GETPARAMATTR *Freestruct);
 }
 
-/*************************************************************************
-Function name : TR069Agent::TR069Agent
-
-Arguments     : NULL
-
-Description   : Constructor for TR069Agent class
- ***************************************************************************/
-
-TR069Agent::TR069Agent()
-{
-    DEBUG_PRINT(DEBUG_TRACE, "TR069Agent Initialized\n");
-}
-
 /***************************************************************************
  *Function name : testmodulepre_requisites
  *Descrption    : testmodulepre_requisites will  be used for setting the
@@ -53,20 +40,6 @@ TR069Agent::TR069Agent()
  *****************************************************************************/
 std::string TR069Agent::testmodulepre_requisites()
 {
-    /*Will be considered when ACS server is required
-      string ServerResponse;
-      DEBUG_PRINT(DEBUG_TRACE, "Check whether ACS Server is up\n");
-      ServerResponse=system("wget --server-response --max-redirect=0 192.168.27.70:7547 2>&1");	
-      if(strcmp(ServerResponse.c_str(),"Connection refused")==0)
-      {
-      DEBUG_PRINT(DEBUG_TRACE, "Server is not up.Test case will not be exceuted\n");
-      exit(0);
-      }
-      else
-      {
-      return "SUCCESS";
-      }
-     */
     int returnVal=0;
 
     DEBUG_PRINT(DEBUG_TRACE,"testmodulepre_requisites::Initiate to register with Component register\n");
@@ -115,7 +88,7 @@ bool TR069Agent::testmodulepost_requisites()
  *                in CCSP module
  *
  *****************************************************************************/
-bool TR069Agent::TR069Agent_Init(IN const Json::Value& req, OUT Json::Value& response)
+void TR069Agent::TR069Agent_Init(IN const Json::Value& req, OUT Json::Value& response)
 {
     int i=0;
     DEBUG_PRINT(DEBUG_TRACE,"Intiating a session with TR069 component\n");
@@ -125,14 +98,14 @@ bool TR069Agent::TR069Agent_Init(IN const Json::Value& req, OUT Json::Value& res
         DEBUG_PRINT(DEBUG_TRACE,"TR069 Component is intiated \n");
         response["result"] = "SUCCESS";
         response["details"] = "Intiation Success";
-        return TEST_SUCCESS;
+        return;
     }
     else
     {
         DEBUG_PRINT(DEBUG_TRACE,"Failed to intialize properly");
         response["result"] = "FAILURE";
         response["details"] = "Intiation FAILURE";
-        return TEST_FAILURE;
+        return;
     }
 }
 
@@ -144,7 +117,7 @@ bool TR069Agent::TR069Agent_Init(IN const Json::Value& req, OUT Json::Value& res
  * @param [in]  req - ParamName : Holds the name of the parameter
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *****************************************************************************/
-bool TR069Agent::TR069Agent_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response)
+void TR069Agent::TR069Agent_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"Inside Function GetParamValues \n");
     int size_ret=0,i=0;
@@ -171,13 +144,13 @@ bool TR069Agent::TR069Agent_GetParameterValues(IN const Json::Value& req, OUT Js
             free_Memory_val(size_ret,DataParamValue); 	
             response["result"] = "SUCCESS";
             response["details"] = "Get Param value Success";
-            return TEST_SUCCESS;
+            return;
         }
 
     }
     response["result"] = "FAILURE";
     response["details"] = "Get Param value Failure of the function";
-    return TEST_FAILURE;
+    return;
 
 }
 
@@ -190,7 +163,7 @@ bool TR069Agent::TR069Agent_GetParameterValues(IN const Json::Value& req, OUT Js
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool TR069Agent::TR069Agent_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response)
+void TR069Agent::TR069Agent_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"Inside Function SetParamValues \n");
     int size_ret=0,i=0,setResult=0;
@@ -209,7 +182,7 @@ bool TR069Agent::TR069Agent_SetParameterValues(IN const Json::Value& req, OUT Js
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
-        return TEST_FAILURE;
+        return;
     }
 
     if((DataParamValue1== NULL))
@@ -224,7 +197,7 @@ bool TR069Agent::TR069Agent_SetParameterValues(IN const Json::Value& req, OUT Js
             free_Memory_val(size_ret,DataParamValue1);
             response["result"] = "SUCCESS";
             response["details"] = "Set has been validated successfully";
-            return TEST_SUCCESS;
+            return;
         }
         else
         {	
@@ -236,7 +209,7 @@ bool TR069Agent::TR069Agent_SetParameterValues(IN const Json::Value& req, OUT Js
 
     response["result"] = "FAILURE";
     response["details"] = "FAILURE : Parameter Value has not changed after a proper Set";
-    return TEST_FAILURE;
+    return;
 }
 /***************************************************************************
  *Function name : TR069Agent_GetParameterNames
@@ -246,7 +219,7 @@ bool TR069Agent::TR069Agent_SetParameterValues(IN const Json::Value& req, OUT Js
  * @param [in]  req - ParamList : Holds the List of the parameter
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *****************************************************************************/
-bool TR069Agent::TR069Agent_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response)
+void TR069Agent::TR069Agent_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"Inside Fucntion GetParamNames \n");
     string ParamName=req["ParamName"].asCString();
@@ -260,7 +233,7 @@ bool TR069Agent::TR069Agent_GetParameterNames(IN const Json::Value& req, OUT Jso
     {
         response["result"] = "FAILURE";
         response["details"] = "Get Param Name for Parameter returned NULL";
-        return TEST_FAILURE;
+        return;
     }
     DataValue1=ssp_getParameterNames(&ParamList[0],0,&size);
     if(NULL==DataValue1)
@@ -280,7 +253,7 @@ bool TR069Agent::TR069Agent_GetParameterNames(IN const Json::Value& req, OUT Jso
                     printf("Parameter Name has been fetched successfully and it matched with parameter List\n");
                     response["result"] = "SUCCESS";
                     response["details"] = "Parameter Name has been fetched successfully and it matched with parameter List";
-                    return TEST_SUCCESS;
+                    return;
                 }
                 else
                 {
@@ -289,14 +262,14 @@ bool TR069Agent::TR069Agent_GetParameterNames(IN const Json::Value& req, OUT Jso
                     printf("Parameter attributes does not match with the parameter List\n");
                     response["result"] = "FAILURE";
                     response["details"] = "Parameter Name and its attributes does not match with the parameter List";
-                    return TEST_FAILURE;
+                    return;
                 }
             }
         }
         free_Memory_Names(size,DataValue1);	
         response["result"] = "FAILURE";
         response["details"] = "Parameter Name does not match with the paramters in paramter list";
-        return TEST_FAILURE;	
+        return;	
     }
 
 }
@@ -307,7 +280,7 @@ bool TR069Agent::TR069Agent_GetParameterNames(IN const Json::Value& req, OUT Jso
  * @param [in]  req - ParamName : Holds the name of the parameter
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *****************************************************************************/
-bool TR069Agent::TR069Agent_GetParameterAttr(IN const Json::Value& req, OUT Json::Value& response)
+void TR069Agent::TR069Agent_GetParameterAttr(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"Inside Function GetParamAttributes \n");
     int size_ret=0,i=0;
@@ -335,13 +308,13 @@ bool TR069Agent::TR069Agent_GetParameterAttr(IN const Json::Value& req, OUT Json
             free_Memory_Attr(size_ret,DataParamAttr);
             response["result"] = "SUCCESS";
             response["details"] = "Get Param Attribute Success";
-            return TEST_SUCCESS;
+            return;
         }	
 
     }
     response["result"] = "FAILURE";
     response["details"] = "Get Param Attribute Failure of the function";
-    return TEST_FAILURE;
+    return;
 
 }
 /***************************************************************************
@@ -353,7 +326,7 @@ bool TR069Agent::TR069Agent_GetParameterAttr(IN const Json::Value& req, OUT Json
  * @param [in]  req - Notify : Holds the attribute of the parameter
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *****************************************************************************/
-bool TR069Agent::TR069Agent_SetParameterAttr(IN const Json::Value& req, OUT Json::Value& response)
+void TR069Agent::TR069Agent_SetParameterAttr(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"Inside Function SetParamAttributes \n");
     int size_ret=0,i=0,setResult=0;
@@ -373,7 +346,7 @@ bool TR069Agent::TR069Agent_SetParameterAttr(IN const Json::Value& req, OUT Json
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter attribute is not SET. Set returns failure";
-        return TEST_FAILURE;
+        return;
     }
 
     if((DataParamAttr1== NULL))
@@ -396,7 +369,7 @@ bool TR069Agent::TR069Agent_SetParameterAttr(IN const Json::Value& req, OUT Json
                     free_Memory_Attr(size_ret,DataParamAttr1);
                     response["result"] = "SUCCESS";
                     response["details"] = "Set has been validated successfully";
-                    return TEST_SUCCESS;
+                    return;
                 }
             }
             else
@@ -404,14 +377,14 @@ bool TR069Agent::TR069Agent_SetParameterAttr(IN const Json::Value& req, OUT Json
                 free_Memory_Attr(size_ret,DataParamAttr1);
                 response["result"] = "FAILURE";
                 response["details"] = "Set failed";
-                return TEST_FAILURE;
+                return;
             }
         }
     }
 
     response["result"] = "FAILURE";
     response["details"] = "FAILURE : Parameter Attribute has not changed after a proper Set";
-    return TEST_FAILURE;
+    return;
 }
 
 
@@ -420,7 +393,7 @@ bool TR069Agent::TR069Agent_SetParameterAttr(IN const Json::Value& req, OUT Json
 
 Description   : Terminating the session of TR069 PA CCSP component
  ***************************************************************************/
-bool TR069Agent::TR069Agent_Terminate(IN const Json::Value& req, OUT Json::Value& response)
+void TR069Agent::TR069Agent_Terminate(IN const Json::Value& req, OUT Json::Value& response)
 {
     int i=0;
     DEBUG_PRINT(DEBUG_TRACE,"Terminating TR069 component Session\n");
@@ -429,17 +402,15 @@ bool TR069Agent::TR069Agent_Terminate(IN const Json::Value& req, OUT Json::Value
     {
         response["result"] = "SUCCESS";
         response["details"] = "Termination Success";
-        return TEST_SUCCESS;
+        return;
     }
     else
     {
         response["result"] = "FAILURE";
         response["details"] = "Termination Failure";
-        return TEST_FAILURE;
+        return;
     }
 }
-
-
 
 /**************************************************************************
   Function name : TR069Agent::initialize
@@ -448,19 +419,9 @@ Arguments     : Input arguments are Version string and TR069Agent obj ptr
 
 Description   : Registering all the wrapper functions with the agent for using these functions in the script
  ***************************************************************************/
-bool TR069Agent::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool TR069Agent::initialize(IN const char* szVersion)
 {
-    DEBUG_PRINT(DEBUG_TRACE, "TR069Agent Initialize----->Entry\n");
-    ptrAgentObj->RegisterMethod(*this,&TR069Agent::TR069Agent_Init,"TR069Agent_Init");
-    ptrAgentObj->RegisterMethod(*this,&TR069Agent::TR069Agent_Terminate, "TR069Agent_Terminate");
-    ptrAgentObj->RegisterMethod(*this,&TR069Agent::TR069Agent_GetParameterNames,"TR069Agent_GetParameterNames");
-    ptrAgentObj->RegisterMethod(*this,&TR069Agent::TR069Agent_SetParameterValues,"TR069Agent_SetParameterValues");
-    ptrAgentObj->RegisterMethod(*this,&TR069Agent::TR069Agent_GetParameterValues,"TR069Agent_GetParameterValues");
-    ptrAgentObj->RegisterMethod(*this,&TR069Agent::TR069Agent_GetParameterAttr,"TR069Agent_GetParameterAttr");
-    ptrAgentObj->RegisterMethod(*this,&TR069Agent::	TR069Agent_SetParameterAttr,"TR069Agent_SetParameterAttr");
-
-    DEBUG_PRINT(DEBUG_TRACE, "TR069Agent Initialize----->Exit\n");
-
+    DEBUG_PRINT(DEBUG_TRACE, "TR069Agent Initialize\n");
     return TEST_SUCCESS;
 }
 
@@ -472,10 +433,9 @@ Arguments       : NULL
 Description     : This function is used to create a new object of the class "TR069Agent".
  **************************************************************************/
 
-extern "C" TR069Agent* CreateObject()
+extern "C" TR069Agent* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-
-    return new TR069Agent();
+    return new TR069Agent(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -485,25 +445,9 @@ Arguments       : NULL
 
 Description     : This function will be used to the close things cleanly.
  **************************************************************************/
-bool TR069Agent::cleanup(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj)
+bool TR069Agent::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE, "cleaningup\n");
-
-    if(NULL == ptrAgentObj)
-    {
-        return TEST_FAILURE;
-    }
-
-    ptrAgentObj->UnregisterMethod("TR069Agent_Init");
-	ptrAgentObj->UnregisterMethod("TR069Agent_Terminate");
-	ptrAgentObj->UnregisterMethod("TR069Agent_GetParameterNames");
-	ptrAgentObj->UnregisterMethod("TR069Agent_GetParameterValues");
-	ptrAgentObj->UnregisterMethod("TR069Agent_GetParameterAttr");
-	ptrAgentObj->UnregisterMethod("TR069Agent_SetParameterAttr");
-
-
-    DEBUG_PRINT(DEBUG_TRACE, "cleaningup done\n");
-
     return TEST_SUCCESS;
 }
 

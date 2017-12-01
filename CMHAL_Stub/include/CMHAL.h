@@ -24,6 +24,7 @@
 #include <string.h>
 #include <dlfcn.h>
 #include <stdlib.h>
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
 #include <sys/types.h>
@@ -47,21 +48,27 @@ extern "C"
 
 class RDKTestAgent;
 
-class CMHAL : public RDKTestStubInterface
+class CMHAL : public RDKTestStubInterface,  public AbstractServer<CMHAL>
 {
         public:
+
+		CMHAL(TcpSocketServer &ptrRpcServer) : AbstractServer <CMHAL>(ptrRpcServer)
+                {
+                  this->bindAndAddMethod(Procedure("CMHAL_GetParamCharValue", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,"paramType", JSON_STRING,NULL), &CMHAL::CMHAL_GetParamCharValue);
+                  this->bindAndAddMethod(Procedure("CMHAL_GetParamUlongValue", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,"paramType", JSON_STRING,NULL), &CMHAL::CMHAL_GetParamUlongValue);
+		}
         /*Ctor*/
-        CMHAL ();
+//        CMHAL ();
 
         /*inherited functions*/
-        bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
+        bool initialize(IN const char* szVersion);
 
-        bool cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj);
+        bool cleanup(IN const char* szVersion);
         std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
         /*CMHAL Stub Wrapper functions*/
-	bool CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& response);
-        bool CMHAL_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response);
+	void CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& response);
+        void CMHAL_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response);
         
 
 };

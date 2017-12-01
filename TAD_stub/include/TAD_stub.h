@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include "rdkteststubintf.h"
 #include "rdktestagentintf.h"
+#include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <fstream>
@@ -39,27 +40,38 @@
 
 class RDKTestAgent;
 
-class TADstub : public RDKTestStubInterface
+class TADstub : public RDKTestStubInterface, public AbstractServer<TADstub>
 {
     public:
-        /*Ctor*/
-        TADstub();
+        
+		TADstub(TcpSocketServer &ptrRpcServer) : AbstractServer <TADstub>(ptrRpcServer)
+		{
+			this->bindAndAddMethod(Procedure("TADstub_Get", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &TADstub::TADstub_Get);
+			this->bindAndAddMethod(Procedure("TADstub_Set", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, "ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &TADstub::TADstub_Set);
+			this->bindAndAddMethod(Procedure("TADstub_SetDiagnosticsState", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, "ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &TADstub::TADstub_SetDiagnosticsState);
+			this->bindAndAddMethod(Procedure("TADstub_Init", PARAMS_BY_NAME, JSON_STRING,NULL), &TADstub::TADstub_Init);
+			this->bindAndAddMethod(Procedure("TADstub_Start", PARAMS_BY_NAME, JSON_STRING, "mode", JSON_INTEGER, NULL), &TADstub::TADstub_Start);
+			this->bindAndAddMethod(Procedure("TADstub_Stop", PARAMS_BY_NAME, JSON_STRING, "mode", JSON_INTEGER, NULL), &TADstub::TADstub_Stop);
+			this->bindAndAddMethod(Procedure("TADstub_SetCfg", PARAMS_BY_NAME, JSON_STRING, "mode", JSON_INTEGER, "host", JSON_STRING, NULL), &TADstub::TADstub_SetCfg);
+			this->bindAndAddMethod(Procedure("TADstub_GetCfg", PARAMS_BY_NAME, JSON_STRING, "mode", JSON_INTEGER, NULL), &TADstub::TADstub_GetCfg);
+			this->bindAndAddMethod(Procedure("TADstub_GetState", PARAMS_BY_NAME, JSON_STRING, "mode", JSON_INTEGER, NULL), &TADstub::TADstub_GetState);
+		}		
 
         /*inherited functions*/
-        bool initialize(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj);
-
-        bool cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj);
+        bool initialize(IN const char* szVersion);
+        bool cleanup(IN const char* szVersion);
         std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
-        /*CM Agent Stub Wrapper functions*/
-        bool TADstub_Get(IN const Json::Value& req, OUT Json::Value& response);
-        bool TADstub_Set(IN const Json::Value& req, OUT Json::Value& response);
-        bool TADstub_SetDiagnosticsState(IN const Json::Value& req, OUT Json::Value& response);
-        bool TADstub_Init(IN const Json::Value& req, OUT Json::Value& response);
-        bool TADstub_Start(IN const Json::Value& req, OUT Json::Value& response);
-        bool TADstub_Stop(IN const Json::Value& req, OUT Json::Value& response);
-        bool TADstub_SetCfg(IN const Json::Value& req, OUT Json::Value& response);
-        bool TADstub_GetCfg(IN const Json::Value& req, OUT Json::Value& response);
-        bool TADstub_GetState(IN const Json::Value& req, OUT Json::Value& response);
+		
+        /*TAD Stub Wrapper functions*/
+        void TADstub_Get(IN const Json::Value& req, OUT Json::Value& response);
+        void TADstub_Set(IN const Json::Value& req, OUT Json::Value& response);
+        void TADstub_SetDiagnosticsState(IN const Json::Value& req, OUT Json::Value& response);
+        void TADstub_Init(IN const Json::Value& req, OUT Json::Value& response);
+        void TADstub_Start(IN const Json::Value& req, OUT Json::Value& response);
+        void TADstub_Stop(IN const Json::Value& req, OUT Json::Value& response);
+        void TADstub_SetCfg(IN const Json::Value& req, OUT Json::Value& response);
+        void TADstub_GetCfg(IN const Json::Value& req, OUT Json::Value& response);
+        void TADstub_GetState(IN const Json::Value& req, OUT Json::Value& response);
 };
-#endif //__CMAGENT_STUB_H__
+#endif //__TAD_STUB_H__

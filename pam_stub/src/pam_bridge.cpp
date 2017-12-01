@@ -52,11 +52,12 @@ int ssp_CosaDmlDnsEnable(char*, int);
 };
 
 /*This is a constructor function for pam class*/
+#if 0
 pam::pam()
 {
     DEBUG_PRINT(DEBUG_LOG,"pam Instance Created\n");
 }
-
+#endif
 /***************************************************************************
  *Function name	: initialize
  *Description	: Initialize Function will be used for registering the wrapper method
@@ -64,10 +65,11 @@ pam::pam()
  *
  *****************************************************************************/
 
-bool pam::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool pam::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::pam Initialize\n");
     /*Register stub function for callback*/
+#if 0
     ptrAgentObj->RegisterMethod(*this,&pam::pam_bridge_GetParamUlongValue,"pam_bridge_GetParamUlongValue");
     ptrAgentObj->RegisterMethod(*this,&pam::pam_GetParameterNames,"pam_GetParameterNames");
     ptrAgentObj->RegisterMethod(*this,&pam::pam_SetParameterValues,"pam_SetParameterValues");
@@ -86,7 +88,7 @@ bool pam::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DnsEnable,"COSAPAM_DnsEnable");
 
 
-
+#endif
     return TEST_SUCCESS;
 }
 
@@ -160,7 +162,7 @@ bool pam::testmodulepost_requisites()
  *
  *******************************************************************************************/
 
-bool pam::pam_bridge_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response)
+void pam::pam_bridge_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_bridge_GetParamUlongValue --->Entry \n");
 
@@ -175,13 +177,15 @@ bool pam::pam_bridge_GetParamUlongValue(IN const Json::Value& req, OUT Json::Val
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+return;
     }
     if(&req["module"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+       // return TEST_FAILURE;
+return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -201,10 +205,12 @@ bool pam::pam_bridge_GetParamUlongValue(IN const Json::Value& req, OUT Json::Val
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the value of ulong parameter";
         DEBUG_PRINT(DEBUG_TRACE,"\n pam_bridge_GetParamUlongValue --->Exit\n");
-        return  TEST_FAILURE;
+       // return  TEST_FAILURE;
+return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_bridge_GetParamUlongValue  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+return;
 }
 
 /***************************************************************************
@@ -215,7 +221,7 @@ bool pam::pam_bridge_GetParamUlongValue(IN const Json::Value& req, OUT Json::Val
  * @param [in]  req - ParamList : Holds the List of the parameter
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *****************************************************************************/
-bool pam::pam_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response)
+void pam::pam_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"Inside Fucntion GetParamNames \n");
     string ParamName=req["ParamName"].asCString();
@@ -229,7 +235,8 @@ bool pam::pam_GetParameterNames(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"] = "FAILURE";
         response["details"] = "Get Param Name for Parameter returned NULL";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+return;
     }
     DataValue1=ssp_getParameterNames(&ParamList[0],0,&size);
     if(NULL==DataValue1)
@@ -249,7 +256,8 @@ bool pam::pam_GetParameterNames(IN const Json::Value& req, OUT Json::Value& resp
                     printf("Parameter Name has been fetched successfully and it matched with parameter List\n");
                     response["result"] = "SUCCESS";
 		    response["details"] = DataValue[0].pParamNames;
-                    return TEST_SUCCESS;
+       //             return TEST_SUCCESS;
+return;
                 }
                 else
                 {
@@ -258,14 +266,16 @@ bool pam::pam_GetParameterNames(IN const Json::Value& req, OUT Json::Value& resp
                     printf("Parameter attributes does not match with the parameter List\n");
                     response["result"] = "FAILURE";
                     response["details"] = "Parameter Name and its attributes does not match with the parameter List";
-                    return TEST_FAILURE;
+//                    return TEST_FAILURE;
+return;
                 }
             }
         }
         free_Memory_Names(size,DataValue1);	
         response["result"] = "FAILURE";
         response["details"] = "Parameter Name does not match with the paramters in paramter list";
-        return TEST_FAILURE;	
+       // return TEST_FAILURE;	
+	return;
     }
 
 }
@@ -277,7 +287,7 @@ bool pam::pam_GetParameterNames(IN const Json::Value& req, OUT Json::Value& resp
  * @param [in]  req - ParamName : Holds the name of the parameter
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *****************************************************************************/
-bool pam::pam_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response)
+void pam::pam_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"Inside Function GetParamValues \n");
     int size_ret=0;
@@ -298,12 +308,14 @@ bool pam::pam_GetParameterValues(IN const Json::Value& req, OUT Json::Value& res
             response["result"] = "SUCCESS";
             response["details"] = DataParamValue[0].pParamValues;
 	    free_Memory_val(size_ret,DataParamValue);
-            return TEST_SUCCESS;
+    //        return TEST_SUCCESS;
+	    return;
 
     }
     response["result"] = "FAILURE";
     response["details"] = "Get Param value Failure of the function";
-    return TEST_FAILURE;
+//    return TEST_FAILURE;
+    return;
 
 }
 
@@ -316,7 +328,7 @@ bool pam::pam_GetParameterValues(IN const Json::Value& req, OUT Json::Value& res
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool pam::pam_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response)
+void pam::pam_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"Inside Function SetParamValues \n");
 
@@ -338,7 +350,8 @@ bool pam::pam_SetParameterValues(IN const Json::Value& req, OUT Json::Value& res
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     if((DataParamValue1== NULL))
@@ -353,7 +366,8 @@ bool pam::pam_SetParameterValues(IN const Json::Value& req, OUT Json::Value& res
             free_Memory_val(size_ret,DataParamValue1);
             response["result"] = "SUCCESS";
             response["details"] = "Set has been validated successfully";
-            return TEST_SUCCESS;
+//            return TEST_SUCCESS;
+	    return;
         }
         else
         {	
@@ -365,7 +379,8 @@ bool pam::pam_SetParameterValues(IN const Json::Value& req, OUT Json::Value& res
 
     response["result"] = "FAILURE";
     response["details"] = "FAILURE : Parameter Value has not changed after a proper Set";
-    return TEST_FAILURE;
+//    return TEST_FAILURE;
+    return;
 }
 
 /*******************************************************************************************
@@ -378,7 +393,7 @@ bool pam::pam_SetParameterValues(IN const Json::Value& req, OUT Json::Value& res
  *
  *******************************************************************************************/
 
-bool pam::pam_MTAAgentRestart(IN const Json::Value& req, OUT Json::Value& response)
+void pam::pam_MTAAgentRestart(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_MTAAgentRestart --->Entry \n");
 
@@ -395,10 +410,12 @@ bool pam::pam_MTAAgentRestart(IN const Json::Value& req, OUT Json::Value& respon
         response["result"]="FAILURE";
         response["details"]="Failed to restart the MTAAgent after being killed\n";
         DEBUG_PRINT(DEBUG_TRACE,"\n pam_MTAAgentRestart --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_MTAAgentRestart  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 
 }
 
@@ -412,7 +429,7 @@ bool pam::pam_MTAAgentRestart(IN const Json::Value& req, OUT Json::Value& respon
  *
  *******************************************************************************************/
 
-bool pam::pam_CRRestart(IN const Json::Value& req, OUT Json::Value& response)
+void pam::pam_CRRestart(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_CRRestart --->Entry \n");
 
@@ -429,10 +446,12 @@ bool pam::pam_CRRestart(IN const Json::Value& req, OUT Json::Value& response)
         response["result"]="FAILURE";
         response["details"]="Failed to reboot the system after CR being killed\n";
         DEBUG_PRINT(DEBUG_TRACE,"\n pam_CRRestart --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_CRRestart  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 
 }
 
@@ -443,7 +462,7 @@ bool pam::pam_CRRestart(IN const Json::Value& req, OUT Json::Value& response)
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool pam::COSAPAM_DmlMlanGetParamValue(IN const Json::Value& req, OUT Json::Value& response)
+void pam::COSAPAM_DmlMlanGetParamValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetPrimaryLanIpIf --->Entry \n");
 
@@ -457,7 +476,8 @@ bool pam::COSAPAM_DmlMlanGetParamValue(IN const Json::Value& req, OUT Json::Valu
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     strcpy(paramName,req["MethodName"].asCString());
@@ -474,10 +494,12 @@ bool pam::COSAPAM_DmlMlanGetParamValue(IN const Json::Value& req, OUT Json::Valu
         response["result"]="FAILURE";
         response["details"]="Failed to get value";
         DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue ---->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /***************************************************************************
@@ -487,7 +509,7 @@ bool pam::COSAPAM_DmlMlanGetParamValue(IN const Json::Value& req, OUT Json::Valu
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool pam::COSAPAM_DmlEthGetParamValue(IN const Json::Value& req, OUT Json::Value& response)
+void pam::COSAPAM_DmlEthGetParamValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetPrimaryLanIpIf --->Entry \n");
 
@@ -498,7 +520,8 @@ bool pam::COSAPAM_DmlEthGetParamValue(IN const Json::Value& req, OUT Json::Value
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     strcpy(paramName,req["MethodName"].asCString());
@@ -514,10 +537,12 @@ bool pam::COSAPAM_DmlEthGetParamValue(IN const Json::Value& req, OUT Json::Value
         response["result"]="FAILURE";
         response["details"]="Failed to get value";
         DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue ---->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 
@@ -528,7 +553,7 @@ bool pam::COSAPAM_DmlEthGetParamValue(IN const Json::Value& req, OUT Json::Value
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *****************************************************************************/
-bool pam::COSAPAM_DmlDiGetParamValue(IN const Json::Value& req, OUT Json::Value& response)
+void pam::COSAPAM_DmlDiGetParamValue(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetPrimaryLanIpIf --->Entry \n");
 
@@ -542,7 +567,8 @@ bool pam::COSAPAM_DmlDiGetParamValue(IN const Json::Value& req, OUT Json::Value&
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     strcpy(paramName,req["MethodName"].asCString());
@@ -559,10 +585,12 @@ bool pam::COSAPAM_DmlDiGetParamValue(IN const Json::Value& req, OUT Json::Value&
         response["result"]="FAILURE";
         response["details"]="Failed to get value";
         DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_GetParamValue ---->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 /*******************************************************************************************
  *
@@ -576,7 +604,7 @@ bool pam::COSAPAM_DmlDiGetParamValue(IN const Json::Value& req, OUT Json::Value&
  *******************************************************************************************/
 
 
-bool pam::COSAPAM_UpnpEnable(IN const Json::Value& req, OUT Json::Value& response)
+void pam::COSAPAM_UpnpEnable(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_UpnpEnable --->Entry \n");
     int returnValue = 0;
@@ -589,13 +617,15 @@ bool pam::COSAPAM_UpnpEnable(IN const Json::Value& req, OUT Json::Value& respons
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     if(&req["MethodName"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     boolValue = req["Value"].asInt();
@@ -613,7 +643,8 @@ bool pam::COSAPAM_UpnpEnable(IN const Json::Value& req, OUT Json::Value& respons
         response["details"]="Successfully set the Upnp disable";
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_UpnpEnable  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 /*******************************************************************************************
  *
@@ -626,7 +657,7 @@ bool pam::COSAPAM_UpnpEnable(IN const Json::Value& req, OUT Json::Value& respons
  *******************************************************************************************/
 
 
-bool pam::COSAPAM_UpnpGetState(IN const Json::Value& req, OUT Json::Value& response)
+void pam::COSAPAM_UpnpGetState(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_UpnpDevGetIgdState --->Entry \n");
 
@@ -639,7 +670,8 @@ bool pam::COSAPAM_UpnpGetState(IN const Json::Value& req, OUT Json::Value& respo
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     strcpy(paramName,req["MethodName"].asCString());
@@ -658,10 +690,12 @@ bool pam::COSAPAM_UpnpGetState(IN const Json::Value& req, OUT Json::Value& respo
         response["result"]="FAILURE";
         response["details"]="Upnp state is disabled";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_UpnpGetState --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_UpnpGetState  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 /*******************************************************************************************
  *
@@ -672,7 +706,7 @@ bool pam::COSAPAM_UpnpGetState(IN const Json::Value& req, OUT Json::Value& respo
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-bool pam::COSAPAM_DhcpGet(IN const Json::Value& req, OUT Json::Value& response)
+void pam::COSAPAM_DhcpGet(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DhcpGet --->Entry \n");
 
@@ -687,7 +721,8 @@ bool pam::COSAPAM_DhcpGet(IN const Json::Value& req, OUT Json::Value& response)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     strcpy(paramName,req["MethodName"].asCString());
@@ -730,10 +765,12 @@ bool pam::COSAPAM_DhcpGet(IN const Json::Value& req, OUT Json::Value& response)
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the value";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DhcpGet --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DhcpGet --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 /*******************************************************************************************
  *
@@ -746,7 +783,7 @@ bool pam::COSAPAM_DhcpGet(IN const Json::Value& req, OUT Json::Value& response)
  *******************************************************************************************/
 
 
-bool pam::COSAPAM_DhcpsEnable(IN const Json::Value& req, OUT Json::Value& response)
+void pam::COSAPAM_DhcpsEnable(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DhcpsEnable --->Entry \n");
     int returnValue = 0;
@@ -756,7 +793,8 @@ bool pam::COSAPAM_DhcpsEnable(IN const Json::Value& req, OUT Json::Value& respon
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
 
     boolValue = req["Value"].asInt();
@@ -773,7 +811,8 @@ bool pam::COSAPAM_DhcpsEnable(IN const Json::Value& req, OUT Json::Value& respon
         response["details"]="Successfully set the DHCP server disable";
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DhcpsEnable  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 /*******************************************************************************************
  *
@@ -783,7 +822,7 @@ bool pam::COSAPAM_DhcpsEnable(IN const Json::Value& req, OUT Json::Value& respon
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
  *
  *******************************************************************************************/
-bool pam::COSAPAM_DnsGet(IN const Json::Value& req, OUT Json::Value& response)
+void pam::COSAPAM_DnsGet(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DnsGet --->Entry \n");
 
@@ -796,7 +835,8 @@ bool pam::COSAPAM_DnsGet(IN const Json::Value& req, OUT Json::Value& response)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
     strcpy(paramName,req["MethodName"].asCString());
     printf("paramName received as %s\n", paramName);
@@ -831,11 +871,13 @@ bool pam::COSAPAM_DnsGet(IN const Json::Value& req, OUT Json::Value& response)
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the value";
         DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DnsGet --->Exit\n");
-        return  TEST_FAILURE;
+//        return  TEST_FAILURE;
+	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DnsGet  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 /*******************************************************************************************
  *
@@ -849,7 +891,7 @@ bool pam::COSAPAM_DnsGet(IN const Json::Value& req, OUT Json::Value& response)
  *******************************************************************************************/
 
 
-bool pam::COSAPAM_DnsEnable(IN const Json::Value& req, OUT Json::Value& response)
+void pam::COSAPAM_DnsEnable(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DnsEnableClient --->Entry \n");
     int returnValue = 0;
@@ -862,13 +904,15 @@ bool pam::COSAPAM_DnsEnable(IN const Json::Value& req, OUT Json::Value& response
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+    //    return TEST_FAILURE;
+	return;
     }
        if(&req["MethodName"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-        return TEST_FAILURE;
+//        return TEST_FAILURE;
+	return;
     }
 
     boolValue = req["Value"].asInt();
@@ -886,7 +930,8 @@ bool pam::COSAPAM_DnsEnable(IN const Json::Value& req, OUT Json::Value& response
         response["details"]="Successfully set the Dns disable";
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n COSAPAM_DnsEnable --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS;
+    return;
 }
 
 /**************************************************************************
@@ -896,9 +941,9 @@ bool pam::COSAPAM_DnsEnable(IN const Json::Value& req, OUT Json::Value& response
  *
  **************************************************************************/
 
-extern "C" pam* CreateObject()
+extern "C" pam* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new pam();
+    return new pam(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -907,9 +952,10 @@ extern "C" pam* CreateObject()
  *
  **************************************************************************/
 
-bool pam::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool pam::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"pam shutting down\n");
+#if 0
     if(ptrAgentObj==NULL)
     {
         return TEST_FAILURE;
@@ -932,7 +978,7 @@ bool pam::cleanup(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
     ptrAgentObj->UnregisterMethod("COSAPAM_DhcpsEnable");
     ptrAgentObj->UnregisterMethod("COSAPAM_DnsGet");
     ptrAgentObj->UnregisterMethod("COSAPAM_DnsEnable");
-
+#endif
     return TEST_SUCCESS;
 }
 
@@ -957,7 +1003,7 @@ extern "C" void DestroyObject(pam *stubobj)
  *
  *******************************************************************************************/
 
-bool pam::pam_Init(IN const Json::Value& req, OUT Json::Value& response)
+void pam::pam_Init(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_Init --->Entry \n");
 
@@ -973,10 +1019,12 @@ bool pam::pam_Init(IN const Json::Value& req, OUT Json::Value& response)
         response["result"]="FAILURE";
         response["details"]="Failed to initialise pam module\n";
         DEBUG_PRINT(DEBUG_TRACE,"\n pam_Init --->Exit\n");
-        return  TEST_FAILURE;
+    //    return  TEST_FAILURE;
+	return;
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n pam_Init  --->Exit\n");
-    return TEST_SUCCESS;
+//    return TEST_SUCCESS; 
+    return;
 
 }
 

@@ -26,19 +26,6 @@ extern "C"
     int ssp_register(bool);
 };
 
-/*************************************************************************
-  Function name : SysUtilAgent::SysUtilAgent
-
-Arguments     : NULL
-
-Description   : Constructor for SysUtilAgent class
- ***************************************************************************/
-
-SysUtilAgent::SysUtilAgent()
-{
-        DEBUG_PRINT(DEBUG_TRACE, "SysUtilAgent Initialized\n");
-}
-
 /***************************************************************************
  *Function name : testmodulepre_requisites
  *Descrption    : testmodulepre_requisites will  be used for setting the
@@ -78,10 +65,9 @@ Arguments     : Input arguments are Version string and SysUtilAgent obj ptr
 
 Description   : Registering all the wrapper functions with the agent for using these functions in the script
  ***************************************************************************/
-bool SysUtilAgent::initialize(IN const char* szVersion,IN RDKTestAgent *ptrAgentObj)
+bool SysUtilAgent::initialize(IN const char* szVersion)
 {
-        ptrAgentObj->RegisterMethod(*this,&SysUtilAgent::SysUtilAgent_ExecuteCmd, "TestMgr_ExecuteCmd");
-        DEBUG_PRINT(DEBUG_TRACE, "SysUtilAgent Initialize----->Exit\n");
+        DEBUG_PRINT(DEBUG_TRACE, "SysUtilAgent Initialize\n");
 
         return TEST_SUCCESS;
 }
@@ -93,7 +79,7 @@ Arguments     : Input arguments are json request object and json response object
 
 Description   : This method queries for the parameter requested through curl and returns the value.
 ***************************************************************************/
-bool SysUtilAgent::SysUtilAgent_ExecuteCmd(IN const Json::Value& req, OUT Json::Value& response)
+void SysUtilAgent::SysUtilAgent_ExecuteCmd(IN const Json::Value& req, OUT Json::Value& response)
 {
         DEBUG_PRINT(DEBUG_TRACE, "SysUtilAgent_ExecuteCmd -->Entry\n");
 
@@ -117,7 +103,7 @@ bool SysUtilAgent::SysUtilAgent_ExecuteCmd(IN const Json::Value& req, OUT Json::
                 response["details"] = "popen() failure";
                 DEBUG_PRINT(DEBUG_ERROR, "popen() failure\n");
 
-                return TEST_FAILURE;
+                return;
         }
 
         /*copy the response to a buffer */
@@ -135,7 +121,7 @@ bool SysUtilAgent::SysUtilAgent_ExecuteCmd(IN const Json::Value& req, OUT Json::
         response["details"] = respResult;
         DEBUG_PRINT(DEBUG_LOG, "Execution success\n");
         DEBUG_PRINT(DEBUG_TRACE, "SysUtilAgent_ExecuteCmd -->Exit\n");
-        return TEST_SUCCESS;
+        return;
 
 }
 
@@ -147,11 +133,11 @@ Arguments       : NULL
 Description     : This function is used to create a new object of the class "SysUtilAgent".
  **************************************************************************/
 
-extern "C" SysUtilAgent* CreateObject()
+extern "C" SysUtilAgent* CreateObject(TcpSocketServer &ptrtcpServer)
 {
         DEBUG_PRINT(DEBUG_TRACE, "Creating SysUtil Agent Object\n");
 
-        return new SysUtilAgent();
+        return new SysUtilAgent(ptrtcpServer);
 }
 
 /**************************************************************************
@@ -161,18 +147,9 @@ Arguments       : NULL
 
 Description     : This function will be used to the close things cleanly.
  **************************************************************************/
-bool SysUtilAgent::cleanup(IN const char* szVersion, IN RDKTestAgent *ptrAgentObj)
+bool SysUtilAgent::cleanup(IN const char* szVersion)
 {
         DEBUG_PRINT(DEBUG_TRACE, "cleaningup\n");
-
-        if(NULL == ptrAgentObj)
-        {
-                return TEST_FAILURE;
-        }
-
-        ptrAgentObj->UnregisterMethod("TestMgr_ExecuteCmd");
-
-        DEBUG_PRINT(DEBUG_TRACE, "cleaningup done\n");
 
         return TEST_SUCCESS;
 }
