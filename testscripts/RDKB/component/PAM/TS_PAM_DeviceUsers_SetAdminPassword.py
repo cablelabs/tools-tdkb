@@ -142,7 +142,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
                         
-            if expectedresult in actualresult and test_password in details:
+            if expectedresult in actualresult and test_password not in details:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
                 #Get the result of execution
@@ -150,6 +150,13 @@ if "SUCCESS" in loadmodulestatus.upper():
 	        print "EXPECTED RESULT : Should get the admin password";
         	print "ACTUAL RESULT: Successfully get the password, %s" %details;
 	        print "[TEST EXECUTION RESULT] :%s" %actualresult;
+
+            else:
+                tdkTestObj.setResultStatus("FAILURE");
+		print "STEP 3: Get the admin password";
+                print "EXPECTED RESULT : Should get the admin password";
+                print "ACTUAL RESULT: Failed to get the password, %s" %details;
+                print "[TEST EXECUTION RESULT] :%s" %actualresult;
 
                 tdkTestObj = obj.createTestStep('pam_SetParameterValues');
                 tdkTestObj.addParameter("ParamName","Device.Users.User.3.Password");
@@ -172,12 +179,6 @@ if "SUCCESS" in loadmodulestatus.upper():
                     print "EXPECTED RESULT : Should not change the admin password";
                     print "ACTUAL RESULT: Admin password is changed, %s" %details;
                     print "[TEST EXECUTION RESULT] :%s" %actualresult;
-            else:
-                tdkTestObj.setResultStatus("FAILURE");
-		print "STEP 3: Get the admin password";
-                print "EXPECTED RESULT : Should get the admin password";
-                print "ACTUAL RESULT: Failed to get the password, %s" %details;
-                print "[TEST EXECUTION RESULT] :%s" %actualresult;
 	else:
 	    tdkTestObj.setResultStatus("FAILURE");
 	    print "STEP 2: Set the admin password";
