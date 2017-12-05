@@ -89,6 +89,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.addParameter("methodName","getRadioSupportedStandards");
     #Radio index is 0 for 2.4GHz and 1 for 5GHz
     tdkTestObj.addParameter("radioIndex",1);
+    tdkTestObj.addParameter("param",0);
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
@@ -107,6 +108,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     	tdkTestObj.addParameter("methodName","getRadioStandard")
     	#Radio index is 0 for 2.4GHz and 1 for 5GHz
     	tdkTestObj.addParameter("radioIndex",1);
+    	tdkTestObj.addParameter("param",0);
     	expectedresult="SUCCESS";
     	tdkTestObj.executeTestCase(expectedresult);
     	actualresult = tdkTestObj.getResult();
