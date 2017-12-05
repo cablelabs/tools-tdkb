@@ -2,7 +2,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2016 RDK Management
+# Copyright 2017 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,87 +17,61 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version='1.0' encoding='utf-8'?>
-<xml>
-  <id></id>
-  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+<?xml version="1.0" encoding="UTF-8"?><xml>
+  <id/>
   <version>3</version>
-  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_WIFIHAL_5GHzGetApWpsConfigMethodsSupported</name>
-  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
-  <primitive_test_id> </primitive_test_id>
-  <!-- Do not change primitive_test_id if you are editing an existing script. -->
+  <primitive_test_id/>
   <primitive_test_name>WIFIHAL_GetOrSetParamStringValue</primitive_test_name>
-  <!--  -->
   <primitive_test_version>1</primitive_test_version>
-  <!--  -->
   <status>FREE</status>
-  <!--  -->
   <synopsis>To get the WPS config method supported values for 5GHz radio using wifi_getApWpsConfigMethodsSupported HAL API and vaidate the same</synopsis>
-  <!--  -->
   <groups_id>4</groups_id>
-  <!--  -->
   <execution_time>1</execution_time>
-  <!--  -->
   <long_duration>false</long_duration>
-  <!--  -->
   <advanced_script>false</advanced_script>
-  <!-- execution_time is the time out time for test execution -->
-  <remarks></remarks>
-  <!-- Reason for skipping the tests if marked to skip -->
+  <remarks/>
   <skip>false</skip>
-  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
-    <!--  -->
     <box_type>Emulator</box_type>
-    <!--  -->
     <box_type>RPI</box_type>
-    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
-    <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_91</test_case_id>
+    <test_case_id>TC_WIFIHAL_78</test_case_id>
     <test_objective>To get the WPS config method supported values for 5GHz radio using wifi_getApWpsConfigMethodsSupported HAL API and validate the same</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3. XB6, Emulator, Rpi</test_setup>
-    <pre_requisite>
-1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
-2.TDK Agent should be in running state or invoke it through StartTdk.sh script
-    </pre_requisite>
+    <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
+2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>wifi_getApWpsConfigMethodsSupported()</api_or_interface_used>
-    <input_parameters>
-methodName  : getApWpsConfigMethodsSupported
-apIndex     : 1
-    </input_parameters>
-    <automation_approch>
-1.Configure the Function info in Test Manager GUI  which needs to be tested (WIFIHAL_GetOrSetParamStringValue  - func name - "If not exists already" WIFIHAL - module name Necessary I/P args as Mentioned in Input)
+    <input_parameters>methodName  : getApWpsConfigMethodsSupported
+apIndex     : 1</input_parameters>
+    <automation_approch>1.Configure the Function info in Test Manager GUI  which needs to be tested (WIFIHAL_GetOrSetParamStringValue  - func name - "If not exists already" WIFIHAL - module name Necessary I/P args as Mentioned in Input)
 2.Python Script will be generated/overrided automatically by Test Manager with provided arguments in configure page (TS_WIFIHAL_5GHzGetApWpsConfigMethodsSupported.py)
 3.Execute the generated Script(TS_WIFIHAL_5GHzGetApWpsConfigMethodsSupported.py) using execution page of  Test Manager GUI
 4.wifihalstub which is a part of TDK Agent process, will be in listening mode to execute TDK Component function named WIFIHAL_GetOrSetParamStringValue through registered TDK wifihalstub function along with necessary Path Name as arguments
 5.WIFIHAL_GetOrSetParamStringValue function will call Ccsp Base Function named "ssp_WIFIHALGetOrSetParamStringValue", that inturn will call WIFIHAL Library Function wifi_getApWpsConfigMethodsSupported() function
 6.Response(s)(printf) from TDK Component,Ccsp Library function and wifihalstub would be logged in Agent Console log based on the debug info redirected to agent console
 7.wifihalstub will validate the available result (from agent console log and Pointer to instance as updated) with expected result
-8.Test Manager will publish the result in GUI as SUCCESS/FAILURE based on the response from wifihalstub
-    </automation_approch>
-    <except_output>
-CheckPoint
+8.Test Manager will publish the result in GUI as SUCCESS/FAILURE based on the response from wifihalstub</automation_approch>
+    <except_output>CheckPoint
 1:wifi_getApWpsConfigMethodsSupported log from DUT should be available in Agent Console LogCheckPoint
 2:TDK agent Test Function will log the test case result as PASS based on API response CheckPoint
-3:Test Manager GUI will publish the result as SUCCESS in Execution page"""
-    </except_output>
+3:Test Manager GUI will publish the result as SUCCESS in Execution page"""</except_output>
     <priority>High</priority>
     <test_stub_interface>WIFIHAL</test_stub_interface>
     <test_script>TS_WIFIHAL_5GHzGetApWpsConfigMethodsSupported</test_script>
     <skipped>No</skipped>
-    <release_version></release_version>
-    <remarks></remarks>
+    <release_version/>
+    <remarks/>
   </test_cases>
   <script_tags/>
 </xml>
+
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;

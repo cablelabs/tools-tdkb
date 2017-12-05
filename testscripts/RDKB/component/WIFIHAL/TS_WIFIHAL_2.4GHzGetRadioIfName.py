@@ -2,7 +2,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2016 RDK Management
+# Copyright 2017 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,7 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?>
-<xml>
+<?xml version="1.0" encoding="UTF-8"?><xml>
   <id/>
   <version>1</version>
   <name>TS_WIFIHAL_2.4GHzGetRadioIfName</name>
@@ -42,14 +41,13 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_20</test_case_id>
+    <test_case_id>TC_WIFIHAL_17</test_case_id>
     <test_objective>To get the Radio interface name for 2.4GHz and check whether it is "wifi0"</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband,Emulator, RPI</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
-    <api_or_interface_used>wifi_getRadioIfName()
-</api_or_interface_used>
+    <api_or_interface_used>wifi_getRadioIfName()</api_or_interface_used>
     <input_parameters>methodName: getRadioIfName
 radioIndex:0</input_parameters>
     <automation_approch>1. Load wifihal module

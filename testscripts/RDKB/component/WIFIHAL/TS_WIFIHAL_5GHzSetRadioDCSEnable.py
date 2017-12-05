@@ -2,7 +2,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2016 RDK Management
+# Copyright 2017 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIAGENT_53</test_case_id>
+    <test_case_id>TC_WIFIHAL_11</test_case_id>
     <test_objective>Test to set DCS status using wifi_setRadioDCSEnable() and verify with wifi_getRadioDCSEnable()</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3. XB6, Emulator, Rpi</test_setup>

@@ -57,7 +57,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_57</test_case_id>
+    <test_case_id>TC_WIFIHAL_103</test_case_id>
     <test_objective>To check the SSID enable status using wifi_getSSIDEnable() HAL API,,If enabled get the ssidName using getSSIDName() HAL API</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3. XB6, Emulator, Rpi</test_setup>

@@ -2,7 +2,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2016 RDK Management
+# Copyright 2017 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,13 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?>
-<xml>
+<?xml version="1.0" encoding="UTF-8"?><xml>
   <id/>
-  <version>1</version>
+  <version>2</version>
   <name>TS_WIFIHAL_2.4GHzManualToAutoChannel</name>
   <primitive_test_id/>
   <primitive_test_name>WIFIHAL_GetOrSetParamBoolValue</primitive_test_name>
-  <primitive_test_version>3</primitive_test_version>
+  <primitive_test_version>1</primitive_test_version>
   <status>FREE</status>
   <synopsis>Test if on enabling autoChannel mode using wifi_setRadioAutoChannelEnable(), the manually set channel number is getting changed for 2.4GHz</synopsis>
   <groups_id/>
@@ -36,13 +35,12 @@
   <box_types>
     <box_type>Broadband</box_type>
     <box_type>Emulator</box_type>
-    
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_35</test_case_id>
+    <test_case_id>TC_WIFIHAL_32</test_case_id>
     <test_objective>Test if on enabling autoChannel mode using wifi_setRadioAutoChannelEnable(), the manually set channel number is getting changed for 2.4GHz</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband,Emulator, RPI</test_setup>
@@ -64,6 +62,7 @@ radioIndex:1</input_parameters>
     <release_version/>
     <remarks/>
   </test_cases>
+  <script_tags/>
 </xml>
 
 '''

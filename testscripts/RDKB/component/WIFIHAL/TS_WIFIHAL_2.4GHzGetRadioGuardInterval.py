@@ -2,7 +2,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2016 RDK Management
+# Copyright 2017 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,7 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?>
-<xml>
+<?xml version="1.0" encoding="UTF-8"?><xml>
   <id/>
   <version>1</version>
   <name>TS_WIFIHAL_2.4GHzGetRadioGuardInterval</name>
@@ -42,7 +41,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_32</test_case_id>
+    <test_case_id>TC_WIFIHAL_29</test_case_id>
     <test_objective>Check if guard interval returned by wifi_getRadioGuardInterval() for 2.4GHz is from the list { 400nsec, 800nsec, Auto  }</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband,Emulator, RPI</test_setup>
