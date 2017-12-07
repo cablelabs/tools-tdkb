@@ -221,42 +221,64 @@ void WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
  ********************************************************************************************/
 void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Json::Value& response)
 {
-    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamStringValue----->Entry\n");
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamStringValue  ----->Entry\n");
     char methodName[50] = {'\0'};
     int radioIndex = 1;
     char output[1000] = {'\0'};
     int returnValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
+    char param[200] = {'\0'};
 
     strcpy(methodName, req["methodName"].asCString());
     radioIndex = req["radioIndex"].asInt();
     strcpy(paramType, req["paramType"].asCString());
-
-    //paramType is set as NULL for negative test scenarios, for NULL pointer checks
-    if(strcmp(paramType, "NULL"))
-        returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, output, methodName);
-    else
-        returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, NULL, methodName);
-    strcpy(paramType, req["paramType"].asCString());
-
-    if(0 == returnValue)
+    strcpy(param, req["param"].asCString());
+    
+    if(strstr(methodName, "set"))
     {
-        DEBUG_PRINT(DEBUG_TRACE,"\n output: %s\n",output);
-        sprintf(details, "Value returned is :%s", output);
-        response["result"]="SUCCESS";
-        response["details"]=details;
-        //return TEST_SUCCESS;
-	return;
+        returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, param, methodName);
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForString --->Error in execution\n");
+            return;
+        }
+            
     }
     else
     {
-        sprintf(details, "%s operation failed", methodName);
-        response["result"]="FAILURE";
-        response["details"]=details;
-        DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForULong --->Error in execution\n");
-        //return  TEST_FAILURE;
-	return;
+        //paramType is set as NULL for negative test scenarios, for NULL pointer checks
+        if(strcmp(paramType, "NULL"))
+            returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, output, methodName);
+        else
+            returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, NULL, methodName);
+
+        if(0 == returnValue)
+        {
+            DEBUG_PRINT(DEBUG_TRACE,"\n output: %s\n",output);
+            sprintf(details, "Value returned is :%s", output);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForString --->Error in execution\n");
+            return;
+        }
     }
 }
 

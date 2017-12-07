@@ -61,10 +61,16 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
         return_status = wifi_getRadioAutoChannelRefreshPeriodSupported(radioIndex, enable);
     else if(!strcmp(method, "setAutoChannelEnable"))
         return_status = wifi_setRadioAutoChannelEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getAutoChannelEnable"))
+        return_status = wifi_getRadioAutoChannelEnable(radioIndex, enable);
+    else if(!strcmp(method, "getAutoChannelSupported"))
+        return_status = wifi_getRadioAutoChannelSupported(radioIndex, enable);
     else if(!strcmp(method, "getRadioStatus"))
         return_status = wifi_getRadioStatus(radioIndex, *enable);
     else if(!strcmp(method, "getApEnable"))
         return_status = wifi_getApEnable(radioIndex,enable);
+    else if(!strcmp(method, "setApEnable"))
+        return_status = wifi_setApEnable(radioIndex, *enable);
     else if(!strcmp(method, "getApIsolationEnable"))
         return_status = wifi_getApIsolationEnable(radioIndex,enable);
     else if(!strcmp(method, "setApIsolationEnable"))
@@ -127,6 +133,10 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
         return_status = wifi_getApWpsEnable(radioIndex,enable);
     else if(!strcmp(method, "setApWpsEnable"))
         return_status = wifi_setApWpsEnable(radioIndex,enable);
+    else if(!strcmp(method, "getRadioAMSDUEnable"))
+        return_status = wifi_getRadioAMSDUEnable(radioIndex, enable);
+    else if(!strcmp(method, "setRadioAMSDUEnable"))
+        return_status = wifi_setRadioAMSDUEnable(radioIndex, *enable);
     else
     {
         return_status = SSP_FAILURE;
@@ -162,8 +172,24 @@ int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, 
         return_status = wifi_setRadioChannel(radioIndex, *uLongVar);
     else if(!strcmp(method, "getAutoChannelRefreshPeriod"))
         return_status = wifi_getRadioAutoChannelRefreshPeriod(radioIndex, uLongVar);
+    else if(!strcmp(method, "setAutoChannelRefreshPeriod"))
+        return_status = wifi_setRadioAutoChannelRefreshPeriod(radioIndex, *uLongVar);
     else if(!strcmp(method, "getRadioNumberOfEntries"))
         return_status = wifi_getRadioNumberOfEntries(*uLongVar);
+    else if(!strcmp(method, "getSSIDNumberOfEntries"))
+        return_status = wifi_getSSIDNumberOfEntries(uLongVar);
+    else if(!strcmp(method, "getRadioTransmitPower"))
+        return_status = wifi_getRadioTransmitPower(radioIndex, uLongVar);
+    else if(!strcmp(method, "setRadioTransmitPower"))
+        return_status = wifi_setRadioTransmitPower(radioIndex, *uLongVar);
+    else if(!strcmp(method, "getApNumDevicesAssociated"))
+        return_status = wifi_getApNumDevicesAssociated(radioIndex, uLongVar);
+    else if(!strcmp(method, "getApWpsDevicePIN"))
+        return_status = wifi_getApWpsDevicePIN(radioIndex, uLongVar);
+    else if(!strcmp(method, "setApWpsDevicePIN"))
+        return_status = wifi_setApWpsDevicePIN(radioIndex, *uLongVar);
+    else if(!strcmp(method, "getRadioUpTime"))
+        return_status = wifi_getRadioUpTime(radioIndex, uLongVar);
     else
     {
         return_status = SSP_FAILURE;
@@ -199,10 +225,16 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
         return_status = wifi_getRadioPossibleChannels(radioIndex, output);
     else if(!strcmp(method, "getChannelBandwidth"))
         return_status = wifi_getRadioOperatingChannelBandwidth(radioIndex, output);
+    else if(!strcmp(method, "setChannelBandwidth"))
+        return_status = wifi_setRadioOperatingChannelBandwidth(radioIndex, output);
     else if(!strcmp(method, "getRadioGuardInterval"))
         return_status = wifi_getRadioGuardInterval(radioIndex, output);
+    else if(!strcmp(method, "setRadioGuardInterval"))
+        return_status = wifi_setRadioGuardInterval(radioIndex, output);
     else if(!strcmp(method, "getOperationalDataTransmitRates"))
         return_status = wifi_getRadioOperationalDataTransmitRates(radioIndex, output);
+    else if(!strcmp(method, "setOperationalDataTransmitRates"))
+        return_status = wifi_setRadioOperationalDataTransmitRates(radioIndex, output);
     else if(!strcmp(method, "getSupportedDataTransmitRates"))
         return_status = wifi_getRadioSupportedDataTransmitRates(radioIndex, output);
     else if(!strcmp(method, "getRadioSupportedFrequencyBands"))
@@ -215,24 +247,40 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
         return_status = wifi_getRadioIfName(radioIndex, output);
     else if(!strcmp(method, "getRadioStandard"))
         return_status = wifi_getRadioStandard(radioIndex, output, &gOnly, &nOnly, &acOnly);
+    else if(!strcmp(method, "setRadioChannelMode"))
+        return_status = wifi_setRadioChannelMode(radioIndex, output, gOnly, nOnly, acOnly);
     else if(!strcmp(method, "getSSIDStatus"))
         return_status = wifi_getSSIDStatus(radioIndex, output);
     else if(!strcmp(method, "getApBasicAuthenticationMode"))
 	return_status = wifi_getApBasicAuthenticationMode(radioIndex,output);
+    else if(!strcmp(method, "setApBasicAuthenticationMode"))
+	return_status = wifi_setApBasicAuthenticationMode(radioIndex,output);
     else if(!strcmp(method, "getApBeaconType"))
 	return_status = wifi_getApBeaconType(radioIndex,output);
+    else if(!strcmp(method, "setApBeaconType"))
+        return_status = wifi_setApBeaconType(radioIndex,output);
     else if(!strcmp(method, "getApSecurityModeEnabled"))
 	return_status = wifi_getApSecurityModeEnabled(radioIndex,output);
     else if(!strcmp(method, "getApWpaEncryptionMode"))
 	return_status = wifi_getApWpaEncryptionMode(radioIndex,output);
+    else if(!strcmp(method, "setApWpaEncryptionMode"))
+        return_status = wifi_setApWpaEncryptionMode(radioIndex,output);
     else if(!strcmp(method, "getRadioExtChannel"))
 	return_status = wifi_getRadioExtChannel(radioIndex,output);
+    else if(!strcmp(method, "setRadioExtChannel"))
+        return_status = wifi_setRadioExtChannel(radioIndex,output);
     else if(!strcmp(method, "getRadioBasicDataTransmitRates"))
 	return_status = wifi_getRadioBasicDataTransmitRates(radioIndex,output);
+    else if(!strcmp(method, "setRadioBasicDataTransmitRates"))
+        return_status = wifi_setRadioBasicDataTransmitRates(radioIndex,output);
     else if(!strcmp(method, "getSSIDName"))
 	return_status = wifi_getSSIDName(radioIndex,output);
+    else if(!strcmp(method, "setSSIDName"))
+        return_status = wifi_setSSIDName(radioIndex,output);
     else if(!strcmp(method, "getRadioDCSChannelPool"))
         return_status = wifi_getRadioDCSChannelPool(radioIndex,output);
+    else if(!strcmp(method, "setRadioDCSChannelPool"))
+        return_status = wifi_setRadioDCSChannelPool(radioIndex,output);
     else if(!strcmp(method, "getApStatus"))
 	return_status = wifi_getApStatus(radioIndex,output);
     else if(!strcmp(method, "getApSecurityModesSupported"))
@@ -245,6 +293,20 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
 	return_status = wifi_getApWpsConfigMethodsSupported(radioIndex,output);
     else if(!strcmp(method, "getApWpsConfigMethodsEnabled"))
 	return_status = wifi_getApWpsConfigMethodsEnabled(radioIndex,output);
+    else if(!strcmp(method, "setApWpsConfigMethodsEnabled"))
+	return_status = wifi_setApWpsConfigMethodsEnabled(radioIndex,output);
+    else if(!strcmp(method, "getRadioTransmitPowerSupported"))
+        return_status = wifi_getRadioTransmitPowerSupported(radioIndex,output);
+    else if(!strcmp(method, "getRadioMaxBitRate"))
+        return_status = wifi_getRadioMaxBitRate(radioIndex, output);
+    else if(!strcmp(method, "getRadioCountryCode"))
+        return_status = wifi_getRadioCountryCode(radioIndex,output);
+    else if(!strcmp(method, "setRadioCountryCode"))
+        return_status = wifi_setRadioCountryCode(radioIndex,output);
+    else if(!strcmp(method, "getSSIDMACAddress"))
+        return_status = wifi_getSSIDMACAddress(radioIndex,output);
+    else if(!strcmp(method, "getApWpsConfigurationState"))
+        return_status = wifi_getApWpsConfigurationState(radioIndex,output);
     else
     {
         return_status = SSP_FAILURE;
@@ -272,17 +334,36 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
 {
     printf("\n ssp_WIFIHALGetOrSetParamIntValue----> Entry\n");
     int return_status = 0;
+    int interval_seconds ,dwell_milliseconds;
 
     if(!strcmp(method, "getRadioMCS"))
         return_status = wifi_getRadioMCS(radioIndex, output);
+    else if(!strcmp(method, "setRadioMCS"))
+        return_status = wifi_setRadioMCS(radioIndex, *output);
     else if(!strcmp(method, "getRadioStatsReceivedSignalLevel"))
         return_status = wifi_getRadioStatsReceivedSignalLevel(radioIndex, 0, output);
     else if(!strcmp(method, "getApRadioIndex"))
         return_status = wifi_getApRadioIndex(radioIndex, output);
+    else if(!strcmp(method, "setApRadioIndex"))
+        return_status = wifi_setApRadioIndex(radioIndex, *output);
     else if(!strcmp(method, "getBaseBSSID"))
         return_status = wifi_getBaseBSSID(radioIndex, output);
     else if(!strcmp(method, "getSSIDRadioIndex"))
         return_status = wifi_getSSIDRadioIndex(radioIndex, output);
+    else if(!strcmp(method, "getRadioDCSScanTime"))
+        return_status = wifi_getRadioDCSScanTime(radioIndex, &interval_seconds, &dwell_milliseconds);
+    else if(!strcmp(method, "setRadioDCSScanTime"))
+        return_status = wifi_setRadioDCSScanTime(radioIndex, interval_seconds, dwell_milliseconds);
+    else if(!strcmp(method, "setApBeaconInterval"))
+        return_status = wifi_setApBeaconInterval(radioIndex, *output);
+    else if(!strcmp(method, "setDTIMInterval"))
+        return_status = wifi_setDTIMInterval(radioIndex, *output);
+    else if(!strcmp(method, "setApAuthMode"))
+        return_status = wifi_setApAuthMode(radioIndex, *output);
+    else if(!strcmp(method, "getApMacAddressControlMode"))
+        return_status = wifi_getApMacAddressControlMode(radioIndex, output);
+    else if(!strcmp(method, "setApMacAddressControlMode"))
+        return_status = wifi_setApMacAddressControlMode(radioIndex, *output);
     else
     {
         return_status = SSP_FAILURE;
@@ -313,14 +394,20 @@ int ssp_WIFIHALGetOrSetParamUIntValue(int radioIndex, unsigned int* output, char
 
     if(!strcmp(method, "getRadioBeaconPeriod"))
         return_status = wifi_getRadioBeaconPeriod(radioIndex, output);
+    else if(!strcmp(method, "setRadioBeaconPeriod"))
+        return_status = wifi_setRadioBeaconPeriod(radioIndex, *output);
     else if(!strcmp(method, "getApAclDeviceNum"))
         return_status = wifi_getApAclDeviceNum(radioIndex, output);
     else if(!strcmp(method, "getApRetryLimit"))
         return_status = wifi_getApRetryLimit(radioIndex, output);
+    else if(!strcmp(method, "setApRetryLimit"))
+        return_status = wifi_setApRetryLimit(radioIndex, *output);
     else if(!strcmp(method, "getApMaxAssociatedDevices"))
         return_status = wifi_getApMaxAssociatedDevices(radioIndex, output);
     else if(!strcmp(method, "getApAssociatedDevicesHighWatermarkThreshold"))
         return_status = wifi_getApAssociatedDevicesHighWatermarkThreshold(radioIndex, output);
+    else if(!strcmp(method, "setApRtsThreshold"))
+        return_status = wifi_setApRtsThreshold(radioIndex, *output);
     else
     {
         return_status = SSP_FAILURE;
