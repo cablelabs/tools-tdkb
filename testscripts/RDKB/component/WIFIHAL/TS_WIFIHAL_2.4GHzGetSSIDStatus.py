@@ -92,7 +92,6 @@ if "SUCCESS" in loadmodulestatus.upper():
     #Radio index stands for SSID index here.
     #It should be 1 for 2.4GHz and 2 for 5GHz
     tdkTestObj.addParameter("radioIndex",1);
-    tdkTestObj.addParameter("param",0);
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
