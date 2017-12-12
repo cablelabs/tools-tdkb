@@ -23,6 +23,36 @@
 
 /*******************************************************************************************
  *
+ * Function Name        : ssp_WIFIHALApplySettings
+ * Description          : This function invokes WiFi hal api wifi_applyRadioSettings
+ * @param [in] req-     : radioIndex - radio index value of wifi
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+int ssp_WIFIHALApplySettings(int radioIndex)
+{
+    printf("\n ssp_WIFIHALApplySettings-----> Entry\n");
+    int return_status = 0;
+
+    return_status = wifi_applyRadioSettings(radioIndex);
+    printf("return value from ssp_WIFIHALApplySettings is %d\n",return_status);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_WIFIHALApplySettings::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\nssp_WIFIHALApplySettings::Success\n");
+     return return_status;
+    }
+
+    printf("\n ssp_WIFIHALApplySettings----> Exit\n");
+}
+
+
+/*******************************************************************************************
+ *
  * Function Name        : ssp_WIFIHALGetOrSetParamBoolValue
  * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
                           get /set is Bool

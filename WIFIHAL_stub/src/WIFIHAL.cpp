@@ -70,6 +70,38 @@ bool WIFIHAL::testmodulepost_requisites()
     return TEST_SUCCESS;
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_ApplySettings
+ * Description          : This function invokes WiFi hal api wifi_applyRadioSettings
+ * @param [in] req-     : radioIndex - radio index value of wifi
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_ApplySettings(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_ApplySettings  --->Entry\n");
+    int radioIndex;
+    int returnValue;
+    char details[200] = {'\0'};
+    radioIndex = req["radioIndex"].asInt();
+    returnValue = ssp_WIFIHALApplySettings(radioIndex);
+    if(0 == returnValue)
+       {
+            sprintf(details, "applyRadioSettings operation success");
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+       }
+    else
+       {
+            sprintf(details, "applyRadioSettings operation failed");
+            response["result"]="FAILURE";
+            response["details"]=details;
+            return;
+       }
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_ApplySettings  --->Exit\n");
+}
 
 /*******************************************************************************************
  *
