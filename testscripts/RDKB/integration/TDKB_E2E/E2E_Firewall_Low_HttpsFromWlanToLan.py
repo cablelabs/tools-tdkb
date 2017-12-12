@@ -17,15 +17,16 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
   <id/>
   <version>1</version>
-  <name>E2E_Firewall_High_TelnetFromWlanToLan</name>
+  <name>E2E_Firewall_Low_HttpsFromWlanToLan</name>
   <primitive_test_id/>
   <primitive_test_name>tdkb_e2e_Set</primitive_test_name>
   <primitive_test_version>2</primitive_test_version>
   <status>FREE</status>
-  <synopsis>Verify that when Firewall Config is set to High Telnet access from LAN to LAN should be allowed</synopsis>
+  <synopsis>Verify that when Firewall Config is set to Low HTTPs traffic from LAN to LAN should pass through</synopsis>
   <groups_id/>
   <execution_time>15</execution_time>
   <long_duration>false</long_duration>
@@ -41,8 +42,8 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_TDKB_E2E_54</test_case_id>
-    <test_objective>Verify that when Firewall Config is set to High Telnet access from LAN to LAN should be allowed</test_objective>
+    <test_case_id>TC_TDKB_E2E_58</test_case_id>
+    <test_objective>Verify that when Firewall Config is set to Low HTTPs traffic from LAN to LAN should pass through</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband,Emulator,RPI</test_setup>
     <pre_requisite>Ensure the client setup is up with the IP address assigned by the gateway</pre_requisite>
@@ -53,18 +54,18 @@ Device.WiFi.AccessPoint.1.Security.KeyPassphrase
 Device.X_CISCO_COM_Security.Firewall.FirewallLevel</input_parameters>
     <automation_approch>1. Load tdkb_e2e module
 2. Using tdkb_e2e_Get, get and save firewall level
-3. Set the firewall level to High using tdkb_e2e_SetMultipleParams
+3. Set the firewall level to Low using tdkb_e2e_SetMultipleParams
 3. Login to the LAN client and get the IP address assigned by the gateway
 4. Try to connect to Wifi client and check whether the wifi client is connected to the DUT
-5. From the wlan client, do Telnet to the LAN client and check whether Telnet is success when the firewall level is set to High
+5. From the wlan client, do HTTPS to the LAN client and check whether HTTPS is success when the firewall level is set to Low
 6. Revert the firewall level to original value
 7.Unload tdkb_e2e module</automation_approch>
-    <except_output>From the wlan client, do Telnet to the LAN client and check whether Telnet is success when the firewall level is set to High</except_output>
+    <except_output>From the wlan client, do HTTPS to the LAN client and check whether HTTPS is success when the firewall level is set to Low</except_output>
     <priority>High</priority>
     <test_stub_interface>tdkb_e2e</test_stub_interface>
-    <test_script>E2E_Firewall_High_TelnetFromWlanToLan</test_script>
+    <test_script>E2E_Firewall_Low_HttpsFromWlanToLan</test_script>
     <skipped>No</skipped>
-    <release_version>M53</release_version>
+    <release_version/>
     <remarks/>
   </test_cases>
 </xml>
@@ -83,7 +84,7 @@ obj = tdklib.TDKScriptingLibrary("tdkb_e2e","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'E2E_Firewall_High_TelnetFromWlanToLan');
+obj.configureTestCase(ip,port,'E2E_Firewall_Low_HttpsFromWlanToLan');
 
 #Get the result of connection with test component
 loadmodulestatus =obj.getLoadModuleResult();
@@ -111,7 +112,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj,status,orgValue = getMultipleParameterValues(obj,paramList)
         tdkTestObj1,retStatus,firewallValue = getParameterValue(obj,firewallLevel)
         print "Firewall Level: %s" %firewallValue;
-        
+
         if expectedresult in status and expectedresult in retStatus:
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 1: Get the current ssid,keypassphrase,Radio enable status,firewall level"
@@ -119,15 +120,15 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT 1: %s %s" %(orgValue,firewallValue);
             print "[TEST EXECUTION RESULT] : SUCCESS";
 
-	    # Set the SSID name,password,Radio enable status and firewall level"
+            # Set the SSID name,password,Radio enable status and firewall level"
             setValuesList = [tdkbE2EUtility.ssid_2ghz_name,tdkbE2EUtility.ssid_2ghz_pwd,'true'];
             print "Parameter values that are set: %s" %setValuesList
 
             list1 = [ssidName,tdkbE2EUtility.ssid_2ghz_name,'string']
             list2 = [keyPassPhrase,tdkbE2EUtility.ssid_2ghz_pwd,'string']
             list3 = [radioEnable,'true','bool']
-            
-            firewallParam = "%s|High|string" %firewallLevel
+
+            firewallParam = "%s|Low|string" %firewallLevel
 
             #Concatenate the lists with the elements separated by pipe
             setParamList = list1 + list2 + list3
@@ -141,22 +142,22 @@ if "SUCCESS" in loadmodulestatus.upper():
                 print "EXPECTED RESULT 2: Should set the ssid,keypassphrase,Radio enable status,firewall level";
                 print "ACTUAL RESULT 2: %s" %details;
                 print "[TEST EXECUTION RESULT] : SUCCESS";
-	
-		#Retrieve the values after set and compare
+
+                #Retrieve the values after set and compare
                 newParamList=[ssidName,keyPassPhrase,radioEnable]
                 tdkTestObj,status,newValues = getMultipleParameterValues(obj,newParamList)
-                
+
                 tdkTestObj1,retStatus,newFirewallValue = getParameterValue(obj,firewallLevel)
                 print "Firewall Level: %s" %newFirewallValue;
 
-                if expectedresult in status and expectedresult in retStatus and setValuesList == newValues and newFirewallValue == "High":
+                if expectedresult in status and expectedresult in retStatus and setValuesList == newValues and newFirewallValue == "Low":
                     tdkTestObj.setResultStatus("SUCCESS");
                     print "TEST STEP 3: Get the current ssid,keypassphrase,Radio enable status,firewall level"
                     print "EXPECTED RESULT 3: Should retrieve the current ssid,keypassphrase,Radio enable status,firewall level"
                     print "ACTUAL RESULT 3: %s %s" %(newValues,newFirewallValue);
                     print "[TEST EXECUTION RESULT] : SUCCESS";
 
-		    #Wait for the changes to reflect in client device
+                    #Wait for the changes to reflect in client device
                     time.sleep(60);
 
                     print "TEST STEP 4: Get the current LAN IP address DHCP range"
@@ -190,7 +191,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                                     wlanIP = getWlanIPAddress(tdkbE2EUtility.wlan_2ghz_interface);
                                     if wlanIP:
                                         tdkTestObj.setResultStatus("SUCCESS");
-                                        print "getWlanIPAddress: SUCCESS"                                          
+                                        print "getWlanIPAddress: SUCCESS"
 
                                         print "TEST STEP 9: Check whether wlan ip address is in same DHCP range"
                                         status = "SUCCESS"
@@ -199,11 +200,11 @@ if "SUCCESS" in loadmodulestatus.upper():
                                             tdkTestObj.setResultStatus("SUCCESS");
                                             print "checkIpRange: SUCCESS"
 
-                                            print "TEST STEP 10:Check the Telnet from WLAN to LAN"
-                                            status = telnetToClient("LAN",lanIP,"WLAN");
+                                            print "TEST STEP 10:Check the HTTPS from WLAN to LAN"
+                                            status = verifyNetworkConnectivity(lanIP, "WGET_HTTPS", wlanIP, curIPAddress)
                                             if expectedresult in status:
-                                                tdkTestObj.setResultStatus("SUCCESS"); 
-                                                print "Telnet from WLAN to LAN: SUCCESS"
+                                                tdkTestObj.setResultStatus("SUCCESS");
+                                                print "HTTPS from WLAN to LAN: SUCCESS"
 
                                                 print "TEST STEP 11: From wlan client, Disconnect from the wifi ssid"
                                                 status = wlanDisconnectWifiSsid(tdkbE2EUtility.wlan_2ghz_interface);
@@ -216,7 +217,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                                                     print "TEST STEP 11:Disconnect from WIFI SSID: FAILED"
                                             else:
                                                 tdkTestObj.setResultStatus("FAILURE");
-                                                print "TEST STEP 10:Telnet from WLAN to LAN failed"
+                                                print "TEST STEP 10:HTTPS from WLAN to LAN failed"
                                         else:
                                             tdkTestObj.setResultStatus("FAILURE");
                                             print "TEST STEP 9:WLAN Client IP address is not in the same Gateway DHCP range"
