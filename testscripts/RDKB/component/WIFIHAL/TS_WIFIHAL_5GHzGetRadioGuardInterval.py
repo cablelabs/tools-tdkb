@@ -90,7 +90,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     radioIndex = 1
     getMethod = "getRadioGuardInterval"
     primitive = 'WIFIHAL_GetOrSetParamStringValue'
-    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
 
     if expectedresult in actualresult :
         interval = details.split(":")[1].strip()

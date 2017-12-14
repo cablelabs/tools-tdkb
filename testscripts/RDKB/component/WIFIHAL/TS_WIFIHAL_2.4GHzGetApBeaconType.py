@@ -98,7 +98,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     primitive = 'WIFIHAL_GetOrSetParamStringValue'
 
     #Calling the method from wifiUtility to execute test case and set result status for the test.
-    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, 0, getMethod)
+    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, "0", getMethod)
     beaconTypes = ['None', 'Basic', 'WPA', '11i', 'WPAand11i']
 
     if expectedresult in actualresult:

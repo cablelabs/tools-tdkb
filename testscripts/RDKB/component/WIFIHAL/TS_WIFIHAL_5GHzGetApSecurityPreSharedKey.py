@@ -19,23 +19,21 @@
 '''
 <?xml version="1.0" encoding="UTF-8"?><xml>
   <id/>
-  <version>3</version>
+  <version>4</version>
   <name>TS_WIFIHAL_5GHzGetApSecurityPreSharedKey</name>
   <primitive_test_id/>
   <primitive_test_name>WIFIHAL_GetOrSetParamStringValue</primitive_test_name>
-  <primitive_test_version>1</primitive_test_version>
+  <primitive_test_version>8</primitive_test_version>
   <status>FREE</status>
   <synopsis>To get the Access point Security preShared key values for 5GHz radio using wifi_getApSecurityPreSharedKey HAL API and validate the same</synopsis>
-  <groups_id>4</groups_id>
+  <groups_id/>
   <execution_time>1</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>
   <skip>false</skip>
   <box_types>
-    <box_type>Broadband</box_type>
     <box_type>Emulator</box_type>
-    <box_type>RPI</box_type>
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
@@ -44,7 +42,7 @@
     <test_case_id>TC_WIFIHAL_74</test_case_id>
     <test_objective>To get the Access point Security preShared key values for 5GHz radio using wifi_getApSecurityPreSharedKey HAL API and validate the same</test_objective>
     <test_type>Positive</test_type>
-    <test_setup>XB3. XB6, Emulator, Rpi</test_setup>
+    <test_setup>Emulator, Rpi</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>wifi_getApSecurityPreSharedKey()</api_or_interface_used>
@@ -98,7 +96,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     primitive = 'WIFIHAL_GetOrSetParamStringValue'
 
     #Calling the method from wifiUtility to execute test case and set result status for the test.
-    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, 0, getMethod)
+    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, "0", getMethod)
 
     if expectedresult in actualresult:
         preSharedKey = details.split(":")[1].strip()

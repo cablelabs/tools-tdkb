@@ -92,13 +92,13 @@ if "SUCCESS" in loadmodulestatus.upper():
     getMethod = "getSupportedDataTransmitRates"
     #getMethod = "getRadioSupportedFrequencyBands"
     primitive = "WIFIHAL_GetOrSetParamStringValue"
-    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
 
     if expectedresult in actualresult :
         supportedRates = details.split(":")[1].strip().split(",")
 
         getMethod = "getOperationalDataTransmitRates"
-        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
         if expectedresult in actualresult :
             operationalRates = details.split(":")[1].strip().split(",")
 

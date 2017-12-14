@@ -99,7 +99,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     primitive = 'WIFIHAL_GetOrSetParamStringValue'
 
     #Calling the method from wifiUtility to execute test case and set result status for the test.
-    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, 0, getMethod)
+    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, "0", getMethod)
 
     #Default supported modes
     defaultSupportedModes = ['None', 'WPA-Personal', 'WPA2-Personal', 'WPA-WPA2-Personal', 'WPA-Enterprise', 'WPA2-Enterprise', 'WPA-WPA2-Enterprise']

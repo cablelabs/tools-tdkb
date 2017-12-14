@@ -34,7 +34,6 @@
   <skip>false</skip>
   <box_types>
     <box_type>Broadband</box_type>
-    <box_type>Emulator</box_type>
     <box_type>RPI</box_type>
   </box_types>
   <rdk_versions>
@@ -44,7 +43,7 @@
     <test_case_id>TC_WIFIHAL_79</test_case_id>
     <test_objective>To get the Data Transmit Rates for 5GHz radio using wifi_getRadioBasicDataTransmitRates HAL API and validate the same</test_objective>
     <test_type>Positive</test_type>
-    <test_setup>XB3. XB6, Emulator, Rpi</test_setup>
+    <test_setup>XB3. XB6, Rpi</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>wifi_getRadioBasicDataTransmitRates()</api_or_interface_used>
@@ -98,11 +97,11 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     getMethod = "getSupportedDataTransmitRates"
     #Calling the method from wifiUtility to execute test case and set result status for the test.
-    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
 
     getMethod = "getRadioBasicDataTransmitRates"
     #Calling the method from wifiUtility to execute test case and set result status for the test.
-    tdkTestObj1, actualresult1, details1 = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+    tdkTestObj1, actualresult1, details1 = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
 
     if expectedresult in actualresult:
         supportedTransmitRate = list(details.split(":")[1].strip().split(","))

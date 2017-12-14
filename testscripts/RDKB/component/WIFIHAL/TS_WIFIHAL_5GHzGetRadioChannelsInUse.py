@@ -92,13 +92,13 @@ if "SUCCESS" in loadmodulestatus.upper():
     radioIndex = 1
     getMethod = "getRadioPossibleChannels"
     primitive = 'WIFIHAL_GetOrSetParamStringValue'
-    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
 
     if expectedresult in actualresult :
 	possibleCh = details.split(":")[1].strip()
 
 	getMethod = "getRadioChannelsInUse"
-	tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+	tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
 	if expectedresult in actualresult :
 	    chInUse = details.split(":")[1].strip();
 
