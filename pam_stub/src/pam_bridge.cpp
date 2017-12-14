@@ -51,13 +51,6 @@ int ssp_CosaDmlDnsGet(char*, void*);
 int ssp_CosaDmlDnsEnable(char*, int);
 };
 
-/*This is a constructor function for pam class*/
-#if 0
-pam::pam()
-{
-    DEBUG_PRINT(DEBUG_LOG,"pam Instance Created\n");
-}
-#endif
 /***************************************************************************
  *Function name	: initialize
  *Description	: Initialize Function will be used for registering the wrapper method
@@ -68,27 +61,6 @@ pam::pam()
 bool pam::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::pam Initialize\n");
-    /*Register stub function for callback*/
-#if 0
-    ptrAgentObj->RegisterMethod(*this,&pam::pam_bridge_GetParamUlongValue,"pam_bridge_GetParamUlongValue");
-    ptrAgentObj->RegisterMethod(*this,&pam::pam_GetParameterNames,"pam_GetParameterNames");
-    ptrAgentObj->RegisterMethod(*this,&pam::pam_SetParameterValues,"pam_SetParameterValues");
-    ptrAgentObj->RegisterMethod(*this,&pam::pam_GetParameterValues,"pam_GetParameterValues");
-    ptrAgentObj->RegisterMethod(*this,&pam::pam_MTAAgentRestart,"pam_MTAAgentRestart");
-    ptrAgentObj->RegisterMethod(*this,&pam::pam_CRRestart,"pam_CRRestart");
-    ptrAgentObj->RegisterMethod(*this,&pam::pam_Init,"pam_Init");
-    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DmlMlanGetParamValue, "COSAPAM_DmlMlanGetParamValue");
-    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DmlEthGetParamValue, "COSAPAM_DmlEthGetParamValue");
-    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DmlDiGetParamValue, "COSAPAM_DmlDiGetParamValue");
-    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_UpnpEnable,"COSAPAM_UpnpEnable");
-    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_UpnpGetState,"COSAPAM_UpnpGetState");
-    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DhcpGet,"COSAPAM_DhcpGet");
-    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DhcpsEnable,"COSAPAM_DhcpsEnable");
-    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DnsGet,"COSAPAM_DnsGet");
-    ptrAgentObj->RegisterMethod(*this,&pam::COSAPAM_DnsEnable,"COSAPAM_DnsEnable");
-
-
-#endif
     return TEST_SUCCESS;
 }
 
@@ -380,6 +352,53 @@ void pam::pam_SetParameterValues(IN const Json::Value& req, OUT Json::Value& res
     response["result"] = "FAILURE";
     response["details"] = "FAILURE : Parameter Value has not changed after a proper Set";
 //    return TEST_FAILURE;
+    return;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : pam_Setparams
+ * Description          : This function will invoke TDK Component SET Value wrapper
+ *                        function
+ *
+ * @param [in] req-        This holds Path name, Value to set and its type
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
+ *                         ssp_setParameterValue
+ ********************************************************************************************/
+
+void pam::pam_Setparams(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_Setparams --->Entry\n");
+
+    int returnValue = 0;
+    char ParamName[MAX_PARAM_SIZE];
+    char ParamValue[MAX_PARAM_SIZE];
+    char ParamType[MAX_PARAM_SIZE];
+
+    strcpy(ParamName,req["ParamName"].asCString());
+    strcpy(ParamValue,req["ParamValue"].asCString());
+    strcpy(ParamType,req["Type"].asCString());
+
+    DEBUG_PRINT(DEBUG_TRACE,"\npam_Setparams:: ParamName input is %s",ParamName);
+    DEBUG_PRINT(DEBUG_TRACE,"\npam_Setparams:: ParamValue input is %s",ParamValue);
+    DEBUG_PRINT(DEBUG_TRACE,"\npam_Setparams:: ParamType input is %s",ParamType);
+
+    returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0],1);
+
+    if(0 == returnValue)
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Set operation success";
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="pam_Setparams:: Set operation failed";
+        DEBUG_PRINT(DEBUG_TRACE,"\n pam_Set::Set Operation failed !!! \n");
+        return;
+    }
+
+    DEBUG_PRINT(DEBUG_TRACE,"\n pam_Setparams --->Exit\n");
     return;
 }
 
@@ -955,30 +974,6 @@ extern "C" pam* CreateObject(TcpSocketServer &ptrtcpServer)
 bool pam::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"pam shutting down\n");
-#if 0
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-
-    /*unRegister stub function for callback*/
-    ptrAgentObj->UnregisterMethod("pam_bridge_GetParamUlongValue");
-    ptrAgentObj->UnregisterMethod("pam_SetParameterValues");
-    ptrAgentObj->UnregisterMethod("pam_GetParameterValues");
-    ptrAgentObj->UnregisterMethod("pam_MTAAgentRestart");
-    ptrAgentObj->UnregisterMethod("pam_CRRestart");
-    ptrAgentObj->UnregisterMethod("pam_GetParameterNames");
-    ptrAgentObj->UnregisterMethod("pam_Init");
-    ptrAgentObj->UnregisterMethod("COSAPAM_DmlMlanGetParamValue");
-    ptrAgentObj->UnregisterMethod("COSAPAM_DmlEthGetParamValue");
-    ptrAgentObj->UnregisterMethod("COSAPAM_DmlDiGetParamValue");
-    ptrAgentObj->UnregisterMethod("COSAPAM_UpnpEnable");
-    ptrAgentObj->UnregisterMethod("COSAPAM_UpnpGetState");
-    ptrAgentObj->UnregisterMethod("COSAPAM_DhcpGet");
-    ptrAgentObj->UnregisterMethod("COSAPAM_DhcpsEnable");
-    ptrAgentObj->UnregisterMethod("COSAPAM_DnsGet");
-    ptrAgentObj->UnregisterMethod("COSAPAM_DnsEnable");
-#endif
     return TEST_SUCCESS;
 }
 

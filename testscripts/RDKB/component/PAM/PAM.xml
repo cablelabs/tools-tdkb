@@ -141,6 +141,14 @@
           <parameter name="Value" value="0"/>
         </parameters>
       </primitiveTest>
+      <primitiveTest name="pam_Setparams" id=" " version="1">
+        <function>pam_Setparams</function>
+        <parameters>
+          <parameter name="ParamName" value="0"/>
+          <parameter name="ParamValue" value="0"/>
+          <parameter name="Type" value="0"/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>

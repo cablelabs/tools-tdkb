@@ -53,7 +53,8 @@ class pam : public RDKTestStubInterface, public AbstractServer<pam>
                 {
                   this->bindAndAddMethod(Procedure("pam_bridge_GetParamUlongValue", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,"module", JSON_STRING,NULL), &pam::pam_bridge_GetParamUlongValue);
                   this->bindAndAddMethod(Procedure("pam_GetParameterNames", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,"ParamList", JSON_STRING,NULL), &pam::pam_GetParameterNames);
-                  this->bindAndAddMethod(Procedure("pam_SetParameterValues", PARAMS_BY_NAME,JSON_STRING,"ParamName", JSON_STRING,"ParamValue", JSON_STRING,NULL), &pam::pam_SetParameterValues);
+                  this->bindAndAddMethod(Procedure("pam_SetParameterValues", PARAMS_BY_NAME,JSON_STRING,"ParamName", JSON_STRING,"ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &pam::pam_SetParameterValues);
+		  this->bindAndAddMethod(Procedure("pam_Setparams", PARAMS_BY_NAME,JSON_STRING,"ParamName", JSON_STRING,"ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &pam::pam_Setparams);
                   this->bindAndAddMethod(Procedure("pam_GetParameterValues", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,NULL), &pam::pam_GetParameterValues);
                   this->bindAndAddMethod(Procedure("pam_MTAAgentRestart", PARAMS_BY_NAME, JSON_STRING,NULL), &pam::pam_MTAAgentRestart);
                   this->bindAndAddMethod(Procedure("pam_CRRestart", PARAMS_BY_NAME, JSON_STRING,NULL), &pam::pam_CRRestart);
@@ -81,6 +82,7 @@ class pam : public RDKTestStubInterface, public AbstractServer<pam>
 	void pam_bridge_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response);
         void pam_GetParameterNames(IN const Json::Value& req, OUT Json::Value& response);
 	void pam_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
+	void pam_Setparams(IN const Json::Value& req, OUT Json::Value& response);
 	void pam_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
 	void pam_MTAAgentRestart(IN const Json::Value& req, OUT Json::Value& response);
 	void pam_CRRestart(IN const Json::Value& req, OUT Json::Value& response);
