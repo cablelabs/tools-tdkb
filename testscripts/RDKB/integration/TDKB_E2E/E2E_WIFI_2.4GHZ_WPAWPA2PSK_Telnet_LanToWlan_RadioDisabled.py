@@ -21,12 +21,12 @@
 <xml>
   <id/>
   <version>2</version>
-  <name>E2E_WIFI_2.4GHz_WPAWPA2PSK_HTTPS_LanToWlan_RadioDisabled</name>
+  <name>E2E_WIFI_2.4GHZ_WPAWPA2PSK_Telnet_LanToWlan_RadioDisabled</name>
   <primitive_test_id/>
   <primitive_test_name>tdkb_e2e_Set</primitive_test_name>
   <primitive_test_version>2</primitive_test_version>
   <status>FREE</status>
-  <synopsis>Verify that https traffic between wireless and wired clients should be denied when Radio interface parameter for 2.4GHZ [Device.WiFi.Radio.1.Enable] is disabled.</synopsis>
+  <synopsis>Verify that telnet traffic between wireless and wired clients should be denied when Radio interface parameter for 2.4GHZ [Device.WiFi.Radio.1.Enable] is disabled.</synopsis>
   <groups_id/>
   <execution_time>15</execution_time>
   <long_duration>false</long_duration>
@@ -42,8 +42,8 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_TDKB_E2E_216</test_case_id>
-    <test_objective>Verify that https traffic between wireless and wired clients should be denied when Radio interface parameter for 2.4GHZ [Device.WiFi.Radio.1.Enable] is disabled.</test_objective>
+    <test_case_id>TC_TDKB_E2E_217</test_case_id>
+    <test_objective>Verify that telnet traffic between wireless and wired clients should be denied when Radio interface parameter for 2.4GHZ [Device.WiFi.Radio.1.Enable] is disabled.</test_objective>
     <test_type>Negative</test_type>
     <test_setup>Broadband,Emulator,RPI</test_setup>
     <pre_requisite>1.Ccsp Components in DUT should be in a running state that includes component under test Cable Modem
@@ -56,12 +56,12 @@ Device.WiFi.SSID.1.Enable</input_parameters>
 2. Using tdkb_e2e_Get, get and save security mode,Radio enable and ssid enable status of 2.4GHz
 3. Set security mode to WPAWPA2PSK,radio enable and ssid enable to true using tdkb_e2e_SetMultipleParams
 3. Try to connect to 2.4GHZ from WIFI client and Lan Client 
-4. Disable radio and send HTTPS request to wlan client from lan client
+4. Disable radio and send Telnet request to wlan client from lan client
 4. Revert the values</automation_approch>
-    <except_output>HTPPS request should fail since radio is disabled</except_output>
+    <except_output>Telnet request should fail since radio is disabled</except_output>
     <priority>High</priority>
     <test_stub_interface>tdkb_e2e</test_stub_interface>
-    <test_script>E2E_WIFI_2.4GHz_WPAWPA2PSK_HTTPS_LanToWlan_RadioDisabled</test_script>
+    <test_script>E2E_WIFI_2.4GHZ_WPAWPA2PSK_Telnet_LanToWlan_RadioDisabled</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>
@@ -83,7 +83,7 @@ obj = tdklib.TDKScriptingLibrary("tdkb_e2e","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'E2E_WIFI_2.4GHz_WPAWPA2PSK_HTTPS_LanToWlan_RadioDisabled');
+obj.configureTestCase(ip,port,'E2E_WIFI_2.4GHZ_WPAWPA2PSK_Telnet_LanToWlan_RadioDisabled');
 
 #Get the result of connection with test component
 loadmodulestatus =obj.getLoadModuleResult();
@@ -223,16 +223,16 @@ if "SUCCESS" in loadmodulestatus.upper():
                                                         #Wait for the changes to reflect in client device
                                                         time.sleep(60);
 
-                                                        #Send HTTPS request to WLAN client from LAN clinet
-                                                        print "TEST STEP 12: Connect to LAN Client and send HTTPS Request to WLAN Client"
-                                                        status = verifyNetworkConnectivity(wlanIP,"WGET_HTTPS",lanIP,curIPAddress,"LAN");
+                                                        #Send Telnet request to WLAN client from LAN clinet
+                                                        print "TEST STEP 12: Connect to LAN Client and send Telnet Request to WLAN Client"
+							status = telnetToClient("WLAN", wlanIP)
                                                         if "SUCCESS" not in status:
                                                             tdkTestObj.setResultStatus("SUCCESS");
-                                                            print "HTTPS traffic not successful between wired and wireless clients"
+                                                            print "Telnet not successful between wired and wireless clients"
                                                             finalStatus = "SUCCESS"
                                                         else:
                                                             tdkTestObj.setResultStatus("FAILURE");
-                                                            print "HTTPS traffic successful between wired and wireless clients"
+                                                            print "Telnet successful between wired and wireless clients"
                                                     else:
                                                         tdkTestObj.setResultStatus("FAILURE");
                                                         print "TEST STEP 11: Get the current radioEnable"

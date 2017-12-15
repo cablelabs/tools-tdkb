@@ -21,12 +21,12 @@
 <xml>
   <id/>
   <version>2</version>
-  <name>E2E_WIFI_5GHz_WPAWPA2PSK_HTTPS_LanToWlan_RadioDisabled</name>
+  <name>E2E_WIFI_2.4GHZ_WPAWPA2PSK_HTTPS_LanToWlan_RadioDisabled</name>
   <primitive_test_id/>
   <primitive_test_name>tdkb_e2e_Set</primitive_test_name>
   <primitive_test_version>2</primitive_test_version>
   <status>FREE</status>
-  <synopsis>Verify that https traffic between wireless and wired clients should be denied when Radio interface parameter for 5GHZ [Device.WiFi.Radio.2.Enable] is disabled.</synopsis>
+  <synopsis>Verify that https traffic between wireless and wired clients should be denied when Radio interface parameter for 2.4GHZ [Device.WiFi.Radio.1.Enable] is disabled.</synopsis>
   <groups_id/>
   <execution_time>15</execution_time>
   <long_duration>false</long_duration>
@@ -42,26 +42,26 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_TDKB_E2E_223</test_case_id>
-    <test_objective>Verify that https traffic between wireless and wired clients should be denied when Radio interface parameter for 5GHZ [Device.WiFi.Radio.2.Enable] is disabled.</test_objective>
+    <test_case_id>TC_TDKB_E2E_216</test_case_id>
+    <test_objective>Verify that https traffic between wireless and wired clients should be denied when Radio interface parameter for 2.4GHZ [Device.WiFi.Radio.1.Enable] is disabled.</test_objective>
     <test_type>Negative</test_type>
     <test_setup>Broadband,Emulator,RPI</test_setup>
     <pre_requisite>1.Ccsp Components in DUT should be in a running state that includes component under test Cable Modem
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>None</api_or_interface_used>
-    <input_parameters>Device.WiFi.AccessPoint.2.Security.ModeEnabled : None
-Device.WiFi.Radio.2.Enable
-Device.WiFi.SSID.2.Enable</input_parameters>
+    <input_parameters>Device.WiFi.AccessPoint.1.Security.ModeEnabled : None
+Device.WiFi.Radio.1.Enable
+Device.WiFi.SSID.1.Enable</input_parameters>
     <automation_approch>1. Load tdkb_e2e module
 2. Using tdkb_e2e_Get, get and save security mode,Radio enable and ssid enable status of 2.4GHz
 3. Set security mode to WPAWPA2PSK,radio enable and ssid enable to true using tdkb_e2e_SetMultipleParams
-3. Try to connect to 5GHZ from WIFI client and Lan Client 
+3. Try to connect to 2.4GHZ from WIFI client and Lan Client 
 4. Disable radio and send HTTPS request to wlan client from lan client
 4. Revert the values</automation_approch>
-    <except_output>HTTPS request should fail since radio is disabled</except_output>
+    <except_output>HTPPS request should fail since radio is disabled</except_output>
     <priority>High</priority>
     <test_stub_interface>tdkb_e2e</test_stub_interface>
-    <test_script>E2E_WIFI_5GHz_WPAWPA2PSK_HTTPS_LanToWlan_RadioDisabled</test_script>
+    <test_script>E2E_WIFI_2.4GHZ_WPAWPA2PSK_HTTPS_LanToWlan_RadioDisabled</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>
@@ -83,7 +83,7 @@ obj = tdklib.TDKScriptingLibrary("tdkb_e2e","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'E2E_WIFI_5GHz_WPAWPA2PSK_HTTPS_LanToWlan_RadioDisabled');
+obj.configureTestCase(ip,port,'E2E_WIFI_2.4GHZ_WPAWPA2PSK_HTTPS_LanToWlan_RadioDisabled');
 
 #Get the result of connection with test component
 loadmodulestatus =obj.getLoadModuleResult();
@@ -101,11 +101,11 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "Parsed the device configuration file successfully"
 
         #Assign the WIFI parameters names to a variable
-        ssidName = "Device.WiFi.SSID.%s.SSID" %tdkbE2EUtility.ssid_5ghz_index
-        keyPassPhrase = "Device.WiFi.AccessPoint.%s.Security.KeyPassphrase" %tdkbE2EUtility.ssid_5ghz_index
-        securityMode = "Device.WiFi.AccessPoint.%s.Security.ModeEnabled" %tdkbE2EUtility.ssid_5ghz_index
-        radioEnable = "Device.WiFi.Radio.%s.Enable" %tdkbE2EUtility.ssid_5ghz_index
-        ssidEnable = "Device.WiFi.SSID.%s.Enable" %tdkbE2EUtility.ssid_5ghz_index
+        ssidName = "Device.WiFi.SSID.%s.SSID" %tdkbE2EUtility.ssid_2ghz_index
+        keyPassPhrase = "Device.WiFi.AccessPoint.%s.Security.KeyPassphrase" %tdkbE2EUtility.ssid_2ghz_index
+        securityMode = "Device.WiFi.AccessPoint.%s.Security.ModeEnabled" %tdkbE2EUtility.ssid_2ghz_index
+        radioEnable = "Device.WiFi.Radio.%s.Enable" %tdkbE2EUtility.ssid_2ghz_index
+        ssidEnable = "Device.WiFi.SSID.%s.Enable" %tdkbE2EUtility.ssid_2ghz_index
 
         #Get the value of the wifi parameters that are currently set.
         paramList=[ssidName,keyPassPhrase,securityMode,radioEnable,ssidEnable]
@@ -118,12 +118,12 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT 1: %s" %orgValue;
             print "[TEST EXECUTION RESULT] : SUCCESS";
 
-            # Set securityMode,radioEnable and ssidEnable for 5ghz"
-            setValuesList = [tdkbE2EUtility.ssid_5ghz_name,tdkbE2EUtility.ssid_5ghz_pwd,'WPA-WPA2-Personal','true','true'];
+            # Set securityMode,radioEnable and ssidEnable for 2ghz"
+            setValuesList = [tdkbE2EUtility.ssid_2ghz_name,tdkbE2EUtility.ssid_2ghz_pwd,'WPA-WPA2-Personal','true','true'];
             print "WIFI parameter values that are set: %s" %setValuesList
 
-            list1 = [ssidName,tdkbE2EUtility.ssid_5ghz_name,'string']
-            list2 = [keyPassPhrase,tdkbE2EUtility.ssid_5ghz_pwd,'string']
+            list1 = [ssidName,tdkbE2EUtility.ssid_2ghz_name,'string']
+            list2 = [keyPassPhrase,tdkbE2EUtility.ssid_2ghz_pwd,'string']
             list3 = [securityMode,'WPA-WPA2-Personal','string']
             list4 = [radioEnable,'true','bool']
             list5 = [ssidEnable,'true','bool']
@@ -156,12 +156,12 @@ if "SUCCESS" in loadmodulestatus.upper():
 
                     #Connect to the wifi ssid from wlan client
                     print "TEST STEP 4: From wlan client, Connect to the wifi ssid"
-                    status = wlanConnectWifiSsid(tdkbE2EUtility.ssid_5ghz_name,tdkbE2EUtility.ssid_5ghz_pwd,tdkbE2EUtility.wlan_5ghz_interface);
+                    status = wlanConnectWifiSsid(tdkbE2EUtility.ssid_2ghz_name,tdkbE2EUtility.ssid_2ghz_pwd,tdkbE2EUtility.wlan_2ghz_interface);
                     if expectedresult in status:
                         tdkTestObj.setResultStatus("SUCCESS");
 
                         print "TEST STEP 5: Get the IP address of the wlan client after connecting to wifi"
-                        wlanIP = getWlanIPAddress(tdkbE2EUtility.wlan_5ghz_interface);
+                        wlanIP = getWlanIPAddress(tdkbE2EUtility.wlan_2ghz_interface);
                         if wlanIP:
                             tdkTestObj.setResultStatus("SUCCESS");
 
@@ -262,7 +262,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                             print "getWlanIPAddress:Failed to get the wlan ip address"
 
                         print "TEST STEP 13: From wlan client, Disconnect from the wifi ssid"
-                        status = wlanDisconnectWifiSsid(tdkbE2EUtility.wlan_5ghz_interface);
+                        status = wlanDisconnectWifiSsid(tdkbE2EUtility.wlan_2ghz_interface);
                         if expectedresult in status:
                             tdkTestObj.setResultStatus("SUCCESS");
                         else:

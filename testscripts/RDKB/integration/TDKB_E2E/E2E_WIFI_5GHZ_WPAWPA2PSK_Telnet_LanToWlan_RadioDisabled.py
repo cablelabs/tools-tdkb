@@ -21,7 +21,7 @@
 <xml>
   <id/>
   <version>2</version>
-  <name>E2E_WIFI_5GHz_WPAWPA2PSK_Telnet_LanToWlan_RadioDisabled</name>
+  <name>E2E_WIFI_5GHZ_WPAWPA2PSK_Telnet_LanToWlan_RadioDisabled</name>
   <primitive_test_id/>
   <primitive_test_name>tdkb_e2e_Set</primitive_test_name>
   <primitive_test_version>2</primitive_test_version>
@@ -61,7 +61,7 @@ Device.WiFi.SSID.2.Enable</input_parameters>
     <except_output>Telnet request should fail since radio is disabled</except_output>
     <priority>High</priority>
     <test_stub_interface>tdkb_e2e</test_stub_interface>
-    <test_script>E2E_WIFI_5GHz_WPAWPA2PSK_Telnet_LanToWlan_RadioDisabled</test_script>
+    <test_script>E2E_WIFI_5GHZ_WPAWPA2PSK_Telnet_LanToWlan_RadioDisabled</test_script>
     <skipped>No</skipped>
     <release_version/>
     <remarks/>
@@ -83,8 +83,7 @@ obj = tdklib.TDKScriptingLibrary("tdkb_e2e","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'E2E_WIFI_5GHz_WPAWPA2PSK_Telnet_LanToWlan_RadioDisabled');
-
+obj.configureTestCase(ip,port,'E2E_WIFI_5GHZ_WPAWPA2PSK_Telnet_LanToWlan_RadioDisabled');
 #Get the result of connection with test component
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
