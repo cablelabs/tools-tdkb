@@ -337,6 +337,8 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
         return_status = wifi_getSSIDMACAddress(radioIndex,output);
     else if(!strcmp(method, "getApWpsConfigurationState"))
         return_status = wifi_getApWpsConfigurationState(radioIndex,output);
+    else if(!strcmp(method, "getBaseBSSID"))
+        return_status = wifi_getBaseBSSID(radioIndex, output);
     else
     {
         return_status = SSP_FAILURE;
@@ -376,8 +378,6 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
         return_status = wifi_getApRadioIndex(radioIndex, output);
     else if(!strcmp(method, "setApRadioIndex"))
         return_status = wifi_setApRadioIndex(radioIndex, *output);
-    else if(!strcmp(method, "getBaseBSSID"))
-        return_status = wifi_getBaseBSSID(radioIndex, output);
     else if(!strcmp(method, "getSSIDRadioIndex"))
         return_status = wifi_getSSIDRadioIndex(radioIndex, output);
     else if(!strcmp(method, "getRadioDCSScanTime"))
