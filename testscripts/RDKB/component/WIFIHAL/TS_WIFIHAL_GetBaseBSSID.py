@@ -96,29 +96,29 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
     ssidIndex = 0
     getMethod = "getBaseBSSID"
-    primitive = 'WIFIHAL_GetOrSetParamIntValue'
+    primitive = 'WIFIHAL_GetOrSetParamStringValue'
 
     #Calling the method from wifiUtility to execute test case and set result status for the test.
-    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, ssidIndex, 0, getMethod)
+    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, ssidIndex, "0", getMethod)
 
     #Pattern to match
     pattern = "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})"
-    regexProg = re.compile(pattern)
-    result = regexProg.match(details.split(":")[1].strip())
+    BSSID = details.split("Value returned is :")[1].strip();
+    result = re.match(pattern,BSSID);
     if expectedresult in actualresult:
         if result:
             print "getBaseBSSID function successful, %s"%details
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 1: Get the Base BSSID value";
             print "EXPECTED RESULT 1: Function Should return a Base BSSID value";
-            print "ACTUAL RESULT 1: BaseBSSID received Successfully: %s"%details.split(":")[1].strip();
+            print "ACTUAL RESULT 1: BaseBSSID received Successfully: %s"%BSSID;
             print "[TEST EXECUTION RESULT] : SUCCESS";
         else:
             print "getBaseBSSID function failed, %s"%details
             tdkTestObj.setResultStatus("FAILURE");
             print "TEST STEP 1: Get the Base BSSID value";
             print "EXPECTED RESULT 1: Function Should return a Base BSSID value";
-            print "ACTUAL RESULT 1: Failed to Receive BaseBSSID Value: %s"%details.split(":")[1].strip();
+            print "ACTUAL RESULT 1: Failed to Receive BaseBSSID Value: %s"%BSSID;
             print "[TEST EXECUTION RESULT] : FAILURE";
 
     else:
