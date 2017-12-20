@@ -43,7 +43,6 @@
 /* External Variables */
 extern 	     std::fstream go_ConfigFile;
 extern 	     std::fstream go_PortforwardFile;
-//extern 	     Json::Rpc::TcpServer go_Server; sarves
 extern TcpSocketServer go_Server;
 extern RDKTestAgent o_Agent;
 bool   	     bBenchmarkEnabled;
@@ -148,10 +147,6 @@ static volatile bool b_stubServerFlag =false;
 void *Createstubserver (void *modulename)
 {
     DEBUG_PRINT (DEBUG_TRACE, "\nStarting Stub server.....\n");
-    //Json::Rpc::TcpServer o_Status (ANY_ADDR, RDK_DEVICE_STATUS_PORT);
-    //RpcMethods o_RpcMethods (NULL);
-    //TcpSocketServer go_Status("127.0.0.1", 18087);
-    //RpcMethods o_Status(go_Status);
     char libname[100] = {'\0'};
     int reservedPort = *(int*) (modulename);
     int assignedPort;
@@ -161,17 +156,6 @@ void *Createstubserver (void *modulename)
     std::map <int, std::string>::iterator o_gTcpPortMapIter;
 
 
-#if 0
-    if (!networking::init())
-    {
-        DEBUG_PRINT (DEBUG_ERROR, "Alert!!! Device Status Monitoring Network initialization failed \n");
-    }
-
-    if (!o_Status.Bind())
-    {
-        DEBUG_PRINT (DEBUG_ERROR, "Alert!!! Device Status Monitoring Bind failed \n");
-    }
-#endif
      for (o_gTcpPortMapIter = o_gTcpPortMap.begin(); o_gTcpPortMapIter != o_gTcpPortMap.end(); o_gTcpPortMapIter ++ )
       {
 
@@ -219,21 +203,6 @@ void *Createstubserver (void *modulename)
                 DEBUG_PRINT (DEBUG_LOG, "Found FREE PORT : %s \n", o_gTcpPortMapIter-> second.c_str());
             }
       }
-    /* Registering methods to status server */
-#if 0
-    o_Status.AddMethod (new Json::Rpc::RpcMethod<RpcMethods> (o_RpcMethods, &RpcMethods::RPCGetHostStatus, std::string("getHostStatus")));
-    o_Status.AddMethod (new Json::Rpc::RpcMethod<RpcMethods> (o_RpcMethods, &RpcMethods::RPCCallEnableTDK, std::string("callEnableTDK")));
-    o_Status.AddMethod (new Json::Rpc::RpcMethod<RpcMethods> (o_RpcMethods, &RpcMethods::RPCCallDisableTDK, std::string("callDisableTDK")));
-    o_Status.AddMethod (new Json::Rpc::RpcMethod<RpcMethods> (o_RpcMethods, &RpcMethods::RPCExecuteLoggerScript, std::string("executeLoggerScript")));
-    o_Status.AddMethod (new Json::Rpc::RpcMethod<RpcMethods> (o_RpcMethods, &RpcMethods::RPCRemoveLogs, std::string("executeRemoveLogsScript")));
-
-    /* To set route to client devices. For gateway boxes only */
-    #ifdef PORT_FORWARD
-    o_Status.AddMethod (new Json::Rpc::RpcMethod<RpcMethods> (o_RpcMethods, &RpcMethods::RPCSetClientRoute, std::string("setClientRoute")));
-    o_Status.AddMethod (new Json::Rpc::RpcMethod<RpcMethods> (o_RpcMethods, &RpcMethods::RPCGetConnectedDevices, std::string("getConnectedDevices")));
-    #endif /* End of PORT_FORWARD  */
-
-#endif
     bool statusFlag = true ;
     while (statusFlag)
     {
@@ -242,15 +211,11 @@ void *Createstubserver (void *modulename)
 	     statusFlag = false;
 	     break;
          }
-        /* Status server waiting indefinitely */
-        //do nothing
-        //o_Status.WaitMessage(1000);
+          sleep(1);
     }
 
     /* clean up and exit */
     DEBUG_PRINT (DEBUG_TRACE, "\nExiting Stub Server ...\n");
-    //o_Status.Close();
-    //networking::cleanup();
     pthread_exit (NULL);
 } /* End of CheckStatus */
 
@@ -470,7 +435,6 @@ std::string RpcMethods::LoadLibrary (char* pszLibName)
 
     m_iLoadStatus = FLAG_SET;
     pszError = new char [ERROR_SIZE];
-    //RDKTestStubInterface* (*pfnCreateObject)(void);
     RDKTestStubInterface* (*pfnCreateObject)(TcpSocketServer &ptrRpcServer);
     RDKTestStubInterface* pRDKTestStubInterface;
     std::map <int, std::string>::iterator o_gTcpPortMapIter;
@@ -505,7 +469,6 @@ std::string RpcMethods::LoadLibrary (char* pszLibName)
         }	
 		
         /* Multi-server */
-        //TcpSocketServer o_stubserver("127.0.0.1", 18087);  //creating local server  	
         for (o_gTcpPortMapIter = o_gTcpPortMap.begin(); o_gTcpPortMapIter != o_gTcpPortMap.end(); o_gTcpPortMapIter ++ )
       {
 
@@ -550,16 +513,6 @@ std::string RpcMethods::LoadLibrary (char* pszLibName)
 		}
             }
       }
-#if 0
-        if (o_stubserver.StartListening()) {
-           cout << "Server started successfully" << endl;
-        }
-#endif        
-         /* Starting new thread for Device Status Monitoring */
-      
- 
-
-        //pRDKTestStubInterface = pfnCreateObject(go_Server);
 		
         /* Executing "testmodulepre_requisites" function of loaded module to enable pre-requisites */
         strPreRequisiteDetails = pRDKTestStubInterface -> testmodulepre_requisites ();
@@ -601,8 +554,7 @@ std::string RpcMethods::LoadLibrary (char* pszLibName)
         o_gModuleMap.insert (std::make_pair (nModuleId, o_ModuleDetails));
 	
         /* Executing "initialize" function of loaded module */
-        //bRet = pRDKTestStubInterface -> initialize ("0.0.1", &go_Server); //sarves
-        bRet = pRDKTestStubInterface -> initialize ("0.0.1"); //sarves
+        bRet = pRDKTestStubInterface -> initialize ("0.0.1"); 
         if (bRet == false)
         {
             strLoadLibraryDetails = "component initialize failed";
@@ -634,12 +586,7 @@ std::string RpcMethods::LoadLibrary (char* pszLibName)
         o_ModuleListFile.close();    
 		
     }while(0);
-    //o_stubserver.StopListening();
-    //if (o_stubserver.StartListening()) {
-      //cout << "Server started successfully" << endl;
-    //}
 
-    //b_stubServerFlag=true;
     DEBUG_PRINT (DEBUG_LOG, "Lib Name used is %s  port %d \n",pszLibName,*reservedPort);
     nReturnValue = pthread_create (&StubServerThreadId, NULL, Createstubserver,(void*)reservedPort);
 
@@ -768,10 +715,6 @@ std::string RpcMethods::UnloadLibrary (char* pszLibName)
             }
 
       }	
-    //go_Server.StopListening();
-    //if (go_Server.StartListening()) {
-   //   cout << "Server started successfully" << endl;
-   // }
 
     return strUnloadLibraryDetails;	
 
@@ -1009,7 +952,6 @@ void RpcMethods::RPCLoadModule (const Json::Value& request, Json::Value& respons
     fprintf(stdout,"\nStarting Execution..\n");
 	
     DEBUG_PRINT (DEBUG_LOG, "\nRPC Load Module --> Entry \n");
-    //DEBUG_PRINT (DEBUG_LOG, "Received query: %s \n", request.asCString().c_str());
     cout << "Received query: \n" << request << endl;
     
     /* Extract module name from json request, construct library name and load that library using LoadLibrary() */
@@ -1110,7 +1052,6 @@ void RpcMethods::RPCUnloadModule (const Json::Value& request, Json::Value& respo
     response["id"]	= request["id"];
  
     DEBUG_PRINT (DEBUG_LOG, "\nRPC Unload Module --> Entry\n");
-    //DEBUG_PRINT (DEBUG_LOG, "Received query: %s \n", request.asCString());
     cout << "Received query: \n" << request << endl;
 	
     /* Extracting module name and constructing corresponding library name */
@@ -1481,7 +1422,6 @@ void RpcMethods::RPCRebootBox(const Json::Value& request, Json::Value& response)
                              getIP()
 
 *********************************************************************************************************************/
-//sarves
 void RpcMethods::RPCGetHostStatus (const Json::Value& request, Json::Value& response)
 {
     bool bRet = true;
@@ -1489,7 +1429,6 @@ void RpcMethods::RPCGetHostStatus (const Json::Value& request, Json::Value& resp
     std::string strFilePath;
 
     DEBUG_PRINT (DEBUG_TRACE, "\nRPCGetHostStatus --> Entry\n");
-    //DEBUG_PRINT (DEBUG_TRACE, "Received query: %s \n", request.asCString());
     cout << "Received query: \n" << request << endl;
 
     /* Constructing JSON response */
@@ -1516,7 +1455,6 @@ void RpcMethods::RPCGetHostStatus (const Json::Value& request, Json::Value& resp
           (strcmp ( (request["managerIP"].asCString()), "NULL") != 0) )
     {	
         /* Fetching the connected box IP address */
-        //RpcMethods::sm_strBoxIP = go_Server.getIP();
           RpcMethods::sm_strBoxIP ="127.0.0.1";
 
         /* Getting corresponding network interface */
@@ -1579,7 +1517,6 @@ void RpcMethods::RPCGetHostStatus (const Json::Value& request, Json::Value& resp
 	
 } /* End of RPCGetHostStatus */
 
-//sarves
 void RpcMethods::RPCGetStatus (const Json::Value& request, Json::Value& response)
 {
    DEBUG_PRINT (DEBUG_ERROR, "\n Valid!!! \n");
@@ -1719,7 +1656,6 @@ void RpcMethods::RPCResetAgent (const Json::Value& request, Json::Value& respons
 
     fprintf(stdout,"\nResetting Agent..\n");
     DEBUG_PRINT (DEBUG_TRACE, "\nRPCResetAgent --> Entry\n");
-    //DEBUG_PRINT (DEBUG_TRACE, "Received query: %s \n", request.asCString());
     cout << "Received query: \n" << request << endl;
 
     /* Extracting path to file */
@@ -1811,14 +1747,10 @@ void RpcMethods::RPCResetAgent (const Json::Value& request, Json::Value& respons
     {
         DEBUG_PRINT (DEBUG_LOG, "\n\nAgent Restarting...\n");
 
-        /* Find group id for agent process */
-        //nPgid = getpgid(RpcMethods::sm_nAgentPID); sarves
-
         /* Ignore SIGINT signal in agent monitor process */
 	sighandler_t sigIgnoreHandle = signal (SIGINT, SIG_IGN);
 
 	/* Send SIGINT signal to all process in the group */
-        //nReturnValue = kill ( (-1 * nPgid), SIGINT);  sarves
         nReturnValue=RETURN_SUCCESS;
         if (nReturnValue == RETURN_SUCCESS)
         {
@@ -1906,8 +1838,6 @@ void RpcMethods::RPCGetRDKVersion (const Json::Value& request, Json::Value& resp
     bool bRet = true;
 
     DEBUG_PRINT (DEBUG_TRACE, "\nRPCGetRDKVersion --> Entry\n");
-    //DEBUG_PRINT (DEBUG_TRACE, "Received query: %s \n", request.asCString());
-    //cout << "Received query: \n" << request << endl;
 
     response["jsonrpc"] = "2.0";
     response["id"] = request["id"];
@@ -2397,11 +2327,6 @@ void RpcMethods::RPCExecuteTestCase(const Json::Value& request, Json::Value& res
     response["jsonrpc"] = "2.0";
     response["id"] = request["id"];
     std::map <int, std::string>::iterator o_gTcpPortMapIter;
-    //response["result"] = "Success";
-
-    //Multi server
-    //host="127.0.0.1";
-    //port=18087;
 
     const char* libname = request["module"].asCString();
     #ifdef YOCTO_LIB_LOADING
@@ -2433,7 +2358,6 @@ void RpcMethods::RPCExecuteTestCase(const Json::Value& request, Json::Value& res
      
     Json::Value params;
     Json::Value method;
-   // params[""] =""; 
     params=request["params"];
     method=request["method"];
   
@@ -2468,10 +2392,6 @@ void RpcMethods::RPCGetConnectedDevices (const Json::Value& request, Json::Value
     std::string strDeviceList = "DEVICES=";
     std::string strDelimiter = ",";
     char szCommand[COMMAND_SIZE];
-
-    //DEBUG_PRINT (DEBUG_TRACE, "\nRPCGetConnectedDevices --> Entry\n");
-    //DEBUG_PRINT (DEBUG_TRACE, "Received query: %s \n", request.asCString());
-    //cout << "Received query: \n" << request << endl;
 
     /* Extracting file path */
     strFilePath = RpcMethods::sm_strTDKPath;
@@ -2544,7 +2464,6 @@ void RpcMethods::RPCSetClientRoute (const Json::Value& request, Json::Value& res
     int nClientExistFlag = FLAG_NOT_SET;
 
     DEBUG_PRINT (DEBUG_TRACE, "\nRPCSetClientRoute --> Entry\n");
-    //DEBUG_PRINT (DEBUG_TRACE, "Received query: %s \n", request.asCString());
     cout << "Received query: \n" << request << endl;
 
     /* Constructing JSON response */
@@ -2655,7 +2574,6 @@ void RpcMethods::RPCGetClientMocaIpAddress (const Json::Value& request, Json::Va
     char szCommand[COMMAND_SIZE];
 
     DEBUG_PRINT (DEBUG_TRACE, "\nRPCGetClientMocaIpAddress --> Entry\n");
-    //DEBUG_PRINT (DEBUG_TRACE, "Received query: %s \n", request.asCString());
     cout << "Received query: \n" << request << endl;
 
     /* Constructing JSON response */
