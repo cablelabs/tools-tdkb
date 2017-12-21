@@ -2,7 +2,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2016 RDK Management
+# Copyright 2017 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>3</version>
+  <version>6</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_LMLite_CheckHostNumberOfEntries_InBridgeMode</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -198,7 +198,10 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                     print "[TEST EXECUTION RESULT] : FAILURE";
                     obj.unloadModule("lmlite");
                     exit();
-	    sleep(10);
+
+            #Wait for few seconds for the Lan mode to get reflected
+	    sleep(30);
+	    
             tdkTestObj = obj.createTestStep('LMLiteStub_Get');
             tdkTestObj.addParameter("paramName","Device.Hosts.HostNumberOfEntries");
             #Execute the test case in DUT
@@ -251,6 +254,8 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                 Mode = "bridge mode";
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : SUCCESS";
+                #Wait for few seconds for the Lan mode to get reflected
+                sleep(70);
             else:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("FAILURE");

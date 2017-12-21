@@ -2,7 +2,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2016 RDK Management
+# Copyright 2017 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>4</version>
+  <version>7</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_LMLite_CheckLANClientPhysAddress</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -52,7 +52,6 @@
     <!--  -->
     <box_type>Emulator</box_type>
     <!--  -->
-    
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
@@ -181,6 +180,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                 print "EXPECTED RESULT 2: Should get the client ip using arp command";
                 #get the IP addresses of active clients as list from obtained string. len(IP) will be the number of active clients
                 IP = [p.split(' [ether]')[0] for p in IP_details.split('at ') if ' [ether]' in p]
+                IP = [index.upper() for index in IP]
                 print "ACTUAL RESULT 2:", IP;
 
                 tdkTestObj = obj.createTestStep('LMLiteStub_Get');
@@ -227,6 +227,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                             tdkTestObj.executeTestCase(expectedresult);
                             actualresult = tdkTestObj.getResult();
                             IP1 = tdkTestObj.getResultDetails();
+                            IP1 = IP1.upper();
                             print "Physical Address in Device.Hosts.: %s" %IP1;
 			    print "Physical Address using ARP command: %s" %IP;
                             if IP1 in IP:

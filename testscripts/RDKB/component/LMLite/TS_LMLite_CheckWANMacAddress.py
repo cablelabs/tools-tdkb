@@ -2,7 +2,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2016 RDK Management
+# Copyright 2017 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,32 +17,49 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>2</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>6</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_LMLite_CheckWANMacAddress</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>LMLiteStub_Get</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>To check whether the WAN Mac address is same as the value of Device.Hosts.Host.1.X_RDKCENTRAL-COM_Parent</synopsis>
-  <groups_id/>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>10</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
   <advanced_script>false</advanced_script>
-  <remarks/>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
+    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_LMLite_13</test_case_id>
     <test_objective>To check whether the WAN Mac address is same as the value of Device.Hosts.Host.1.X_RDKCENTRAL-COM_Parent</test_objective>
     <test_type>Positive</test_type>
-    <test_setup>XB3,Emulator,RPI</test_setup>
+    <test_setup>Broadband</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components.
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>LMLiteStub_Get,LMLiteStub_Set, ExecuteCmd</api_or_interface_used>
@@ -68,15 +85,15 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
     <test_stub_interface>None</test_stub_interface>
     <test_script>TS_LMLite_CheckWANMacAddress</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version></release_version>
+    <remarks></remarks>
   </test_cases>
-  <script_tags/>
+  <script_tags />
 </xml>
-
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+import tdklib;
+import snmplib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("lmlite","1");
@@ -90,6 +107,7 @@ port = <port>
 obj.configureTestCase(ip,port,'TS_LMLite_CheckWANMacAddress');
 wifiobj.configureTestCase(ip,port,'TS_LMLite_CheckWANMacAddress');
 sysObj.configureTestCase(ip,port,'TS_LMLite_CheckWANMacAddress');
+
 #Get the result of connection with test component and DUT
 loadmodulestatus=obj.getLoadModuleResult();
 wifiloadmodulestatus=wifiobj.getLoadModuleResult();
@@ -122,9 +140,9 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
     if expectedresult in (actualresult1 and actualresult2):
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP : Disable WiFi before testing LMLite features";
-        print "EXPECTED RESULT : Should disable WiFi";
-        print "ACTUAL RESULT :%s" %Details;
+        print "TEST STEP 1: Disable WiFi before testing LMLite features";
+        print "EXPECTED RESULT 1: Should disable WiFi";
+        print "ACTUAL RESULT 1:%s" %Details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
 
@@ -141,28 +159,22 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
         if expectedresult in actualresult and int(NoOfClients)>0:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 1: Get the number of active clients connected";
-            print "EXPECTED RESULT 1: Should get the number of active clients connected as greater than zero";
-            print "ACTUAL RESULT 1: Number of active clients connected :%s" %NoOfClients;
+            print "TEST STEP 2: Get the number of active clients connected";
+            print "EXPECTED RESULT 2: Should get the number of active clients connected as greater than zero";
+            print "ACTUAL RESULT 2: Number of active clients connected :%s" %NoOfClients;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
 
-            #Get the client ip from the box
-            tdkTestObj = sysObj.createTestStep('ExecuteCmd');
-            tdkTestObj.addParameter("command","ifconfig |grep \"wan0\"|tr -d \"\n\"" );
-            #Execute the test case in DUT
-            tdkTestObj.executeTestCase(expectedresult);
-            actualresult = tdkTestObj.getResult();
-            IP_details = tdkTestObj.getResultDetails();
-            if expectedresult in actualresult and IP_details:
-                #Set the result status of execution
-                tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP 2: Get the wan ip from box"
-                print "EXPECTED RESULT 2: Should get the wan ip";
-	        IP_details=IP_details.strip();
-	        print IP_details;
-                IP =IP_details.split(" ")[-1];
-                print "ACTUAL RESULT 2:", IP;
+            #Get the wan MAC Address from DUT
+            macaddress = " ";
+            macaddress = snmplib.getMACAddress(sysObj);
+            if macaddress != " " :
+                macaddress = macaddress.strip().upper();
+                print "TEST STEP 3:Get WAN mac from DUT";
+                print "EXPECTED RESULT 3: Should get WAN mac from DUT";
+                print "ACTUAL RESULT 3: WAN mac is %s" %macaddress;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : SUCCESS" ;
 
                 tdkTestObj = obj.createTestStep('LMLiteStub_Get');
                 tdkTestObj.addParameter("paramName","Device.Hosts.HostNumberOfEntries");
@@ -176,9 +188,9 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                 if expectedresult in actualresult and int(NoOfHosts)>0:
                     #Set the result status of execution
                     tdkTestObj.setResultStatus("SUCCESS");
-                    print "TEST STEP 3: Get the number of hosts";
-                    print "EXPECTED RESULT 3: Should get the number of hosts";
-                    print "ACTUAL RESULT 3: Number of hosts :%s" %NoOfHosts;
+                    print "TEST STEP 4: Get the number of hosts";
+                    print "EXPECTED RESULT 4: Should get the number of hosts";
+                    print "ACTUAL RESULT 4: Number of hosts :%s" %NoOfHosts;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS";
                     #Find the active hosts amoung the listed Hosts. List will contains the ids of active hosts
@@ -194,12 +206,12 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                     if expectedresult in actualresult:
                         #Set the result status of execution
                         tdkTestObj.setResultStatus("SUCCESS");
-                        print "TEST STEP 4: Get the active clients";
-                        print "EXPECTED RESULT 4: Should get the active clients";
-                        print "ACTUAL RESULT 4: Active clients are :",List;
+                        print "TEST STEP 5: Get the active clients";
+                        print "EXPECTED RESULT 5: Should get the active clients";
+                        print "ACTUAL RESULT 5: Active clients are :",List;
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : SUCCESS";
-                        #compare the IPs obtained
+                        #compare the MACs obtained
                         ret =0;
                         for i in range(0,len(List)):
                             n = int(List[i]);
@@ -207,28 +219,29 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                             #Execute the test case in DUT
                             tdkTestObj.executeTestCase(expectedresult);
                             actualresult = tdkTestObj.getResult();
-                            IP1 = tdkTestObj.getResultDetails();
-                            print "WAN Address in Device.Hosts.: %s" %IP1;
-			    print "WAN Address using ARP command: %s" %IP;
-                            if IP1 in IP:
-                                print "Wan IP of host instance ",n," matches";
+                            wanMac = tdkTestObj.getResultDetails();
+                            wanMac = wanMac.upper();
+                            print "WAN Address in Device.Hosts.: %s" %wanMac;
+			    print "WAN Address retrieved via Cable Modem: %s" %macaddress;
+                            if wanMac == macaddress:
+                                print "Wan MAC of host instance ",n," matches";
                             else:
-                                print "Wan IP of host instance ",n," doesnt match";
+                                print "Wan MAC of host instance ",n," doesnt match";
                                 ret = 1
                         if expectedresult in actualresult and ret ==0:
                             #Set the result status of execution
                             tdkTestObj.setResultStatus("SUCCESS");
-                            print "TEST STEP 5: Compare the WAN IPs obtained";
-                            print "EXPECTED RESULT 5: Both IPs should match";
-                            print "ACTUAL RESULT 5: The WAN IPs matched successfully";
+                            print "TEST STEP 5: Compare the WAN MACs obtained";
+                            print "EXPECTED RESULT 5: Both MACs should match";
+                            print "ACTUAL RESULT 5: The WAN MACs matched successfully";
                             #Get the result of execution
                             print "[TEST EXECUTION RESULT] : SUCCESS";
                         else:
                             #Set the result status of execution
                             tdkTestObj.setResultStatus("FAILURE");
-                            print "TEST STEP 5: Compare the WAN IPs obtained";
-                            print "EXPECTED RESULT 5: Both IPs should match";
-                            print "ACTUAL RESULT 5: The WAN IPs are not matching";
+                            print "TEST STEP 5: Compare the WAN MACs obtained";
+                            print "EXPECTED RESULT 5: Both MACs should match";
+                            print "ACTUAL RESULT 5: The WAN MACs are not matching";
                             #Get the result of execution
                             print "[TEST EXECUTION RESULT] : FAILURE";
                     else:
@@ -248,17 +261,18 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : FAILURE";
             else:
-                #Set the result status of execution
-                tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP 2: Get the wan ip from box"
-                print "EXPECTED RESULT 2: Should get the wan ip";
-                print "ACTUAL RESULT 2:Failed to get the wan ip";
+                tdkTestObj.setResultStatus("FAILURE");
+                details = tdkTestObj.getResultDetails();
+                print "TEST STEP 3:Should get the WAN MAC address";
+                print "EXPECTED RESULT 3: Should get the WAN MAC address";
+                print "ACTUAL RESULT 3: %s" %macaddress;
+                print "[TEST EXECUTION RESULT] : FAILURE";
         else:
             #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 1: Get the number of active clients connected";
-            print "EXPECTED RESULT 1: Should get the number of active clients connected as greater than zero";
-            print "ACTUAL RESULT 1: Number of active clients connected :%s" %NoOfClients;
+            print "TEST STEP 2: Get the number of active clients connected";
+            print "EXPECTED RESULT 2: Should get the number of active clients connected as greater than zero";
+            print "ACTUAL RESULT 2: Number of active clients connected :%s" %NoOfClients;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
    
@@ -301,15 +315,14 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
     else:
         #Set the result status of execution
         tdkTestObj.setResultStatus("FAILURE");
-        print "TEST STEP : Disable WiFi before testing LMLite features";
-        print "EXPECTED RESULT : Should disable WiFi";
-        print "ACTUAL RESULT :%s" %Details;
+        print "TEST STEP 1: Disable WiFi before testing LMLite features";
+        print "EXPECTED RESULT 1: Should disable WiFi";
+        print "ACTUAL RESULT 1:%s" %Details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("lmlite");
     wifiobj.unloadModule("wifiagent");
-    sysObj.unloadModule("sysutil");
 else:
     print "Failed to load lmlite module";
     obj.setLoadModuleStatus("FAILURE");
