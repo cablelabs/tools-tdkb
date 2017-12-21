@@ -74,7 +74,7 @@
     <test_script>E2E_CM_VerifyCMStatus</test_script>
     <skipped>No</skipped>
     <release_version>M53</release_version>
-    <remarks></remarks>
+    <remarks>LAN</remarks>
   </test_cases>
   <script_tags />
 </xml>
