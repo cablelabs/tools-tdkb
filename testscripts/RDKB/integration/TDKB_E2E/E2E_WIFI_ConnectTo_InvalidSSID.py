@@ -78,8 +78,8 @@ Invalid passwod</input_parameters>
     <test_stub_interface>tdkb_e2e</test_stub_interface>
     <test_script>E2E_WIFI_ConnectTo_InvalidSSID</test_script>
     <skipped>No</skipped>
-    <release_version></release_version>
-    <remarks></remarks>
+    <release_version>M53</release_version>
+    <remarks>WLAN</remarks>
   </test_cases>
   <script_tags />
 </xml>

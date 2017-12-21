@@ -63,8 +63,8 @@ Device.WiFi.SSID.1.Enable</input_parameters>
     <test_stub_interface>tdkb_e2e</test_stub_interface>
     <test_script>E2E_WIFI_2.4GHZ_WPAPSK_RadioDisabled_FTPTraffic</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version>M53</release_version>
+    <remarks>WLAN,LAN</remarks>
   </test_cases>
   <script_tags/>
 </xml>

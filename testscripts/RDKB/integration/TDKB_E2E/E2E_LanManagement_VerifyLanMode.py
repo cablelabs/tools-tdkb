@@ -65,7 +65,7 @@ Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode</input_parameters>
     <test_script>E2E_LanManagement_VerifyLanMode</test_script>
     <skipped>No</skipped>
     <release_version>M53</release_version>
-    <remarks/>
+    <remarks>WLAN</remarks>
   </test_cases>
 </xml>
 

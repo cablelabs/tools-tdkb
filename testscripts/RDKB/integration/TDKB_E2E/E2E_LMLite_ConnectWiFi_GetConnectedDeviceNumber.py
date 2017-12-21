@@ -64,7 +64,7 @@ Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber</input_parameters>
     <test_script>E2E_LMLite_ConnectWiFi_GetConnectedDeviceNumber</test_script>
     <skipped>No</skipped>
     <release_version>M53</release_version>
-    <remarks/>
+    <remarks>WLAN</remarks>
   </test_cases>
   <script_tags/>
 </xml>

@@ -65,7 +65,7 @@ Device.X_CISCO_COM_Security.Firewall.FirewallLevel</input_parameters>
     <test_script>E2E_Firewall_High_HttpFromLanToWan</test_script>
     <skipped>No</skipped>
     <release_version>M54</release_version>
-    <remarks/>
+    <remarks>LAN,WAN</remarks>
   </test_cases>
   <script_tags/>
 </xml>

@@ -67,7 +67,7 @@ Device.WiFi.AccessPoint.2.AssociatedDeviceNumberOfEntries</input_parameters>
     <test_script>E2E_WIFI_5GHZ_DisconnectWiFi_GetAssociatedDeviceNumberOfEntries</test_script>
     <skipped>No</skipped>
     <release_version>M53</release_version>
-    <remarks/>
+    <remarks>WLAN</remarks>
   </test_cases>
 </xml>
 

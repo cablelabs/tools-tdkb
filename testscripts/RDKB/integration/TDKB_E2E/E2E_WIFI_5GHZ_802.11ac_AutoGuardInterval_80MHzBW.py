@@ -61,8 +61,8 @@ Device.WiFi.Radio.1.OperatingChannelBandwidth : 80MHz</input_parameters>
     <test_stub_interface>tdkb_e2e</test_stub_interface>
     <test_script>E2E_WIFI_5GHZ_802.11ac_AutoGuardInterval_80MHzBW</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version>M52</release_version>
+    <remarks>WLAN</remarks>
   </test_cases>
 </xml>
 

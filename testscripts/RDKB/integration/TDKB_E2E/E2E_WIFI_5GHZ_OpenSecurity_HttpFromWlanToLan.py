@@ -83,7 +83,7 @@ Device.WiFi.AccessPoint.1.Security.ModeEnabled</input_parameters>
     <test_script>E2E_WIFI_5GHZ_OpenSecurity_HttpFromWlanToLan</test_script>
     <skipped>No</skipped>
     <release_version>M54</release_version>
-    <remarks></remarks>
+    <remarks>WLAN,LAN</remarks>
   </test_cases>
   <script_tags />
 </xml>

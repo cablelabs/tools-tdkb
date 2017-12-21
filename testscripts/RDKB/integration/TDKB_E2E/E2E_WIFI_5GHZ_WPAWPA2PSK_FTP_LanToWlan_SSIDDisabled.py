@@ -63,8 +63,8 @@ Device.WiFi.SSID.2.Enable</input_parameters>
     <test_stub_interface>tdkb_e2e</test_stub_interface>
     <test_script>E2E_WIFI_5GHZ_WPAWPA2PSK_FTP_LanToWlan_SSIDDisabled</test_script>
     <skipped>No</skipped>
-    <release_version/>
-    <remarks/>
+    <release_version>M54</release_version>
+    <remarks>WLAN,LAN</remarks>
   </test_cases>
 </xml>
 

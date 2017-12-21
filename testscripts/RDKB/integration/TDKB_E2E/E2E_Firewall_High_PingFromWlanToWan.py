@@ -64,8 +64,8 @@ Device.X_CISCO_COM_Security.Firewall.FirewallLevel</input_parameters>
     <test_stub_interface>tdkb_e2e</test_stub_interface>
     <test_script>E2E_Firewall_High_PingFromWlanToWan</test_script>
     <skipped>No</skipped>
-    <release_version>M53</release_version>
-    <remarks/>
+    <release_version>M54</release_version>
+    <remarks>WAN,WLAN</remarks>
   </test_cases>
   <script_tags/>
 </xml>
