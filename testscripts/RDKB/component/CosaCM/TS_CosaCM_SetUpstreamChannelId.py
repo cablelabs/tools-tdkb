@@ -107,7 +107,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Script to load the configuration file of the component
         tdkTestObj = obj.createTestStep("CosaCM_SetUpstreamChannelId");
         tdkTestObj.addParameter("handleType",0);
-        tdkTestObj.addParameter("paramValue",5);
+        tdkTestObj.addParameter("channelId",5);
         tdkTestObj.addParameter("paramType","unit");
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);

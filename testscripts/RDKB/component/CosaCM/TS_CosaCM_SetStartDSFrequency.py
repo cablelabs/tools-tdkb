@@ -107,7 +107,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Script to load the configuration file of the component
         tdkTestObj = obj.createTestStep("CosaCM_SetStartDSFrequency");
         tdkTestObj.addParameter("handleType",0);
-        tdkTestObj.addParameter("paramValue",5);
+        tdkTestObj.addParameter("frequency",5);
         tdkTestObj.addParameter("paramType","unit");
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
