@@ -373,7 +373,7 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
     else if(!strcmp(method, "setRadioMCS"))
         return_status = wifi_setRadioMCS(radioIndex, *output);
     else if(!strcmp(method, "getRadioStatsReceivedSignalLevel"))
-        return_status = wifi_getRadioStatsReceivedSignalLevel(radioIndex, 0, output);
+        return_status = wifi_getRadioStatsReceivedSignalLevel(radioIndex, 1, output);
     else if(!strcmp(method, "getApRadioIndex"))
         return_status = wifi_getApRadioIndex(radioIndex, output);
     else if(!strcmp(method, "setApRadioIndex"))
