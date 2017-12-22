@@ -165,8 +165,8 @@ if "SUCCESS" in loadmodulestatus.upper():
             if expectedresult in actualresult and bandWidth in bandWidthList:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP : To get the operating channel bandwidth from the possible channel list"
-                print "EXPECTED RESULT : To successfully get the channel bandwidth from the possible channel list"
+                print "TEST STEP : To get the operating channel bandwidth as a value from the list %s"%bandWidthList
+                print "EXPECTED RESULT : To successfully get the channel bandwidth as a value from the list %s"%bandWidthList
                 print "ACTUAL RESULT : %s " %details
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : SUCCESS";
@@ -273,8 +273,8 @@ if "SUCCESS" in loadmodulestatus.upper():
             else:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("FAILURE");
-                print "TEST STEP : To get the operating channel bandwidth as Auto"
-                print "EXPECTED RESULT : To successfully get the channel bandwidth to Auto"
+                print "TEST STEP : To get the operating channel bandwidth as a value from the list %s"%bandWidthList
+                print "EXPECTED RESULT : To successfully get the channel bandwidth as a value from the list %s"%bandWidthList
                 print "ACTUAL RESULT : %s " %details
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : FAILURE";
