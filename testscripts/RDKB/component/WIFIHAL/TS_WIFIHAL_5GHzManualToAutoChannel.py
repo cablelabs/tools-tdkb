@@ -106,7 +106,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #get the possible channel list
         getMethod = "getRadioPossibleChannels"
         primitive = 'WIFIHAL_GetOrSetParamStringValue'
-        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
 
         if expectedresult in actualresult :
             possibleCh = details.split(":")[1].strip().split(',')

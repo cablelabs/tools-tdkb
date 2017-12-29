@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>This testcase check if remote access via ssh is enabled or not</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>5</execution_time>
   <long_duration>false</long_duration>
   <remarks/>
   <skip>false</skip>
