@@ -178,7 +178,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 		   		    print "wlan ip address is in same DHCP range"
 
 				    #set new static route to wan client
-				    status = addStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress, tdkbE2EUtility.lan_interface, "LAN");
+				    status = addStaticRoute(tdkbE2EUtility.wan_https_ip, curIPAddress, tdkbE2EUtility.lan_interface, "LAN");
 				    #status = addStaticRoute(lanIP, tdkbE2EUtility.lan_interface);
 		                    if expectedresult in status:
 					    print "TEST STEP 8:Static route add success"
@@ -191,19 +191,19 @@ if "SUCCESS" in loadmodulestatus.upper():
                                                 tdkTestObj.setResultStatus("SUCCESS");
                                                 print "SUCCESS: HTTPS from LAN to WAN is success"
 
-					        #delete the added route
-						print "TEST STEP 12: Delete the static route"
-   					        status = delStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress, tdkbE2EUtility.lan_interface, "LAN");
-					        if expectedresult in status:
-						    tdkTestObj.setResultStatus("SUCCESS");
-						    finalStatus = "SUCCESS";
-						    print "TEST STEP 8:Static route delete success"
-					        else:
-                                                    tdkTestObj.setResultStatus("FAILURE");
-                                                    print "TEST STEP 8:Static route delete failed"
                                             else:
                                                 tdkTestObj.setResultStatus("FAILURE");
                                                 print "TEST STEP 10: failed, HTTPS from LAN to WAN is blocked"
+					    #delete the added route
+					    print "TEST STEP 12: Delete the static route"
+   					    status = delStaticRoute(tdkbE2EUtility.wan_https_ip, curIPAddress, tdkbE2EUtility.lan_interface, "LAN");
+					    if expectedresult in status:
+						    tdkTestObj.setResultStatus("SUCCESS");
+						    finalStatus = "SUCCESS";
+						    print "TEST STEP 8:Static route delete success"
+					    else:
+                                                    tdkTestObj.setResultStatus("FAILURE");
+                                                    print "TEST STEP 8:Static route delete failed"
 				    else:
 					tdkTestObj.setResultStatus("FAILURE");
 					print "TEST STEP 8:Static route add failed"

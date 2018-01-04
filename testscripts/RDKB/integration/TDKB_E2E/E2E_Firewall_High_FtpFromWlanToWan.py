@@ -201,13 +201,13 @@ if "SUCCESS" in loadmodulestatus.upper():
                                     print "wlan ip address is in same DHCP range"
 
                                     #set new static route to wan client
-                                    status = addStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress,tdkbE2EUtility.wlan_2ghz_interface);
+                                    status = addStaticRoute(tdkbE2EUtility.wan_ftp_ip, curIPAddress,tdkbE2EUtility.wlan_2ghz_interface);
                                     if expectedresult in status:
                                             print "TEST STEP 8:Static route add success"
 
                                             tdkTestObj.setResultStatus("SUCCESS");
                                             print "TEST STEP 10:Check the FTP connectivity from WLAN to LAN"
-                                            status = ftpToClient("WAN",tdkbE2EUtility.wan_ip, "WLAN");
+                                            status = ftpToClient("WAN",tdkbE2EUtility.wan_ftp_ip, "WLAN");
 
                                             if expectedresult not in status:
                                                 tdkTestObj.setResultStatus("SUCCESS");
@@ -217,7 +217,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                                                 print "TEST STEP 10: failed, FTP from WLAN to WAN not blocked"
                                             #delete the added route
                                             print "TEST STEP 12: Delete the static route"
-                                            status = delStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress,tdkbE2EUtility.wlan_2ghz_interface);
+                                            status = delStaticRoute(tdkbE2EUtility.wan_ftp_ip, curIPAddress,tdkbE2EUtility.wlan_2ghz_interface);
                                             if expectedresult in status:
                                                     tdkTestObj.setResultStatus("SUCCESS");
                                                     print "TEST STEP 8:Static route delete success"

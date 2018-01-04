@@ -199,33 +199,17 @@ if "SUCCESS" in loadmodulestatus.upper():
                                 status = "SUCCESS"
                                 status = checkIpRange(curIPAddress,wlanIP);
                                 if expectedresult in status:
-                                    tdkTestObj.setResultStatus("SUCCESS");
-                                    print "wlan ip address is in same DHCP range"
+	                                    tdkTestObj.setResultStatus("SUCCESS");
+        	                            print "wlan ip address is in same DHCP range"
 
-                                    #set new static route to wan client
-#                                   status = addStaticRoute(tdkbE2EUtility.wan_ip,tdkbE2EUtility.cm_ip,tdkbE2EUtility.wlan_2ghz_interface);
-                                    status = addStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress,tdkbE2EUtility.wlan_2ghz_interface);
-                                    if expectedresult in status:
-                                            print "TEST STEP 8:Static route add success"
-
-                                            tdkTestObj.setResultStatus("SUCCESS");
                                             print "TEST STEP 10:Check the ICMP from WLAN to WAN"
-                                            status = verifyNetworkConnectivity(tdkbE2EUtility.wan_ip, "PING", wlanIP, curIPAddress)
+                                            status = verifyNetworkConnectivity(tdkbE2EUtility.wan_ping_ip, "PING", wlanIP, curIPAddress)
                                             if expectedresult in status:
                                                 tdkTestObj.setResultStatus("SUCCESS");
                                                 print "SUCCESS: Ping from WLAN to WAN is not blocked"
                                             else:
                                                 tdkTestObj.setResultStatus("FAILURE");
                                                 print "TEST STEP 10: failed, ICMP from WLAN to WAN blocked"
-                                            #delete the added route
-                                            print "TEST STEP 12: Delete the static route"
-                                            status = delStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress,tdkbE2EUtility.wlan_2ghz_interface);
-                                            if expectedresult in status:
-                                                    tdkTestObj.setResultStatus("SUCCESS");
-                                                    print "TEST STEP 8:Static route delete success"
-                                            else:
-                                                    tdkTestObj.setResultStatus("FAILURE");
-                                                    print "TEST STEP 8:Static route delete failed"
 
                                             print "TEST STEP 11: From wlan client, Disconnect from the wifi ssid"
                                             status = wlanDisconnectWifiSsid(tdkbE2EUtility.wlan_2ghz_interface);
@@ -236,9 +220,6 @@ if "SUCCESS" in loadmodulestatus.upper():
                                             else:
                                                     tdkTestObj.setResultStatus("FAILURE");
                                                     print "TEST STEP 11:Disconnect from WIFI SSID: FAILED"
-                                    else:
-                                        tdkTestObj.setResultStatus("FAILURE");
-                                        print "TEST STEP 8:Static route add failed"
                                 else:
                                      tdkTestObj.setResultStatus("FAILURE");
                                      print "TEST STEP 9:WLAN Client IP address is not in the same Gateway DHCP range"

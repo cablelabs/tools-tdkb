@@ -201,7 +201,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                                     print "wlan ip address is in same DHCP range"
 
                                     #set new static route to wan client
-                                    status = addStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress,tdkbE2EUtility.wlan_2ghz_interface);
+                                    status = addStaticRoute(tdkbE2EUtility.wan_http_ip, curIPAddress,tdkbE2EUtility.wlan_2ghz_interface);
                                     if expectedresult in status:
                                             print "TEST STEP 8:Static route add success"
 
@@ -217,7 +217,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                                                 print "TEST STEP 10: failed, HTTP from WLAN to LAN not blocked"
                                             #delete the added route
                                             print "TEST STEP 12: Delete the static route"
-                                            status = delStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress,tdkbE2EUtility.wlan_2ghz_interface);
+                                            status = delStaticRoute(tdkbE2EUtility.wan_http_ip, curIPAddress,tdkbE2EUtility.wlan_2ghz_interface);
                                             if expectedresult in status:
                                                     tdkTestObj.setResultStatus("SUCCESS");
                                                     print "TEST STEP 8:Static route delete success"

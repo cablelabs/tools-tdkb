@@ -174,39 +174,18 @@ if "SUCCESS" in loadmodulestatus.upper():
                                 status = "SUCCESS"
                                 status = checkIpRange(curIPAddress,lanIP);
                                 if expectedresult in status:
-                                    tdkTestObj.setResultStatus("SUCCESS");
-		   		    print "wlan ip address is in same DHCP range"
+	                                    tdkTestObj.setResultStatus("SUCCESS");
+			   		    print "wlan ip address is in same DHCP range"
 
-				    #set new static route to wan client
-				    status = addStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress, tdkbE2EUtility.lan_interface, "LAN");
-				    #status = addStaticRoute(lanIP, tdkbE2EUtility.lan_interface);
-		                    if expectedresult in status:
-					    print "TEST STEP 8:Static route add success"
-
-                        	            tdkTestObj.setResultStatus("SUCCESS");
                                             print "TEST STEP 10:Check the Ping from LAN to WAN"
-                                            status = verifyNetworkConnectivity(tdkbE2EUtility.wan_ip, "PING", lanIP, curIPAddress, "LAN")
+                                            status = verifyNetworkConnectivity(tdkbE2EUtility.wan_ping_ip, "PING", lanIP, curIPAddress, "LAN")
                                             if expectedresult in status:
                                                 tdkTestObj.setResultStatus("SUCCESS");
                                                 print "SUCCESS: Ping from LAN to WAN is success"
-
-                                                print "TEST STEP 11: From wlan client, Disconnect from the wifi ssid"
-					        #delete the added route
-						print "TEST STEP 12: Delete the static route"
-   					        status = delStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress, tdkbE2EUtility.lan_interface, "LAN");
-					        if expectedresult in status:
-						    tdkTestObj.setResultStatus("SUCCESS");
-						    finalStatus = "SUCCESS"
-						    print "TEST STEP 8:Static route delete success"
-					        else:
-                                                    tdkTestObj.setResultStatus("FAILURE");
-                                                    print "TEST STEP 8:Static route delete failed"
+						finalStatus = "SUCCESS";
                                             else:
                                                 tdkTestObj.setResultStatus("FAILURE");
                                                 print "TEST STEP 10: failed, Ping from LAN to WAN blocked"
-				    else:
-					tdkTestObj.setResultStatus("FAILURE");
-					print "TEST STEP 8:Static route add failed"
                                 else:
                                      tdkTestObj.setResultStatus("FAILURE");
                                      print "TEST STEP 9:LAN Client IP address is not in the same Gateway DHCP range"

@@ -178,21 +178,21 @@ if "SUCCESS" in loadmodulestatus.upper():
 		   		    print "wlan ip address is in same DHCP range"
 
 				    #set new static route to wan client
-				    status = addStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress, tdkbE2EUtility.lan_interface, "LAN");
+				    status = addStaticRoute(tdkbE2EUtility.wan_ftp_ip, curIPAddress, tdkbE2EUtility.lan_interface, "LAN");
 				    #status = addStaticRoute(lanIP, tdkbE2EUtility.lan_interface);
 		                    if expectedresult in status:
 					    print "TEST STEP 8:Static route add success"
 
                         	            tdkTestObj.setResultStatus("SUCCESS");
                                             print "TEST STEP 10:Check the FTP from LAN to WAN"
-                                            status = ftpToClient("WAN",tdkbE2EUtility.wan_ip);	  
+                                            status = ftpToClient("WAN",tdkbE2EUtility.wan_ftp_ip);	  
                                             if expectedresult not in status:
                                                 tdkTestObj.setResultStatus("SUCCESS");
                                                 print "SUCCESS: FTP from LAN to WAN is blocked"
 
 					        #delete the added route
 						print "TEST STEP 12: Delete the static route"
-   					        status = delStaticRoute(tdkbE2EUtility.wan_ip, curIPAddress, tdkbE2EUtility.lan_interface, "LAN");
+   					        status = delStaticRoute(tdkbE2EUtility.wan_ftp_ip, curIPAddress, tdkbE2EUtility.lan_interface, "LAN");
 					        if expectedresult in status:
 						    tdkTestObj.setResultStatus("SUCCESS");
 						    finalStatus = "SUCCESS";
