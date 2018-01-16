@@ -58,7 +58,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_TDKB_E2E_355</test_case_id>
+    <test_case_id>TC_TDKB_E2E_47</test_case_id>
     <test_objective>Verify that only 802.11ac clients should be able to connect to WG, when mode is 'ac' for frequency band 5GHZ</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband,Emulator,RPI</test_setup>

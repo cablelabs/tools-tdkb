@@ -60,7 +60,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_TDKB_E2E_290</test_case_id>
+    <test_case_id>TC_TDKB_E2E_295</test_case_id>
     <test_objective>Verify that when Firewall Config is set to Medium HTTP access from LAN to WAN should not be blocked</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband,Emulator,RPI</test_setup>
