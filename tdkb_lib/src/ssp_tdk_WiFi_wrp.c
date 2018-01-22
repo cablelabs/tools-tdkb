@@ -65,6 +65,9 @@ int ssp_WIFIHALApplySettings(int radioIndex)
 int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, char* method)
 {
     printf("\n ssp_WIFIHALGetOrSetParamBoolValue----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    printf("GetorSetParam: %d\n" , *enable);
+    printf("MethodName: %s\n", method);
     int return_status = 0;
 
     if(!strcmp(method, "getRadioEnable"))
@@ -194,6 +197,9 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
 int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, char* method)
 {
     printf("\n ssp_WIFIHALGetOrSetParamULongValue-----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    printf("GetorSetParam: %lu\n" , *uLongVar);
+    printf("MethodName: %s\n", method);
     int return_status = 0;
 
     if(!strcmp(method, "getRadioChannel"))
@@ -246,6 +252,9 @@ int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, 
 int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* method)
 {
     printf("\n ssp_WIFIHALGetOrSetParamStringValue----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    printf("GetorSetParam: %s\n" , output);
+    printf("MethodName: %s\n", method);
     int return_status = 0;
     unsigned char gOnly,nOnly,acOnly;
 
@@ -339,6 +348,13 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
         return_status = wifi_getApWpsConfigurationState(radioIndex,output);
     else if(!strcmp(method, "getBaseBSSID"))
         return_status = wifi_getBaseBSSID(radioIndex, output);
+    else if(!strcmp(method, "getHalVersion"))
+        return_status = wifi_getHalVersion(output);
+    else if(!strcmp(method, "getBandSteeringApGroup"))
+        return_status = wifi_getBandSteeringApGroup(output);
+    else if(!strcmp(method, "setBandSteeringApGroup"))
+        return_status = wifi_setBandSteeringApGroup(output);
+
     else
     {
         return_status = SSP_FAILURE;
@@ -365,6 +381,9 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
 int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
 {
     printf("\n ssp_WIFIHALGetOrSetParamIntValue----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    printf("GetorSetParam: %d\n" , *output);
+    printf("MethodName: %s\n", method);
     int return_status = 0;
     int interval_seconds ,dwell_milliseconds;
 
@@ -394,6 +413,18 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
         return_status = wifi_getApMacAddressControlMode(radioIndex, output);
     else if(!strcmp(method, "setApMacAddressControlMode"))
         return_status = wifi_setApMacAddressControlMode(radioIndex, *output);
+    else if(!strcmp(method, "getBandSteeringBandUtilizationThreshold"))
+        return_status = wifi_getBandSteeringBandUtilizationThreshold(radioIndex, output);
+    else if(!strcmp(method, "setBandSteeringBandUtilizationThreshold"))
+        return_status = wifi_setBandSteeringBandUtilizationThreshold(radioIndex, *output);
+    else if(!strcmp(method, "getBandSteeringRSSIThreshold"))
+        return_status = wifi_getBandSteeringRSSIThreshold(radioIndex, output);
+    else if(!strcmp(method, "setBandSteeringRSSIThreshold"))
+        return_status = wifi_setBandSteeringRSSIThreshold(radioIndex, *output);
+    else if(!strcmp(method, "getBandSteeringPhyRateThreshold"))
+        return_status = wifi_getBandSteeringPhyRateThreshold(radioIndex, output);
+    else if(!strcmp(method, "setBandSteeringPhyRateThreshold"))
+        return_status = wifi_setBandSteeringPhyRateThreshold(radioIndex, *output);
     else
     {
         return_status = SSP_FAILURE;
@@ -420,6 +451,9 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
 int ssp_WIFIHALGetOrSetParamUIntValue(int radioIndex, unsigned int* output, char* method)
 {
     printf("\n ssp_WIFIHALGetOrSetParamUIntValue----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    printf("GetorSetParam: %u\n" , *output);
+    printf("MethodName: %s\n", method);
     int return_status = 0;
 
     if(!strcmp(method, "getRadioBeaconPeriod"))
