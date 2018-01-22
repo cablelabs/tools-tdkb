@@ -23,6 +23,41 @@
 
 /*******************************************************************************************
  *
+ * Function Name        : ssp_wifi_init
+ * Description          : This function invokes WiFi hal's init api *
+ * @param [in]  N/A
+ * @param [out] N/A 
+ ********************************************************************************************/
+int ssp_wifi_init()
+{
+    printf("\n ssp_wifi_init-----> Entry\n");
+
+    int return_status=0;
+
+#if defined(_COSA_BCM_MIPS_)
+    printf("Invoking wifi_init HAL API\n");
+
+    return_status = wifi_init();
+
+    printf("return value from wifi_init is %d\n",return_status);
+
+    if(return_status == SSP_SUCCESS)
+    {
+         printf("\nssp_wifi_init::WIFI HAL Initialization success\n"); 
+    }
+    else
+    {
+        printf("\nssp_wifi_init::Failed to initialize the WIFI HAL\n");     
+    }
+#endif
+
+    printf("\n ssp_wifi_init----> Exit\n");
+
+    return return_status;
+}
+
+/*******************************************************************************************
+ *
  * Function Name        : ssp_WIFIHALApplySettings
  * Description          : This function invokes WiFi hal api wifi_applyRadioSettings
  * @param [in] req-     : radioIndex - radio index value of wifi

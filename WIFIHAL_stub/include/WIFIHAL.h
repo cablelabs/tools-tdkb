@@ -38,6 +38,7 @@
 /* To provide external linkage to C Functions defined in TDKB Component folder */
 extern "C"
 {
+    int ssp_wifi_init();
     int ssp_WIFIHALApplySettings(int radioIndex);
     int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *output, char* method);
     int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, char* methodName);
@@ -47,7 +48,6 @@ extern "C"
 };
 
 class RDKTestAgent;
-//class WIFIHAL : public RDKTestStubInterface
 class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
 {
     public:
@@ -60,8 +60,6 @@ class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
 		  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetParamIntValue", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER, "param", JSON_INTEGER, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetParamIntValue);
 	 	  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetParamUIntValue", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER, "param", JSON_INTEGER, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetParamUIntValue);
                 }
-        /*Ctor*/
-//        WIFIHAL();
         /*inherited functions*/
         bool initialize(IN const char* szVersion);
         bool cleanup(IN const char* szVersion); 

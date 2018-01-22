@@ -18,13 +18,6 @@
 */
 
 #include "WIFIHAL.h"
-#if 0
-/*This is a constructor function for WIFIHAL class*/
-WIFIHAL::WIFIHAL()
-{
-    DEBUG_PRINT(DEBUG_LOG,"TDK WIFIHAL Instance Created\n");
-}
-#endif
 
 /***************************************************************************
  *Function name : initialize
@@ -34,15 +27,6 @@ WIFIHAL::WIFIHAL()
  *****************************************************************************/
 bool WIFIHAL::initialize(IN const char* szVersion)
 {
-    DEBUG_PRINT(DEBUG_TRACE,"TDK::WIFIHAL Initialize\n");
-    /*Register stub function for callback*/
-#if 0
-    ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamBoolValue, "WIFIHAL_GetOrSetParamBoolValue");
-    ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamULongValue,"WIFIHAL_GetOrSetParamULongValue");
-    ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamStringValue,"WIFIHAL_GetOrSetParamStringValue");
-    ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamIntValue,"WIFIHAL_GetOrSetParamIntValue");
-    ptrAgentObj->RegisterMethod(*this,&WIFIHAL::WIFIHAL_GetOrSetParamUIntValue,"WIFIHAL_GetOrSetParamUIntValue");
-#endif    
     return TEST_SUCCESS;
 }
 
@@ -55,7 +39,24 @@ bool WIFIHAL::initialize(IN const char* szVersion)
  *****************************************************************************/
 std::string WIFIHAL::testmodulepre_requisites()
 {
-    return "SUCCESS";
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL testmodulepre_requisites --->Entry\n");
+    
+    int return_value = 0;
+
+    return_value = ssp_wifi_init();
+    
+    if(0 == return_value)
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites ---> Initialize SUCCESS !!! \n");
+        DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL testmodulepre_requisites --->Exit\n");
+        return "SUCCESS";
+    }
+    else
+    {
+       DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites --->Failed to initialize !!! \n");
+       DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL testmodulepre_requisites --->Exit\n");
+       return "FAILURE";
+    }
 }
 
 
