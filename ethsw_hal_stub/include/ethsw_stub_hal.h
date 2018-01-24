@@ -45,7 +45,7 @@ class ethsw_stub_hal : public RDKTestStubInterface, public AbstractServer<ethsw_
 			this->bindAndAddMethod(Procedure("ethsw_stub_hal_Get_Port_Cfg", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "flag", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_Get_Port_Cfg);
 			this->bindAndAddMethod(Procedure("ethsw_stub_hal_Get_Port_Status", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "flag", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_Get_Port_Status);
 			this->bindAndAddMethod(Procedure("ethsw_stub_hal_Init", PARAMS_BY_NAME, JSON_STRING,NULL), &ethsw_stub_hal::ethsw_stub_hal_Init);
-			this->bindAndAddMethod(Procedure("ethsw_stub_hal_LocatePort_By_MacAddress", PARAMS_BY_NAME, JSON_STRING, "macID", JSON_INTEGER, "flag", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_LocatePort_By_MacAddress);
+			this->bindAndAddMethod(Procedure("ethsw_stub_hal_LocatePort_By_MacAddress", PARAMS_BY_NAME, JSON_STRING, "macID", JSON_STRING, "flag", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_LocatePort_By_MacAddress);
 			this->bindAndAddMethod(Procedure("ethsw_stub_hal_SetAgingSpeed", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "AgingSpeed", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_SetAgingSpeed);
 			this->bindAndAddMethod(Procedure("ethsw_stub_hal_SetPortAdminStatus", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "adminstatus", JSON_STRING, NULL), &ethsw_stub_hal::ethsw_stub_hal_SetPortAdminStatus);
 			this->bindAndAddMethod(Procedure("ethsw_stub_hal_SetPortCfg", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "linkrate", JSON_INTEGER, "mode", JSON_STRING, NULL), &ethsw_stub_hal::ethsw_stub_hal_SetPortCfg);

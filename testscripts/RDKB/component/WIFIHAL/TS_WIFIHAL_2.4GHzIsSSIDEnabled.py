@@ -84,10 +84,11 @@ wifi_getSSIDEnable() and wifi_setSSIDEnable()
 7.wifihalstub will validate the available result (from agent console log and Pointer to instance as updated) with expected result
 8.Test Manager will publish the result in GUI as SUCCESS/FAILURE based on the response from wifihalstub
     </automation_approch>
-    <except_output>"""CheckPoint 
+    <except_output>CheckPoint 
 1:wifi_getSSIDEnable result from DUT should be available in Agent Console LogCheckPoint 
 2:TDK agent Test Function will log the test case result as PASS based on API response CheckPoint 
-3:Test Manager GUI will publish the result as SUCCESS in Execution page"""
+3:Test Manager GUI will publish the result as SUCCESS in Execution page
+    </except_output>
     <priority>High</priority>
     <test_stub_interface>wifihal</test_stub_interface>
     <test_script>TS_WIFIHAL_2.4GHzIsSSIDEnabled</test_script>
