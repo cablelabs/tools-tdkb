@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>Test if the list returned by wifi_getRadioChannelsInUse()api is a subset of the list returned by wifi_getRadioPossibleChannels()</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

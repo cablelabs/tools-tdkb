@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>To set the Basic Data Transmit Rates for 2.4GHz radio using wifi_setRadioBasicDataTransmitRates HAL API and validate the same by getting it with wifi_getRadioBasicDataTransmitRates</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

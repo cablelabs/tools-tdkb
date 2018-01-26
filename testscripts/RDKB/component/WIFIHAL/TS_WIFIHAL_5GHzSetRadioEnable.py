@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>Test to enable/disable radio enable status using wifi_setRadioEnable() api and verify using wifi_getRadioEnable() api</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>To get the supported frequency band of 2.4GHZ and check whether the value is within the valid supported frequency list.</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

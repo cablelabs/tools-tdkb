@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>Check if Modulation Coding Scheme returned by wifi_getRadioMCS(), is the the range [-1:15, 16:31]</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

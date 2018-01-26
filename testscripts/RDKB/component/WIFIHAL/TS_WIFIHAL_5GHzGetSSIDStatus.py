@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>To enable or disable the SSID for 5GHz and check whether the SSID status is updating accordingly</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

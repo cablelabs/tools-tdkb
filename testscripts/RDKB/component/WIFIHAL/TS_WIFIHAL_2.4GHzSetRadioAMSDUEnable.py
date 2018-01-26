@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>To set AMSDU Enable status using wifi_setRadioAMSDUEnable() and verify it by getting with wifi_getRadioAMSDUEnable for 2.4GHz</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

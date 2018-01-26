@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>To set the dynamic channel selection pool from a set of possible channels</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

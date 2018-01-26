@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>To set and get the band steering physical modulation rate threshold parameters for 5GHz</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

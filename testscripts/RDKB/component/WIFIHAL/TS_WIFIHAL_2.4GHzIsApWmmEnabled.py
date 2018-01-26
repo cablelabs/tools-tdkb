@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>To Check Enable Status of Access point Wmm(wifi-multimedia) using wifi_getApWmmEnable HAL API</synopsis>
   <groups_id>4</groups_id>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

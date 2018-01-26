@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>Check DeclineBARequest status of Radio 5GHz using wifi_getRadioDeclineBARequestEnable HAL API</synopsis>
   <groups_id>4</groups_id>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

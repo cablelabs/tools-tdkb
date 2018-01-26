@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>This is a positive scenario which sets the channel bandwidth to 40MHz, gets the current extension channel and then trying to change the extension channel from original one</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>

@@ -27,7 +27,7 @@
   <status>FREE</status>
   <synopsis>To get the Radio interface name for 2.4GHz and check whether it is "wifi0"</synopsis>
   <groups_id/>
-  <execution_time>1</execution_time>
+  <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>
