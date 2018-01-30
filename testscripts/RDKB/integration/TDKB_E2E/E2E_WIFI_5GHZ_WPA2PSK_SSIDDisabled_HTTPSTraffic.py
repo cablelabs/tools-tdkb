@@ -81,7 +81,7 @@ Device.WiFi.SSID.1.Enable</input_parameters>
     <test_stub_interface>tdkb_e2e</test_stub_interface>
     <test_script>E2E_WIFI_5GHZ_WPA2PSK_SSIDDisabled_HTTPSTraffic</test_script>
     <skipped>No</skipped>
-    <release_version>M53</release_version>
+    <release_version>M55</release_version>
     <remarks>WLAN,LAN</remarks>
   </test_cases>
   <script_tags />
