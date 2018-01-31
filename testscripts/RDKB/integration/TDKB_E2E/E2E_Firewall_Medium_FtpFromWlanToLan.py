@@ -200,7 +200,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                                             print "checkIpRange: SUCCESS"
 
                                             print "TEST STEP 10:Check the FTP from WLAN to LAN"
-                                            status = ftpToClient("LAN",lanIP);
+                                            status = ftpToClient("LAN",lanIP,"WLAN");
                                             if expectedresult in status:
                                                 tdkTestObj.setResultStatus("SUCCESS");
                                                 print "FTP from WLAN to LAN: SUCCESS"
