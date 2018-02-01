@@ -58,7 +58,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_103</test_case_id>
+    <test_case_id>TC_WIFIHAL_155</test_case_id>
     <test_objective>To get the maximum bit rate supported by this interface for 2.4GHz</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband, Emulator ,RPI</test_setup>

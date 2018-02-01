@@ -41,7 +41,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_104</test_case_id>
+    <test_case_id>TC_WIFIHAL_156</test_case_id>
     <test_objective>To get the maximum bit rate supported by this interface for 5GHz</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband, Emulator, RPI</test_setup>
