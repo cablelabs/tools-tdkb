@@ -118,10 +118,10 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "Parsed the device configuration file successfully"
 
         #Assign the WIFI parameters names to a variable
-        ssidName = "Device.WiFi.SSID.%s.SSID" %tdkbE2EUtility.ssid_2ghz_index
-        securityMode = "Device.WiFi.AccessPoint.%s.Security.ModeEnabled" %tdkbE2EUtility.ssid_2ghz_index
-	radioEnable = "Device.WiFi.Radio.%s.Enable" %tdkbE2EUtility.ssid_2ghz_index
-	ssidEnable = "Device.WiFi.SSID.%s.Enable" %tdkbE2EUtility.ssid_2ghz_index
+        ssidName = "Device.WiFi.SSID.%s.SSID" %tdkbE2EUtility.ssid_5ghz_index
+        securityMode = "Device.WiFi.AccessPoint.%s.Security.ModeEnabled" %tdkbE2EUtility.ssid_5ghz_index
+	radioEnable = "Device.WiFi.Radio.%s.Enable" %tdkbE2EUtility.ssid_5ghz_index
+	ssidEnable = "Device.WiFi.SSID.%s.Enable" %tdkbE2EUtility.ssid_5ghz_index
 
         #Get the value of the wifi parameters that are currently set.
         paramList=[ssidName,securityMode,radioEnable,ssidEnable]
@@ -135,10 +135,10 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "[TEST EXECUTION RESULT] : SUCCESS";
 
             # Set securityMode,radioEnable and ssidEnable for 2.4ghz"
-            setValuesList = [tdkbE2EUtility.ssid_2ghz_name,'None','true','true'];
+            setValuesList = [tdkbE2EUtility.ssid_5ghz_name,'None','true','true'];
             print "WIFI parameter values that are set: %s" %setValuesList
 
-            list1 = [ssidName,tdkbE2EUtility.ssid_2ghz_name,'string']
+            list1 = [ssidName,tdkbE2EUtility.ssid_5ghz_name,'string']
             list2 = [securityMode,'None','string']
 	    list3 = [radioEnable,'true','bool']
 	    list4 = [ssidEnable,'true','bool']
@@ -171,12 +171,12 @@ if "SUCCESS" in loadmodulestatus.upper():
 
                     #Connect to the wifi ssid from wlan client
                     print "TEST STEP 4: From wlan client, Connect to the wifi ssid"
-                    status = wlanConnectWifiSsid(tdkbE2EUtility.ssid_2ghz_name,tdkbE2EUtility.ssid_2ghz_pwd,tdkbE2EUtility.wlan_2ghz_interface,"Open");
+                    status = wlanConnectWifiSsid(tdkbE2EUtility.ssid_5ghz_name,tdkbE2EUtility.ssid_5ghz_pwd,tdkbE2EUtility.wlan_5ghz_interface,"Open");
                     if expectedresult in status:
                         tdkTestObj.setResultStatus("SUCCESS");
 
                         print "TEST STEP 5: Get the IP address of the wlan client after connecting to wifi"
-                        wlanIP = getWlanIPAddress(tdkbE2EUtility.wlan_2ghz_interface);
+                        wlanIP = getWlanIPAddress(tdkbE2EUtility.wlan_5ghz_interface);
                         if wlanIP:
                             tdkTestObj.setResultStatus("SUCCESS");
 
@@ -232,7 +232,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 					    print "TEST STEP 9: Failed to get the IP address of the lan client"
 
                                             print "TEST STEP 13: Disconnect wlan client from the wifi ssid"
-                                        status = wlanDisconnectWifiSsid(tdkbE2EUtility.wlan_2ghz_interface);
+                                        status = wlanDisconnectWifiSsid(tdkbE2EUtility.wlan_5ghz_interface);
 				        print "TEST STEP 13: Disconnect the WiFi connection"
                                         if expectedresult in status:
 					    print "TEST STEP 13: Connection successfully disconnected"
