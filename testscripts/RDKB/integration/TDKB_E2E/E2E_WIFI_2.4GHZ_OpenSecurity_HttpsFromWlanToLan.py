@@ -120,48 +120,46 @@ if "SUCCESS" in loadmodulestatus.upper():
 
         #Assign the WIFI parameters names to a variable
         ssidName = "Device.WiFi.SSID.%s.SSID" %tdkbE2EUtility.ssid_2ghz_index
-        keyPassPhrase = "Device.WiFi.AccessPoint.%s.Security.KeyPassphrase" %tdkbE2EUtility.ssid_2ghz_index
         securityMode = "Device.WiFi.AccessPoint.%s.Security.ModeEnabled" %tdkbE2EUtility.ssid_2ghz_index
 
         #Get the value of the wifi parameters that are currently set.
-        paramList=[ssidName,keyPassPhrase,securityMode]
+        paramList=[ssidName,securityMode]
         tdkTestObj,status,orgValue = getMultipleParameterValues(obj,paramList)
 
         if expectedresult in status:
             tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 1: Get the current ssid,keypassphrase and securityMode"
-            print "EXPECTED RESULT 1: Should retrieve the current ssid,keypassphrase and securityMode"
+            print "TEST STEP 1: Get the current ssid and securityMode"
+            print "EXPECTED RESULT 1: Should retrieve the current ssid and securityMode"
             print "ACTUAL RESULT 1: %s" %orgValue;
             print "[TEST EXECUTION RESULT] : SUCCESS";
 
             # Set securityMode for 2ghz"
-            setValuesList = [tdkbE2EUtility.ssid_2ghz_name,tdkbE2EUtility.ssid_2ghz_pwd,'None'];
+            setValuesList = [tdkbE2EUtility.ssid_2ghz_name,'None'];
             print "WIFI parameter values that are set: %s" %setValuesList
 
             list1 = [ssidName,tdkbE2EUtility.ssid_2ghz_name,'string']
-            list2 = [keyPassPhrase,tdkbE2EUtility.ssid_2ghz_pwd,'string']
-            list3 = [securityMode,'None','string']
+            list2 = [securityMode,'None','string']
 
             #Concatenate the lists with the elements separated by pipe
-            setParamList = list1 + list2 + list3
+            setParamList = list1 + list2
             setParamList = "|".join(map(str, setParamList))
 
             tdkTestObj,actualresult,details = setMultipleParameterValues(obj,setParamList)
             if expectedresult in actualresult:
                 tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP 2: Set the ssid,keypassphrase and securityMode"
-                print "EXPECTED RESULT 2: Should set the ssid,keypassphrase and securityMode";
+                print "TEST STEP 2: Set the ssid and securityMode"
+                print "EXPECTED RESULT 2: Should set the ssid and securityMode";
                 print "ACTUAL RESULT 2: %s" %details;
                 print "[TEST EXECUTION RESULT] : SUCCESS";
 
                 #Retrieve the values after set and compare
-                newParamList=[ssidName,keyPassPhrase,securityMode]
+                newParamList=[ssidName,securityMode]
                 tdkTestObj,status,newValues = getMultipleParameterValues(obj,newParamList)
 
                 if expectedresult in status and setValuesList == newValues:
                     tdkTestObj.setResultStatus("SUCCESS");
-                    print "TEST STEP 3: Get the current ssid,keypassphrase and securityMode"
-                    print "EXPECTED RESULT 3: Should retrieve the current ssid,keypassphrase and securityMode"
+                    print "TEST STEP 3: Get the current ssid and securityMode"
+                    print "EXPECTED RESULT 3: Should retrieve the current ssid and securityMode"
                     print "ACTUAL RESULT 3: %s" %newValues;
                     print "[TEST EXECUTION RESULT] : SUCCESS";
 
@@ -244,43 +242,42 @@ if "SUCCESS" in loadmodulestatus.upper():
                         print "wlanConnectWifiSsid: Failed to connect to the wifi ssid"
                 else:
                     tdkTestObj.setResultStatus("FAILURE");
-                    print "TEST STEP 3: Get the current ssid,keypassphrase and securityMode"
-                    print "EXPECTED RESULT 3: Should retrieve the current ssid,keypassphrase and securityMode"
+                    print "TEST STEP 3: Get the current ssid and securityMode"
+                    print "EXPECTED RESULT 3: Should retrieve the current ssid and securityMode"
                     print "ACTUAL RESULT 3: %s" %newValues;
                     print "[TEST EXECUTION RESULT] : FAILURE";
             else:
                 tdkTestObj.setResultStatus("FAILURE");
-                print "TEST STEP 2: Set the ssid,keypassphrase and securityMode"
-                print "EXPECTED RESULT 2: Should set the ssid,keypassphrase and securityMode";
+                print "TEST STEP 2: Set the ssid and securityMode"
+                print "EXPECTED RESULT 2: Should set the ssid and securityMode";
                 print "ACTUAL RESULT 2: %s" %details;
                 print "[TEST EXECUTION RESULT] : FAILURE";
 
             #Prepare the list of parameter values to be reverted
             list1 = [ssidName,orgValue[0],'string']
-            list2 = [keyPassPhrase,orgValue[1],'string']
-            list3 = [securityMode,orgValue[2],'string']
+            list2 = [securityMode,orgValue[1],'string']
 
             #Concatenate the lists with the elements separated by pipe
-            revertParamList = list1 + list2 + list3
+            revertParamList = list1 + list2
             revertParamList = "|".join(map(str, revertParamList))
 
             #Revert the values to original
             tdkTestObj,actualresult,details = setMultipleParameterValues(obj,revertParamList)
             if expectedresult in actualresult and expectedresult in finalStatus:
                 tdkTestObj.setResultStatus("SUCCESS");
-                print "EXPECTED RESULT 15: Should set the original ssid,keypassphrase and securityMode";
+                print "EXPECTED RESULT 15: Should set the original ssid and securityMode";
                 print "ACTUAL RESULT 15: %s" %details;
                 print "[TEST EXECUTION RESULT] : SUCCESS";
             else:
                 tdkTestObj.setResultStatus("FAILURE");
                 details = tdkTestObj.getResultDetails();
-                print "EXPECTED RESULT 15: Should set the original ssid,keypassphrase and securityMode";
+                print "EXPECTED RESULT 15: Should set the original ssid and securityMode";
                 print "ACTUAL RESULT 15: %s" %details;
                 print "[TEST EXECUTION RESULT] : FAILURE";
         else:
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 1: Get the current ssid,keypassphrase and securityMode"
-            print "EXPECTED RESULT 1: Should retrieve the current ssid,keypassphrase and securityMode"
+            print "TEST STEP 1: Get the current ssid and securityMode"
+            print "EXPECTED RESULT 1: Should retrieve the current ssid and securityMode"
             print "ACTUAL RESULT 1: %s" %orgValue;
             print "[TEST EXECUTION RESULT] : FAILURE";
     else:
