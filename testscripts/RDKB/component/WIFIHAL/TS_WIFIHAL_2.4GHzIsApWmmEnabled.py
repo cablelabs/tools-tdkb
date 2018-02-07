@@ -97,49 +97,68 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     expectedresult="SUCCESS";
     apIndex = 0
-    getMethod = "getApWmmEnable"
+    getMethod = "getApWMMCapability"
     primitive = 'WIFIHAL_GetOrSetParamBoolValue'
+
+    #Calling the method from wifiUtility to execute test case and set result status for the test.
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, 0, getMethod)
 
-    if expectedresult in actualresult :
-        tdkTestObj.setResultStatus("SUCCESS");
-        enable = details.split(":")[1].strip()
-        if "Enabled" in enable:
-            print "Access point WMM is Enabled"
-            oldEnable = 1
-            newEnable = 0
-        else:
-            print "Access point WMM is Disabled"
-	    oldEnable = 0
-            newEnable = 1
+    if expectedresult in actualresult:
+        ApWMMCapability = details.split(":")[1].strip()
+        if ApWMMCapability == "Enabled":
+            expectedresult="SUCCESS";
+            apIndex = 0
+            getMethod = "getApWmmEnable"
+            primitive = 'WIFIHAL_GetOrSetParamBoolValue'
+            tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, 0, getMethod)
 
-        setMethod = "setApWmmEnable"
-        #Toggle the enable status using set
-        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, newEnable, setMethod) 
-
-        if expectedresult in actualresult :
-            print "Enable state toggled using set"
-            # Get the New enable status
-            tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, 0, getMethod) 
-
-            if expectedresult in actualresult and enable not in details.split(":")[1].strip():
-                print "getApWmmEnable Success, verified along with setApWmmEnable() api"
-                #Revert back to original Enable status
-                tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, oldEnable, setMethod)
-
-                if expectedresult in actualresult :
-                    print "Enable status reverted back";
+            if expectedresult in actualresult :
+                tdkTestObj.setResultStatus("SUCCESS");
+                enable = details.split(":")[1].strip()
+                if "Enabled" in enable:
+                    print "Access point WMM is Enabled"
+                    oldEnable = 1
+                    newEnable = 0
                 else:
-                    print "Couldn't revert enable status"
-                    tdkTestObj.setResultStatus("FAILURE");
-            else:
-                print "getApWmmEnable() failed after set function"
-		tdkTestObj.setResultStatus("FAILURE");
-        else:
-	    print "setApWmmEnable() failed"
-            tdkTestObj.setResultStatus("FAILURE");
+                    print "Access point WMM is Disabled"
+	            oldEnable = 0
+                    newEnable = 1
+
+                setMethod = "setApWmmEnable"
+        	#Toggle the enable status using set
+	        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, newEnable, setMethod) 
+
+        	if expectedresult in actualresult :
+	            print "Enable state toggled using set"
+        	    # Get the New enable status
+	            tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, 0, getMethod) 
+
+        	    if expectedresult in actualresult and enable not in details.split(":")[1].strip():
+	                print "getApWmmEnable Success, verified along with setApWmmEnable() api"
+        	        #Revert back to original Enable status
+                	tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, oldEnable, setMethod)
+
+	                if expectedresult in actualresult :
+        	            print "Enable status reverted back";
+                	else:
+	                    print "Couldn't revert enable status"
+        	            tdkTestObj.setResultStatus("FAILURE");
+	            else:
+        	        print "getApWmmEnable() failed after set function"
+			tdkTestObj.setResultStatus("FAILURE");
+	        else:
+		    print "setApWmmEnable() failed"
+        	    tdkTestObj.setResultStatus("FAILURE");
+	    else:
+		print "getApWmmEnable() failed"
+	        tdkTestObj.setResultStatus("FAILURE");
+        elif ApWMMCapability == "Disabled":
+            print "wifi_getApWMMCapability function called successfully and %s"%details
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "ApWMMCapability received: %s"%ApWMMCapability;
+            print "ApWMMCapability is enabled"
     else:
-	print "getApWmmEnable() failed"
+        print "wifi_getApWMMCapability function call failed";
         tdkTestObj.setResultStatus("FAILURE");
 
     obj.unloadModule("wifihal");

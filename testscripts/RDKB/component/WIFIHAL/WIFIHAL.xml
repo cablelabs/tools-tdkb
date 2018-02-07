@@ -1,5 +1,5 @@
 <!--
- If not stated otherwise in this file or this component's Licenses.txt file the
+      If not stated otherwise in this file or this component's Licenses.txt file the
  following copyright and licenses apply:
 
  Copyright 2016 RDK Management
@@ -19,7 +19,7 @@
 <?xml version="1.0" encoding="UTF-8"?><xml>
   <module name="WIFIHAL" testGroup="Component">
     <primitiveTests>
-      <primitiveTest name="WIFIHAL_GetOrSetParamBoolValue" id=" " version="3">
+      <primitiveTest id=" " name="WIFIHAL_GetOrSetParamBoolValue" version="3">
         <function>WIFIHAL_GetOrSetParamBoolValue</function>
         <parameters>
           <parameter name="methodName" value="0"/>
@@ -28,7 +28,7 @@
           <parameter name="paramType" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="WIFIHAL_GetOrSetParamULongValue" id=" " version="2">
+      <primitiveTest id=" " name="WIFIHAL_GetOrSetParamULongValue" version="2">
         <function>WIFIHAL_GetOrSetParamULongValue</function>
         <parameters>
           <parameter name="methodName" value="0"/>
@@ -37,7 +37,7 @@
           <parameter name="paramType" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="WIFIHAL_GetOrSetParamStringValue" id=" " version="8">
+      <primitiveTest id=" " name="WIFIHAL_GetOrSetParamStringValue" version="8">
         <function>WIFIHAL_GetOrSetParamStringValue</function>
         <parameters>
           <parameter name="methodName" value="0"/>
@@ -46,7 +46,7 @@
           <parameter name="param" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="WIFIHAL_GetOrSetParamIntValue" id=" " version="3">
+      <primitiveTest id=" " name="WIFIHAL_GetOrSetParamIntValue" version="3">
         <function>WIFIHAL_GetOrSetParamIntValue</function>
         <parameters>
           <parameter name="methodName" value="0"/>
@@ -55,7 +55,7 @@
           <parameter name="param" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="WIFIHAL_GetOrSetParamUIntValue" id=" " version="3">
+      <primitiveTest id=" " name="WIFIHAL_GetOrSetParamUIntValue" version="3">
         <function>WIFIHAL_GetOrSetParamUIntValue</function>
         <parameters>
           <parameter name="methodName" value="0"/>
@@ -64,11 +64,25 @@
           <parameter name="radioIndex" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="WIFIHAL_ApplySettings" id=" " version="1">
+      <primitiveTest id=" " name="WIFIHAL_ApplySettings" version="1">
         <function>WIFIHAL_ApplySettings</function>
         <parameters>
           <parameter name="radioIndex" value="0"/>
         </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WIFIHAL_GetIndexFromName" version="1">
+        <function>WIFIHAL_GetIndexFromName</function>
+        <parameters>
+          <parameter name="param" value="NULL"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="WIFIHAL_Reset" version="1">
+        <function>WIFIHAL_Reset</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest name="WIFIHAL_ClearRadioResetCount" id="" version="1">
+        <function>WIFIHAL_ClearRadioResetCount</function>
+        <parameters/>
       </primitiveTest>
     </primitiveTests>
   </module>
