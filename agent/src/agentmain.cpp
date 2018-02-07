@@ -78,7 +78,7 @@ pthread_t agentExecuterThreadId;
 TcpSocketServer go_Server(ANY_ADDR, RDK_TEST_AGENT_PORT);
 extern RDKTestAgent *m_pAgent;
 /* Structure to hold process details */
-struct sProcessInfo 
+struct sProcessInfo
 {
     char **pProcessName;
     int nProcessNameSize;
@@ -112,11 +112,11 @@ std::string RpcMethods::sm_strTDKPath = "";
 
 /********************************************************************************************************************
  Purpose:                To get a substring seperated by a delimiter.
- 
- Parameters:   
+
+ Parameters:
                          strLine [IN]    - Line of string to get seperated.
-                         strDelimiter [IN]  - delimiter 
- 
+                         strDelimiter [IN]  - delimiter
+
  Return:                 string    - substring
 
 *********************************************************************************************************************/
@@ -130,18 +130,18 @@ std::string GetSubString (std::string strLine, std::string strDelimiter)
         strToken = strLine.substr (0, nPos);
         strLine.erase (0, nPos + strDelimiter.length());
     }
-	
+
     return strLine;
-	
+
 } /* End of GetSubString */
 
 
 /********************************************************************************************************************
  Purpose:               To get the Host's IP Address by querrying the network Interface.
- 
- Parameters:   
+
+ Parameters:
                         szInterface [IN]    - Interface used to communicate.
- 
+
  Return:                string    - IP address of corresponding interface.
 
 *********************************************************************************************************************/
@@ -153,44 +153,44 @@ std::string GetHostIP (const char* szInterface)
     char szAddressBuffer [INET_ADDRSTRLEN];
     getifaddrs (&pIfAddrStruct);
 
-    for (pIfAddrIterator = pIfAddrStruct; pIfAddrIterator != NULL; pIfAddrIterator = pIfAddrIterator->ifa_next) 
+    for (pIfAddrIterator = pIfAddrStruct; pIfAddrIterator != NULL; pIfAddrIterator = pIfAddrIterator->ifa_next)
     {
-        if (pIfAddrIterator->ifa_addr->sa_family == AF_INET) 
+        if (pIfAddrIterator->ifa_addr->sa_family == AF_INET)
         {
             // check it is a valid IP4 Address
             pvTmpAddrPtr = & ( (struct sockaddr_in *)pIfAddrIterator->ifa_addr )-> sin_addr;
             inet_ntop (AF_INET, pvTmpAddrPtr, szAddressBuffer, INET_ADDRSTRLEN);
-    
+
             if ( (strcmp (pIfAddrIterator -> ifa_name, szInterface) ) == 0)
             {
                 break;
-            }		
-        } 
-    }	
+            }
+        }
+    }
 
     DEBUG_PRINT (DEBUG_TRACE, "Found IP: %s\n", szAddressBuffer);
 
-    if (pIfAddrStruct != NULL) 
+    if (pIfAddrStruct != NULL)
     {
         freeifaddrs (pIfAddrStruct);
     }
 
     return szAddressBuffer;
-	
+
 } /* End of GetHostIP */
 
 
 /********************************************************************************************************************
- Purpose:               A function to send information from the box to manager. It will extract 
+ Purpose:               A function to send information from the box to manager. It will extract
                         manager IP address from configuration file
- 
- Parameters:   
+
+ Parameters:
                         strStringToSend [IN] - data to send
                         nStringSize [IN]  - size of data
- 
+
  Return:                int    -  Success/Failure
 
- Other Methods used:     
+ Other Methods used:
                         GetSubString()
 
 *********************************************************************************************************************/
@@ -198,10 +198,10 @@ int SendInfo (char* strStringToSend, int nStringSize)
 {
     int nValue = 0;
     int nDestination;
-    int nInfoSockDesc;    
+    int nInfoSockDesc;
     std::string strFilePath;
     std::string strManagerIP;
-    
+
     int nReturnValue = DEVICE_INFO_SUCCESS;
     struct sockaddr_in o_Addr;
 
@@ -209,21 +209,21 @@ int SendInfo (char* strStringToSend, int nStringSize)
     if (nInfoSockDesc < 0)
     {
         perror("\nAlert!!! Failed to create socket ");
-		
+
         return DEVICE_INFO_FAILURE;     // Return when failed to create socket
-        
-    }	
+
+    }
 
     /* Extracting path to file */
     strFilePath = RpcMethods::sm_strTDKPath;
     strFilePath.append(CONFIGURATION_FILE);
-   
+
     /* Open the configuration file and extracts Test manager IP address */
     go_ConfigFile.open (strFilePath.c_str(), ios::in);
     if (go_ConfigFile.is_open())
     {
         DEBUG_PRINT (DEBUG_LOG, "\nConfiguration file %s found \n", SHOW_DEFINE (CONFIGURATION_FILE));
-		
+
         /* Parsing configuration file to get manager IP */
         if (getline (go_ConfigFile, strManagerIP))
         {
@@ -238,16 +238,16 @@ int SendInfo (char* strStringToSend, int nStringSize)
             DEBUG_PRINT (DEBUG_ERROR, "Failed to extract Test Manager IP Address");
 
             return DEVICE_INFO_FAILURE;     // Return when failed to extract Test Manager IP Address
-		 
+
         }
 
     }
     else
     {
         DEBUG_PRINT (DEBUG_TRACE, "\nAlert!!! Configuration file %s not found \n", SHOW_DEFINE(CONFIGURATION_FILE));
-        	
+
         return DEVICE_INFO_FAILURE;     // Return when failed to open configuration file
-        
+
     }
 
     inet_pton (AF_INET, RpcMethods::sm_szManagerIP, (void *)&nDestination);
@@ -260,9 +260,9 @@ int SendInfo (char* strStringToSend, int nStringSize)
     if (nValue < 0)
     {
         perror("\nAlert!!! Failed to connect Test Manager ");
-        	
+
         return DEVICE_INFO_FAILURE;     // Return when failed to connect to Test Manager
-        
+
     }
 
     /* Sending data to Test Manager */
@@ -270,23 +270,23 @@ int SendInfo (char* strStringToSend, int nStringSize)
     if (nValue < 0)
     {
         perror("\nAlert!!! Failed to send data to Test Manager ");
-        	
+
         return DEVICE_INFO_FAILURE;     // Return when failed to send data to Test Manager
-        
+
     }
-	
+
     close (nInfoSockDesc);
-	
+
     return nReturnValue;
-	
+
 } /* End of SendInfo */
 
 
 /********************************************************************************************************************
  Purpose:               Function to print back trace on crash
- 
+
  Parameters:            Nil
-                             
+
  Return:                void
 
 *********************************************************************************************************************/
@@ -304,13 +304,13 @@ static void printBackTrace(void)
 
 /********************************************************************************************************************
  Purpose:               Signal Handler. Handles signals and jump to the jumpbuffer to keep application active.
- 
- Parameters:   
+
+ Parameters:
                         nCode [IN] - Signal number
-                             
+
  Return:                void
 
- Other Methods used:     
+ Other Methods used:
                         SendInfo()
 
 *********************************************************************************************************************/
@@ -324,14 +324,14 @@ static void SignalHandler (int nCode)
             s_bAgentRun = false;
             s_bAgentReset = false;
             break;
-			
+
         case SIGABRT :
             DEBUG_PRINT (DEBUG_LOG, "\nAlert!!! Agent caught an Abort signal! Attempting recovery..\n");
             printBackTrace();
             s_bAgentRun = false;
             longjmp (g_JumpBuffer,0);
             break;
-			
+
         case SIGSEGV :
             DEBUG_PRINT (DEBUG_LOG, "\nAlert!!! Segmentation fault signal caught! Attempting recovery..\n");
             printBackTrace();
@@ -343,12 +343,12 @@ static void SignalHandler (int nCode)
         case SIGUSR2 :
             RpcMethods::sm_nDeviceStatusFlag = DEVICE_FREE;
             break;
-			
+
         default :
             break;
-			
+
     }
-	
+
 } /* End of SignalHandler */
 
 
@@ -356,14 +356,14 @@ static void SignalHandler (int nCode)
 /********************************************************************************************************************
  Purpose:               To send box details such as box ip address and box name to test manager using SendInfo()
                              after reading box name from configuration file.
- 
- Parameters:   
+
+ Parameters:
                              null
- 
+
  Return:                 int    -  Success/Failure
 
- Other Methods used:    
-                                    SendInfo() 
+ Other Methods used:
+                                    SendInfo()
                                     GetSubString()
 
 *********************************************************************************************************************/
@@ -378,12 +378,12 @@ int SendDetailsToManager()
     /* Extracting path to file */
     strFilePath = RpcMethods::sm_strTDKPath;
     strFilePath.append(CONFIGURATION_FILE);
-    
+
     go_ConfigFile.open (strFilePath.c_str(), ios::in);
     if (go_ConfigFile.is_open())
     {
         DEBUG_PRINT (DEBUG_LOG, "\nConfiguration file %s found \n", SHOW_DEFINE (CONFIGURATION_FILE));
-			
+
         /* Parsing configuration file to get box name */
         for (int i=0; i<2; i++)
         {
@@ -402,18 +402,18 @@ int SendDetailsToManager()
         /* Sending details to Test Manager */
         if (foundDevice)
         {
-            strBoxName = GetSubString (strBoxName, "@");		
+            strBoxName = GetSubString (strBoxName, "@");
             RpcMethods::sm_szBoxName = strBoxName.c_str();
             DEBUG_PRINT (DEBUG_LOG, "Box Name is %s \n", RpcMethods::sm_szBoxName);
-			        
+
             /* Sending the box name and box ip address to Test Manager */
             szBoxInfo[0] = '\0';
             strcat(szBoxInfo, RpcMethods::sm_szBoxName);
             strcat(szBoxInfo, ",");
             strcat(szBoxInfo, RpcMethods::sm_strBoxIP.c_str());
-            //nSendInfoStatus = SendInfo (szBoxInfo, strlen(szBoxInfo)); 
-        }	
-        
+            //nSendInfoStatus = SendInfo (szBoxInfo, strlen(szBoxInfo));
+        }
+
     }
     else
     {
@@ -422,22 +422,22 @@ int SendDetailsToManager()
     }
 
     return nSendInfoStatus;
-	
+
 } /* End of SendDetailsToManager */
 
 
 
 /********************************************************************************************************************
- Purpose:               To Check if device had a crash during last power cycle. If it had, send Test casedetails such as execution ID, 
+ Purpose:               To Check if device had a crash during last power cycle. If it had, send Test casedetails such as execution ID,
                         device ID and Test case ID to test manager using SendInfo()
- 
- Parameters:   
+
+ Parameters:
                         null
- 
+
  Return:                int    -  Success/Failure
 
- Other Methods used:    
-                        SendInfo() 
+ Other Methods used:
+                        SendInfo()
                         GetSubString()
 
 *********************************************************************************************************************/
@@ -458,15 +458,15 @@ void* ReportCrash (void*)
 
     DEBUG_PRINT (DEBUG_TRACE, "\nStarting Crash Details Processing..\n");
 
-    /* Extracting path to file */	
+    /* Extracting path to file */
     strFilePath = RpcMethods::sm_strTDKPath;
     strFilePath.append(CRASH_STATUS_FILE);
-  	
+
     o_CrashStatusFile.open (strFilePath.c_str(), ios::in);
     if (o_CrashStatusFile.is_open())
     {
         DEBUG_PRINT (DEBUG_LOG, "\nConfiguration file %s found", SHOW_DEFINE (CRASH_STATUS_FILE) );
-		
+
         /* Parsing configuration file to get crash status */
         if (!getline (o_CrashStatusFile, strCrashStatus))
         {
@@ -482,7 +482,7 @@ void* ReportCrash (void*)
         {
             DEBUG_PRINT (DEBUG_LOG, "\nAlert !!! Crash occured in previous execution. Trying to send test details to Test Manager... \n");
             DEBUG_PRINT (DEBUG_LOG, "Test Details :  ");
-	
+
             /* Parsing configuration file to get execution ID */
             if (!getline (o_CrashStatusFile, strExecId))
             {
@@ -494,7 +494,7 @@ void* ReportCrash (void*)
                 strExecId = GetSubString (strExecId, ":");
                 if (strExecId == "")  (nCrashFlag = FLAG_NOT_SET);
             }
-		
+
             /* Parsing configuration file to get Device ID */
             if (!getline (o_CrashStatusFile, strDeviceId))
             {
@@ -506,7 +506,7 @@ void* ReportCrash (void*)
                 strDeviceId = GetSubString (strDeviceId, ":");
                 if (strDeviceId == "")  (nCrashFlag = FLAG_NOT_SET);
             }
-            
+
             /* Parsing configuration file to get Testcase ID */
             if (!getline (o_CrashStatusFile, strTestcaseId))
             {
@@ -518,7 +518,7 @@ void* ReportCrash (void*)
                 strTestcaseId = GetSubString (strTestcaseId, ":");
                 if (strTestcaseId == "")  (nCrashFlag = FLAG_NOT_SET);
             }
-			
+
             /* Parsing configuration file to get Execution Device ID */
             if (!getline (o_CrashStatusFile, strExecDeviceId))
             {
@@ -530,7 +530,7 @@ void* ReportCrash (void*)
                 strExecDeviceId = GetSubString (strExecDeviceId, ":");
                 if (strExecDeviceId == "")  (nCrashFlag = FLAG_NOT_SET);
             }
-					
+
             /* Parsing configuration file to get Result ID */
             if (!getline (o_CrashStatusFile, strResultId))
             {
@@ -542,7 +542,7 @@ void* ReportCrash (void*)
                 strResultId = GetSubString (strResultId, ":");
                 if (strResultId == "")  (nCrashFlag = FLAG_NOT_SET);
             }
-			
+
             o_CrashStatusFile.close();
 
             /* Sending the test details to Test Manager */
@@ -553,9 +553,9 @@ void* ReportCrash (void*)
                 DEBUG_PRINT (DEBUG_LOG, "    Device ID    : %s \n", strDeviceId.c_str());
                 DEBUG_PRINT (DEBUG_LOG, "    Testcase ID  : %s \n", strTestcaseId.c_str());
                 DEBUG_PRINT (DEBUG_LOG, "    Execution Device ID  : %s \n", strExecDeviceId.c_str());
-				
+
                 szCrashDetails[0] = '\0';
-                strcat(szCrashDetails, "CRASH_");			
+                strcat(szCrashDetails, "CRASH_");
                 strcat(szCrashDetails, strExecId.c_str());
                 strcat(szCrashDetails, ",");
                 strcat(szCrashDetails, strDeviceId.c_str());
@@ -565,23 +565,23 @@ void* ReportCrash (void*)
                 strcat(szCrashDetails, strExecDeviceId.c_str());
                 strcat(szCrashDetails, ",");
                 strcat(szCrashDetails, strResultId.c_str());
-            
+
                 /* Waiting to get a status query */
                 while (RpcMethods::sm_nStatusQueryFlag == FLAG_NOT_SET)
                 {
-                    sleep(1);	
+                    sleep(1);
                     nCount ++;
                     if (nCount == STATUS_QUERY_TIMEOUT)
                     {
                         break;
                     }
                 }
-		
-                nSendInfoStatus = SendInfo (szCrashDetails, strlen (szCrashDetails)); 
+
+                nSendInfoStatus = SendInfo (szCrashDetails, strlen (szCrashDetails));
                 if (nSendInfoStatus == DEVICE_INFO_SUCCESS)
                 {
                     DEBUG_PRINT (DEBUG_LOG, "Sent crash details to Test Manager successfully");
-				
+
                 }
             }
             else
@@ -598,17 +598,17 @@ void* ReportCrash (void*)
             {
                 DEBUG_PRINT (DEBUG_LOG, "\n%s successfully deleted \n", SHOW_DEFINE(CRASH_STATUS_FILE) );
             }
-			
+
         }
 
         else
         {
             DEBUG_PRINT (DEBUG_LOG, "Unable to report crash to Test Manager \n");
         }
-		
+
     }
 
-    pthread_exit (NULL);	
+    pthread_exit (NULL);
 
 } /* End of ReportCrash */
 
@@ -616,9 +616,9 @@ void* ReportCrash (void*)
 
 /********************************************************************************************************************
  Purpose:             To check the device status, whether the execution is in progress or box is free for execution. (Thread Function)
- 
+
  Parameters:          null
- 
+
  Return:              null
 
 *********************************************************************************************************************/
@@ -647,12 +647,12 @@ void *CheckStatus (void *)
 
 /********************************************************************************************************************
  Purpose:               To check whether a status query is received, if not send the device details to test manager. (Thread Function)
- 
+
  Parameters:            null
- 
+
  Return:                null
 
- Other Methods used: 
+ Other Methods used:
                         GetSubString()
                         GetHostIP()
                         SendDetailsToManager()
@@ -667,11 +667,11 @@ void *ProcessDeviceDetails (void *)
     bool deviceFound = false;
 
     DEBUG_PRINT (DEBUG_TRACE, "\nStarting Device Details Processing..\n");
-		
+
     /* Waiting to get a status query */
     while (RpcMethods::sm_nStatusQueryFlag == FLAG_NOT_SET)
     {
-        sleep(1);	
+        sleep(1);
         nCount ++;
 
         if (nCount == STATUS_QUERY_TIMEOUT)
@@ -686,7 +686,7 @@ void *ProcessDeviceDetails (void *)
         /* Extracting path to file */
         strFilePath = RpcMethods::sm_strTDKPath;
         strFilePath.append(CONFIGURATION_FILE);
-	
+
         go_ConfigFile.open (strFilePath.c_str(), ios::in);
         if (go_ConfigFile.is_open())
         {
@@ -709,44 +709,44 @@ void *ProcessDeviceDetails (void *)
             /* Communicate with Test Manager after retrieveng device IP address */
             if (deviceFound)
             {
-                strBoxInterface = GetSubString (strBoxInterface, "@");	
+                strBoxInterface = GetSubString (strBoxInterface, "@");
                 RpcMethods::sm_szBoxInterface = strBoxInterface.c_str();
                 DEBUG_PRINT (DEBUG_LOG, "\nBox interface is %s \n",RpcMethods::sm_szBoxInterface);
-            
+
                 /* Getting box IP address of corresponding interface */
                 RpcMethods::sm_strBoxIP = GetHostIP (RpcMethods::sm_szBoxInterface);
-			
+
                 /* Sending box details to test manager */
                 nDeviceInfoStatus = SendDetailsToManager();
                 if (nDeviceInfoStatus == DEVICE_INFO_FAILURE)
                 {
                     DEBUG_PRINT (DEBUG_TRACE, "\nAlert!!! Agent not able to communicate with Test Manager");
                 }
-			
+
             }
-			
+
         }
         else
         {
             DEBUG_PRINT (DEBUG_LOG, "\nAlert!!! Configuration file %s not found \n", SHOW_DEFINE(CONFIGURATION_FILE) );
         }
-			
+
     }
-		
+
     pthread_exit (NULL);
-	
+
 } /* End of ProcessDeviceDetails */
 
 
 
 /********************************************************************************************************************
- Description:           Agent Application. It enables RPC communication with test manager. 
- 
+ Description:           Agent Application. It enables RPC communication with test manager.
+
  Parameters:            null
- 
+
  Return:                int - Success/Failure
 
- Other Methods used: 
+ Other Methods used:
                         GetSubString()
                         GetHostIP()
                         SendDetailsToManager()
@@ -757,14 +757,14 @@ int Agent()
     std::string strFilePath;
     int nReturnValue = RETURN_SUCCESS;
     int nCrashReportStatus = RETURN_SUCCESS;
-    
+
     RpcMethods o_Agent(go_Server);
     if (!o_Agent.StartListening())
     {
         DEBUG_PRINT (DEBUG_ERROR, "Alert!!! Test Agent Listen failed \n");
-		
+
         return RETURN_FAILURE;   // Returns failure if Listen failed
-        
+
     }
 
     /* To set route to client devices. For gateway boxes only */
@@ -799,23 +799,23 @@ int Agent()
             system (pszCommand); // Executing port forward script
             o_gClientDeviceMap.insert (std::make_pair (strClientMACAddr, pszCommand));
         }
-		
+
         go_PortforwardFile.close();
     }
-	
+
     #endif /* End of PORT_FORWARD  */
 
     RpcMethods::sm_strConsoleLogPath = "";
     RpcMethods::sm_nDeviceStatusFlag = DEVICE_FREE;
     RpcMethods::sm_nStatusQueryFlag = FLAG_NOT_SET;
-    
+
     /* Starting new thread for Device Status Monitoring */
     nReturnValue = pthread_create (&deviceStatusThreadId, NULL, CheckStatus, NULL);
     if(nReturnValue != RETURN_SUCCESS)
     {
         DEBUG_PRINT (DEBUG_ERROR, "\nAlert!!! Failed to start Device Status Monitoring\n");
     }
-			
+
     /* Starting new thread for sending box information to Test Manager */
     nReturnValue = pthread_create (&deviceDetailsThreadId, NULL, ProcessDeviceDetails, NULL);
     if (nReturnValue != RETURN_SUCCESS)
@@ -829,8 +829,8 @@ int Agent()
     {
         DEBUG_PRINT (DEBUG_ERROR, "\nAlert!!! Failed to start Crash Details Processing\n");
     }
-		
-    /* Agent going for test execution */	
+
+    /* Agent going for test execution */
     sleep(1);
     DEBUG_PRINT (DEBUG_LOG, "\n\nAgent Ready for Execution... \n");
 
@@ -855,32 +855,32 @@ int Agent()
             /* Agent Recovery from termination */
             DEBUG_PRINT (DEBUG_ERROR, "\nAlert!!! Termination caught.. Agent Attempting Recovery...\n");
         }
-        
+
     }
 
     pthread_join (deviceStatusThreadId, NULL);
 
     /* To set route to client devices. For gateway boxes only */
     #ifdef PORT_FORWARD
-		
+
     system (FLUSH_IP_TABLE);
-		
+
     #endif /* End of PORT_FORWARD  */
-	
+
     return RETURN_SUCCESS;
-	
+
 } /* End of Agent */
 
 
 /********************************************************************************************************************
  Description:         To execute Agent. It helps to restart agent on receiving a ResetAgent message from TM.
- 
+
  Parameters:          pProcessDetails - pointer to structure have process info
- 
+
  Return:              void
 
  Other Methods used:  Agent()
- 
+
 *********************************************************************************************************************/
 void *AgentExecuter (void *pProcessDetails)
 {
@@ -909,7 +909,7 @@ void *AgentExecuter (void *pProcessDetails)
 
             sleep(3);
             exit(0);
-			
+
         }
         else if (nPID < RETURN_SUCCESS)
         {
@@ -918,7 +918,7 @@ void *AgentExecuter (void *pProcessDetails)
         else
         {
             RpcMethods::sm_nAgentPID = nPID;
-            waitpid (RpcMethods::sm_nAgentPID, NULL, 0);	
+            waitpid (RpcMethods::sm_nAgentPID, NULL, 0);
             sleep(2);
         }
     }
@@ -928,17 +928,17 @@ void *AgentExecuter (void *pProcessDetails)
 
 
 /********************************************************************************************************************
- Description:           Start and monitor agent execution. Invoke the corresponding rpc method on 
+ Description:           Start and monitor agent execution. Invoke the corresponding rpc method on
                         receiving "AgentReset" message from Test Manager. It also starts TFTP server
-                        for log transferring. 
- 
+                        for log transferring.
+
  Parameters:            pProcessName - pointer to process name
                         nProcessNameSize - length of process name
- 
+
  Return:                int - Success/Failure
 
  Other Methods used:    AgentExecuter()
- 
+
 *********************************************************************************************************************/
 int AgentMonitor (char **pProcessName, int nProcessNameSize)
 {
@@ -957,7 +957,7 @@ int AgentMonitor (char **pProcessName, int nProcessNameSize)
     {
         DEBUG_PRINT (DEBUG_ERROR, "Alert!!! Error signal SIGTERM will not be handled \n");
     }
-	
+
     if (signal (SIGINT, SignalHandler) == SIG_ERR)
     {
         DEBUG_PRINT (DEBUG_ERROR, "Alert!!! Error signal SIGINT will not be handled \n");
@@ -971,7 +971,7 @@ int AgentMonitor (char **pProcessName, int nProcessNameSize)
         DEBUG_PRINT (DEBUG_ERROR, "Alert!!! Agent Monitoring Listen failed \n");
 
         return RETURN_FAILURE;   // Returns failure if Listen failed
-		
+
     }
 
     /* Starting a thread for agent execution */
@@ -981,9 +981,9 @@ int AgentMonitor (char **pProcessName, int nProcessNameSize)
         DEBUG_PRINT (DEBUG_ERROR, "\nAlert!!! Failed to start execute Agent  \n");
 
         return RETURN_FAILURE;   // Returns failure if failed to start agent execution thread
-		
+
     }
-	
+
     while (s_bAgentMonitorRun)
     {
         waitpid (-1, NULL, WNOHANG | WUNTRACED);
@@ -1002,13 +1002,13 @@ int AgentMonitor (char **pProcessName, int nProcessNameSize)
 
 /********************************************************************************************************************
  Description:           main function. Starts agent monitoring.
- 
+
  Parameters:            null
- 
+
  Return:                int - Success/Failure
 
  Other Methods used:    AgentMonitor()
- 
+
 *********************************************************************************************************************/
 int main(int argc, char **argv)
 {
@@ -1021,19 +1021,19 @@ int main(int argc, char **argv)
     int nProcessNameSize = strlen(argv[0]);        // To fetch how many chars have been allocated
 
     /* Modifying process name to tdk_agent_monitor  */
-    strncpy(argv[0], "tdk_agent_monitor", nProcessNameSize); 
+    strncpy(argv[0], "tdk_agent_monitor", nProcessNameSize);
 
     /* Set Process group id as pid of parent agent process */
     if (setpgid (0, 0) != RETURN_SUCCESS)
     {
         perror("\nUnable to set process group id as pid of agent process\n");
     }
-	
+
     nPgid = getpgid(0);
     DEBUG_PRINT (DEBUG_LOG, "\nProcess Group Id : %d\n", nPgid);
 
     RpcMethods::sm_nConsoleLogFlag = FLAG_NOT_SET;
-    
+
     /* check whether the argument is given */
     if (argc ==2)
     {       /* checks wether the given argument is equvalent to the desired string*/
@@ -1061,7 +1061,7 @@ int main(int argc, char **argv)
     else
     {
         DEBUG_PRINT (DEBUG_ERROR, "Alert!!! TDK_PATH not exported \n");
-		
+
         return RETURN_FAILURE;   // Returns failure if TDK_PATH not exported
     }
 
@@ -1091,9 +1091,9 @@ int main(int argc, char **argv)
     }
 
     DEBUG_PRINT (DEBUG_LOG, "\nAgent Shutttingdown...\n");
-	
+
     return nReturnValue;
-	
+
 } /* End of main */
 
 

@@ -21,7 +21,7 @@
 #include "ssp_tdk_dhcp_hal_wrp.h"
 #include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 
-/* for reference added it,(IN) indicates accepting the request from Test Manager 
+/* for reference added it,(IN) indicates accepting the request from Test Manager
    and (OUT) indicates sending the response for the request back to the Manager
 */
 #ifndef IN
@@ -70,12 +70,12 @@ class dhcp_stub_hal : public RDKTestStubInterface, public AbstractServer<dhcp_st
 			this->bindAndAddMethod(Procedure("dhcp_stub_hal_get_ert_remain_renew_time", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_renew_time);
 			this->bindAndAddMethod(Procedure("erouter_ip_stub_get_ip_address", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &dhcp_stub_hal::erouter_ip_stub_get_ip_address);
 		}
-		
+
 		bool initialize(IN const char* szVersion);
 		bool cleanup(const char*);
 		std::string testmodulepre_requisites();
 		bool testmodulepost_requisites();
-		
+
 		void dhcp_stub_hal_get_ecm_config_attempts(IN const Json::Value& req, OUT Json::Value& response);
 		void dhcp_stub_hal_get_ecm_dhcp_svr(IN const Json::Value& req, OUT Json::Value& response);
 		void dhcp_stub_hal_get_ecm_dns_svrs(IN const Json::Value& req, OUT Json::Value& response);

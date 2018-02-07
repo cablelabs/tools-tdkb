@@ -62,7 +62,7 @@ bool dbgFinder( const char *module, const char *level)
 	    // Ignore commented lines
             if (line[0] == '#')
             	continue;
-	    // Check if module name and log level combination is present		
+	    // Check if module name and log level combination is present
             if ((line.find(module, 0) != string::npos) && (line.find(level, 0) != string::npos))
             {
                 debugFile.close();
@@ -83,7 +83,7 @@ bool dbgFinder( const char *module, const char *level)
  * @param search Log message logged by RDK_LOG.
  * @return       true if log msg is found
  *               false if log msg is not found
- * Filename is derived from the console log file name generated 
+ * Filename is derived from the console log file name generated
  * on each testcase execution.
  **/
 bool CheckLog(const char* search)
@@ -100,7 +100,7 @@ bool CheckLog(const char* search)
         while(logFile.good())
         {
             getline(logFile,line);
-            if (line.find(search, 0) != string::npos) 
+            if (line.find(search, 0) != string::npos)
             {
 		DEBUG_PRINT(DEBUG_TRACE,"Success! RDKBLogger test log \"%s\" found in file %s\n",search,tdkLogFile.c_str());
 		logFile.close();
@@ -191,7 +191,7 @@ Description   : Registering all the wrapper functions with the agent for using t
 bool RDKBLoggerAgent::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_ERROR, "RDKBLoggerAgent Initialization\n");
-    
+
 	return TEST_SUCCESS;
 }
 /***************************************************************************
@@ -297,8 +297,8 @@ void RDKBLoggerAgent::RDKBLoggerAgent_Init(IN const Json::Value& req, OUT Json::
 }
 /**************************************************************************
 Function name : RDKBLoggerAgent::RDKBLoggerAgent_Log
-Arguments     : Input argument is "module", "level". 
-		Output argument: 
+Arguments     : Input argument is "module", "level".
+		Output argument:
 		"SUCCESS" if logging is successful
 		"FAILURE" if logging failed.
 Description   : Receives the request from Test Manager to add a log message.
@@ -333,11 +333,11 @@ void RDKBLoggerAgent::RDKBLoggerAgent_Log(IN const Json::Value& req, OUT Json::V
 }
 /**************************************************************************
 Function name : RDKBLoggerAgent::RDKBLoggerAgent_Dbg_Enabled_Status
-Arguments     : Input argument is "module" and "level". 
+Arguments     : Input argument is "module" and "level".
 		Output argument is "SUCCESS" or "FAILURE".
-Description   : Receives the request from Test Manager to check if a specified log level 
+Description   : Receives the request from Test Manager to check if a specified log level
 		of a module is enabled.
-                Gets the response from RDKBLogger element and send it to the Test Manager. 
+                Gets the response from RDKBLogger element and send it to the Test Manager.
 **************************************************************************/
 void RDKBLoggerAgent::RDKBLoggerAgent_Dbg_Enabled_Status(IN const Json::Value& req, OUT Json::Value& response)
 {
@@ -349,7 +349,7 @@ void RDKBLoggerAgent::RDKBLoggerAgent_Dbg_Enabled_Status(IN const Json::Value& r
 	string level = req["level"].asString();
         sprintf(rdkMod, "LOG.RDK.%s", module.c_str());
         logLevel = logNameToEnum(level.c_str());
-	
+
 	bool rdkStatus = rdk_dbg_enabled( rdkMod, (rdk_LogLevel)logLevel);
 	bool dbgFindStatus = dbgFinder( rdkMod, level.c_str());
         if (dbgFindStatus == rdkStatus)
@@ -369,7 +369,7 @@ void RDKBLoggerAgent::RDKBLoggerAgent_Dbg_Enabled_Status(IN const Json::Value& r
 		DEBUG_PRINT(DEBUG_TRACE, "RDKBLoggerAgent_Dbg_Enabled_Status -->Exit\n");
 		return;
         }
-	DEBUG_PRINT(DEBUG_ERROR, "Failed to get %s %s log status\n", rdkMod, level.c_str()); 
+	DEBUG_PRINT(DEBUG_ERROR, "Failed to get %s %s log status\n", rdkMod, level.c_str());
 	DEBUG_PRINT(DEBUG_TRACE, "rdk_dbg_enabled result = %d dbgFinder result = %d\n", rdkStatus, dbgFindStatus);
 	response["result"] = "FAILURE";
 	response["details"] = "Failed to get dbg enable status";
@@ -379,7 +379,7 @@ void RDKBLoggerAgent::RDKBLoggerAgent_Dbg_Enabled_Status(IN const Json::Value& r
 /**************************************************************************
 Function name : RDKBLoggerAgent::RDKBLoggerAgent_EnvGet
 Arguments     : Input argument is "module". Output argument is "SUCCESS" or "FAILURE".
-Description   : Receives the request from Test Manager to get the logging level value of the 
+Description   : Receives the request from Test Manager to get the logging level value of the
 		specified environment variable
                 Gets the response from RDKBLogger element and send it to the Test Manager.
 **************************************************************************/
@@ -443,7 +443,7 @@ void RDKBLoggerAgent::RDKBLoggerAgent_EnvGetNum(IN const Json::Value& req, OUT J
 /**************************************************************************
 Function name : RDKBLoggerAgent::RDKBLoggerAgent_EnvGetValueFromNum
 Arguments     : Input argument is "number". Output argument is "SUCCESS" or "FAILURE".
-Description   : Receives the request from Test Manager to get the logging level value of the 
+Description   : Receives the request from Test Manager to get the logging level value of the
 		specified environment variable based on its registered number
                 Gets the response from RDKBLogger element and send it to the Test Manager.
 **************************************************************************/
@@ -548,7 +548,7 @@ void RDKBLoggerAgent::RDKBLoggerAgent_CheckMPELogEnabled(IN const Json::Value& r
 Function name : RDKBLoggerAgent::RDKBLoggerAgent_Log_All
 Arguments     : Input argument is "module"
                 Output argument:
- 		"SUCCESS" if all 5 logs are logged 
+ 		"SUCCESS" if all 5 logs are logged
 		"FAILURE" if any one logging fails.
 Description   : Receives the request from Test Manager to add 5 log messages
 		of levels INFO, NOTICE, WARNING, ERROR and FATAL for a module
@@ -627,7 +627,7 @@ void RDKBLoggerAgent::RDKBLoggerAgent_Log_None(IN const Json::Value& req, OUT Js
 /**************************************************************************
 Function name : RDKBLoggerAgent::RDKBLoggerAgent_Log_Trace
 Arguments     : Input argument is "module"
-                Output argument: 
+                Output argument:
 		"SUCCESS" if all 9 trace logs are logged
 		"FAILURE" if any one trace log is not logged
 Description   : Receives the request from Test Manager to add 9 log messages
@@ -671,7 +671,7 @@ Arguments     : Input argument is "module"
 		"SUCCESS" if none of trace logs are logged
 		"FAILURE" if any one trace log is logged
 Description   : Receives the request from Test Manager to add 9 log messages
-                of levels TRACE1..TRACE9 for a module configured with !TRACE threshold 
+                of levels TRACE1..TRACE9 for a module configured with !TRACE threshold
 		in conf file.
                 Gets the response from RDKBLogger element and send it to the Test Manager.
 **************************************************************************/

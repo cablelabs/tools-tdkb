@@ -70,15 +70,15 @@ int ssp_mbus_loadcfg(char *pCmpCfg)
         gpTDKStartCfg = (PCCSP_COMPONENT_CFG)AnscAllocateMemory(sizeof(CCSP_COMPONENT_CFG));
     }
 
-    return_status = CcspComponentLoadCfg(pCmpCfg, 
+    return_status = CcspComponentLoadCfg(pCmpCfg,
             gpTDKStartCfg);
 
-    strcat(eRTName,subsystem_prefix);	
+    strcat(eRTName,subsystem_prefix);
     strcat(eRTName,gpTDKStartCfg->ComponentId);
     strcpy(gpTDKStartCfg->ComponentId,eRTName);
 
     eRTName[0] = '\0';
-    strcat(eRTName,subsystem_prefix);	
+    strcat(eRTName,subsystem_prefix);
     strcat(eRTName,gpTDKStartCfg->ComponentName);
     strcpy(gpTDKStartCfg->ComponentName,eRTName);
     sprintf(gpTDKStartCfg->DbusPath,"/com/cisco/spvtg/ccsp/tdkb");
@@ -118,7 +118,7 @@ int ssp_mbus_load_dmlxml(char *pCmpDmXml)
         gpTDKDmXml = (PCCSP_DM_XML_CFG_LIST)AnscAllocateMemory(sizeof(CCSP_DM_XML_CFG_LIST));
     }
 
-    return_status = CcspComponentLoadDmXmlList(pCmpDmXml, 
+    return_status = CcspComponentLoadDmXmlList(pCmpDmXml,
             &gpTDKDmXml);
 
     if(return_status != SSP_MBUS_SUCCESS)
@@ -142,7 +142,7 @@ int ssp_mbus_load_dmlxml(char *pCmpDmXml)
  *
  * Function Name        : ssp_mbus_init
  * Description          : This function will call base interface funtion which is defined
- *                        on top of dbus calls to initialize message bus that provides valid 
+ *                        on top of dbus calls to initialize message bus that provides valid
  *                        handle
  *
  * @param [in]          : pCfg    - Config file name with absolute path
@@ -352,7 +352,7 @@ int ssp_mbus_register_base()
     }
     else
     {
-        printf("\n ssp_mbus_register_base :: CcspBaseIf_registerBase function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_register_base :: CcspBaseIf_registerBase function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
 
@@ -363,13 +363,13 @@ int ssp_mbus_register_base()
  *
  * Function Name    : registerEventCb
  * Description      : This function is callback function for the event registration
- *                    
+ *
  *
  * @param [in]  val -  Holds the signal Structure Value
  * @param [in]  size - size of the user data
  * @param [in]  user_data - Pointer to the user data
  * @param [out] - Nil
- *                         
+ *
  ********************************************************************************************/
 static void registerEventCb(parameterSigStruct_t* val, int size, void* user_data)
 {
@@ -449,7 +449,7 @@ int ssp_mbus_register_event(char *pEventName)
     }
     else
     {
-        printf("\n ssp_mbus_register_event :: CcspBaseIf_Register_Event function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_register_event :: CcspBaseIf_Register_Event function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
 
@@ -487,7 +487,7 @@ int ssp_mbus_unregister_event(char *pEventName)
     }
     else
     {
-        printf("\n ssp_mbus_unregister_event :: CcspBaseIf_UnRegister_Event function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_unregister_event :: CcspBaseIf_UnRegister_Event function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
 
@@ -630,7 +630,7 @@ int ssp_mbus_namespace_supportedby_component()
     }
     else
     {
-        printf("\n ssp_mbus_namespace_supportedby_component :: CcspBaseIf_discNamespaceSupportedByComponent function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_namespace_supportedby_component :: CcspBaseIf_discNamespaceSupportedByComponent function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
 
@@ -665,7 +665,7 @@ int ssp_mbus_component_supporting_dynamictbl()
     }
     else
     {
-        printf("\n ssp_mbus_component_supporting_dynamictbl :: CcspBaseIf_discComponentSupportingDynamicTbl function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_component_supporting_dynamictbl :: CcspBaseIf_discComponentSupportingDynamicTbl function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
     return return_status;
@@ -703,7 +703,7 @@ int ssp_mbus_get_registered_components()
     }
     else
     {
-        printf("\n ssp_mbus_get_registered_components :: CcspBaseIf_getRegisteredComponents function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_get_registered_components :: CcspBaseIf_getRegisteredComponents function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
     return return_status;
@@ -738,7 +738,7 @@ int ssp_mbus_check_namespace_datatype()
     }
     else
     {
-        printf("\n ssp_mbus_check_namespace_datatype :: CcspBaseIf_checkNamespaceDataType function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_check_namespace_datatype :: CcspBaseIf_checkNamespaceDataType function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
     return return_status;
@@ -770,7 +770,7 @@ int ssp_mbus_dump_component_registry()
     }
     else
     {
-        printf("\n ssp_mbus_dump_component_registry :: CcspBaseIf_dumpComponentRegistry function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_dump_component_registry :: CcspBaseIf_dumpComponentRegistry function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
     return return_status;
@@ -802,7 +802,7 @@ int ssp_mbus_issystem_ready()
     }
     else
     {
-        printf("\n ssp_mbus_issystem_ready :: CcspBaseIf_isSystemReady function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_issystem_ready :: CcspBaseIf_isSystemReady function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
     return return_status;
@@ -885,7 +885,7 @@ int ssp_mbus_bus_check()
     }
     else
     {
-        printf("\n ssp_mbus_bus_check :: CcspBaseIf_busCheck function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_bus_check :: CcspBaseIf_busCheck function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
     return return_status;
@@ -917,7 +917,7 @@ int ssp_mbus_req_sessionid(char *pCfg,char *pcmpCfg,int apitest)
     }
     else
     {
-        printf("\n ssp_mbus_req_sessionid :: CcspBaseIf_requestSessionID function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_req_sessionid :: CcspBaseIf_requestSessionID function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
     return return_status;
@@ -1011,7 +1011,7 @@ int ssp_mbus_inform_end_session()
     }
     else
     {
-        printf("\n ssp_mbus_inform_end_session :: CcspBaseIf_informEndOfSession function is failure and return status %d",return_status);        
+        printf("\n ssp_mbus_inform_end_session :: CcspBaseIf_informEndOfSession function is failure and return status %d",return_status);
         return_status = SSP_MBUS_FAILURE;
     }
     return return_status;

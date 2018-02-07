@@ -43,7 +43,7 @@ class RDKTestAgent;
 class TADstub : public RDKTestStubInterface, public AbstractServer<TADstub>
 {
     public:
-        
+
 		TADstub(TcpSocketServer &ptrRpcServer) : AbstractServer <TADstub>(ptrRpcServer)
 		{
 			this->bindAndAddMethod(Procedure("TADstub_Get", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &TADstub::TADstub_Get);
@@ -55,14 +55,14 @@ class TADstub : public RDKTestStubInterface, public AbstractServer<TADstub>
 			this->bindAndAddMethod(Procedure("TADstub_SetCfg", PARAMS_BY_NAME, JSON_STRING, "mode", JSON_INTEGER, "host", JSON_STRING, NULL), &TADstub::TADstub_SetCfg);
 			this->bindAndAddMethod(Procedure("TADstub_GetCfg", PARAMS_BY_NAME, JSON_STRING, "mode", JSON_INTEGER, NULL), &TADstub::TADstub_GetCfg);
 			this->bindAndAddMethod(Procedure("TADstub_GetState", PARAMS_BY_NAME, JSON_STRING, "mode", JSON_INTEGER, NULL), &TADstub::TADstub_GetState);
-		}		
+		}
 
         /*inherited functions*/
         bool initialize(IN const char* szVersion);
         bool cleanup(IN const char* szVersion);
         std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
-		
+
         /*TAD Stub Wrapper functions*/
         void TADstub_Get(IN const Json::Value& req, OUT Json::Value& response);
         void TADstub_Set(IN const Json::Value& req, OUT Json::Value& response);

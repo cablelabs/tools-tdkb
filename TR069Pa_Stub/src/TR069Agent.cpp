@@ -84,7 +84,7 @@ bool TR069Agent::testmodulepost_requisites()
 }
 /***************************************************************************
  *Function name : TR069Agent_Init
- *Descrption    : TR069Agent_Init will be used for intiating 
+ *Descrption    : TR069Agent_Init will be used for intiating
  *                in CCSP module
  *
  *****************************************************************************/
@@ -141,7 +141,7 @@ void TR069Agent::TR069Agent_GetParameterValues(IN const Json::Value& req, OUT Js
         }
         if(i==size_ret)
         {
-            free_Memory_val(size_ret,DataParamValue); 	
+            free_Memory_val(size_ret,DataParamValue);
             response["result"] = "SUCCESS";
             response["details"] = "Get Param value Success";
             return;
@@ -200,7 +200,7 @@ void TR069Agent::TR069Agent_SetParameterValues(IN const Json::Value& req, OUT Js
             return;
         }
         else
-        {	
+        {
             free_Memory_val(size_ret,DataParamValue1);
             printf("Parameter Value has not changed after a proper Set\n");
 
@@ -238,13 +238,13 @@ void TR069Agent::TR069Agent_GetParameterNames(IN const Json::Value& req, OUT Jso
     DataValue1=ssp_getParameterNames(&ParamList[0],0,&size);
     if(NULL==DataValue1)
     {
-        printf("Get Param Name for ParameterList returned NULL\n");	
+        printf("Get Param Name for ParameterList returned NULL\n");
         free_Memory_Names(size_ret,DataValue);
     }
     else
     {
         for(i=0;i<size;i++)
-        {	
+        {
             if(strcmp(DataValue1[i].pParamNames,DataValue[0].pParamNames)==0)
             {
                 if(DataValue[0].writable==DataValue1[i].writable)
@@ -266,10 +266,10 @@ void TR069Agent::TR069Agent_GetParameterNames(IN const Json::Value& req, OUT Jso
                 }
             }
         }
-        free_Memory_Names(size,DataValue1);	
+        free_Memory_Names(size,DataValue1);
         response["result"] = "FAILURE";
         response["details"] = "Parameter Name does not match with the paramters in paramter list";
-        return;	
+        return;
     }
 
 }
@@ -304,12 +304,12 @@ void TR069Agent::TR069Agent_GetParameterAttr(IN const Json::Value& req, OUT Json
         }
 
         if(i==size_ret)
-        {	
+        {
             free_Memory_Attr(size_ret,DataParamAttr);
             response["result"] = "SUCCESS";
             response["details"] = "Get Param Attribute Success";
             return;
-        }	
+        }
 
     }
     response["result"] = "FAILURE";
@@ -362,7 +362,7 @@ void TR069Agent::TR069Agent_SetParameterAttr(IN const Json::Value& req, OUT Json
                 strcpy(&Notify[0],"on");
             }
             if((strcmp(&Notify[0],&DataParamAttr1[i].pParamNotify[0])==0) && (strcmp(&AccessControl[0],&DataParamAttr1[i].pParamAccess[0])==0))
-            {    
+            {
                 printf("Set has been validated successfully\n");
                 if(i==(size_ret-1))
                 {

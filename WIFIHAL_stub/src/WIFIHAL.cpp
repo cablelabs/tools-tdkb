@@ -40,11 +40,11 @@ bool WIFIHAL::initialize(IN const char* szVersion)
 std::string WIFIHAL::testmodulepre_requisites()
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL testmodulepre_requisites --->Entry\n");
-    
+
     int return_value = 0;
 
     return_value = ssp_wifi_init();
-    
+
     if(0 == return_value)
     {
         DEBUG_PRINT(DEBUG_TRACE,"\n testmodulepre_requisites ---> Initialize SUCCESS !!! \n");
@@ -140,7 +140,6 @@ void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
             sprintf(details, "%s operation success", methodName);
             response["result"]="SUCCESS";
             response["details"]=details;
-            //return TEST_SUCCESS;
 	    return;
 
         }
@@ -158,7 +157,6 @@ void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
             sprintf(details, "Enable state : %s", int(enable)? "Enabled" : "Disabled");
             response["result"]="SUCCESS";
             response["details"]=details;
-            //return TEST_SUCCESS;
 	    return;
         }
      }
@@ -166,7 +164,6 @@ void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
      response["result"]="FAILURE";
      response["details"]=details;
      DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForBool --->Error in execution\n");
-     //return  TEST_FAILURE;
      return;
 }
 
@@ -208,7 +205,6 @@ void WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
             sprintf(details, "%s operation success", methodName);
             response["result"]="SUCCESS";
             response["details"]=details;
-           //return TEST_SUCCESS;
 	    return;
         }
     }
@@ -225,7 +221,6 @@ void WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
             sprintf(details, "Value returned is :%lu", uLongVar);
             response["result"]="SUCCESS";
             response["details"]=details;
-            //return TEST_SUCCESS;
 	    return;
         }
      }
@@ -233,7 +228,6 @@ void WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
      response["result"]="FAILURE";
      response["details"]=details;
      DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForULong --->Error in execution\n");
-     //return  TEST_FAILURE;
      return;
 
 }
@@ -267,7 +261,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
     radioIndex = req["radioIndex"].asInt();
     strcpy(paramType, req["paramType"].asCString());
     strcpy(param, req["param"].asCString());
-    
+
     if(strstr(methodName, "set"))
     {
         returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, param, methodName);
@@ -286,7 +280,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
             DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForString --->Error in execution\n");
             return;
         }
-            
+
     }
     else
     {
@@ -445,7 +439,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Jso
             response["details"]=details;
             return;
         }
-     }  
+     }
      sprintf(details, "%s operation failed", methodName);
      response["result"]="FAILURE";
      response["details"]=details;
@@ -471,18 +465,6 @@ extern "C" WIFIHAL* CreateObject(TcpSocketServer &ptrtcpServer)
 bool WIFIHAL::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"WIFIHAL shutting down\n");
-#if 0
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-    /*unRegister stub function for callback*/
-    ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamBoolValue");
-    ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamULongValue");
-    ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamStringValue");
-    ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamIntValue");
-    ptrAgentObj->UnregisterMethod("WIFIHAL_GetOrSetParamUIntValue");
-#endif
     return TEST_SUCCESS;
 }
 

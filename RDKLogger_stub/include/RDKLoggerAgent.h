@@ -54,7 +54,7 @@ class RDKBLoggerAgent : public RDKTestStubInterface, public AbstractServer<RDKBL
 			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_All", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_All);
 			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_None", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_None);
 			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_Trace", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_Trace);
-			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_InverseTrace", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_InverseTrace);   
+			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_InverseTrace", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_InverseTrace);
 			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_Log_Msg", PARAMS_BY_NAME, JSON_STRING,"module",JSON_STRING,"level",JSON_STRING,"msg",JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_Log_Msg);
 			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_SetLogLevel", PARAMS_BY_NAME, JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_SetLogLevel);
 			this->bindAndAddMethod(Procedure("TestMgr_RDKBLogger_GetLogLevel", PARAMS_BY_NAME, JSON_STRING,NULL), &RDKBLoggerAgent::RDKBLoggerAgent_GetLogLevel);

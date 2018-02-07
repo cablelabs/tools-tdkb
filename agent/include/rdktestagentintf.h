@@ -22,7 +22,6 @@
 
 /* System Includes */
 #include <json/json.h>
-//#include <jsonrpc/jsonrpc.h>           //sarves
 #include <jsonrpccpp/server.h>
 #include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 #include <jsonrpccpp/client.h>
@@ -85,59 +84,12 @@ class RDKTestAgent : public AbstractServer<RDKTestAgent>
 
 	public:
 		/* Constructor */
-                //sarves
-#if 0
-		RDKTestAgent (Json::Rpc::TcpServer *ptrRpcServer)
-		{
-			m_ptrRPCServer = ptrRpcServer;
-		}
-#endif
                RDKTestAgent(TcpSocketServer &ptrRpcServer) : AbstractServer <RDKTestAgent>(ptrRpcServer)
                {
 
                }
 		virtual ~RDKTestAgent(){}
 
-               //  virtual bool bindAndAddMethod(const Procedure& proc, methodPointer_t pointer);
-//sarves
-#if 0
-/********************************************************************************************************************
-Description  :       This function helps to register methods to enable RPC.
-Parameters :   
-refObj   - Ponter to reference class.
-ptrFn     - Pointer to function to be registered as an RPC.
-szName - Name of the function to register in RPC mechanism.
-
-Return:                bool  -      Always returning true from this function.
-
-*********************************************************************************************************************/
-		template <class T> bool RegisterMethod (T& refObj, bool (T::*ptrFn) (const Json::Value&, Json::Value&), const char* szName )
-		{
-			DEBUG_PRINT (DEBUG_ERROR, "Registering %s \n", szName);
-			m_ptrRPCServer -> AddMethod (new Json::Rpc::RpcMethod <T> (refObj, ptrFn, std::string (szName)));
-			return true;
-		}
-#endif
-
-/********************************************************************************************************************
-Description  :       This function helps to unregister methods which is registered for RPC mechanism.
-Parameters :   
-szName - Name of the function as registered in RPC mechanism.
-
-Return:                bool  -      Always returning true from this function.
-
-*********************************************************************************************************************/
-#if 0
-		bool UnregisterMethod (const char* szName)
-		{
-			DEBUG_PRINT (DEBUG_LOG,  "Unregistering %s \n", szName);
-			m_ptrRPCServer -> DeleteMethod (szName);
-			return true;
-		}
-
-	private:
-		Json::Rpc::TcpServer  *m_ptrRPCServer;
-#endif
 }; /* End of RDKTestAgent*/
 
 #endif  //__RDK_TEST_AGENT_INTF__

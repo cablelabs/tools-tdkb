@@ -44,7 +44,7 @@ class RDKTestAgent;
 class WECB : public RDKTestStubInterface, public AbstractServer<WECB>
 {
     public:
-        
+
 		WECB(TcpSocketServer &ptrRpcServer) : AbstractServer <WECB>(ptrRpcServer)
 		{
 			this->bindAndAddMethod(Procedure("WECB_GetParamNames", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, "paramList", JSON_STRING, "recursive", JSON_INTEGER, NULL), &WECB::WECB_GetParamNames);

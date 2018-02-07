@@ -48,7 +48,7 @@ extern "C"
 bool TADstub::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::TADstub Initialize\n");
-   
+
     return TEST_SUCCESS;
 
 }
@@ -245,7 +245,7 @@ void TADstub::TADstub_SetDiagnosticsState(IN const Json::Value& req, OUT Json::V
     strcpy(ParamName,req["ParamName"].asCString());
     strcpy(ParamValue,req["ParamValue"].asCString());
     strcpy(Type,req["Type"].asCString());
- 
+
     setResult=ssp_setParameterValue(&ParamName[0],&ParamValue[0],&Type[0],1);
     if(setResult==0)
     {
@@ -261,7 +261,7 @@ void TADstub::TADstub_SetDiagnosticsState(IN const Json::Value& req, OUT Json::V
         return;
     }
 }
-    
+
 /*******************************************************************************************
  *
  * Function Name        : TADstub_Init
@@ -483,10 +483,10 @@ extern "C" TADstub* CreateObject(TcpSocketServer &ptrtcpServer)
  *
  **************************************************************************/
 
-bool TADstub::cleanup(IN const char* szVersion)		
+bool TADstub::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"TADstub shutting down\n");
-  
+
     return TEST_SUCCESS;
 }
 

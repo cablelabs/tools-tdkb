@@ -48,7 +48,7 @@ class RDKTestAgent;
 class TR069Agent : public RDKTestStubInterface, public AbstractServer<TR069Agent>
 {
         public:
-        
+
 		TR069Agent(TcpSocketServer &ptrRpcServer) : AbstractServer <TR069Agent>(ptrRpcServer)
 		{
 			this->bindAndAddMethod(Procedure("TR069Agent_Init", PARAMS_BY_NAME, JSON_STRING,NULL), &TR069Agent::TR069Agent_Init);
@@ -75,4 +75,4 @@ class TR069Agent : public RDKTestStubInterface, public AbstractServer<TR069Agent
 	    void TR069Agent_SetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);
 };
 
-#endif 
+#endif

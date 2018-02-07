@@ -193,9 +193,9 @@ int ssp_CRRestart()
 /*******************************************************************************************
  *
  * Function Name        : ssp_pam_Init()
- * Description          : This function will check if the pam module is getting initialised 
+ * Description          : This function will check if the pam module is getting initialised
                           or not
- * @param [out]         : return status an integer value 0-success and 1-Failure 
+ * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 int ssp_pam_Init()
 {

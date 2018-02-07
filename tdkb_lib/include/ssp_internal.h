@@ -114,7 +114,7 @@ ssp_cancel_pnm
  );
 
 
-ANSC_STATUS 
+ANSC_STATUS
 ssp_LoadCosaPluginLibrary
 (
 );

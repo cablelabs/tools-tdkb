@@ -58,13 +58,13 @@ class TDKB_E2E : public RDKTestStubInterface, public AbstractServer<TDKB_E2E>
 			this->bindAndAddMethod(Procedure("tdkb_e2e_Set", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, "paramValue", JSON_STRING, "paramType", JSON_STRING, NULL), &TDKB_E2E::tdkb_e2e_Set);
 			this->bindAndAddMethod(Procedure("tdkb_e2e_SetMultipleParams", PARAMS_BY_NAME, JSON_STRING, "paramList", JSON_STRING, NULL), &TDKB_E2E::tdkb_e2e_SetMultipleParams);
 		}
-	
+
         /*inherited functions*/
         bool initialize(IN const char* szVersion);
         bool cleanup(IN const char* szVersion);
         std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
-		
+
         /*TDKB_E2E Stub Wrapper functions*/
         void tdkb_e2e_Get(IN const Json::Value& req, OUT Json::Value& response);
         void tdkb_e2e_Set(IN const Json::Value& req, OUT Json::Value& response);

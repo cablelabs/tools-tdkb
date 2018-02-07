@@ -15,7 +15,7 @@ limitations under the License.
  ******************************************************************************/
 #ifndef __SSP_TDK_DHCP_HAL_WRP_H__
 #define __SSP_TDK_DHCP_HAL_WRP_H__
-#include "dhcpv4c_api.h"         
+#include "dhcpv4c_api.h"
 
 #ifdef __cplusplus
 extern "C"

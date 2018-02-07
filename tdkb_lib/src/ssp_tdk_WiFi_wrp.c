@@ -26,7 +26,7 @@
  * Function Name        : ssp_wifi_init
  * Description          : This function invokes WiFi hal's init api *
  * @param [in]  N/A
- * @param [out] N/A 
+ * @param [out] N/A
  ********************************************************************************************/
 int ssp_wifi_init()
 {
@@ -43,11 +43,11 @@ int ssp_wifi_init()
 
     if(return_status == SSP_SUCCESS)
     {
-         printf("\nssp_wifi_init::WIFI HAL Initialization success\n"); 
+         printf("\nssp_wifi_init::WIFI HAL Initialization success\n");
     }
     else
     {
-        printf("\nssp_wifi_init::Failed to initialize the WIFI HAL\n");     
+        printf("\nssp_wifi_init::Failed to initialize the WIFI HAL\n");
     }
 #endif
 
@@ -89,7 +89,7 @@ int ssp_WIFIHALApplySettings(int radioIndex)
 /*******************************************************************************************
  *
  * Function Name        : ssp_WIFIHALGetOrSetParamBoolValue
- * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
+ * Description          : This function invokes WiFi hal's get/set apis, when the value to be
                           get /set is Bool
  *
  * @param [in]          : radioIndex - WiFi radio index value
@@ -220,7 +220,7 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
 /*******************************************************************************************
  *
  * Function Name        : ssp_WiFiHalCallMethodForULong
- * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
+ * Description          : This function invokes WiFi hal's get/set apis, when the value to be
                           get /set is Unsigned long
  *
  * @param [in]          : radioIndex - WiFi radio index value
@@ -276,7 +276,7 @@ int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, 
 /*******************************************************************************************
  *
  * Function Name        : ssp_WiFiHalCallMethodForString
- * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
+ * Description          : This function invokes WiFi hal's get/set apis, when the value to be
                           get /set is a string value
  *
  * @param [in]          : radioIndex - WiFi radio index value
@@ -405,7 +405,7 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
 /*******************************************************************************************
  *
  * Function Name        : ssp_WiFiHalCallMethodForInt
- * Description          : This function invokes WiFi hal's get apis, when the value to be 
+ * Description          : This function invokes WiFi hal's get apis, when the value to be
                           get  is an integer value
  *
  * @param [in]          : radioIndex - WiFi radio index value
@@ -475,7 +475,7 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
 /*******************************************************************************************
  *
  * Function Name        : ssp_WIFIHALGetOrSetParamUIntValue
- * Description          : This function invokes WiFi hal's get apis, when the value to be 
+ * Description          : This function invokes WiFi hal's get apis, when the value to be
                           get  is an unsigned integer value
  *
  * @param [in]          : radioIndex - WiFi radio index value

@@ -39,12 +39,11 @@
 #define TEST_FAILURE false
 #define MAX_PARAM_SIZE	100
 #define MAX_PARAM_NAMES_ARRAY	1000
-  
+
 using namespace std;
 
 class RDKTestAgent;
 
-//class pam : public RDKTestStubInterface
 class pam : public RDKTestStubInterface, public AbstractServer<pam>
 {
 	public:
@@ -69,8 +68,6 @@ class pam : public RDKTestStubInterface, public AbstractServer<pam>
                   this->bindAndAddMethod(Procedure("COSAPAM_DnsGet", PARAMS_BY_NAME, JSON_STRING,"MethodName", JSON_STRING,NULL), &pam::COSAPAM_DnsGet);
                   this->bindAndAddMethod(Procedure("COSAPAM_DnsEnable", PARAMS_BY_NAME, JSON_STRING,"MethodName",JSON_STRING ,"Value", JSON_INTEGER,NULL), &pam::COSAPAM_DnsEnable);
 	 	}
-        /*Ctor*/
-	//pam ();
 
 	/*inherited functions*/
 	bool initialize(IN const char* szVersion);

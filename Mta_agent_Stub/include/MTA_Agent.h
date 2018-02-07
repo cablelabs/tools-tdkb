@@ -66,8 +66,6 @@ class MTA_Agent : public RDKTestStubInterface, public AbstractServer<MTA_Agent>
                   this->bindAndAddMethod(Procedure("MTA_agent_SetSessionId", PARAMS_BY_NAME, JSON_STRING,"pathname",JSON_STRING,"priority", JSON_INTEGER,"sessionId", JSON_INTEGER,"override",JSON_INTEGER,NULL), &MTA_Agent::MTA_agent_SetSessionId);
                   this->bindAndAddMethod(Procedure("MTA_agent_GetHealth", PARAMS_BY_NAME, JSON_STRING,"ParamName", JSON_STRING,NULL), &MTA_Agent::MTA_agent_GetHealth);
 		}
-        /*Constructor*/
-//        MTA_Agent();
 
         /*Inherited functions*/
         bool initialize(IN const char* szVersion);
@@ -81,15 +79,14 @@ class MTA_Agent : public RDKTestStubInterface, public AbstractServer<MTA_Agent>
         void MTA_agent_SetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
         void MTA_agent_GetParameterValues(IN const Json::Value& req, OUT Json::Value& response);
         void MTA_agent_GetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);
-        void MTA_agent_SetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);		
+        void MTA_agent_SetParameterAttr(IN const Json::Value& req, OUT Json::Value& response);
         void MTA_agent_Commit(IN const Json::Value& req, OUT Json::Value& response);
         void MTA_agent_GetParameterNames_NextLevel(IN const Json::Value& req, OUT Json::Value& response);
         void MTA_agent_AddTbl(IN const Json::Value& req, OUT Json::Value& response);
         void MTA_agent_DelTble(IN const Json::Value& req, OUT Json::Value& response);
         void MTA_agent_SetSessionId(IN const Json::Value& req, OUT Json::Value& response);
-        void MTA_agent_GetHealth(IN const Json::Value& req, OUT Json::Value& response);	
+        void MTA_agent_GetHealth(IN const Json::Value& req, OUT Json::Value& response);
 
 };
 
-//extern "C" MTA_Agent* CreateObject();
-#endif 
+#endif

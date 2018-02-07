@@ -45,7 +45,7 @@ class RDKTestAgent;
 class AdvancedConfig : public RDKTestStubInterface, public AbstractServer<AdvancedConfig>
 {
 	public:
-		
+
 		AdvancedConfig(TcpSocketServer &ptrRpcServer) : AbstractServer <AdvancedConfig>(ptrRpcServer)
 		{
 			this->bindAndAddMethod(Procedure("AdvancedConfig_Start", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &AdvancedConfig::AdvancedConfig_Start);
@@ -69,7 +69,7 @@ class AdvancedConfig : public RDKTestStubInterface, public AbstractServer<Advanc
         bool cleanup(IN const char* szVersion);
 		std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
-				
+
 		/*Advance Config Stub Wrapper functions*/
 		void AdvancedConfig_Start(IN const Json::Value& req, OUT Json::Value& response);
 		void AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Value& response);

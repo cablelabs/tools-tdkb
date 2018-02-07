@@ -18,13 +18,13 @@
 */
 /**********************************************************************
    Copyright [2014] [Cisco Systems, Inc.]
- 
+
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
- 
+
        http://www.apache.org/licenses/LICENSE-2.0
- 
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -274,7 +274,7 @@ ANSC_STATUS
         _ansc_sprintf(CpName, "%s", pStartCfg->ComponentName);
     }
     /* unregister component */
-    nRet = CcspBaseIf_unregisterComponent(bus_handle, CrName, CpName );  
+    nRet = CcspBaseIf_unregisterComponent(bus_handle, CrName, CpName );
     AnscTrace("unregisterComponent returns %d\n", nRet);
 
 
@@ -389,7 +389,7 @@ ANSC_STATUS
     g_pComponent_Common_Dm->LogLevel = LogLevel;
 
     if (g_pComponent_Common_Dm->LogEnable)
-        AnscSetTraceLevel(LogLevel);        
+        AnscSetTraceLevel(LogLevel);
 
     return ANSC_STATUS_SUCCESS;
 }

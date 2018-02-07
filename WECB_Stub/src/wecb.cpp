@@ -42,10 +42,10 @@ extern "C"
 
 /***************************************************************************
  *Function name	: initialize
- *Description	: Initialize Function will be used for registering the wrapper method 
+ *Description	: Initialize Function will be used for registering the wrapper method
  *  	  	  with the agent so that wrapper function will be used in the script
- *  		  	  
- *****************************************************************************/ 
+ *
+ *****************************************************************************/
 
 bool WECB::initialize(IN const char* szVersion)
 {
@@ -220,7 +220,7 @@ void WECB::WECB_GetParamNames(IN const Json::Value& req, OUT Json::Value& respon
 /*******************************************************************************************
  *
  * Function Name        : WECB_GetParamValues
- * Description          : This function will retrieve the list of parameter values 
+ * Description          : This function will retrieve the list of parameter values
  *                        associated with the specified namespace
  *
  * @param [in] req      : paramName - Specific parameter name for which value to be retrieved
@@ -248,14 +248,14 @@ void WECB::WECB_GetParamValues(IN const Json::Value& req, OUT Json::Value& respo
     /* Copy the input arguments to the local variables */
     strcpy(paramName,req["paramName"].asCString());
 
-    DEBUG_PRINT(DEBUG_TRACE,"\n Input parameter is %s",paramName);	
+    DEBUG_PRINT(DEBUG_TRACE,"\n Input parameter is %s",paramName);
 
     /* Retrieve the specified parameter value */
     paramValue = ssp_getParameterValue(&paramName[0],&paramSize);
     if(paramValue == NULL)
     {
         response["result"]="FAILURE";
-        response["details"]="Failed to retrieve the value of parameter name"; 		
+        response["details"]="Failed to retrieve the value of parameter name";
     }
     else
     {
@@ -271,7 +271,7 @@ void WECB::WECB_GetParamValues(IN const Json::Value& req, OUT Json::Value& respo
         }
 
         /* Free the memory */
-        free_Memory_val(paramSize,paramValue);	
+        free_Memory_val(paramSize,paramValue);
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WECB_GetParamValues --->Exit\n");
@@ -282,7 +282,8 @@ void WECB::WECB_GetParamValues(IN const Json::Value& req, OUT Json::Value& respo
 /*******************************************************************************************
  *
  * Function Name        : WECB_GetParamAttributes
- * Description          : This function will retrieve the list of parameters attributes *                        associated with the specified namespace
+ * Description          : This function will retrieve the list of parameters attributes
+ *                       associated with the specified namespace
  *
  * @param [in] req      : paramName - List associated with the namespace
  *
@@ -412,7 +413,7 @@ void WECB::WECB_SetParamValues(IN const Json::Value& req, OUT Json::Value& respo
         if(getParamValue == NULL)
         {
             response["result"]="FAILURE";
-            response["details"]="Failed to retrieve the value of parameter name"; 		
+            response["details"]="Failed to retrieve the value of parameter name";
         }
         else
         {
@@ -424,7 +425,7 @@ void WECB::WECB_SetParamValues(IN const Json::Value& req, OUT Json::Value& respo
             if(strcmp(&paramValue[0],&getParamValue[0].pParamValues[0])==0)
             {
                 /* Free the memory */
-                free_Memory_val(paramSize,getParamValue);	
+                free_Memory_val(paramSize,getParamValue);
 
                 /* Set the result details */
                 response["result"]="SUCCESS";
@@ -433,7 +434,7 @@ void WECB::WECB_SetParamValues(IN const Json::Value& req, OUT Json::Value& respo
             else
             {
                 /* Free the memory */
-                free_Memory_val(paramSize,getParamValue);	
+                free_Memory_val(paramSize,getParamValue);
 
                 /* Set the result details */
                 response["result"]="FAILURE";
@@ -561,7 +562,7 @@ void WECB::WECB_SetParamAttribute(IN const Json::Value& req, OUT Json::Value& re
                 strcpy(attrAccess,oldParamAttr[0].pParamAccess);
             }
 
-            if((strcmp(&attrNotify[0],&paramAttr[0].pParamNotify[0])==0) && 
+            if((strcmp(&attrNotify[0],&paramAttr[0].pParamNotify[0])==0) &&
                     (strcmp(&attrAccess[0],&paramAttr[0].pParamAccess[0])==0))
             {
                 /* Free the memory */
@@ -760,7 +761,7 @@ void WECB::WECB_SetCommit(IN const Json::Value& req, OUT Json::Value& response)
     DEBUG_PRINT(DEBUG_TRACE,"\nParamName input is %s",paramName);
 
     /* Set the changes done in the component */
-    returnValue = ssp_setCommit(&paramName[0]);    
+    returnValue = ssp_setCommit(&paramName[0]);
     if(0 == returnValue)
     {
         response["result"]="SUCCESS";
@@ -789,7 +790,7 @@ extern "C" WECB* CreateObject(TcpSocketServer &ptrtcpServer)
 
 /**************************************************************************
  * Function Name : cleanup
- * Description   : This function will be used to clean the log details. 
+ * Description   : This function will be used to clean the log details.
  *
  **************************************************************************/
 bool WECB::cleanup(IN const char* szVersion)
@@ -800,7 +801,7 @@ bool WECB::cleanup(IN const char* szVersion)
 
 /**************************************************************************
  * Function Name : DestroyObject
- * Description   : This function will be used to destroy the object. 
+ * Description   : This function will be used to destroy the object.
  *
  **************************************************************************/
 extern "C" void DestroyObject(WECB *stubobj)

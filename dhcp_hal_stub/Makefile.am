@@ -21,9 +21,9 @@ AM_CXXFLAGS = -I${PKG_CONFIG_SYSROOT_DIR}$(includedir) \
 	      -I${top_srcdir}/dhcp_hal_stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include \
 	      -Wall -Werror
 
-lib_LTLIBRARIES = libdhcpstub.la 
+lib_LTLIBRARIES = libdhcpstub.la
 libdhcpstub_la_SOURCES = src/dhcp_stub_hal.cpp
-libdhcpstub_la_LIBADD = -lapi_dhcpv4c 
+libdhcpstub_la_LIBADD = -lapi_dhcpv4c
 libdhcpstub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la
 libdhcpstub_la_LIBADD =  $(libdhcpstub_la_DEPENDENCIES)
 libdhcpstub_la_includedir = ${includedir}

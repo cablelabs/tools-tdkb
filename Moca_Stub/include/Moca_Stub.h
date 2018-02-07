@@ -40,20 +40,20 @@ class RDKTestAgent;
 class Mocastub : public RDKTestStubInterface, public AbstractServer<Mocastub>
 {
     public:
-        
+
 		Mocastub(TcpSocketServer &ptrRpcServer) : AbstractServer <Mocastub>(ptrRpcServer)
 		{
 			this->bindAndAddMethod(Procedure("Mocastub_Get", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &Mocastub::Mocastub_Get);
 			this->bindAndAddMethod(Procedure("Mocastub_Set", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, "ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &Mocastub::Mocastub_Set);
 			this->bindAndAddMethod(Procedure("Mocastub_SetKeypassphrase", PARAMS_BY_NAME, JSON_STRING, "ParamName", JSON_STRING, "ParamValue", JSON_STRING, "Type", JSON_STRING, NULL), &Mocastub::Mocastub_SetKeypassphrase);
 		}
-		
+
         /*inherited functions*/
         bool initialize(IN const char* szVersion);
         bool cleanup(IN const char* szVersion);
         std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
-		
+
         /*Moca stub Wrapper functions*/
         void Mocastub_Get(IN const Json::Value& req, OUT Json::Value& response);
         void Mocastub_Set(IN const Json::Value& req, OUT Json::Value& response);

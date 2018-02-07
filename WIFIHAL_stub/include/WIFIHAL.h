@@ -62,8 +62,8 @@ class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
                 }
         /*inherited functions*/
         bool initialize(IN const char* szVersion);
-        bool cleanup(IN const char* szVersion); 
-        std::string testmodulepre_requisites(); 
+        bool cleanup(IN const char* szVersion);
+        std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
 
         /*WIFIHAL Stub Wrapper functions*/

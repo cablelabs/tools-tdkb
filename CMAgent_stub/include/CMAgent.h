@@ -59,9 +59,6 @@ class CMAgent : public RDKTestStubInterface, public AbstractServer<CMAgent>
                   this->bindAndAddMethod(Procedure("CMAgent_Set_Get", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,"paramValue", JSON_STRING,"paramType", JSON_STRING,NULL), &CMAgent::CMAgent_Set_Get);
 		}
 
-        /*Ctor*/
-//        CMAgent();
-
         /*inherited functions*/
         bool initialize(IN const char* szVersion);
 

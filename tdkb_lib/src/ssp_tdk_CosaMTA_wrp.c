@@ -47,11 +47,6 @@
 #include "cosa_x_cisco_com_mta_apis.h"
 
 #define BUFFER_LEN 32
-//#if !defined(CCSP_INC_no_asm_sigcontext_h)^M
-  //  #include <asm/sigcontext.h>
-//#endif
-// for PC build with gcc 4.4.3 on Ubuntu 10.4 Lucid,^M
-// <asm/sigcontext.h> will redefine some definitions from <bits/sigcontext.h>^M
 #endif
 /*******************************************************************************************
  *
@@ -141,7 +136,7 @@ int ssp_CosaDmlMTAGetDHCPInfo(int handleType, int bufferType, void* DHCPInfo)
     else
     {
         return_status = CosaDmlMTAGetDHCPInfo(mta_handle,NULL);
-    }    
+    }
 
 
     printf("ssp_CosaDmlMTAGetDHCPInfo: DHCP Info:%s\n",dhcp);
@@ -225,7 +220,7 @@ int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType, char* BatteryIn
 
 /********************************************************************************************
  *Parameter Name        : ssp_CosaDmlMtaBatteryGetStatus
- * Description          : This function will invoke the cosa api of MTA which will get the 
+ * Description          : This function will invoke the cosa api of MTA which will get the
  *                        battery status
  * @param [in]          : handleType - Message bus handle
  * @param [in]          : bufferType - Invalid or NULL pointer
@@ -273,7 +268,7 @@ int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType, char* Battery
 
 /********************************************************************************************
  *Parameter Name        : ssp_CosaDmlMtaBatteryGetPowerStatus
- * Description          : This function will invoke the cosa api of MTA to retrieve the battery 
+ * Description          : This function will invoke the cosa api of MTA to retrieve the battery
  *                        power status
  *
  * @param [in]          : handleType - Message bus handle
@@ -352,7 +347,7 @@ int ssp_CosaDmlMtaLineTableGetNumberOfEntries(int handleType, int* Num)
 }
 /********************************************************************************************
  * Parameter Name       : ssp_CosaDmlMtaLineTableGetEntry
- * Description          : This function will invoke the cosa api of MTA to retrieve the Line 
+ * Description          : This function will invoke the cosa api of MTA to retrieve the Line
  *                        table get entry
  *
  * @param [in]          : handleType - Message bus handle
@@ -390,7 +385,7 @@ int ssp_CosaDmlMtaLineTableGetEntry(int handleType,int bufferType, unsigned long
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlMTAGetServiceClass
- * Description          : This function will invoke the cosa api of MTA to retrieve the 
+ * Description          : This function will invoke the cosa api of MTA to retrieve the
  *                        Service class
  *
  * @param [in]          : handleType - Message bus handle
@@ -429,7 +424,7 @@ int ssp_CosaDmlMTAGetServiceClass(int handleType, void* SerClass)
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlMTADectGetEnable
- * Description          : This function will invoke the cosa api of MTA to retrieve the 
+ * Description          : This function will invoke the cosa api of MTA to retrieve the
  *                        enable value of Dect
  *
  * @param [in]          : handleType - Message bus handle
@@ -466,7 +461,7 @@ int ssp_CosaDmlMTADectGetEnable(int handleType, int Value)
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlMTADectSetEnable
- * Description          : This function will invoke the cosa api of MTA to retrieve the 
+ * Description          : This function will invoke the cosa api of MTA to retrieve the
  *                        Set Enable of Dect
  *
  * @param [in]          : handleType - Message bus handle
@@ -506,7 +501,7 @@ int ssp_CosaDmlMTADectSetEnable(int handleType, int Value)
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlMTADectGetRegistrationMode
- * Description          : This function will invoke the cosa api of MTA to retrieve the 
+ * Description          : This function will invoke the cosa api of MTA to retrieve the
  *                        Dect registration mode
  *
  * @param [in]          : handleType - Message bus handle
@@ -518,7 +513,7 @@ int ssp_CosaDmlMTADectGetRegistrationMode(int handleType, int Value)
 {
     int return_status = 0;
     ANSC_HANDLE mta_handle = NULL;
-    UCHAR *bValue = NULL; 
+    UCHAR *bValue = NULL;
     printf("\n Entering ssp_CosaDmlMTADectGetRegistrationMode function\n\n");
 
     if(handleType == 0)
@@ -544,7 +539,7 @@ int ssp_CosaDmlMTADectGetRegistrationMode(int handleType, int Value)
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlMTADectSetRegistrationMode
- * Description          : This function will invoke the cosa api of MTA to set the 
+ * Description          : This function will invoke the cosa api of MTA to set the
  *                        dect registration mode
  *
  * @param [in]          : handleType - Message bus handle
@@ -565,10 +560,6 @@ int ssp_CosaDmlMTADectGetRegistrationMode(int handleType, int Value)
 
     }
 
-//    if (Value == 0)
-//    {
-//        bValue = ((char *) malloc(100));
-//    }
     return_status = CosaDmlMTADectSetRegistrationMode(mta_handle,bValue);
     if ( return_status != SSP_SUCCESS)
     {
@@ -614,7 +605,7 @@ int ssp_CosaDmlMTAGetDect(int handleType, int bufferType,void* DectInfo)
     DectInfo=(void*)dect;
 
     if ( return_status != SSP_SUCCESS)
-    
+
     {
         printf("ssp_CosaDmlMTAGetDect:Failed to retrieve the Dect information \n");
         return SSP_FAILURE;
@@ -643,7 +634,7 @@ int ssp_CosaDmlMTAGetDectPIN(int handleType, int bufferType,char *pin)
     {
         mta_handle = bus_handle_client;
     }
-    
+
     if(pin == NULL)
     {
        printf("Pointer passed is NULL\n");
@@ -665,7 +656,7 @@ int ssp_CosaDmlMTAGetDectPIN(int handleType, int bufferType,char *pin)
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlMTASetDectPIN
- * Description          : This function will invoke the cosa api of MTA to set the 
+ * Description          : This function will invoke the cosa api of MTA to set the
  *                        dect pin
  *
  * @param [in]          : handleType - Message bus handle
@@ -704,7 +695,7 @@ int ssp_CosaDmlMTASetDectPIN(int handleType, int bufferType, char *pin)
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlMTAGetDSXLogEnable
- * Description          : This function will invoke the cosa api of MTA to retrieve the DSX Log 
+ * Description          : This function will invoke the cosa api of MTA to retrieve the DSX Log
  *                        enable
  *
  * @param [in]          : handleType - Message bus handle
@@ -718,12 +709,12 @@ int ssp_CosaDmlMTAGetDSXLogEnable(int handleType, int Value, int *Bool)
     ANSC_HANDLE mta_handle = NULL;
     BOOLEAN bValue = 0;
     printf("\n Entering ssp_CosaDmlMTAGetDSXLogEnable function\n\n");
- 
+
     if(handleType == 0)
     {
         mta_handle = bus_handle_client;
     }
-    
+
     if (Value == 0)
     {
         return_status = CosaDmlMTAGetDSXLogEnable(mta_handle,&bValue);
@@ -745,7 +736,7 @@ int ssp_CosaDmlMTAGetDSXLogEnable(int handleType, int Value, int *Bool)
  *
  * Function Name        : ssp_CosaDmlMTASetDSXLogEnable
  * Description          : This function will invoke the cosa api of MTA to set the
- *                        DSX log enable 
+ *                        DSX log enable
  *
  * @param [in]          : handleType - Message bus handle
  * @param [in]          : Value - 0
@@ -815,7 +806,7 @@ int ssp_CosaDmlMTAClearDSXLog(int handleType, int Value)
 /*******************************************************************************************
  *
  * Function Name        : ssp_CosaDmlMTAGetCallSignallingLogEnable
- * Description          : This function will invoke the cosa api of MTA to retrieve the 
+ * Description          : This function will invoke the cosa api of MTA to retrieve the
  *                        Call signalling log
  *
  * @param [in]          : handleType - Message bus handle

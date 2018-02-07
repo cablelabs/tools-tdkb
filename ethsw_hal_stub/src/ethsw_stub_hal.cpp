@@ -36,7 +36,7 @@
 
 /********************************************************************************************
  *Function name : testmodulepre_requisites
- *Description   : testmodulepre_requisites will  be used for registering TDK with the CR 
+ *Description   : testmodulepre_requisites will  be used for registering TDK with the CR
  *@param [in]   : None
  *@param [out]  : Return string "SUCCESS" in case of success else return string "FAILURE"
  **********************************************************************************************/
@@ -49,7 +49,7 @@ std::string ethsw_stub_hal::testmodulepre_requisites()
 
 /**********************************************************************************************
  *Function name : testmodulepost_requisites
- *Description   : testmodulepost_requisites will be used for unregistering TDK with the CR 
+ *Description   : testmodulepost_requisites will be used for unregistering TDK with the CR
  *@param [in]   : None
  *@param [out]  : Return TEST_SUCCESS or TEST_FAILURE based on the return value
  **********************************************************************************************/
@@ -61,7 +61,7 @@ bool ethsw_stub_hal::testmodulepost_requisites()
 
 /***************************************************************************************
  *Function name : ethsw_stub_hal_Init
- *Description   : This function is used to register all the ethsw_stub_hal methods. 
+ *Description   : This function is used to register all the ethsw_stub_hal methods.
  *param [in]    : szVersion - version, ptrAgentObj - Agent obhect
  *@param [out]  : Return TEST_SUCCESS or TEST_FAILURE
  ***************************************************************************************/

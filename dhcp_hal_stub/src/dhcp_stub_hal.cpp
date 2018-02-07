@@ -57,7 +57,7 @@ std::string dhcp_stub_hal::testmodulepre_requisites()
  *Function name : testmodulepost_requisites
  *Description   : testmodulepost_requisites will be used for unregistering TDK with the CR
  *@param [in]   : None
- *@param [out]  : Return TEST_SUCCESS in case of success else return TEST_FAILURE 
+ *@param [out]  : Return TEST_SUCCESS in case of success else return TEST_FAILURE
  *********************************************************************************************/
 bool dhcp_stub_hal::testmodulepost_requisites()
 {
@@ -438,7 +438,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_ip_addr(IN const Json::Value& req, OUT
 
 /***********************************************************************************************************************************
  * Function Name : dhcp_stub_hal_get_ecm_lease_time
- * Description   : This function calls the wrapper function(ssp_get_ecm_lease_time) to 
+ * Description   : This function calls the wrapper function(ssp_get_ecm_lease_time) to
 		   retrieve the ECM Offered Lease Time value in Seconds
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -541,7 +541,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_mask(IN const Json::Value& req, OUT Js
 
 /***********************************************************************************************************************************
  * Function Name : dhcp_stub_hal_get_ecm_remain_lease_time
- * Description   : This function calls the wrapper function(ssp_get_ecm_remain_lease_time) to 
+ * Description   : This function calls the wrapper function(ssp_get_ecm_remain_lease_time) to
 		   retrieve the ECM Remaining Lease Time value in seconds
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -593,7 +593,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_lease_time(IN const Json::Value
 
 /***********************************************************************************************************************************
  * Function Name : dhcp_stub_hal_get_ecm_remain_rebind_time
- * Description   : This function calls the wrapper function(ssp_get_ecm_remain_rebind_time) to 
+ * Description   : This function calls the wrapper function(ssp_get_ecm_remain_rebind_time) to
 		   retrieve the ECM Interface Remaining time to Rebind value in seconds.
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -645,7 +645,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_rebind_time(IN const Json::Valu
 
 /***********************************************************************************************************************************
  * Function Name : dhcp_stub_hal_get_ecm_remain_renew_time
- * Description   : This function calls the wrapper function(ssp_get_ecm_remain_renew_time) to 
+ * Description   : This function calls the wrapper function(ssp_get_ecm_remain_renew_time) to
 		   retrieve the ECM Interface Remaining time to Renew value in seconds
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -697,7 +697,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ecm_remain_renew_time(IN const Json::Value
 
 /***********************************************************************************************************************************
  * Function Name : dhcp_stub_hal_get_emta_remain_lease_time
- * Description   : This function calls the wrapper function(ssp_get_emta_remain_lease_time) 
+ * Description   : This function calls the wrapper function(ssp_get_emta_remain_lease_time)
 		   to retrieve the E-MTA interface Least Time value in seconds
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -748,7 +748,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_lease_time(IN const Json::Valu
 
 /******************************************************************************************************************
  * Function Name : dhcp_stub_hal_get_emta_remain_rebind_time
- * Description   : This function calls the wrapper function(ssp_get_emta_remain_rebind_time) to 
+ * Description   : This function calls the wrapper function(ssp_get_emta_remain_rebind_time) to
 		   retrieve the E-MTA interface Remaining Time to Rebind value in seconds
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -798,7 +798,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_rebind_time(IN const Json::Val
 
 /*****************************************************************************************************************
  * Function Name : dhcp_stub_hal_get_emta_remain_renew_time
- * Description   : This function calls the wrapper function(ssp_get_emta_remain_renew_time) to 
+ * Description   : This function calls the wrapper function(ssp_get_emta_remain_renew_time) to
 		   retrieve the E-MTA interface Remaining Time to Renew value in seconds
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -850,7 +850,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_emta_remain_renew_time(IN const Json::Valu
 
 /*************************************************************************************************************
  * Function Name : dhcp_stub_hal_get_ert_config_attempts
- * Description   : This function calls the wrapper function(ssp_get_ert_config_attempts) to 
+ * Description   : This function calls the wrapper function(ssp_get_ert_config_attempts) to
 		   retrieve the E-Router Number of Attemts to Configure
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -954,7 +954,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_dhcp_svr(IN const Json::Value& req, OU
 
 /******************************************************************************************************
  * Function Name : dhcp_stub_hal_get_ert_dns_svrs
- * Description   : This function calls the wrapper function(ssp_get_ert_dns_svrs) to 
+ * Description   : This function calls the wrapper function(ssp_get_ert_dns_svrs) to
 		   retrieve the E-Router List of DNS Servers(List of IP Address (of DNS Servers))
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -1011,7 +1011,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_dns_svrs(IN const Json::Value& req, OU
 
 /*******************************************************************************************************
  * Function Name : dhcp_stub_hal_get_ert_fsm_state
- * Description   : This function calls the wrapper function(ssp_get_ert_fsm_state) to 
+ * Description   : This function calls the wrapper function(ssp_get_ert_fsm_state) to
 		   retrieve the E-Router DHCP State (State of the DHCP (RENEW/ACQUIRED etc.))
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -1063,7 +1063,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_fsm_state(IN const Json::Value& req, O
 
 /************************************************************************************************
  * Function Name : dhcp_stub_hal_get_ert_gw
- * Description   : This function calls the wrapper function(ssp_get_ert_gw) to 
+ * Description   : This function calls the wrapper function(ssp_get_ert_gw) to
 		   retrieve the E-Router Gateway IP Address (IP Address (of the Gateway))
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -1166,7 +1166,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_ifname(IN const Json::Value& req, OUT 
 
 /*****************************************************************************************************
  * Function Name : dhcp_stub_hal_get_ert_ip_addr
- * Description   : This function calls the wrapper function(ssp_get_ert_ip_addr) to 
+ * Description   : This function calls the wrapper function(ssp_get_ert_ip_addr) to
 		   retrieve the E-Router Interface IP Address (IP Address (of the Interface)).
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -1219,7 +1219,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_ip_addr(IN const Json::Value& req, OUT
 
 /********************************************************************************************************
  * Function Name : dhcp_stub_hal_get_ert_lease_time
- * Description   : This function calls the wrapper function(ssp_get_ert_lease_time) to 
+ * Description   : This function calls the wrapper function(ssp_get_ert_lease_time) to
 		   retrieve the E-Router Offered Lease Time value is seconds
  * @param [in]   : req - request sent by Test Manager
  * @param [out]  : response - filled with SUCCESS or FAILURE based on the return value
@@ -1321,7 +1321,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_mask(IN const Json::Value& req, OUT Js
 
 /****************************************************************************************************************
  * Function Name    : dhcp_stub_hal_get_ert_remain_lease_time
- * Description      : This function calls the wrapper function(ssp_get_ert_remain_lease_time) to 
+ * Description      : This function calls the wrapper function(ssp_get_ert_remain_lease_time) to
 		      retrieve the E-Router Remaining Lease Time value in seconds
  * @param [in]      : req - request sent by Test Manager
  * @param [out]     : response - filled with SUCCESS or FAILURE based on the return value
@@ -1373,7 +1373,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_lease_time(IN const Json::Value
 
 /*****************************************************************************************************************
  * Function Name    : dhcp_stub_hal_get_ert_remain_rebind_time
- * Description      : This function calls the wrapper function(ssp_get_ert_remain_rebind_time) to 
+ * Description      : This function calls the wrapper function(ssp_get_ert_remain_rebind_time) to
 		      retrieve the E-Router Interface Remaining Time to Rebind value in seconds
  * @param [in]      : req - request sent by Test Manager
  * @param [out]     : response - filled with SUCCESS or FAILURE based on the return value
@@ -1425,7 +1425,7 @@ void dhcp_stub_hal::dhcp_stub_hal_get_ert_remain_rebind_time(IN const Json::Valu
 
 /***************************************************************************************************************
  * Function Name    : dhcp_stub_hal_get_ert_remain_renew_time
- * Description      : This function calls the wrapper function(ssp_get_ert_remain_renew_time) 
+ * Description      : This function calls the wrapper function(ssp_get_ert_remain_renew_time)
 		      to retrieve the E-Router Interface Remaining Time to Renew value in seconds
  * @param [in]      : req - request sent by Test Manager
  * @param [out]     : response - filled with SUCCESS or FAILURE based on the return value

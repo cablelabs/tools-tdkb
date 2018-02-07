@@ -43,45 +43,16 @@ extern "C"
 
 };
 
-/*This is a constructor function for WIFIAgent class*/
-#if 0
-WIFIAgent::WIFIAgent()
-{
-    DEBUG_PRINT(DEBUG_LOG,"TDK WIFIAgent Instance Created\n");
-}
-#endif
-
 /***************************************************************************
  *Function name	: initialize
- *Description	: Initialize Function will be used for registering the wrapper method 
+ *Description	: Initialize Function will be used for registering the wrapper method
  *        	  	  with the agent so that wrapper function will be used in the script
- *  		  	  
- *****************************************************************************/ 
+ *
+ *****************************************************************************/
 
 bool WIFIAgent::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::WIFIAgent Initialize\n");
-    /*Register stub function for callback*/
-#if 0
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_Start, "WIFIAgent_Start");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_Get, "WIFIAgent_Get");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_GetAttr, "WIFIAgent_GetAttr");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_GetNames, "WIFIAgent_GetNames");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_SetAttr, "WIFIAgent_SetAttr");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_Set, "WIFIAgent_Set");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_Set_Get, "WIFIAgent_Set_Get");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_AddObject, "WIFIAgent_AddObject");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_DelObject, "WIFIAgent_DelObject");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_SetCommit, "WIFIAgent_SetCommit");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_GetHealth, "WIFIAgent_GetHealth");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_SetSessionId, "WIFIAgent_SetSessionId");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_Stop, "WIFIAgent_Stop");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIAgent_SetMultiple, "WIFIAgent_SetMultiple");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIHal_CallMethodForBool, "WIFIHal_CallMethodForBool");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIHal_CallMethodForULong,"WIFIHal_CallMethodForULong");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIHal_CallMethodForString,"WIFIHal_CallMethodForString");
-    ptrAgentObj->RegisterMethod(*this,&WIFIAgent::WIFIHal_CallMethodForInt,"WIFIHal_CallMethodForInt");
-#endif
     return TEST_SUCCESS;
 
 }
@@ -96,7 +67,7 @@ std::string WIFIAgent::testmodulepre_requisites()
 {
     int returnValue;
     int bStart = 1;
-    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent::testmodulepre_requisites"); 
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent::testmodulepre_requisites");
     returnValue = ssp_register(bStart);
 
     if(0 != returnValue)
@@ -133,11 +104,11 @@ bool WIFIAgent::testmodulepost_requisites()
 /*******************************************************************************************
  *
  * Function Name	: WIFIAgent_Start
- * Description		: This function will invoke TDK Component that will attach to 
+ * Description		: This function will invoke TDK Component that will attach to
  * 		        	  CCSP Component Registrar (CR)
  *
- * @param [in]  req- 
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [in]  req-
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			               ssp_register
  ********************************************************************************************/
 
@@ -159,23 +130,21 @@ void WIFIAgent::WIFIAgent_Start(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-    //    return	TEST_FAILURE;
 	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_start --->Exit\n");
-//    return TEST_SUCCESS;
     return;
 }
 
 /*******************************************************************************************
  *
  * Function Name	: WIFIAgent_Get
- * Description		: This function will invoke TDK Component GET Value wrapper 
+ * Description		: This function will invoke TDK Component GET Value wrapper
  *       			  function to get parameter value
  *
  * @param [in] req- This holds Path name for Parameter
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 		            	   ssp_getParameterValue
  ********************************************************************************************/
 
@@ -190,14 +159,14 @@ void WIFIAgent::WIFIAgent_Get(IN const Json::Value& req, OUT Json::Value& respon
 
     strcpy(ParamNames,req["paramName"].asCString());
 
-    DEBUG_PRINT(DEBUG_TRACE,"\n ParamNames input is %s",ParamNames);	
+    DEBUG_PRINT(DEBUG_TRACE,"\n ParamNames input is %s",ParamNames);
 
     resultDetails = ssp_getParameterValue(&ParamNames[0],&paramsize);
 
     if(resultDetails == NULL)
     {
         response["result"]="FAILURE";
-        response["details"]="Get Parameter Value API Validation Failure"; 		
+        response["details"]="Get Parameter Value API Validation Failure";
     }
     else
     {
@@ -217,18 +186,17 @@ void WIFIAgent::WIFIAgent_Get(IN const Json::Value& req, OUT Json::Value& respon
 
     DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_get --->Exit\n");
 
-   // return bReturn;
-return;
+    return;
 }
 
 /*******************************************************************************************
  *
  * Function Name	: WIFIAgent_Set
- * Description		: This function will invoke TDK Component SET Value wrapper 
- * 			          function 
+ * Description		: This function will invoke TDK Component SET Value wrapper
+ * 			          function
  *
  * @param [in] req-        This hods Path name, Value to set and its type
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 		            	   ssp_setParameterValue
  ********************************************************************************************/
 
@@ -289,11 +257,10 @@ void WIFIAgent::WIFIAgent_Set(IN const Json::Value& req, OUT Json::Value& respon
         response["result"]="FAILURE";
         response["details"]="WIFIAgentStub::SET API Validation is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_wifiagent_set --->Error in Set API Validation in DUT !!! \n");
-    }    
+    }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_set --->Exit\n");
-    //return bReturn;
-return;
+    return;
 }
 
 /*******************************************************************************************
@@ -328,8 +295,7 @@ void WIFIAgent::WIFIAgent_SetMultiple(IN const Json::Value& req, OUT Json::Value
     paramlist = (char **) realloc (paramlist, ++num_spaces * sizeof(char *));
     if (paramlist == NULL)
     {
-       //return 0; /* memory allocation failed */
-return;
+         return;
     }
 
     paramlist[num_spaces-1] = list;
@@ -393,8 +359,7 @@ return;
 
    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_SetMultiple --->Exit\n");
 
-//   return TEST_SUCCESS;
-return;
+   return;
 }
 
 /*******************************************************************************************
@@ -446,8 +411,7 @@ void WIFIAgent::WIFIAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& re
         response["result"]="FAILURE";
         response["details"]="WIFIAgentStub::SET API Validation is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_wifiagent_set_get --->Error in Set API Validation of WIFI Agent in DUT !!! \n");
-    //    return  TEST_FAILURE;
-return;
+        return;
     }
 
     if ((!strncmp(ParamName, "Device.WiFi.Radio.1.", 20)) || (!strncmp(ParamName, "Device.WiFi.AccessPoint.1.", 26)) || (!strncmp(ParamName, "Device.WiFi.SSID.1.", 19)))
@@ -470,9 +434,8 @@ return;
         response["result"]="FAILURE";
         response["details"]="WIFIAgentStub::SET API ApplySetting is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n tdk_wifiagent_set --->Error in Set API ApplySetting Validation in DUT !!! \n");
-//	return  TEST_FAILURE;
-return;
-    }    
+        return;
+    }
 
     resultDetails = ssp_getParameterValue(&ParamNames[0],&paramsize);
 
@@ -481,8 +444,7 @@ return;
         response["result"]="FAILURE";
         response["details"]="Get Parameter Value API Validation Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_set_get --->Error in Get API Validation of WIFI Agent in DUT !!! \n");
-       // return TEST_FAILURE;
-return;
+        return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_set_get:: Value of resultDetails[0].pParamValues is %s and strlen is %d",resultDetails[0].pParamValues,strlen((const char *)resultDetails[0].pParamValues));
@@ -512,18 +474,17 @@ return;
         }
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_set_get --->Exit\n");
-//    return bReturn;
-return;
+    return;
 }
 
 /*******************************************************************************************
  *
  * Function Name	: WIFIAgent_GetAttr
- * Description		: This function is called through RPC which will invoke TDK 
+ * Description		: This function is called through RPC which will invoke TDK
  * 			          Wrapper Get attribute function
  *
- * @param [in] req- 	   This holds Attribute path name 
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [in] req- 	   This holds Attribute path name
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			               ssp_getParameterAttr
  ********************************************************************************************/
 
@@ -534,7 +495,7 @@ void WIFIAgent::WIFIAgent_GetAttr(IN const Json::Value& req, OUT Json::Value& re
     int retParamAttrSize = 0;
     char ParamAttr[MAX_PARAM_SIZE];
     GETPARAMATTR *resultDetails;
-    bool bReturn = TEST_FAILURE;	
+    bool bReturn = TEST_FAILURE;
 
     strcpy(ParamAttr,req["paramname"].asCString());
 
@@ -560,18 +521,17 @@ void WIFIAgent::WIFIAgent_GetAttr(IN const Json::Value& req, OUT Json::Value& re
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_GetAttr --->Exit\n");
-//    return bReturn;
-return;
+    return;
 }
 
 /*******************************************************************************************
  *
  * Function Name	: WIFIAgent_SetAttr
- * Description		: This function is called through TM RPC which will invoke TDK 
+ * Description		: This function is called through TM RPC which will invoke TDK
  *      			  Wrapper Set Attribute Function
  *
  * @param [in] req- 	  This holds attribute path name and it attributes values to be set
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 	            		   ssp_setParameterAttr
  ********************************************************************************************/
 
@@ -610,18 +570,17 @@ void WIFIAgent::WIFIAgent_SetAttr(IN const Json::Value& req, OUT Json::Value& re
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_SetAttr --->Exit\n");
-    //return bReturn;
-return;
+    return;
 }
 
 /*******************************************************************************************
  *
  * Function Name	: WIFIAgent_GetNames
- * Description		: This function is called through TM RPC which will invoke TDK 
+ * Description		: This function is called through TM RPC which will invoke TDK
  * 		        	  Wrapper function to get Parameter names of given component path
  *
  * @param [in] req- 	  This holds path name
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			               ssp_getParameterNames
  ********************************************************************************************/
 
@@ -647,7 +606,7 @@ void WIFIAgent::WIFIAgent_GetNames(IN const Json::Value& req, OUT Json::Value& r
     if(resultDetails == NULL)
     {
         response["result"]="FAILURE";
-        response["details"]="WIFIAGENT::Get Param Name API Validation Fail";	
+        response["details"]="WIFIAGENT::Get Param Name API Validation Fail";
     }
     else
     {
@@ -661,8 +620,7 @@ void WIFIAgent::WIFIAgent_GetNames(IN const Json::Value& req, OUT Json::Value& r
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_GetNames --->Exit\n");
-    //return bReturn;
-return;
+    return;
 }
 
 /*******************************************************************************************
@@ -671,7 +629,7 @@ return;
  * Description          : Add a row to the table object
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 		                   ssp_addTableRow
  ********************************************************************************************/
 
@@ -688,8 +646,7 @@ void WIFIAgent::WIFIAgent_AddObject(IN const Json::Value& req, OUT Json::Value& 
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-    //    return TEST_FAILURE;
-return;
+        return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -714,8 +671,7 @@ return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_AddObject --->Exit\n");
-//    return bReturn;
-return;
+    return;
 }
 
 /*******************************************************************************************
@@ -724,7 +680,7 @@ return;
  * Description          : Delete a row from the table object
  *
  * @param [in] req-	This holds parameter path name
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_deleteTableRow
  ********************************************************************************************/
 
@@ -743,8 +699,7 @@ void WIFIAgent::WIFIAgent_DelObject(IN const Json::Value& req, OUT Json::Value& 
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-    //    return TEST_FAILURE;
-return;
+        return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -786,8 +741,7 @@ return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_DelObject --->Exit\n");
-//    return bReturn;
-return;
+    return;
 }
 
 /*******************************************************************************************
@@ -796,7 +750,7 @@ return;
  * Description          : Commit the changes in the table object
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_setCommit
  ********************************************************************************************/
 
@@ -812,8 +766,7 @@ void WIFIAgent::WIFIAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& 
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-    //    return TEST_FAILURE;
-return;
+        return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -836,8 +789,7 @@ return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_SetCommit --->Exit\n");
-//    return bReturn;
-return;
+    return;
 }
 
 /*******************************************************************************************
@@ -846,7 +798,7 @@ return;
  * Description          : Get the health  of the component
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_getHealth
  ********************************************************************************************/
 
@@ -861,8 +813,7 @@ void WIFIAgent::WIFIAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& 
     {
         response["result"]="FAILURE";
         response["details"]="WIFIAgentStub::Error Invoking TDK Component";
-    //    return TEST_FAILURE;
-return;
+        return;
     }
 
     strcpy(paramName,req["paramName"].asCString());
@@ -881,13 +832,11 @@ return;
         response["result"]="FAILURE";
         response["details"]="WIFIAgentStub::GET HEALTH API Validation is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_GetHealth --->Error in retrieving the component !!! \n");
-       // return	TEST_FAILURE;
-return;
+        return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_GetHealth --->Exit\n");
-//    return TEST_SUCCESS;
-return;
+    return;
 }
 
 /*******************************************************************************************
@@ -896,7 +845,7 @@ return;
  * Description          : Set the session Id
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_setSessionId
  ********************************************************************************************/
 
@@ -916,16 +865,14 @@ void WIFIAgent::WIFIAgent_SetSessionId(IN const Json::Value& req, OUT Json::Valu
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-    //    return TEST_FAILURE;
-return;
+        return;
     }
 
     if(&req["sessionId"]==NULL)
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-       // return TEST_FAILURE;
-return;
+        return;
     }
 
     priority = req["priority"].asInt();
@@ -949,13 +896,11 @@ return;
         response["result"]="FAILURE";
         response["details"]="WIFIAgent_Stub::SET SESSION ID API Validation is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_SetSessionId --->Error in setting the session Id !!! \n");
-       // return	TEST_FAILURE;
-return;
+        return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIAgent_SetSessionId --->Exit\n");
-//    return TEST_SUCCESS;
-return;
+    return;
 }
 
 
@@ -966,8 +911,8 @@ return;
  * Description		: This function is called through TM RPC which will invoke TDK
  *			  Wrapper Stop function
  *
- * @param [in] req- 
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [in] req-
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_register
  ********************************************************************************************/
 
@@ -989,236 +934,14 @@ void WIFIAgent::WIFIAgent_Stop(IN const Json::Value& req, OUT Json::Value& respo
         response["result"]="FAILURE";
         response["details"]="NULL";
         DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_stop --->Error in Execution \n");
-    //    return	TEST_FAILURE;
-return;
+        return;
     }
 
 
     DEBUG_PRINT(DEBUG_TRACE,"\n wifiagent_stop --->Exit\n");
-//    return TEST_SUCCESS;
-return;
+    return;
 }
 
-#if 0
-/*******************************************************************************************
- *
- * Function Name        : WIFIHal_CallMethodForBool
- * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
-			  get /set is BOOL
- *
- * @param [in] req- 
- * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
- *                         
- ********************************************************************************************/
-
-bool WIFIAgent::WIFIHal_CallMethodForBool(IN const Json::Value& req, OUT Json::Value& response)
-{
-    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHal_CallMethodForBool --->Entry\n");
-
-    char methodName[20] = {'\0'};
-    int radioIndex;
-    unsigned char enable;
-    int returnValue;
-    char details[200] = {'\0'};
-
-    strcpy(methodName, req["methodName"].asCString());
-    radioIndex = req["radioIndex"].asInt();
-    enable = req["param"].asInt();
-
-    if(strstr(methodName, "set"))
-    {
-        returnValue = ssp_WiFiHalCallMethodForBool(radioIndex, &enable, methodName);
-
-        if(0 == returnValue)
-        {
-            sprintf(details, "%s operation success", methodName);
-            response["result"]="SUCCESS";
-            response["details"]=details;
-
-            return TEST_SUCCESS;
-        }
-    }
-    else
-    {
-        returnValue = ssp_WiFiHalCallMethodForBool(radioIndex, &enable, methodName);
-
-        if(0 == returnValue)
-        {
-            DEBUG_PRINT(DEBUG_TRACE,"\n output: %d\n",enable);
-
-            sprintf(details, "Enable state : %s", int(enable)? "Enabled" : "Disabled");
-            response["result"]="SUCCESS";
-            response["details"]=details;
-
-            return TEST_SUCCESS;
-        }
-     }
-
-     sprintf(details, "%s operation failed", methodName);
-     response["result"]="FAILURE";
-     response["details"]=details;
-
-     DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForBool --->Error in execution\n");
-     return  TEST_FAILURE;
-}
-
-
-/*******************************************************************************************
- *
- * Function Name        : WIFIHal_CallMethodForULong
- * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
-                          get /set is Unsigned long
- *
- * @param [in] req- 
- * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
- *                         
- ********************************************************************************************/
-
-bool WIFIAgent::WIFIHal_CallMethodForULong(IN const Json::Value& req, OUT Json::Value& response)
-{
-    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHal_CallMethodForULong------>Entry\n");
-
-    char methodName[20] = {'\0'};
-    int radioIndex = 1;
-    unsigned long uLongVar = 1;
-    int returnValue;
-    char details[200] = {'\0'};
-
-    strcpy(methodName, req["methodName"].asCString());
-    radioIndex = req["radioIndex"].asInt();
-    uLongVar = (unsigned long)req["param"].asLargestUInt();
-
-    if(strstr(methodName, "set"))
-    {
-        returnValue = ssp_WiFiCallMethodForULong(radioIndex, &uLongVar, methodName);
-
-        if(0 == returnValue)
-        {
-            sprintf(details, "%s operation success", methodName);
-            response["result"]="SUCCESS";
-            response["details"]=details;
-
-           return TEST_SUCCESS;
-        }
-    }
-    else
-    {
-       returnValue = ssp_WiFiCallMethodForULong(radioIndex, &uLongVar, methodName);
-
-       if(0 == returnValue)
-        {
-            DEBUG_PRINT(DEBUG_TRACE,"\n output: %lu\n",uLongVar);
-
-            sprintf(details, "Value returned is :%lu", uLongVar);
-            response["result"]="SUCCESS";
-            response["details"]=details;
-
-            return TEST_SUCCESS;
-        }
-     }
-
-     sprintf(details, "%s operation failed", methodName);
-     response["result"]="FAILURE";
-     response["details"]=details;
-
-     DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForULong --->Error in execution\n");
-     return  TEST_FAILURE;
-}
-
-/*******************************************************************************************
- *
- * Function Name        : WIFIHal_CallMethodForString
- * Description          : This function invokes WiFi hal's get/set apis, when the value to be 
-                          get /set is a string
- *
- * @param [in] req- 
- * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
- *                         
- ********************************************************************************************/
-
-bool WIFIAgent::WIFIHal_CallMethodForString(IN const Json::Value& req, OUT Json::Value& response)
-{
-    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHal_CallMethodForString----->Entry\n");
-
-    char methodName[20] = {'\0'};
-    int radioIndex = 1;
-    char output[100] = {'\0'};
-    int returnValue;
-    char details[200] = {'\0'};
-
-    strcpy(methodName, req["methodName"].asCString());
-    radioIndex = req["radioIndex"].asInt();
-
-    returnValue = ssp_WiFiCallMethodForString(radioIndex, output, methodName);
-
-    if(0 == returnValue)
-    {
-        DEBUG_PRINT(DEBUG_TRACE,"\n output: %s\n",output);
-
-        sprintf(details, "Value returned is :%s", output);
-        response["result"]="SUCCESS";
-        response["details"]=details;
-
-        return TEST_SUCCESS;
-    }
-    else
-    {
-        sprintf(details, "%s operation failed", methodName);
-        response["result"]="FAILURE";
-        response["details"]=details;
-
-        DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForULong --->Error in execution\n");
-        return  TEST_FAILURE;
-    }
-}
-
-
-/*******************************************************************************************
- *
- * Function Name        : WIFIHal_CallMethodForInt
- * Description          : This function invokes WiFi hal's get apis, when the value to be 
-                          get  is an integer
- *
- * @param [in] req- 
- * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
- *                         
- ********************************************************************************************/
-bool WIFIAgent::WIFIHal_CallMethodForInt(IN const Json::Value& req, OUT Json::Value& response)
-{
-    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHal_CallMethodForInt----->Entry\n");
-
-    char methodName[20] = {'\0'};
-    int radioIndex = 1;
-    int intParam;
-    int returnValue;
-    char details[200] = {'\0'};
-
-    strcpy(methodName, req["methodName"].asCString());
-    radioIndex = req["radioIndex"].asInt();
-
-    returnValue = ssp_WiFiCallMethodForInt(radioIndex, &intParam, methodName);
-
-    if(0 == returnValue)
-    {
-        DEBUG_PRINT(DEBUG_TRACE,"\n output: %d\n",intParam);
-
-        sprintf(details, "Value returned is :%d", intParam);
-        response["result"]="SUCCESS";
-        response["details"]=details;
-
-        return TEST_SUCCESS;
-    }
-    else
-    {
-        sprintf(details, "%s operation failed", methodName);
-        response["result"]="FAILURE";
-        response["details"]=details;
-
-        DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForInt --->Error in execution\n");
-        return  TEST_FAILURE;
-    }
-}
-#endif
 /**************************************************************************
  * Function Name	: CreateObject
  * Description	: This function will be used to create a new object for the
@@ -1233,45 +956,20 @@ extern "C" WIFIAgent* CreateObject(TcpSocketServer &ptrtcpServer)
 
 /**************************************************************************
  * Function Name : cleanup
- * Description   : This function will be used to clean the log details. 
+ * Description   : This function will be used to clean the log details.
  *
  **************************************************************************/
 
 bool WIFIAgent::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"WIFIAgent shutting down\n");
-#if 0
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-    /*unRegister stub function for callback*/
-    ptrAgentObj->UnregisterMethod("WIFIAgent_Start");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_Get");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_GetAttr");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_GetNames");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_SetAttr");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_Set");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_Set_Get");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_AddObject");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_DelObject");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_SetCommit");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_GetHealth");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_SetSessionId");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_Stop");
-    ptrAgentObj->UnregisterMethod("WIFIAgent_SetMultiple");
-    ptrAgentObj->UnregisterMethod("WIFIHal_CallMethodForBool");
-    ptrAgentObj->UnregisterMethod("WIFIHal_CallMethodForULong");
-    ptrAgentObj->UnregisterMethod("WIFIHal_CallMethodForString");
-    ptrAgentObj->UnregisterMethod("WIFIHal_CallMethodForInt");
-#endif
     return TEST_SUCCESS;
 }
 
 
 /**************************************************************************
  * Function Name : DestroyObject
- * Description   : This function will be used to destroy the object. 
+ * Description   : This function will be used to destroy the object.
  *
  **************************************************************************/
 extern "C" void DestroyObject(WIFIAgent *stubobj)

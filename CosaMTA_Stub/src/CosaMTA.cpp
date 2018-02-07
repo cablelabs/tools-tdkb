@@ -28,24 +28,24 @@ extern "C"
     int ssp_CosaDmlMtaGetResetCount(int handleType, int bufferType, char *pResetType, unsigned long* ResetCount);
     int ssp_CosaDmlMTAGetDHCPInfo(int handleType, int bufferType, void* DHCPInfo);
     int ssp_CosaDmlMTATriggerDiagnostics();
-    
+
     int ssp_CosaDmlMtaBatteryGetInfo(int handleType, int bufferType, char* BatteryInfo);
     int ssp_CosaDmlMtaBatteryGetStatus(int handleType, int bufferType, char* BatteryStatus);
     int ssp_CosaDmlMtaBatteryGetPowerStatus(int handleType, int bufferType, char* Power);
     int ssp_CosaDmlMtaLineTableGetNumberOfEntries(int handleType, int *Num);
     int ssp_CosaDmlMtaLineTableGetEntry(int handleType, int bufferType, unsigned long* TableEntry);
-    
+
     int ssp_CosaDmlMTAGetServiceClass(int handleType, void* SerClass);
     int ssp_CosaDmlMTADectGetEnable(int handleType,int Value);
     int ssp_CosaDmlMTADectSetEnable(int handleType,int Value);
     int ssp_CosaDmlMTADectGetRegistrationMode(int handleType,int Value);
     int ssp_CosaDmlMTADectSetRegistrationMode(int handleType,int Value);
-    
+
     int ssp_CosaDmlMTAGetDect(int handleType,int bufferType, void* DectInfo);
     int ssp_CosaDmlMTAGetDectPIN(int handleType,int bufferType,char *pin);
     int ssp_CosaDmlMTASetDectPIN(int handleType,int bufferType, char *pin);
     int ssp_CosaDmlMTAGetDSXLogEnable(int handleType,int Value, int *Bool);
-    
+
     int ssp_CosaDmlMTASetDSXLogEnable(int handleType,int Value);
     int ssp_CosaDmlMTAClearDSXLog(int handleType,int Value);
     int ssp_CosaDmlMTAGetCallSignallingLogEnable(int handleType,int Value,int *Bool);
@@ -61,10 +61,10 @@ extern "C"
 
 /***************************************************************************
  *Function name : initialize
- *Description  : Initialize Function will be used for registering the wrapper method 
+ *Description  : Initialize Function will be used for registering the wrapper method
  *          with the agent so that wrapper function will be used in the script
- *             
- *****************************************************************************/ 
+ *
+ *****************************************************************************/
 
 bool CosaMTA::initialize(IN const char* szVersion)
 {
@@ -351,10 +351,10 @@ void CosaMTA::CosaMTA_BatteryGetStatus(IN const Json::Value& req, OUT Json::Valu
         response["details"]="NULL parameter as input argument";
         return;
     }
-  
+
     handleType = req["handleType"].asInt();
     bufferType = req["bufferType"].asInt();
-    
+
     returnValue = ssp_CosaDmlMtaBatteryGetStatus(handleType,bufferType,BatteryStatus);
     if(0 == returnValue)
     {
@@ -394,7 +394,7 @@ void CosaMTA::CosaMTA_BatteryGetPowerStatus(IN const Json::Value& req, OUT Json:
     int bufferType = 0;
     char Power[20];
     char Details[64] = {'\0'};
-   
+
 
     // Validate the input arguments
     if(&req["handleType"]==NULL)
@@ -455,7 +455,7 @@ void CosaMTA::CosaMTA_LineTableGetNumberOfEntries(IN const Json::Value& req, OUT
     }
     handleType = req["handleType"].asInt();
     returnValue = ssp_CosaDmlMtaLineTableGetNumberOfEntries(handleType, &Num);
-    
+
     if(0 == returnValue)
     {
 	sprintf(Details,"No of Line table entries retrieved is: %lu", Num);
@@ -492,7 +492,7 @@ void CosaMTA::CosaMTA_LineTableGetEntry(IN const Json::Value& req, OUT Json::Val
     int bufferType = 0;
     unsigned long TableEntry=0;
     char Details[64] = {'\0'};
-    
+
 
     // Validate the input arguments
     if(&req["handleType"]==NULL)
@@ -1315,7 +1315,7 @@ void CosaMTA::CosaMTA_SetCallSignallingLogEnable(IN const Json::Value& req, OUT 
 /*******************************************************************************************
  *
  * Function Name    : CosaMTA_ClearCallSignallingLog
- * Description      : This function will clear the call signalling log 
+ * Description      : This function will clear the call signalling log
  *
  * @param [in]  req - handleType : Holds the message bus handle
  * @param [in]  req - boolvalue : Holds whether Value passed is 0 or 1
@@ -1372,7 +1372,7 @@ void CosaMTA::CosaMTA_ClearCallSignallingLog(IN const Json::Value& req, OUT Json
 /*******************************************************************************************
  *
  * Function Name    : CosaMTA_BatteryGetRemainingTime
- * Description      : This function will get the battery Remaining time 
+ * Description      : This function will get the battery Remaining time
  *
  * @param [in]  req - handleType : Holds the message bus handle
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value
@@ -1474,7 +1474,7 @@ void CosaMTA::CosaMTA_BatteryGetCondition(IN const Json::Value& req, OUT Json::V
         DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetCondition  --->Exit\n");
         return;
 }
-                        
+
 
 /*******************************************************************************************
  *
@@ -1513,23 +1513,23 @@ void CosaMTA::CosaMTA_BatteryGetLife(IN const Json::Value& req, OUT Json::Value&
             handleType = req["handleType"].asInt();
             bufferType = req["bufferType"].asInt();
 
-           
+
             returnValue = ssp_CosaDmlMtaBatteryGetLife(handleType,bufferType,Life);
             if(0 == returnValue)
             {
 				sprintf(Details,"Battery life retrieved is: %s",Life);
-                response["result"]="SUCCESS";         
+                response["result"]="SUCCESS";
                 response["details"]=Details;
             }
             else
-            {                                                            
-                response["result"]="FAILURE";               
+            {
+                response["result"]="FAILURE";
                 response["details"]="Failed to retrieve the Battery Life";
                 DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetLife --->Exit\n");
-                return;                  
-            }               
+                return;
+            }
             DEBUG_PRINT(DEBUG_TRACE,"\n CosaMTA_BatteryGetLife  --->Exit\n");
-            return;                  
+            return;
 }
 
 
@@ -1548,7 +1548,7 @@ extern "C" CosaMTA* CreateObject(TcpSocketServer &ptrtcpServer)
 
 /**************************************************************************
  * Function Name : cleanup
- * Description   : This function will be used to clean the log details. 
+ * Description   : This function will be used to clean the log details.
  *
  **************************************************************************/
 
@@ -1560,7 +1560,7 @@ bool CosaMTA::cleanup(IN const char* szVersion)
 
 /**************************************************************************
  * Function Name : DestroyObject
- * Description   : This function will be used to destroy the object. 
+ * Description   : This function will be used to destroy the object.
  *
  **************************************************************************/
 extern "C" void DestroyObject(CosaMTA *stubobj)

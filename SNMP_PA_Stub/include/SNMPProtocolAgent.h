@@ -53,7 +53,7 @@ class SNMPProtocolAgent : public RDKTestStubInterface, public AbstractServer<SNM
 		{
 			this->bindAndAddMethod(Procedure("GetCommString", PARAMS_BY_NAME, JSON_STRING,NULL), &SNMPProtocolAgent::GetCommString);
 		}
-		
+
 		/*Inherited functions*/
 		bool initialize(IN const char* szVersion);
 		bool cleanup(const char*);

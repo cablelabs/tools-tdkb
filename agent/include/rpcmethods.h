@@ -18,7 +18,7 @@
 */
 
 #ifndef RPC_METHODS_H
-#define RPC_METHODS_H 
+#define RPC_METHODS_H
 
 /* System Includes */
 #include <json/json.h>
@@ -42,14 +42,14 @@
 
 
 /**************************************************************************************
- Description   : This Class provides RPC methods. Test Manager can invoke these 
+ Description   : This Class provides RPC methods. Test Manager can invoke these
                       RPC methods to do some operations in the box.
- 
+
  **************************************************************************************/
 //class RpcMethods
 class RpcMethods : public AbstractServer<RpcMethods>
 {
-	
+
     public:
         static FILE *sm_pLogStream;
         static int sm_nConsoleLogFlag;
@@ -59,24 +59,17 @@ class RpcMethods : public AbstractServer<RpcMethods>
         static int sm_nGetDeviceFlag;
         static int sm_nStatusQueryFlag;
         static int sm_nDeviceStatusFlag;
-		
+
         static const char* sm_szManagerIP;
         static const char* sm_szBoxName;
         static const char* sm_szBoxInterface;
-		
+
         static std::string sm_strBoxIP;
         static std::string sm_strResultId;
         static std::string sm_strLogFolderPath;
         static std::string sm_strTDKPath;
         static std::string sm_strConsoleLogPath;
 
-        /* Constructor */
-#if 0
-        RpcMethods (RDKTestAgent *pAgent)
-        {
-            m_pAgent = pAgent;
-        }
-#endif
         RpcMethods(TcpSocketServer &ptrStatusServer) : AbstractServer <RpcMethods>(ptrStatusServer)
         {
          this->bindAndAddMethod(Procedure("getStatus", PARAMS_BY_NAME, JSON_STRING,"managerIP",JSON_STRING,"boxName",JSON_STRING,NULL), &RpcMethods::RPCGetStatus);
@@ -153,7 +146,7 @@ class RpcMethods : public AbstractServer<RpcMethods>
         void CallReboot();
         void ResetCrashStatus();
         void SetCrashStatus (const char* pszExecId, const char* pszDeviceId, const char* pszTestCaseId, const char* pszExecDevId, const char* pszResultId);
-	 
+
 }; /* End of RpcMethods */
 
 #endif /* End of RPC_METHODS_H */

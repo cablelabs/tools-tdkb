@@ -41,11 +41,10 @@
 using namespace std;
 class RDKTestAgent;
 
-//class CCSPMBUS : public RDKTestStubInterface
 class CCSPMBUS : public RDKTestStubInterface, public AbstractServer<CCSPMBUS>
 {
     public:
-        
+
                CCSPMBUS(TcpSocketServer &ptrRpcServer) : AbstractServer <CCSPMBUS>(ptrRpcServer)
                 {
                   this->bindAndAddMethod(Procedure("CCSPMBUS_GetParamValues", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,NULL), &CCSPMBUS::CCSPMBUS_GetParamValues);
@@ -77,9 +76,6 @@ class CCSPMBUS : public RDKTestStubInterface, public AbstractServer<CCSPMBUS>
 		  this->bindAndAddMethod(Procedure("CCSPMBUS_CheckNamespaceDataType", PARAMS_BY_NAME, JSON_STRING,NULL), &CCSPMBUS::CCSPMBUS_CheckNamespaceDataType);
 		  this->bindAndAddMethod(Procedure("CCSPMBUS_UnloadCfg", PARAMS_BY_NAME, JSON_STRING,NULL), &CCSPMBUS::CCSPMBUS_UnloadCfg);
                }
-
-        /*Constructor*/
-//        CCSPMBUS();
 
         /*inherited functions*/
         bool initialize(IN const char* szVersion);

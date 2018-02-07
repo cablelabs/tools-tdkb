@@ -57,8 +57,6 @@ class CMHAL : public RDKTestStubInterface,  public AbstractServer<CMHAL>
                   this->bindAndAddMethod(Procedure("CMHAL_GetParamCharValue", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,"paramType", JSON_STRING,NULL), &CMHAL::CMHAL_GetParamCharValue);
                   this->bindAndAddMethod(Procedure("CMHAL_GetParamUlongValue", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,"paramType", JSON_STRING,NULL), &CMHAL::CMHAL_GetParamUlongValue);
 		}
-        /*Ctor*/
-//        CMHAL ();
 
         /*inherited functions*/
         bool initialize(IN const char* szVersion);
@@ -69,7 +67,7 @@ class CMHAL : public RDKTestStubInterface,  public AbstractServer<CMHAL>
         /*CMHAL Stub Wrapper functions*/
 	void CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& response);
         void CMHAL_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response);
-        
+
 
 };
 #endif //__CMHAL_STUB_H__

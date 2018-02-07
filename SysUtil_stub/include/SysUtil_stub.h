@@ -45,7 +45,7 @@ class RDKTestAgent;
 class SysUtilAgent : public RDKTestStubInterface, public AbstractServer<SysUtilAgent>
 {
         public:
-                
+
 				SysUtilAgent(TcpSocketServer &ptrRpcServer) : AbstractServer <SysUtilAgent>(ptrRpcServer)
 				{
 					this->bindAndAddMethod(Procedure("TestMgr_ExecuteCmd", PARAMS_BY_NAME, JSON_STRING, "command", JSON_STRING, NULL), &SysUtilAgent::SysUtilAgent_ExecuteCmd);

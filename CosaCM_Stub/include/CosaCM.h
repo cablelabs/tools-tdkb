@@ -44,7 +44,7 @@ class RDKTestAgent;
 class CosaCM : public RDKTestStubInterface, public AbstractServer<CosaCM>
 {
 	public:
-		
+
                  CosaCM(TcpSocketServer &ptrRpcServer) : AbstractServer <CosaCM>(ptrRpcServer)
                 {
                   this->bindAndAddMethod(Procedure("CosaCM_GetResetCount", PARAMS_BY_NAME,JSON_STRING, "handleType",JSON_INTEGER,"bufferType",JSON_INTEGER,"resetType",JSON_STRING,NULL), &CosaCM::CosaCM_GetResetCount);
@@ -98,14 +98,14 @@ class CosaCM : public RDKTestStubInterface, public AbstractServer<CosaCM>
 		bool cleanup(IN const char* szVersion);
 		std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
-		
+
         /*CosaCM Stub Wrapper functions*/
-		void CosaCM_GetResetCount(IN const Json::Value& req, OUT Json::Value& response);	
-		void CosaCM_GetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response);	
-		void CosaCM_SetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response);	
+		void CosaCM_GetResetCount(IN const Json::Value& req, OUT Json::Value& response);
+		void CosaCM_GetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response);
+		void CosaCM_SetUpstreamChannelId(IN const Json::Value& req, OUT Json::Value& response);
 		void CosaCM_GetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response);
-       		void CosaCM_SetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response);	
-		void CosaCM_GetProvType(IN const Json::Value& req, OUT Json::Value& response);	
+       		void CosaCM_SetStartDSFrequency(IN const Json::Value& req, OUT Json::Value& response);
+		void CosaCM_GetProvType(IN const Json::Value& req, OUT Json::Value& response);
                 void CosaCM_GetIPv6DHCPInfo(IN const Json::Value& req, OUT Json::Value& response);
                 void CosaCM_GetStatus(IN const Json::Value& req, OUT Json::Value& response);
                 void CosaCM_GetLoopDiagnosticsStart(IN const Json::Value& req, OUT Json::Value& response);
@@ -124,19 +124,19 @@ class CosaCM : public RDKTestStubInterface, public AbstractServer<CosaCM>
                 void COSACM_CableModemCreate(IN const Json::Value& req, OUT Json::Value& response);
                 void COSACM_CableModemInitialize(IN const Json::Value& req, OUT Json::Value& response);
                 void COSACM_CableModemRemove(IN const Json::Value& req, OUT Json::Value& response);
-                void COSACM_GetMarket_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);  
-                void COSACM_SetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);   
-                void COSACM_GetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);   
+                void COSACM_GetMarket_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_SetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetMDDIPOverride_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);
                 void COSACM_GetCMCert_ArgMemory_unalloc(IN const Json::Value& req, OUT Json::Value& response);
-                void COSACM_GetCMErrorCodewords_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);   
-                void COSACM_GetCMCertStatus_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);   
+                void COSACM_GetCMErrorCodewords_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetCMCertStatus_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);
                 void COSACM_GetCPEList_InvalidArg(IN const Json::Value& req, OUT Json::Value& response);
-                void COSACM_GetMarket(IN const Json::Value& req, OUT Json::Value& response);    
-                void COSACM_SetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response); 
-                void COSACM_GetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response); 
+                void COSACM_GetMarket(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_SetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetMDDIPOverride(IN const Json::Value& req, OUT Json::Value& response);
                 void COSACM_GetCMCert(IN const Json::Value& req, OUT Json::Value& response);
-                void COSACM_GetCMErrorCodewords(IN const Json::Value& req, OUT Json::Value& response);  
-                void COSACM_GetCMCertStatus(IN const Json::Value& req, OUT Json::Value& response);  
+                void COSACM_GetCMErrorCodewords(IN const Json::Value& req, OUT Json::Value& response);
+                void COSACM_GetCMCertStatus(IN const Json::Value& req, OUT Json::Value& response);
                 void COSACM_GetCPEList(IN const Json::Value& req, OUT Json::Value& response);
                 void CMHal_GetCharValues(IN const Json::Value& req, OUT Json::Value& response);
                 void CMHal_GetUlongValues(IN const Json::Value& req, OUT Json::Value& response);

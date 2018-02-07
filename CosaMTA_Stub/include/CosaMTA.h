@@ -44,7 +44,7 @@ class RDKTestAgent;
 class CosaMTA : public RDKTestStubInterface, public AbstractServer<CosaMTA>
 {
 	public:
-		
+
         CosaMTA(TcpSocketServer &ptrRpcServer) : AbstractServer <CosaMTA>(ptrRpcServer)
 		{
 			this->bindAndAddMethod(Procedure("CosaMTA_GetResetCount", PARAMS_BY_NAME, JSON_STRING, "handleType", JSON_INTEGER, "bufferType", JSON_INTEGER, "resetType", JSON_STRING, NULL), &CosaMTA::CosaMTA_GetResetCount);
@@ -80,9 +80,9 @@ class CosaMTA : public RDKTestStubInterface, public AbstractServer<CosaMTA>
 		bool cleanup(IN const char* szVersion);
 		std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
-		
+
         /*CosaMTA Stub Wrapper functions*/
-        void CosaMTA_GetResetCount(IN const Json::Value& req, OUT Json::Value& response);	
+        void CosaMTA_GetResetCount(IN const Json::Value& req, OUT Json::Value& response);
         void CosaMTA_GetDHCPInfo(IN const Json::Value& req, OUT Json::Value& response);
         void CosaMTA_Triggerdiagnostics(IN const Json::Value& req, OUT Json::Value& response);
         void CosaMTA_BatteryGetInfo(IN const Json::Value& req, OUT Json::Value& response);
@@ -106,7 +106,7 @@ class CosaMTA : public RDKTestStubInterface, public AbstractServer<CosaMTA>
         void CosaMTA_ClearDSXLog(IN const Json::Value& req, OUT Json::Value& response);
         void CosaMTA_GetCallSignallingLogEnable(IN const Json::Value& req, OUT Json::Value& response);
         void CosaMTA_SetCallSignallingLogEnable(IN const Json::Value& req, OUT Json::Value& response);
- 
+
         void CosaMTA_ClearCallSignallingLog(IN const Json::Value& req, OUT Json::Value& response);
         void CosaMTA_BatteryGetNumberofCycles(IN const Json::Value& req, OUT Json::Value& response);
         void CosaMTA_BatteryGetRemainingTime(IN const Json::Value& req, OUT Json::Value& response);

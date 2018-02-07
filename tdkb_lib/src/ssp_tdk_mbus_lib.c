@@ -310,7 +310,7 @@ static const char* TDK_Introspect_msg =
      * @param [out]         : return status an integer value 0-success and 1-Failure
      ********************************************************************************************/
 
-    DBusHandlerResult 
+    DBusHandlerResult
 tdk_path_message_func (DBusConnection  *conn,
         DBusMessage     *message,
         void            *user_data)

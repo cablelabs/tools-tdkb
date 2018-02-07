@@ -38,19 +38,7 @@ int ssp_deleteTableRow(char *pObjTbl);
 int ssp_setSessionId(int priority, int sessionId,char *pComponentName,int override);
 int ssp_getHealth(char *pComponentName);
 }
-/*************************************************************************
-Function name : MTA_Agent::MTA_Agent
 
-Arguments     : NULL
-
-Description   : Constructor for MTA_Agent class
- ***************************************************************************/
-#if 0
-MTA_Agent::MTA_Agent()
-{
-	DEBUG_PRINT(DEBUG_TRACE, "MTA_Agent Initialized\n");
-}
-#endif
 /***************************************************************************
  *Function name : testmodulepre_requisites
  *Descrption    : testmodulepre_requisites will  be used for setting the
@@ -103,7 +91,7 @@ bool MTA_Agent::testmodulepost_requisites()
 }
 /***************************************************************************
  *Function name : MTA_agent_Init
- *Descrption    : MTA_Agent_Init will be used for initiating 
+ *Descrption    : MTA_Agent_Init will be used for initiating
  *                in CCSP module
  *
  *****************************************************************************/
@@ -117,7 +105,6 @@ void MTA_Agent::MTA_agent_Init(IN const Json::Value& req, OUT Json::Value& respo
         DEBUG_PRINT(DEBUG_TRACE,"MTA Component is intiated \n");
         response["result"] = "SUCCESS";
         response["details"] = "Intiation Success";
-//        return TEST_SUCCESS;
 	return;
     }
     else
@@ -125,7 +112,6 @@ void MTA_Agent::MTA_agent_Init(IN const Json::Value& req, OUT Json::Value& respo
         DEBUG_PRINT(DEBUG_TRACE,"Failed to intialize properly");
         response["result"] = "FAILURE";
         response["details"] = "Intiation FAILURE";
-//        return TEST_FAILURE;
 	return;
     }
 }
@@ -160,18 +146,16 @@ void MTA_Agent::MTA_agent_GetParameterValues(IN const Json::Value& req, OUT Json
         }
         if(i==size_ret)
         {
-            free_Memory_val(size_ret,DataParamValue); 	
+            free_Memory_val(size_ret,DataParamValue);
             response["result"] = "SUCCESS";
             response["details"] = "Get Param value Success";
-    //        return TEST_SUCCESS;
 	    return;
         }
 
     }
-    free_Memory_val(size_ret,DataParamValue);	
+    free_Memory_val(size_ret,DataParamValue);
     response["result"] = "FAILURE";
     response["details"] = "Get Param value Failure of the function";
-//    return TEST_FAILURE;
     return;
 
 }
@@ -203,7 +187,6 @@ void MTA_Agent::MTA_agent_SetParameterValues(IN const Json::Value& req, OUT Json
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter value is not changed Set returns failure";
-    //    return TEST_FAILURE;
 	return;
 
     }
@@ -224,7 +207,6 @@ void MTA_Agent::MTA_agent_SetParameterValues(IN const Json::Value& req, OUT Json
             free_Memory_val(size_ret,DataParamValue1);
             response["result"] = "SUCCESS";
             response["details"] = "Set has been validated successfully";
-//            return TEST_SUCCESS;
 	    return;
         }
         else
@@ -236,7 +218,6 @@ void MTA_Agent::MTA_agent_SetParameterValues(IN const Json::Value& req, OUT Json
 
     response["result"] = "FAILURE";
     response["details"] = "FAILURE : Parameter Value has not changed after a proper Set";
-//    return TEST_FAILURE;
     return;
 }
 /***************************************************************************
@@ -261,13 +242,12 @@ void MTA_Agent::MTA_agent_GetParameterNames(IN const Json::Value& req, OUT Json:
     {
         response["result"] = "FAILURE";
         response["details"] = "Get Param Name for Parameter returned NULL";
-    //    return TEST_FAILURE;
 	return;
     }
     DataValue1=ssp_getParameterNames(&ParamList[0],0,&size);
     if(NULL==DataValue1)
     {
-        printf("Get Param Name for ParameterList returned NULL\n");	
+        printf("Get Param Name for ParameterList returned NULL\n");
         free_Memory_Names(size_ret,DataValue);
     }
     else
@@ -282,7 +262,6 @@ void MTA_Agent::MTA_agent_GetParameterNames(IN const Json::Value& req, OUT Json:
                     printf("Parameter Name has been fetched successfully and it matched with parameter List\n");
                     response["result"] = "SUCCESS";
                     response["details"] = "Parameter Name has been fetched successfully and it matched with parameter List";
-               //     return TEST_SUCCESS;
 		    return;
                 }
                 else
@@ -291,7 +270,6 @@ void MTA_Agent::MTA_agent_GetParameterNames(IN const Json::Value& req, OUT Json:
                     printf("Parameter attributes does not match with the parameter List\n");
                     response["result"] = "FAILURE";
                     response["details"] = "Parameter Name and its attributes does not match with the parameter List";
-//                    return TEST_FAILURE;	
 		    return;
                 }
             }
@@ -299,7 +277,6 @@ void MTA_Agent::MTA_agent_GetParameterNames(IN const Json::Value& req, OUT Json:
         free_Memory_Names(size,DataValue1);
         response["result"] = "FAILURE";
         response["details"] = "Parameter Name does not match with the paramters in paramter list";
-//        return TEST_FAILURE;
 	return;
     }
 }
@@ -334,18 +311,16 @@ void MTA_Agent::MTA_agent_GetParameterAttr(IN const Json::Value& req, OUT Json::
         }
 
         if(i==size_ret)
-        {	
+        {
             free_Memory_Attr(size_ret,DataParamAttr);
             response["result"] = "SUCCESS";
             response["details"] = "Get Param Attribute Success";
-    //        return TEST_SUCCESS;
 	    return;
-        }	
+        }
 
     }
     response["result"] = "FAILURE";
     response["details"] = "Get Param Attribute Failure of the function";
-//    return TEST_FAILURE;
     return;
 
 }
@@ -365,7 +340,6 @@ void MTA_Agent::MTA_agent_SetParameterAttr(IN const Json::Value& req, OUT Json::
     {
         response["result"]="FAILURE";
         response["details"]="NULL parameter as input argument";
-    //    return TEST_FAILURE;
  	return;
     }
 
@@ -380,7 +354,6 @@ void MTA_Agent::MTA_agent_SetParameterAttr(IN const Json::Value& req, OUT Json::
     {
         response["result"]="FAILURE";
         response["details"]="Failed to retrieve the attributes of the parameter name";
-//        return TEST_FAILURE;
 	return;
     }
 
@@ -398,7 +371,6 @@ void MTA_Agent::MTA_agent_SetParameterAttr(IN const Json::Value& req, OUT Json::
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter Attribute has not changed Set Attribute failure";
-//        return TEST_FAILURE;
 	return;
 
     }
@@ -435,7 +407,6 @@ void MTA_Agent::MTA_agent_SetParameterAttr(IN const Json::Value& req, OUT Json::
                     free_Memory_Attr(size_ret,DataParamAttr1);
                     response["result"] = "SUCCESS";
                     response["details"] = "Set has been validated successfully";
-               //     return TEST_SUCCESS;
 		    return;
                 }
             }
@@ -445,7 +416,6 @@ void MTA_Agent::MTA_agent_SetParameterAttr(IN const Json::Value& req, OUT Json::
 
                 response["result"] = "FAILURE";
                 response["details"] = "Set failed Attribute does not match";
-//                return TEST_FAILURE;
 		return;
             }
         }
@@ -479,12 +449,11 @@ void MTA_Agent::MTA_agent_Commit(IN const Json::Value& req, OUT Json::Value& res
         DEBUG_PRINT(DEBUG_TRACE,"Parameter Values have been set.Needs to cross be checked with Get Parameter Names\n");
 
         DataParamValue1=ssp_getParameterValue(&ParamName[0],&size_ret);
-    }	
+    }
     else
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Parameter value is not SET. Set returns failure";
-    //    return TEST_FAILURE;
 	return;
 
     }
@@ -504,7 +473,6 @@ void MTA_Agent::MTA_agent_Commit(IN const Json::Value& req, OUT Json::Value& res
                 free_Memory_val(size_ret,DataParamValue1);
                 response["result"] = "FAILURE";
                 response["details"] = "Set has reflected in the Parameter even Commit is set to FALSE";
-               // return TEST_FAILURE;
 		return;
             }
         }
@@ -514,12 +482,11 @@ void MTA_Agent::MTA_agent_Commit(IN const Json::Value& req, OUT Json::Value& res
     if(commit==0)
     {
         DataParamValue2=ssp_getParameterValue(&ParamName[0],&size_ret);
-    }		
+    }
     else
     {
         response["result"] = "FAILURE";
         response["details"] = "FAILURE : Commit failed .";
-//        return TEST_FAILURE;
 	return;
     }
 
@@ -537,7 +504,6 @@ void MTA_Agent::MTA_agent_Commit(IN const Json::Value& req, OUT Json::Value& res
                 free_Memory_val(size_ret,DataParamValue2);
                 response["result"] = "SUCCESS";
                 response["details"] = "Set has been validated successfully when Commit is done externally";
-               // return TEST_SUCCESS;
 		return;
             }
         }
@@ -546,8 +512,7 @@ void MTA_Agent::MTA_agent_Commit(IN const Json::Value& req, OUT Json::Value& res
 
     }
     response["result"] = "FAILURE";
-    response["details"] ="Failure of the Set commit function";      
-//    return TEST_FAILURE;
+    response["details"] ="Failure of the Set commit function";
     return;
 }
 /***************************************************************************
@@ -568,15 +533,13 @@ void MTA_Agent::MTA_agent_GetParameterNames_NextLevel(IN const Json::Value& req,
     {
         response["result"] = "FAILURE";
         response["details"] = "Get Param Name for Parameter returned NULL";
-    //    return TEST_FAILURE;
 	return;
     }
     else
     {
-        free_Memory_Names(size_ret,DataValue); 
+        free_Memory_Names(size_ret,DataValue);
         response["result"] = "SUCCESS";
         response["details"] = "Get Param Names success";
-//        return TEST_FAILURE;
 	return;
 
     }
@@ -604,13 +567,11 @@ void MTA_Agent::MTA_agent_AddTbl(IN const Json::Value& req, OUT Json::Value& res
         printf("Add table function passed for read-only parameter");
         response["result"] = "FAILURE";
         response["details"] = "Add table function passed for read-only parameter";
-    //    return TEST_FAILURE;
 	return;
 
     }
     response["result"] = "SUCCESS";
     response["details"] = "Add table funciton failed for read-only Paramter";
-//    return TEST_SUCCESS;
     return;
 
 }
@@ -635,13 +596,11 @@ void MTA_Agent::MTA_agent_DelTble(IN const Json::Value& req, OUT Json::Value& re
     {
         response["result"] = "FAILURE";
         response["details"] = "Delete table function passed for read-only parameter";
-    //    return TEST_FAILURE;
 	return;
 
     }
     response["result"] = "SUCCESS";
     response["details"] = "Delete table funciton failed for read-only Parmeter";
-//    return TEST_SUCCESS;
     return;
 
 }
@@ -667,13 +626,11 @@ void MTA_Agent::MTA_agent_GetHealth(IN const Json::Value& req, OUT Json::Value& 
         printf("Successfully retrieved the health of the component");
         response["result"] = "SUCCESS";
         response["details"] = "Successfully retrieved the health of the component";
-    //    return TEST_FAILURE;
 	return;
 
     }
     response["result"] = "FAILURE";
     response["details"] = "Failed to retrieve the component health";
-//    return TEST_SUCCESS;
     return;
 
 }
@@ -701,7 +658,6 @@ void MTA_Agent::MTA_agent_SetSessionId(IN const Json::Value& req, OUT Json::Valu
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-    //    return TEST_FAILURE;
 	return;
     }
 
@@ -709,7 +665,6 @@ void MTA_Agent::MTA_agent_SetSessionId(IN const Json::Value& req, OUT Json::Valu
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-//        return TEST_FAILURE;
 	return;
     }
 
@@ -739,7 +694,6 @@ void MTA_Agent::MTA_agent_SetSessionId(IN const Json::Value& req, OUT Json::Valu
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n MtaAgent_SetSessionId --->Exit\n");
-//    return bReturn;
     return;
 
 }
@@ -758,14 +712,12 @@ void MTA_Agent::MTA_agent_Terminate(IN const Json::Value& req, OUT Json::Value& 
     {
         response["result"] = "SUCCESS";
         response["details"] = "Termination Success";
-    //    return TEST_SUCCESS;
 	return;
     }
     else
     {
         response["result"] = "FAILURE";
         response["details"] = "Termination Failure";
-//        return TEST_FAILURE;
 	return;
     }
 }
@@ -781,22 +733,6 @@ Description   : Registering all the wrapper functions with the agent for using t
 bool MTA_Agent::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE, "MTA_Agent Initialize----->Entry\n");
-#if 0
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_Init,"MTA_agent_Init");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_Terminate, "MTA_agent_Terminate");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_GetParameterNames,"MTA_agent_GetParameterNames");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_SetParameterValues,"MTA_agent_SetParameterValues");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_GetParameterValues,"MTA_agent_GetParameterValues");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_GetParameterAttr,"MTA_agent_GetParameterAttr");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_SetParameterAttr,"MTA_agent_SetParameterAttr");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_Commit,"MTA_agent_Commit");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_GetParameterNames_NextLevel,"MTA_agent_GetParameterNames_NextLevel");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_DelTble,"MTA_agent_DelTble");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_AddTbl,"MTA_agent_AddTbl");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_SetSessionId,"MTA_agent_SetSessionId");
-    ptrAgentObj->RegisterMethod(*this,&MTA_Agent::MTA_agent_GetHealth,"MTA_agent_GetHealth");
-    DEBUG_PRINT(DEBUG_TRACE, "MTA_Agent Initialize----->Exit\n");
-#endif
     return TEST_SUCCESS;
 }
 /**************************************************************************
@@ -822,27 +758,6 @@ Description     : This function will be used to the close things cleanly.
 bool MTA_Agent::cleanup(IN const char* szVersion)
 {
 	DEBUG_PRINT(DEBUG_TRACE, "cleaningup\n");
-#if 0	
-	if(NULL == ptrAgentObj)
-	{
-		return TEST_FAILURE;
-	}
-	ptrAgentObj->UnregisterMethod("MTA_agent_Init");
-	ptrAgentObj->UnregisterMethod("MTA_agent_Terminate");
-	ptrAgentObj->UnregisterMethod("MTA_agent_GetParameterNames");
-	ptrAgentObj->UnregisterMethod("MTA_agent_SetParameterValues");
-	ptrAgentObj->UnregisterMethod("MTA_agent_GetParameterAttr");
-	ptrAgentObj->UnregisterMethod("MTA_agent_GetParameterValues");
-	ptrAgentObj->UnregisterMethod("MTA_agent_SetParameterAttr");
-	ptrAgentObj->UnregisterMethod("MTA_agent_Commit");
-	ptrAgentObj->UnregisterMethod("MTA_agent_GetParameterNames_NextLevel");
-	ptrAgentObj->UnregisterMethod("MTA_agent_DelTble");
-	ptrAgentObj->UnregisterMethod("MTA_agent_AddTbl");
-	ptrAgentObj->UnregisterMethod("MTA_agent_SetSessionId");
-	ptrAgentObj->UnregisterMethod("MTA_agent_GetHealth");
-
-	DEBUG_PRINT(DEBUG_TRACE, "cleaningup done\n");
-#endif
 	return TEST_SUCCESS;
 }
 

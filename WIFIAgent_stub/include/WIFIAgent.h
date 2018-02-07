@@ -40,7 +40,6 @@
 
 class RDKTestAgent;
 
-//class WIFIAgent : public RDKTestStubInterface
 class WIFIAgent :  public RDKTestStubInterface, public AbstractServer<WIFIAgent>
 {
     public:
@@ -62,9 +61,6 @@ class WIFIAgent :  public RDKTestStubInterface, public AbstractServer<WIFIAgent>
                   this->bindAndAddMethod(Procedure("WIFIAgent_Stop", PARAMS_BY_NAME, JSON_STRING,NULL), &WIFIAgent::WIFIAgent_Stop);
                   this->bindAndAddMethod(Procedure("WIFIAgent_SetMultiple", PARAMS_BY_NAME, JSON_STRING,"paramList", JSON_STRING,NULL), &WIFIAgent::WIFIAgent_SetMultiple);
                }
-
-        /*Ctor*/
-//        WIFIAgent();
 
         /*inherited functions*/
         bool initialize(IN const char* szVersion);

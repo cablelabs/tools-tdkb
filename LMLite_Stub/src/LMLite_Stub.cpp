@@ -27,7 +27,7 @@ extern "C"
     GETPARAMVALUES* ssp_getParameterValue(char *pParamName,int *pParamsize);
     int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType, int commit);
     void free_Memory_val(int size,GETPARAMVALUES *Freestruct);
-    
+
 };
 
 /***************************************************************************
@@ -40,7 +40,7 @@ extern "C"
 bool LMLiteStub::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::LMLiteStub Initialize\n");
-   
+
     return TEST_SUCCESS;
 
 }
@@ -208,7 +208,7 @@ void LMLiteStub::LMLiteStub_Set(IN const Json::Value& req, OUT Json::Value& resp
 
 extern "C" LMLiteStub* CreateObject(TcpSocketServer &ptrtcpServer)
 {
-    return new LMLiteStub(ptrtcpServer); 
+    return new LMLiteStub(ptrtcpServer);
 }
 
 /**************************************************************************

@@ -31,7 +31,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <netdb.h> 
+#include <netdb.h>
 #include "pthread.h"
 #include "ssp_tdk_wrp.h"
 #include "cosa_apis.h"
@@ -47,10 +47,10 @@ GETPARAMATTR *GetAttr;
 /*******************************************************************************************
  *
  * Function Name        : ssp_getParameterValue
- * Description          : This function will call base interface funtion which is defined 
- *            		  on top of dbus calls to get Parameter value from ccsp 
+ * Description          : This function will call base interface funtion which is defined
+ *            		  on top of dbus calls to get Parameter value from ccsp
  *			  Component
- * @param [in]  pParamName - Pointer to Parameter Name 
+ * @param [in]  pParamName - Pointer to Parameter Name
  * @param [out] pParamsize - To hold the size of number of parameters fetched from component
  ********************************************************************************************/
 GETPARAMVALUES* ssp_getParameterValue(char *pParamName,int *pParamsize)
@@ -77,10 +77,10 @@ GETPARAMVALUES* ssp_getParameterValue(char *pParamName,int *pParamsize)
 
     printf("dst_pathname_cr:%s\n",dst_pathname_cr);
 
-    /* This function will identify Component path through Component Registrar (CR) 
-       pParam Name is used to as input and CR will return back the respective component 
-       dbus path 
-     */   
+    /* This function will identify Component path through Component Registrar (CR)
+       pParam Name is used to as input and CR will return back the respective component
+       dbus path
+     */
     ret = CcspBaseIf_discComponentSupportingNamespace
         (
          bus_handle_client,
@@ -171,7 +171,7 @@ GETPARAMVALUES* ssp_getParameterValue(char *pParamName,int *pParamsize)
 
     printf("ssp_getParameterValue::Returning param value to agent stub\n");
     return GetValues;
-}            
+}
 
 
 /*******************************************************************************************
@@ -206,10 +206,10 @@ int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType, i
     printf("dst_pathname_cr:%s\n",dst_pathname_cr);
     bTmp = commit;
 
-    /* This function will identify Component path through Component Registrar (CR) 
-       pParam Name is used to as input and CR will return back the respective component 
-       dbus path 
-     */   
+    /* This function will identify Component path through Component Registrar (CR)
+       pParam Name is used to as input and CR will return back the respective component
+       dbus path
+     */
     ret = CcspBaseIf_discComponentSupportingNamespace
         (
          bus_handle_client,
@@ -339,7 +339,7 @@ int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType, i
  * Description          : This function will call base interface funtion which is defined
  *                        on top of dbus calls to get Parameter Names from CCSP Component
  * @param [in]  pParamName - Pointer to Path Name that holds Parameters info
- * @param [in]  recursive  - This integer variable used to find next level names from 
+ * @param [in]  recursive  - This integer variable used to find next level names from
  *                           given path
  * @param [out] pParamsize - To hold the count for number of parameters fetched from Component
  ********************************************************************************************/
@@ -359,8 +359,8 @@ GETPARAMNAMES* ssp_getParameterNames(char *pPathName,int recursive,int *pParamSi
     strcat(dst_pathname_cr,subsystem_prefix);
     strcat(dst_pathname_cr, CCSP_DBUS_INTERFACE_CR);
 
-    /* This function will identify Component path through Component Registrar (CR) 
-       pParam Name is used to as input and CR will return back the respective component 
+    /* This function will identify Component path through Component Registrar (CR)
+       pParam Name is used to as input and CR will return back the respective component
        dbus path */
 
     ret = CcspBaseIf_discComponentSupportingNamespace
@@ -447,13 +447,13 @@ GETPARAMNAMES* ssp_getParameterNames(char *pPathName,int recursive,int *pParamSi
     printf("ssp_getParameterNames::Returning param names(s) to component agent stub\n");
     return GetNames;
 
-}            
+}
 
 /*******************************************************************************************
  *
  * Function Name        : ssp_addTableRow
  * Description          : This function will call base interface funtion which is defined
- *                        on top of dbus calls to add object table to Component 
+ *                        on top of dbus calls to add object table to Component
  *                        for the respective parameter
  * @param [in]  pObjTbl - Pointer to Table object name
  * @param [out] N/A
@@ -479,10 +479,10 @@ int ssp_addTableRow(char *pObjTbl,int *pInstanceNumber)
     strcat(dst_pathname_cr,subsystem_prefix);
     strcat(dst_pathname_cr, CCSP_DBUS_INTERFACE_CR);
 
-    /* This function will identify Component path through Component Registrar (CR) 
-       pParam Name is used to as input and CR will return back the respective component 
-       dbus path 
-     */   
+    /* This function will identify Component path through Component Registrar (CR)
+       pParam Name is used to as input and CR will return back the respective component
+       dbus path
+     */
     ret = CcspBaseIf_discComponentSupportingNamespace
         (
          bus_handle_client,
@@ -570,10 +570,10 @@ int ssp_deleteTableRow(char *pObjTbl)
     strcat(dst_pathname_cr,subsystem_prefix);
     strcat(dst_pathname_cr, CCSP_DBUS_INTERFACE_CR);
 
-    /* This function will identify Component path through Component Registrar (CR) 
-       pParam Name is used to as input and CR will return back the respective component 
-       dbus path 
-     */   
+    /* This function will identify Component path through Component Registrar (CR)
+       pParam Name is used to as input and CR will return back the respective component
+       dbus path
+     */
     ret = CcspBaseIf_discComponentSupportingNamespace
         (
          bus_handle_client,
@@ -629,7 +629,7 @@ int ssp_deleteTableRow(char *pObjTbl)
  *
  * Function Name        : ssp_setCommit
  * Description          : This function will call base interface funtion which is defined
- *                        on top of dbus calls to commit Values to Non-Vol of ccsp 
+ *                        on top of dbus calls to commit Values to Non-Vol of ccsp
  *			  Component
  * @param [in]  pObjTbl - Pointer to Table object name
  * @param [out] N/A
@@ -654,10 +654,10 @@ int ssp_setCommit(char *pObjTbl)
     strcat(dst_pathname_cr,subsystem_prefix);
     strcat(dst_pathname_cr, CCSP_DBUS_INTERFACE_CR);
 
-    /* This function will identify Component path through Component Registrar (CR) 
-       pParam Name is used to as input and CR will return back the respective component 
-       dbus path 
-     */   
+    /* This function will identify Component path through Component Registrar (CR)
+       pParam Name is used to as input and CR will return back the respective component
+       dbus path
+     */
     ret = CcspBaseIf_discComponentSupportingNamespace
         (
          bus_handle_client,
@@ -740,10 +740,10 @@ int ssp_getHealth(char *pComponentName)
     strcat(dst_pathname_cr,subsystem_prefix);
     strcat(dst_pathname_cr, CCSP_DBUS_INTERFACE_CR);
 
-    /* This function will identify Component path through Component Registrar (CR) 
-       pParam Name is used to as input and CR will return back the respective component 
-       dbus path 
-     */   
+    /* This function will identify Component path through Component Registrar (CR)
+       pParam Name is used to as input and CR will return back the respective component
+       dbus path
+     */
     ret = CcspBaseIf_discComponentSupportingNamespace
         (
          bus_handle_client,
@@ -823,10 +823,10 @@ int ssp_setSessionId(int priority, int sessionId,int *pComponentName,int overrid
         strcat(dst_pathname_cr,subsystem_prefix);
         strcat(dst_pathname_cr, CCSP_DBUS_INTERFACE_CR);
 
-        /* This function will identify Component path through Component Registrar (CR) 
-           pParam Name is used to as input and CR will return back the respective component 
-           dbus path 
-         */   
+        /* This function will identify Component path through Component Registrar (CR)
+           pParam Name is used to as input and CR will return back the respective component
+           dbus path
+         */
         ret = CcspBaseIf_discComponentSupportingNamespace
             (
              bus_handle_client,
@@ -856,7 +856,7 @@ int ssp_setSessionId(int priority, int sessionId,int *pComponentName,int overrid
         dst_pathname = ppComponents[0]->dbusPath;
         printf("\nssp_setSessionId::Destination Component Name is %s\n",dst_pathname);
 
-        ret = CcspBaseIf_getCurrentSessionID 
+        ret = CcspBaseIf_getCurrentSessionID
             (
              bus_handle_client,
              dst_pathname_cr,
@@ -897,10 +897,10 @@ int ssp_setSessionId(int priority, int sessionId,int *pComponentName,int overrid
  *
  * Function Name        : ssp_getParameterAttr
  * Description          : This function will call base interface funtion which is defined
- *                        on top of dbus calls to get Parameter attributes that holds 
+ *                        on top of dbus calls to get Parameter attributes that holds
  *			  additional info to Parameter
- * @param [in]  pParamAttr - Pointer to Attribute Parameter path 
- * @param [out] pParamsize - To hold the count for number of attributes parameters fetched 
+ * @param [in]  pParamAttr - Pointer to Attribute Parameter path
+ * @param [out] pParamsize - To hold the count for number of attributes parameters fetched
  * 			     from ccsp Component
  ********************************************************************************************/
 GETPARAMATTR* ssp_getParameterAttr(char *pParamAttr,int *pParamAttrSize)
@@ -924,10 +924,10 @@ GETPARAMATTR* ssp_getParameterAttr(char *pParamAttr,int *pParamAttrSize)
     strcat(dst_pathname_cr,subsystem_prefix);
     strcat(dst_pathname_cr, CCSP_DBUS_INTERFACE_CR);
 
-    /* This function will identify Component path through Component Registrar (CR) 
-       pParam Name is used to as input and CR will return back the respective component 
-       dbus path 
-     */   
+    /* This function will identify Component path through Component Registrar (CR)
+       pParam Name is used to as input and CR will return back the respective component
+       dbus path
+     */
     ret = CcspBaseIf_discComponentSupportingNamespace
         (
          bus_handle_client,
@@ -996,7 +996,7 @@ GETPARAMATTR* ssp_getParameterAttr(char *pParamAttr,int *pParamAttrSize)
                 if((GetAttr[i].pParamAccess==NULL) || (GetAttr[i].pParamNotify==NULL))
                 {
                     printf("Malloc returned NULL in GetAttr function\n");
-                    return NULL;	
+                    return NULL;
                 }
                 memset(GetAttr[i].pParamAccess,0,MAX_ATTRIBUTE_SIZE*sizeof(char));
                 memset(GetAttr[i].pParamNotify,0,MAX_ATTRIBUTE_SIZE*sizeof(char));
@@ -1041,13 +1041,13 @@ GETPARAMATTR* ssp_getParameterAttr(char *pParamAttr,int *pParamAttrSize)
 /*******************************************************************************************
  * Function Name        : ssp_setParameterAttr
  * Description          : This function will call base interface funtion which is defined
- *                        on top of dbus calls to get Parameter attributes that holds 
+ *                        on top of dbus calls to get Parameter attributes that holds
  *			  additional info to Parameter
- * @param [in]  pParamName  - Pointer to Attribute Parameter path 
+ * @param [in]  pParamName  - Pointer to Attribute Parameter path
  * @param [in]  pAttrNotify - This will change the "notification" attribute for the parmeter
  *			      that can be off,passive or active
- * @param [in]	pAttrAccess - This will change the "accessControlChanged" attribute for the 
- * 			      given parameter that can be "acs","xmpp","cli","webgui" or 
+ * @param [in]	pAttrAccess - This will change the "accessControlChanged" attribute for the
+ * 			      given parameter that can be "acs","xmpp","cli","webgui" or
  * 			      "anybody"
  * @param [out] N/A
  ********************************************************************************************/
@@ -1069,10 +1069,10 @@ int ssp_setParameterAttr(char *pParamName,char *pAttrNotify,char *pAttrAccess)
     strcat(dst_pathname_cr,subsystem_prefix);
     strcat(dst_pathname_cr, CCSP_DBUS_INTERFACE_CR);
 
-    /* This function will identify Component path through Component Registrar (CR) 
-       pParam Name is used to as input and CR will return back the respective component 
-       dbus path 
-     */   
+    /* This function will identify Component path through Component Registrar (CR)
+       pParam Name is used to as input and CR will return back the respective component
+       dbus path
+     */
     ret = CcspBaseIf_discComponentSupportingNamespace
         (
          bus_handle_client,
@@ -1118,7 +1118,7 @@ int ssp_setParameterAttr(char *pParamName,char *pAttrNotify,char *pAttrAccess)
     {
         valAttr[size].notification = 0;
         valAttr[size].notificationChanged = 0;
-    }	
+    }
 
     if ( strcmp(pAttrAccess,"acs" )==0 )
         valAttr[size].accessControlBitmask = 0x0;
@@ -1131,10 +1131,10 @@ int ssp_setParameterAttr(char *pParamName,char *pAttrNotify,char *pAttrAccess)
     else if ( strcmp(pAttrAccess,"anybody")==0 )
         valAttr[size].accessControlBitmask = 0xFFFFFFFF;
     else
-    {	
+    {
         valAttr[size].accessControlBitmask = 0;
         valAttr[size].accessControlChanged = 0;
-    }	
+    }
 
 
 
@@ -1171,7 +1171,7 @@ void free_Memory_Names(int size,GETPARAMNAMES *Freestruct)
 {
     int i=0;
     for(i=0;i<size;i++)
-    {	
+    {
 
         free(Freestruct[i].pParamNames);
         Freestruct[i].pParamNames=NULL;
@@ -1448,8 +1448,6 @@ int ssp_Diag_SetCfg(int mode, diag_cfg *cfg)
     cfg_t.timo = PING_DEF_TIMEO;
     cfg_t.size = PING_DEF_BSIZE;
 
-    /*status = diag_init();
-    printf("Init status %d\n", status);*/
     status = diag_setcfg(mode, &cfg_t);
     if(status == DIAG_ERR_OK ){
         printf("diag_set_cfg success.\n");

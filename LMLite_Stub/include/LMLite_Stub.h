@@ -43,7 +43,7 @@ class RDKTestAgent;
 class LMLiteStub : public RDKTestStubInterface, public AbstractServer<LMLiteStub>
 {
     public:
-        
+
 		LMLiteStub(TcpSocketServer &ptrRpcServer) : AbstractServer <LMLiteStub>(ptrRpcServer)
 		{
 			this->bindAndAddMethod(Procedure("LMLiteStub_Get", PARAMS_BY_NAME, JSON_STRING, "paramName", JSON_STRING, NULL), &LMLiteStub::LMLiteStub_Get);
@@ -55,7 +55,7 @@ class LMLiteStub : public RDKTestStubInterface, public AbstractServer<LMLiteStub
         bool cleanup(IN const char* szVersion);
         std::string testmodulepre_requisites();
         bool testmodulepost_requisites();
-		
+
         /*LMlite Stub Wrapper functions*/
         void LMLiteStub_Get(IN const Json::Value& req, OUT Json::Value& response);
         void LMLiteStub_Set(IN const Json::Value& req, OUT Json::Value& response);

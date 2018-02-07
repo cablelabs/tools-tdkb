@@ -21,7 +21,7 @@
 #include "ssp_tdk_Ethsw_wrp.h"
 #include <jsonrpccpp/server/connectors/tcpsocketserver.h>
 
-/* for reference added it,(IN) indicates accepting the request from Test Manager and (OUT) 
+/* for reference added it,(IN) indicates accepting the request from Test Manager and (OUT)
    indicates sending the response for the request back to the Manager */
 #ifndef IN
 #define IN
@@ -38,7 +38,7 @@ class RDKTestAgent;
 class ethsw_stub_hal : public RDKTestStubInterface, public AbstractServer<ethsw_stub_hal>
 {
 	public:
-		
+
 		ethsw_stub_hal(TcpSocketServer &ptrRpcServer) : AbstractServer <ethsw_stub_hal>(ptrRpcServer)
 		{
 			this->bindAndAddMethod(Procedure("ethsw_stub_hal_Get_Port_Admin_Status", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "flag", JSON_INTEGER, NULL), &ethsw_stub_hal::ethsw_stub_hal_Get_Port_Admin_Status);
@@ -50,12 +50,12 @@ class ethsw_stub_hal : public RDKTestStubInterface, public AbstractServer<ethsw_
 			this->bindAndAddMethod(Procedure("ethsw_stub_hal_SetPortAdminStatus", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "adminstatus", JSON_STRING, NULL), &ethsw_stub_hal::ethsw_stub_hal_SetPortAdminStatus);
 			this->bindAndAddMethod(Procedure("ethsw_stub_hal_SetPortCfg", PARAMS_BY_NAME, JSON_STRING, "PortID", JSON_INTEGER, "linkrate", JSON_INTEGER, "mode", JSON_STRING, NULL), &ethsw_stub_hal::ethsw_stub_hal_SetPortCfg);
 		}
-		
+
 		bool initialize(IN const char* szVersion);
 		bool cleanup(const char*);
 		std::string testmodulepre_requisites();
 		bool testmodulepost_requisites();
-		
+
 		void ethsw_stub_hal_Get_Port_Admin_Status(const Json::Value&, Json::Value&);
 		void ethsw_stub_hal_Get_Port_Cfg(const Json::Value&, Json::Value&);
 		void ethsw_stub_hal_Get_Port_Status(const Json::Value&, Json::Value&);

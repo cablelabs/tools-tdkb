@@ -20,8 +20,6 @@
 #include "ssp_tdk_wrp.h"
 
 /* To provide external linkage to C Functions defined in TDKB Component folder */
-
-
 extern "C"
 {
     int ssp_register(bool);
@@ -38,38 +36,16 @@ extern "C"
     int ssp_setSessionId(int priority, int sessionId,char *pComponentName,int override);
 };
 
-/*This is a constructor function for CMAgent class*/
-#if 0
-CMAgent::CMAgent()
-{
-    DEBUG_PRINT(DEBUG_LOG,"TDK CMAgent Instance Created\n");
-}
-#endif
-
 /***************************************************************************
  *Function name	: initialize
- *Description	: Initialize Function will be used for registering the wrapper method 
+ *Description	: Initialize Function will be used for registering the wrapper method
  *  	  	  with the agent so that wrapper function will be used in the script
- *  		  	  
- *****************************************************************************/ 
+ *
+ *****************************************************************************/
 
 bool CMAgent::initialize(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_TRACE,"TDK::CMAgent Initialize\n");
-#if 0
-    /*Register stub function for callback*/
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_Get, "CMAgent_Get");
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_GetAttr, "CMAgent_GetAttr");
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_GetNames, "CMAgent_GetNames");
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_SetAttr, "CMAgent_SetAttr");
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_Set, "CMAgent_Set");
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_AddObject, "CMAgent_AddObject");
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_DelObject, "CMAgent_DelObject");
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_SetCommit, "CMAgent_SetCommit");
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_GetHealth, "CMAgent_GetHealth");
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_SetSessionId, "CMAgent_SetSessionId");
-    ptrAgentObj->RegisterMethod(*this,&CMAgent::CMAgent_Set_Get, "CMAgent_Set_Get");
-#endif
     return TEST_SUCCESS;
 
 }
@@ -120,11 +96,11 @@ bool CMAgent::testmodulepost_requisites()
 /*******************************************************************************************
  *
  * Function Name	: CMAgent_Get
- * Description		: This function will invoke TDK Component GET Value wrapper 
+ * Description		: This function will invoke TDK Component GET Value wrapper
  * 			  function to get parameter value
  *
  * @param [in] req- This holds Path name for Parameter
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_getParameterValue
  ********************************************************************************************/
 
@@ -138,16 +114,15 @@ void CMAgent::CMAgent_Get(IN const Json::Value& req, OUT Json::Value& response)
 
     strcpy(ParamNames,req["paramName"].asCString());
 
-    DEBUG_PRINT(DEBUG_TRACE,"\n ParamNames input is %s",ParamNames);	
+    DEBUG_PRINT(DEBUG_TRACE,"\n ParamNames input is %s",ParamNames);
 
     resultDetails = ssp_getParameterValue(&ParamNames[0],&paramsize);
 
     if(resultDetails == NULL)
     {
         response["result"]="FAILURE";
-        response["details"]="Get Parameter Value API Validation Failure"; 		
+        response["details"]="Get Parameter Value API Validation Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Get --->Exit\n");
-    //    return TEST_FAILURE;
 	return;
     }
     else
@@ -163,18 +138,17 @@ void CMAgent::CMAgent_Get(IN const Json::Value& req, OUT Json::Value& response)
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Get --->Exit\n");
 
-//    return TEST_SUCCESS;
     return;
 }
 
 /*******************************************************************************************
  *
  * Function Name	: CMAgent_Set
- * Description		: This function will invoke TDK Component SET Value wrapper 
- * 			          function 
+ * Description		: This function will invoke TDK Component SET Value wrapper
+ * 			          function
  *
  * @param [in] req-        This holds Path name, Value to set and its type
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			               ssp_setParameterValue
  ********************************************************************************************/
 
@@ -207,12 +181,10 @@ void CMAgent::CMAgent_Set(IN const Json::Value& req, OUT Json::Value& response)
         response["result"]="FAILURE";
         response["details"]="CMAgentStub::SET API Validation is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set --->Error in Set API Validation of CM Agent in DUT !!! \n");
-    //    return	TEST_FAILURE;
 	return;
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set --->Exit\n");
-//    return TEST_SUCCESS;
     return;
 }
 
@@ -220,11 +192,11 @@ void CMAgent::CMAgent_Set(IN const Json::Value& req, OUT Json::Value& response)
 /*******************************************************************************************
  *
  * Function Name	: CMAgent_Set_Get
- * Description		: This function will invoke TDK Component SET and GET Value wrapper 
+ * Description		: This function will invoke TDK Component SET and GET Value wrapper
  * 			          function for functional Validation
  *
  * @param [in] req-        This hods Path name, Value to set and its type
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			               ssp_setParameterValue and ssp_getParameterValue
  ********************************************************************************************/
 
@@ -263,7 +235,6 @@ void CMAgent::CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& respon
         response["result"]="FAILURE";
         response["details"]="CMAgentStub::SET API Validation is Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set_Get --->Error in Set API Validation of CM Agent in DUT !!! \n");
-    //    return	TEST_FAILURE;
 	return;
     }
 
@@ -273,9 +244,8 @@ void CMAgent::CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& respon
     if(resultDetails == NULL)
     {
         response["result"]="FAILURE";
-        response["details"]="Get Parameter Value API Validation Failure"; 		
+        response["details"]="Get Parameter Value API Validation Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set_Get --->Error in Get API Validation of CM Agent in DUT !!! \n");
-//        return TEST_FAILURE;
 	return;
     }
 
@@ -289,7 +259,7 @@ void CMAgent::CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& respon
     {
 
         response["result"]="FAILURE";
-        response["details"]="Set Get Functional Validation Failure"; 		
+        response["details"]="Set Get Functional Validation Failure";
         DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set_Get --->Error in Functional Validation of CM Agent in DUT !!! \n");
     }
 
@@ -303,18 +273,17 @@ void CMAgent::CMAgent_Set_Get(IN const Json::Value& req, OUT Json::Value& respon
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_Set_Get --->Exit\n");
-//    return bReturn;
     return;
 }
 
 /*******************************************************************************************
  *
  * Function Name	: CMAgent_GetAttr
- * Description		: This function is called through RPC which will invoke TDK 
+ * Description		: This function is called through RPC which will invoke TDK
  * 			  Wrapper Get attribute function
  *
- * @param [in] req- 	   This holds Attribute path name 
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [in] req- 	   This holds Attribute path name
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_getParameterAttr
  ********************************************************************************************/
 
@@ -352,18 +321,17 @@ void CMAgent::CMAgent_GetAttr(IN const Json::Value& req, OUT Json::Value& respon
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_GetAttr --->Exit\n");
-//    return bReturn;
     return;
 }
 
 /*******************************************************************************************
  *
  * Function Name	: CMAgent_SetAttr
- * Description		: This function is called through TM RPC which will invoke TDK 
+ * Description		: This function is called through TM RPC which will invoke TDK
  * 			  Wrapper Set Attribute Function
  *
  * @param [in] req- 	  This holds attribute path name and it attributes values to be set
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_setParameterAttr
  ********************************************************************************************/
 
@@ -404,18 +372,17 @@ void CMAgent::CMAgent_SetAttr(IN const Json::Value& req, OUT Json::Value& respon
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_SetAttr --->Exit\n");
-    //return bReturn;
     return;
 }
 
 /*******************************************************************************************
  *
  * Function Name	: CMAgent_GetNames
- * Description		: This function is called through TM RPC which will invoke TDK 
+ * Description		: This function is called through TM RPC which will invoke TDK
  * 			  Wrapper function to get Parameter names of given component path
  *
  * @param [in] req- 	  This holds path name
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_getParameterNames
  ********************************************************************************************/
 
@@ -441,7 +408,7 @@ void CMAgent::CMAgent_GetNames(IN const Json::Value& req, OUT Json::Value& respo
     if(resultDetails == NULL)
     {
         response["result"]="FAILURE";
-        response["details"]="CMAGENT::Get Param Name API Validation Fail";	
+        response["details"]="CMAGENT::Get Param Name API Validation Fail";
     }
     else
     {
@@ -455,7 +422,6 @@ void CMAgent::CMAgent_GetNames(IN const Json::Value& req, OUT Json::Value& respo
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_GetNames --->Exit\n");
-   // return bReturn;
     return;
 }
 
@@ -465,7 +431,7 @@ void CMAgent::CMAgent_GetNames(IN const Json::Value& req, OUT Json::Value& respo
  * Description          : Add a row to the table object
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_addTableRow
  ********************************************************************************************/
 
@@ -481,7 +447,6 @@ void CMAgent::CMAgent_AddObject(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-    //    return TEST_FAILURE;
 	return;
     }
 
@@ -508,7 +473,6 @@ void CMAgent::CMAgent_AddObject(IN const Json::Value& req, OUT Json::Value& resp
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_AddObject --->Exit\n");
-//    return bReturn;
     return;
 }
 
@@ -518,7 +482,7 @@ void CMAgent::CMAgent_AddObject(IN const Json::Value& req, OUT Json::Value& resp
  * Description          : Delete a row from the table object
  *
  * @param [in] req-	This holds parameter path name
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_deleteTableRow
  ********************************************************************************************/
 
@@ -537,7 +501,6 @@ void CMAgent::CMAgent_DelObject(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-    //    return TEST_FAILURE;
 	return;
     }
 
@@ -580,7 +543,6 @@ void CMAgent::CMAgent_DelObject(IN const Json::Value& req, OUT Json::Value& resp
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_DelObject --->Exit\n");
-//    return bReturn;
     return;
 }
 
@@ -590,7 +552,7 @@ void CMAgent::CMAgent_DelObject(IN const Json::Value& req, OUT Json::Value& resp
  * Description          : Commit the changes in the table object
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_setCommit
  ********************************************************************************************/
 
@@ -605,7 +567,6 @@ void CMAgent::CMAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-    //    return TEST_FAILURE;
 	return;
     }
 
@@ -630,7 +591,6 @@ void CMAgent::CMAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& resp
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_SetCommit --->Exit\n");
-//    return bReturn;
     return;
 }
 
@@ -640,7 +600,7 @@ void CMAgent::CMAgent_SetCommit(IN const Json::Value& req, OUT Json::Value& resp
  * Description          : Get the health  of the component
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_getHealth
  ********************************************************************************************/
 
@@ -655,7 +615,6 @@ void CMAgent::CMAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& resp
     {
         response["result"]="FAILURE";
         response["details"]="CMAgentStub::Error Invoking TDK Component";
-    //    return TEST_FAILURE;
 	return;
     }
 
@@ -680,7 +639,6 @@ void CMAgent::CMAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& resp
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_GetHealth --->Exit\n");
-//    return bReturn;
     return;
 }
 
@@ -690,7 +648,7 @@ void CMAgent::CMAgent_GetHealth(IN const Json::Value& req, OUT Json::Value& resp
  * Description          : Set the session Id
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_setSessionId
  ********************************************************************************************/
 
@@ -710,7 +668,6 @@ void CMAgent::CMAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& r
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-    //    return TEST_FAILURE;
 	return;
     }
 
@@ -718,7 +675,6 @@ void CMAgent::CMAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& r
     {
         response["result"]="FAILURE";
         response["details"]="NULL";
-//        return TEST_FAILURE;
 	return;
     }
 
@@ -748,7 +704,6 @@ void CMAgent::CMAgent_SetSessionId(IN const Json::Value& req, OUT Json::Value& r
     }
 
     DEBUG_PRINT(DEBUG_TRACE,"\n CMAgent_SetSessionId --->Exit\n");
-//    return bReturn;
     return;
 }
 
@@ -768,40 +723,20 @@ extern "C" CMAgent* CreateObject(TcpSocketServer &ptrtcpServer)
 
 /**************************************************************************
  * Function Name : cleanup
- * Description   : This function will be used to clean the log details. 
+ * Description   : This function will be used to clean the log details.
  *
  **************************************************************************/
 
 bool CMAgent::cleanup(IN const char* szVersion)
 {
     DEBUG_PRINT(DEBUG_LOG,"CMAgent shutting down\n");
-#if 0
-    if(ptrAgentObj==NULL)
-    {
-        return TEST_FAILURE;
-    }
-    /*unRegister stub function for callback*/
-
-    ptrAgentObj->UnregisterMethod("CMAgent_Get");
-    ptrAgentObj->UnregisterMethod("CMAgent_GetAttr");
-    ptrAgentObj->UnregisterMethod("CMAgent_GetNames");
-    ptrAgentObj->UnregisterMethod("CMAgent_SetAttr");
-    ptrAgentObj->UnregisterMethod("CMAgent_Set");
-    ptrAgentObj->UnregisterMethod("CMAgent_Set_Get");
-
-    ptrAgentObj->UnregisterMethod("CMAgent_AddObject");
-    ptrAgentObj->UnregisterMethod("CMAgent_DelObject");
-    ptrAgentObj->UnregisterMethod("CMAgent_SetCommit");
-    ptrAgentObj->UnregisterMethod("CMAgent_GetHealth");
-    ptrAgentObj->UnregisterMethod("CMAgent_SetSessionId");
-#endif
     return TEST_SUCCESS;
 }
 
 
 /**************************************************************************
  * Function Name : DestroyObject
- * Description   : This function will be used to destroy the object. 
+ * Description   : This function will be used to destroy the object.
  *
  **************************************************************************/
 extern "C" void DestroyObject(CMAgent *stubobj)

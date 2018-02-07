@@ -319,7 +319,6 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
                     printf("ssp_CMHAL_GetParamCharValue: US Power Level retreived :%s\n",pUsPower->PowerLevel);
                     char PowerString[64];
                     strcpy(PowerString,pUsPower->PowerLevel);
-                    //PowerString[strlen(PowerString)- 5]  = '\0';
                     strcat(value, pUsPower->Modulation);
                     strcat(value, ":");
                     strcat(value, PowerString);
@@ -353,7 +352,6 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
                    printf("ssp_CMHAL_GetParamCharValue: DS Power retreived :%s\n",pDsPower->PowerLevel);
                    char PowerString[128];
                    strcpy(PowerString,pDsPower->PowerLevel);
-                   //PowerString[strlen(PowerString)- 5]  = '\0';
                    strcat(value, PowerString);
                    strcat(value, ",");
                    temp_DsPower++;
@@ -400,7 +398,6 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
 		    char Channelid[16];
                     sprintf(Channelid,"%d",pUsFreq->ChannelID);
                     strcpy(FreqString,pUsFreq->Frequency);
-                    //FreqString[strlen(FreqString)- 4]  = '\0';
                     strcat(value, Channelid);
                     strcat(value, ":");
                     strcat(value, FreqString);
@@ -434,7 +431,6 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
                     printf("ssp_CMHAL_GetParamCharValue: US symbol retreived :%s\n",pUsFreq->SymbolRate);
                     char FreqString[64];
                     strcpy(FreqString,pUsFreq->SymbolRate);
-                    //FreqString[strlen(FreqString)- 7]  = '\0';
                     strcat(value, FreqString);
                     strcat(value, ",");
                     temp_UsFreq++;
@@ -469,7 +465,6 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
                     char Channelid[16];
                     sprintf(Channelid,"%d",pDsFreq->ChannelID);
                     strcpy(FreqString,pDsFreq->Frequency);
-                    //FreqString[strlen(FreqString)- 4]  = '\0';
                     strcat(value, Channelid);
                     strcat(value, ":");
                     strcat(value, FreqString);
@@ -585,10 +580,6 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
                 {
                     printf("ssp_CMHAL_GetParamCharValue: US LockStatus retreived :%s\n",pUsFreq->LockStatus);
                     printf("ssp_CMHAL_GetParamCharValue: US Modulation retreived :%s\n",pUsFreq->Modulation);
-                    //char FreqString[64];
-
-
-                    //strcpy(FreqString,pUsFreq->Frequency);
 
                     strcat(value, pUsFreq->LockStatus);
                     strcat(value, ":");
@@ -622,11 +613,6 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
                 {
                     printf("ssp_CMHAL_GetParamCharValue: DS LockStatus retreived :%s\n",pDsFreq->LockStatus);
                     printf("ssp_CMHAL_GetParamCharValue: DS Modulation retreived :%s\n",pDsFreq->Modulation);
-                    //char FreqString[64];
-
-
-                    //strcpy(FreqString,pUsFreq->Frequency);
-
                     strcat(value, pDsFreq->LockStatus);
                     strcat(value, ":");
                     strcat(value, pDsFreq->Modulation);
@@ -663,7 +649,6 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
                     char Channelid[16];
                     sprintf(Channelid,"%d",pUsFreq->ChannelID);
                     strcpy(FreqString,pUsFreq->ChannelType);
-                    //FreqString[strlen(FreqString)- 7]  = '\0';
                     strcat(value, Channelid);
                     strcat(value, ":");
                     strcat(value, FreqString);
@@ -700,7 +685,6 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
                     char Channelid[16];
                     sprintf(Channelid,"%d",pDsFreq->ChannelID);
                     strcpy(PowerString,pDsFreq->PowerLevel);
-                    //FreqString[strlen(FreqString)- 4]  = '\0';
                     strcat(value, Channelid);
                     strcat(value, ":");
                     strcat(value, PowerString);
@@ -737,7 +721,6 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
                     char Channelid[16];
                     sprintf(Channelid,"%d",pUsFreq->ChannelID);
                     strcpy(PowerString,pUsFreq->PowerLevel);
-                    //FreqString[strlen(FreqString)- 4]  = '\0';
                     strcat(value, Channelid);
                     strcat(value, ":");
                     strcat(value, PowerString);
@@ -772,7 +755,7 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
         else
             return_status = docsis_GetDOCSISInfo(value);
     }
-    
+
     else
     {
          printf("Invalid parameter name");

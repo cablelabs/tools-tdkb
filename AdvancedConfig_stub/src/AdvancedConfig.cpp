@@ -39,15 +39,15 @@ extern "C"
 
 /***************************************************************************
  *Function name	: initialize
- *Description	: Initialize Function will be used for registering the wrapper method 
+ *Description	: Initialize Function will be used for registering the wrapper method
  *  	  	  with the agent so that wrapper function will be used in the script
- *  		  	  
- *****************************************************************************/ 
+ *
+ *****************************************************************************/
 
 bool AdvancedConfig::initialize(IN const char* szVersion)
 {
 	DEBUG_PRINT(DEBUG_TRACE,"TDK::AdvancedConfig Initialize\n");
-	
+
 	return TEST_SUCCESS;
 
 }
@@ -88,11 +88,11 @@ bool AdvancedConfig::testmodulepost_requisites()
 /*******************************************************************************************
  *
  * Function Name	: AdvancedConfig_Start
- * Description		: This function will invoke TDK Component that will attach to 
+ * Description		: This function will invoke TDK Component that will attach to
  * 			  CCSP Component Registrar (CR)
  *
- * @param [in]  req- 
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [in]  req-
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_register
 ********************************************************************************************/
 
@@ -116,7 +116,7 @@ void AdvancedConfig::AdvancedConfig_Start(IN const Json::Value& req, OUT Json::V
 		response["result"]="FAILURE";
         response["details"]="NULL";
 	}
-	
+
 	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_start --->Exit\n");
 	return;
 }
@@ -124,11 +124,11 @@ void AdvancedConfig::AdvancedConfig_Start(IN const Json::Value& req, OUT Json::V
 /*******************************************************************************************
  *
  * Function Name	: AdvancedConfig_Get
- * Description		: This function will invoke TDK Component GET Value wrapper 
+ * Description		: This function will invoke TDK Component GET Value wrapper
          * 			  function to get parameter value
  *
  * @param [in] req- This holds Path name for Parameter
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_getParameterValue
 ********************************************************************************************/
 
@@ -139,10 +139,10 @@ void AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Val
 	char ParamNames[MAX_PARAM_SIZE];
 	GETPARAMVALUES *resultDetails;
 	int	paramsize=0;
-	char details[100] = {'\0'};	
+	char details[100] = {'\0'};
 	strcpy(ParamNames,req["paramName"].asCString());
 
-	DEBUG_PRINT(DEBUG_TRACE,"\n ParamNames input is %s",ParamNames);	
+	DEBUG_PRINT(DEBUG_TRACE,"\n ParamNames input is %s",ParamNames);
 
 	resultDetails = ssp_getParameterValue(&ParamNames[0],&paramsize);
 	DEBUG_PRINT(DEBUG_TRACE,"\nresultDetails is %s",resultDetails[0].pParamValues);
@@ -151,7 +151,7 @@ void AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Val
 	if(resultDetails == NULL)
 	{
 	    response["result"]="FAILURE";
-	    response["details"]="Get Parameter Value API Validation Failure"; 		
+	    response["details"]="Get Parameter Value API Validation Failure";
 	}
 	else
 	{
@@ -163,7 +163,7 @@ void AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Val
 		free(resultDetails[i].pParamValues);
 	    }
 	}
-	
+
 	DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_get --->Exit\n");
 
 	return;
@@ -172,11 +172,11 @@ void AdvancedConfig::AdvancedConfig_Get(IN const Json::Value& req, OUT Json::Val
 /*******************************************************************************************
  *
  * Function Name	: AdvancedConfig_Set
- * Description		: This function will invoke TDK Component SET Value wrapper 
-         * 			  function 
+ * Description		: This function will invoke TDK Component SET Value wrapper
+         * 			  function
  *
  * @param [in] req-        This hods Path name, Value to set and its type
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 		            	   ssp_setParameterValue
 ********************************************************************************************/
 
@@ -193,7 +193,7 @@ void AdvancedConfig::AdvancedConfig_Set(IN const Json::Value& req, OUT Json::Val
     strcpy(ParamName,req["paramName"].asCString());
     strcpy(ParamValue,req["paramValue"].asCString());
     strcpy(ParamType,req["paramType"].asCString());
-	
+
     DEBUG_PRINT(DEBUG_TRACE,"\nAdvancedConfig_Set:: ParamName input is %s",ParamName);
     DEBUG_PRINT(DEBUG_TRACE,"\nAdvancedConfig_Set:: ParamValue input is %s",ParamValue);
     DEBUG_PRINT(DEBUG_TRACE,"\nAdvancedConfig_Set:: ParamType input is %s",ParamType);
@@ -219,11 +219,11 @@ void AdvancedConfig::AdvancedConfig_Set(IN const Json::Value& req, OUT Json::Val
 /*******************************************************************************************
  *
  * Function Name	: AdvancedConfig_Set_Get
- * Description		: This function will invoke TDK Component SET and GET Value wrapper 
+ * Description		: This function will invoke TDK Component SET and GET Value wrapper
  *      			  function for functional Validation
  *
  * @param [in] req-        This hods Path name, Value to set and its type
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			               ssp_setParameterValue and ssp_getParameterValue
 ********************************************************************************************/
 
@@ -258,7 +258,7 @@ void AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json:
 
 
 	returnValue = ssp_setParameterValue(&ParamName[0],&ParamValue[0],&ParamType[0],commit);
-	
+
 	if(0 != returnValue)
 	{
         response["result"]="FAILURE";
@@ -273,7 +273,7 @@ void AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json:
 	if(resultDetails == NULL)
 	{
 	    response["result"]="FAILURE";
-	    response["details"]="Get Parameter Value API Validation Failure"; 		
+	    response["details"]="Get Parameter Value API Validation Failure";
 	    DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set_get --->Error in Get API Validation of Advanced config in DUT !!! \n");
 	    return;
 	}
@@ -287,7 +287,7 @@ void AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json:
 	{
 
 	    response["result"]="FAILURE";
-	    response["details"]="Set Get Functional Validation Failure"; 		
+	    response["details"]="Set Get Functional Validation Failure";
 	    DEBUG_PRINT(DEBUG_TRACE,"\n AdvancedConfig_set_get --->Error in Functional Validation of Advanced config in DUT !!! \n");
 	}
 
@@ -306,11 +306,11 @@ void AdvancedConfig::AdvancedConfig_Set_Get(IN const Json::Value& req, OUT Json:
 /*******************************************************************************************
  *
  * Function Name	: AdvancedConfig_GetAttr
- * Description		: This function is called through RPC which will invoke TDK 
+ * Description		: This function is called through RPC which will invoke TDK
  *       			  Wrapper Get attribute function
  *
- * @param [in] req- 	   This holds Attribute path name 
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [in] req- 	   This holds Attribute path name
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 		            	   ssp_getParameterAttr
 ********************************************************************************************/
 
@@ -352,11 +352,11 @@ void AdvancedConfig::AdvancedConfig_GetAttr(IN const Json::Value& req, OUT Json:
 /*******************************************************************************************
  *
  * Function Name	: AdvancedConfig_SetAttr
- * Description		: This function is called through TM RPC which will invoke TDK 
+ * Description		: This function is called through TM RPC which will invoke TDK
  * 			  Wrapper Set Attribute Function
  *
  * @param [in] req- 	  This holds attribute path name and it attributes values to be set
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
              * 			   ssp_setParameterAttr
 ********************************************************************************************/
 
@@ -369,7 +369,7 @@ void AdvancedConfig::AdvancedConfig_SetAttr(IN const Json::Value& req, OUT Json:
 	char AttrNotify[MAX_PARAM_SIZE];
 	char AttrAccess[MAX_PARAM_SIZE];
 	char ParamName[MAX_PARAM_SIZE];
-	
+
 	strcpy(ParamName,req["paramname"].asCString());
 
 	strcpy(AttrNotify,req["notification"].asCString());
@@ -401,11 +401,11 @@ void AdvancedConfig::AdvancedConfig_SetAttr(IN const Json::Value& req, OUT Json:
 /*******************************************************************************************
  *
  * Function Name	: AdvancedConfig_GetNames
- * Description		: This function is called through TM RPC which will invoke TDK 
+ * Description		: This function is called through TM RPC which will invoke TDK
  *       			  Wrapper function to get Parameter names of given component path
  *
  * @param [in] req- 	  This holds path name
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 		            	   ssp_getParameterNames
 ********************************************************************************************/
 
@@ -431,7 +431,7 @@ void AdvancedConfig::AdvancedConfig_GetNames(IN const Json::Value& req, OUT Json
     if(resultDetails == NULL)
     {
         response["result"]="FAILURE";
-        response["details"]="ADVANCEDCONFIG::Get Param Name API Validation Fail";	
+        response["details"]="ADVANCEDCONFIG::Get Param Name API Validation Fail";
     }
     else
     {
@@ -454,7 +454,7 @@ void AdvancedConfig::AdvancedConfig_GetNames(IN const Json::Value& req, OUT Json
  * Description          : Add a row to the table object
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_addTableRow
 ********************************************************************************************/
 
@@ -506,7 +506,7 @@ void AdvancedConfig::AdvancedConfig_AddObject(IN const Json::Value& req, OUT Jso
  * Description          : Delete a row from the table object
  *
  * @param [in] req-	This holds parameter path name
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_deleteTableRow
 ********************************************************************************************/
 
@@ -575,7 +575,7 @@ void AdvancedConfig::AdvancedConfig_DelObject(IN const Json::Value& req, OUT Jso
  * Description          : Commit the changes in the table object
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_setCommit
 ********************************************************************************************/
 
@@ -622,7 +622,7 @@ void AdvancedConfig::AdvancedConfig_SetCommit(IN const Json::Value& req, OUT Jso
  * Description          : Get the health  of the component
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			   ssp_getHealth
 ********************************************************************************************/
 
@@ -669,7 +669,7 @@ void AdvancedConfig::AdvancedConfig_GetHealth(IN const Json::Value& req, OUT Jso
  * Description          : Set the session Id
  *
  * @param [in] req-
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  *          			   ssp_setSessionId
 ********************************************************************************************/
 
@@ -728,8 +728,8 @@ void AdvancedConfig::AdvancedConfig_SetSessionId(IN const Json::Value& req, OUT 
  * Description		: This function is called through TM RPC which will invoke TDK
  *	        		  Wrapper Stop function
  *
- * @param [in] req- 
- * @param [out] response - filled with SUCCESS or FAILURE based on the return value of 
+ * @param [in] req-
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  * 			               ssp_register
 ********************************************************************************************/
 
@@ -769,7 +769,7 @@ void AdvancedConfig::AdvancedConfig_Stop(IN const Json::Value& req, OUT Json::Va
  * Description          : This function will set multiple parameter value at one shot
  *
  * @param [in] req-        ParamList will hold the entire list to be set.
- *                         
+ *
  * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
  *                         ssp_setMultipleParameterValue
 ********************************************************************************************/
@@ -850,7 +850,7 @@ extern "C" AdvancedConfig* CreateObject(TcpSocketServer &ptrtcpServer)
 
 /**************************************************************************
  * Function Name : cleanup
- * Description   : This function will be used to clean the log details. 
+ * Description   : This function will be used to clean the log details.
  *
  **************************************************************************/
 
@@ -863,7 +863,7 @@ bool AdvancedConfig::cleanup(IN const char* szVersion)
 
 /**************************************************************************
  * Function Name : DestroyObject
- * Description   : This function will be used to destroy the object. 
+ * Description   : This function will be used to destroy the object.
  *
  **************************************************************************/
 extern "C" void DestroyObject(AdvancedConfig *stubobj)

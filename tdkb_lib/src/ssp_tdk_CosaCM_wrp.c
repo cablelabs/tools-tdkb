@@ -42,7 +42,7 @@
 #include <unistd.h>
 #include "cm_hal.h"
 
-ANSC_HANDLE cm_handle = NULL;    
+ANSC_HANDLE cm_handle = NULL;
 PCOSA_BACKEND_MANAGER_OBJECT g_pCosaBEManager;
 
 /*******************************************************************************************
@@ -147,7 +147,7 @@ int ssp_CosaDmlCMGetLockedUpstreamChID(int handleType)
  *
  * Function Name        : ssp_CosaDmlCMSetLockedUpstreamChID
  * Description          : This function will invoke the cosa api of CM to lock upstream channel
- *                        Id for the specified value. 
+ *                        Id for the specified value.
  *
  * @param [in]          : handleType - Message bus handle
  * @param [out]         : return status an integer value 0-success and 1-Failure
@@ -166,7 +166,7 @@ int ssp_CosaDmlCMSetLockedUpstreamChID(int handleType, int channelId)
         cm_handle = bus_handle_client;
     }
 
-    printf("ssp_CosaDmlCMSetLockedUpstreamChID: Upstream Channel Id to be set:%d\n",channelValue);   
+    printf("ssp_CosaDmlCMSetLockedUpstreamChID: Upstream Channel Id to be set:%d\n",channelValue);
     return_status = CosaDmlCMSetLockedUpstreamChID(cm_handle,&channelValue);
 
     if ( return_status != SSP_SUCCESS)
@@ -237,7 +237,7 @@ int ssp_CosaDmlCMSetStartDSFrequency(int handleType, int frequency)
         cm_handle = bus_handle_client;
     }
 
-    printf("ssp_CosaDmlCMSetStartDSFrequency: Downstream frequency to be set:%d\n",(int)frequencyValue);    
+    printf("ssp_CosaDmlCMSetStartDSFrequency: Downstream frequency to be set:%d\n",(int)frequencyValue);
     return_status = CosaDmlCMSetStartDSFrequency(cm_handle,frequencyValue);
 
     if ( return_status != SSP_SUCCESS)
@@ -361,7 +361,7 @@ int ssp_CosaDmlCMGetStatus(int handleType, int Value)
         pValue = ((char *) malloc(100));
     }
     return_status = CosaDmlCMGetStatus(cm_handle,pValue);
-    printf("Return status of CosaDmlCMGetStatus is %d \n", return_status);  
+    printf("Return status of CosaDmlCMGetStatus is %d \n", return_status);
     if(return_status == SSP_SUCCESS)
     {
         printf("\n ssp_CosaDmlCMGetStatus :: CosaDmlCMGetStatus function is success with return status %d",return_status);
@@ -500,7 +500,7 @@ int ssp_CosaDmlCMGetTelephonyRegistrationStatus(int handleType, int Value)
 
 /*******************************************************************************************
  * Function Name        : ssp_CosaDmlCMGetTelephonyDHCPStatus
- * Description          : This function will get 
+ * Description          : This function will get
  * @param [in]          : boolValue -
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
@@ -540,7 +540,7 @@ int ssp_CosaDmlCMGetTelephonyDHCPStatus(int handleType, int Value)
 
 /*******************************************************************************************
  * Function Name        : ssp_CosaDmlCMGetTelephonyTftpStatus
- * Description          : This function will get 
+ * Description          : This function will get
  * @param [in]          : boolValue -
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
@@ -675,7 +675,7 @@ int ssp_cosacm_GetDOCSISInfo(int handleType, int bufferType)
     {
         cm_handle = bus_handle_client;
     }
-    
+
     if(bufferType == 0)
     {
         return_status = CosaDmlCMGetDOCSISInfo(cm_handle,&docsis);
@@ -686,7 +686,7 @@ int ssp_cosacm_GetDOCSISInfo(int handleType, int bufferType)
         return_status = CosaDmlCMGetDOCSISInfo(cm_handle,NULL);
 
     }
-    
+
     if ( return_status != SSP_SUCCESS)
     {
         printf("ssp_cosacm_GetDOCSISInfo:Failed to retrieve the DOCSIS information \n");
@@ -795,23 +795,23 @@ int ssp_cosacm_GetDocsisLog(int handleType, int bufferType)
     ANSC_HANDLE cm_handle = NULL;
     ULONG count = 0;
     COSA_DML_DOCSISLOG_FULL *ppConf = NULL;
-    
+
     printf("\n Entering ssp_cosacm_GetDocsisLog function\n\n");
 
     if(handleType == 0)
     {
 	cm_handle = bus_handle_client;
     }
-    if(bufferType == 0) 
+    if(bufferType == 0)
     {
         count=(COSA_DML_DOCSISLOG_FULL*)malloc(sizeof(COSA_DML_DOCSISLOG_FULL));
         return_status = CosaDmlCmGetDocsisLog(cm_handle,&count,&ppConf);
         printf("ssp_cosacm_GetDocsisLog: DOCSIS Log Info:%s\n",ppConf->Description);
     }
     else
-    {    
+    {
         return_status = CosaDmlCmGetDocsisLog(cm_handle,NULL,NULL);
-    }   
+    }
 
     if ( return_status != SSP_SUCCESS)
     {
@@ -838,7 +838,7 @@ int ssp_cosacm_GetDownstreamChannel(int handleType, int bufferType)
     ANSC_HANDLE cm_handle = NULL;
     ULONG Count = 0;
     COSA_CM_DS_CHANNEL *pcfg = NULL;
-    
+
     printf("\n Entering ssp_cosacm_GetDownstreamChannel function\n\n");
 
     if(handleType == 0)
@@ -910,8 +910,8 @@ int ssp_cosacm_GetUpstreamChannel(int handleType, int bufferType)
 }
 
 /*******************************************************************************************
- * Function Name        : ssp_CosaCableModemCreate 
- * Description          : This function will create cabel Modem. 
+ * Function Name        : ssp_CosaCableModemCreate
+ * Description          : This function will create cabel Modem.
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 int ssp_CosaCableModemCreate()
@@ -939,14 +939,14 @@ int ssp_CosaCableModemCreate()
 
 /*******************************************************************************************
  * Function Name        : ssp_CosaCableModemInitialize
- * Description          : This function will initialize Cable Modem  
+ * Description          : This function will initialize Cable Modem
  * @param [in]          : Value - pointer
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
 int ssp_CosaCableModemInitialize(int Value)
 {
     int return_status = 0;
-    
+
     printf("Entering ssp_CosaCableModemInitialize\n");
 
     if(Value == 0)
@@ -1006,10 +1006,10 @@ int ssp_CosaCableModemInitialize(int Value)
     {
         printf("\nNo Handle type is passed\n");
         return return_status;
-    }    
+    }
 }
 /*******************************************************************************************
- * Function Name        : ssp_CosaCableModemRemove 
+ * Function Name        : ssp_CosaCableModemRemove
  * Description          : This function will Remove Cable modem
  * @param [in]          : pObject - pointer
  * @param [out]         : return status an integer value 0-success and 1-Failure
@@ -1017,7 +1017,7 @@ int ssp_CosaCableModemInitialize(int Value)
 int ssp_CosaCableModemRemove(int Value)
 {
     int return_status = 0;
-    
+
     printf("Entering ssp_CosaCableModemRemove\n");
 
     if(Value == 0)
@@ -1050,8 +1050,8 @@ int ssp_CosaCableModemRemove(int Value)
 
     }
     else if (Value == 1)
-    { 
-	printf("Create handle for the cable modem\n");  
+    {
+	printf("Create handle for the cable modem\n");
 	g_pCosaBEManager = (PCOSA_BACKEND_MANAGER_OBJECT)CosaBackEndManagerCreate();
         if ( g_pCosaBEManager != NULL )
         {
@@ -1081,11 +1081,11 @@ int ssp_CosaCableModemRemove(int Value)
         }
     }
     else
-    {    
+    {
         printf("\nNo value paseed\n");
         return return_status;
     }
-}    
+}
 /*******************************************************************************************
  *
  * Function Name        : ssp_cosacm_getmarket
@@ -1119,13 +1119,13 @@ int ssp_cosacm_getmarket()
     if(value != NULL)
     {
         free(value);
-    }   
+    }
     return SSP_SUCCESS;
 }
 
 /*******************************************************************************************
  *
- * Function Name        : ssp_cosacm_setmddipoverride 
+ * Function Name        : ssp_cosacm_setmddipoverride
  * Description          : This function will invoke the cosa api of CM to set MDD IP Override
  *                        Function
  *
@@ -1257,7 +1257,7 @@ int ssp_cosacm_getcmerrorcodewords()
 
 /*******************************************************************************************
  *
- * Function Name        : ssp_cosacm_getcertstatus 
+ * Function Name        : ssp_cosacm_getcertstatus
  * Description          : This function will invoke the cosa api of CM to certificate availability
  *                        status
  *
@@ -1287,7 +1287,7 @@ int ssp_cosacm_getcertstatus()
 
 /*******************************************************************************************
  *
- * Function Name        : ssp_cosacm_getcpelist 
+ * Function Name        : ssp_cosacm_getcpelist
  * Description          : This function will invoke the cosa api of CM to Wireless/Wired Clients
  *                        connected with this DUT
  *
@@ -1393,7 +1393,7 @@ int ssp_cosacm_getmddipoverride_memory_unalloc()
     printf("\n Entering ssp_cosacm_getmddipoverride_memory_unalloc function\n\n");
 
     return_status = CosaDmlCMGetMDDIPOverride(bus_handle_client,NULL);
-    
+
     printf("Return status of CosaDmlCMGetMDDIPOverride %d ",return_status);
 
     if ( return_status != SSP_SUCCESS)
@@ -1454,7 +1454,7 @@ int ssp_cosacm_getcmerrorcodewords_invalid_arg()
     printf("\n Entering ssp_cosacm_getcmerrorcodewords_invalid_arg function\n\n");
 
     return_status = CosaDmlCmGetCMErrorCodewords(bus_handle_client,NULL,NULL);
-    
+
     printf("Return status of CosaDmlCmGetCMErrorCodewords %d ",return_status);
 
     if ( return_status != SSP_SUCCESS)

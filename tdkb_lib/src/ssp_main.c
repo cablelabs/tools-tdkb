@@ -88,7 +88,7 @@ int  cmd_dispatch(int  command)
                 }
 
                 ssp_PnmMbi_MessageBusEngage
-                    ( 
+                    (
                      CName,
                      CCSP_MSG_BUS_CFG,
                      gpPnmStartCfg->DbusPath
