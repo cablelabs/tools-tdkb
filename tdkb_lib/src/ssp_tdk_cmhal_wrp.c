@@ -167,12 +167,13 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
     }
     else if( !(strcmp(paramName, "DS_Frequency")) )
     {
-       long unsigned int  count;
+       long unsigned int  count = 0;
        return_status = docsis_GetNumOfActiveRxChannels(&count);
        printf("Count of Active Rx channels is %d\n",count);
        if (return_status == 0)
        {
            pDsFreq = (PCMMGMT_CM_DS_CHANNEL) malloc(sizeof(CMMGMT_CM_DS_CHANNEL)*count);
+
            if(!pDsFreq)
            {
                printf("Memory has not allocated successfully \n ");
@@ -180,31 +181,35 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
            else
            {
                return_status = docsis_GetDSChannel(&pDsFreq);
-               int i;
+
+               int i = 0;
 	       strcpy(value, "");
                for(i=0;i<count;i++)
                {
-                   printf("ssp_CMHAL_GetParamCharValue: DS Frequency retreived :%s\n",pDsFreq->Frequency);
-                   char FreqString[64];
+                   printf("ssp_CMHAL_GetParamCharValue: DS Frequency retreived :%s\n",pDsFreq[i].Frequency);
+                   char FreqString[64] = {0};
 
-                   strcpy(FreqString,pDsFreq->Frequency);
-                   FreqString[strlen(FreqString)- 4]  = '\0';
+                   strcpy(FreqString,pDsFreq[i].Frequency);
                    strcat(value, FreqString);
                    strcat(value, ",");
-                   pDsFreq++;
                }
            }
-           free(pDsFreq);
+
+           if(pDsFreq != NULL)
+           {
+               free(pDsFreq);
+           }
        }
     }
     else if( !(strcmp(paramName, "US_Frequency")) )
     {
-        long unsigned int  count;
+        long unsigned int  count = 0;
        return_status = docsis_GetNumOfActiveTxChannels(&count);
         printf("Count of Active Tx channels is %d\n",count);
         if (return_status == 0)
         {
             pUsFreq = (PCMMGMT_CM_US_CHANNEL) malloc(sizeof(CMMGMT_CM_US_CHANNEL)*count);
+
             if(!pUsFreq)
             {
                 printf("Memory has not allocated successfully \n ");
@@ -212,30 +217,33 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
             else
             {
                 return_status = docsis_GetUSChannel(&pUsFreq);
-                int i;
+
+                int i = 0;
                 strcpy(value,"");
                 for(i=0;i<count;i++)
                 {
-                    printf("ssp_CMHAL_GetParamCharValue: US Frequency retreived :%s\n",pUsFreq->Frequency);
-                    char FreqString[64];
-                    strcpy(FreqString,pUsFreq->Frequency);
-                    FreqString[strlen(FreqString)- 4]  = '\0';
+                    printf("ssp_CMHAL_GetParamCharValue: US Frequency retreived :%s\n",pUsFreq[i].Frequency);
+                    char FreqString[64] = {0};
+                    strcpy(FreqString,pUsFreq[i].Frequency);
                     strcat(value, FreqString);
                     strcat(value, ",");
-                    pUsFreq++;
                 }
             }
-            free(pUsFreq);
+            if(pUsFreq != NULL)
+            {
+                 free(pUsFreq);
+            }
         }
     }
     else if( !(strcmp(paramName, "ModulationAndSNRLevel")) )
     {
-        long unsigned int  count;
+        long unsigned int  count = 0;
         return_status = docsis_GetNumOfActiveRxChannels(&count);
         printf("Count of Active Rx channels is %d\n",count);
 	if (return_status == 0)
         {
             pDsFreq = (PCMMGMT_CM_DS_CHANNEL) malloc(sizeof(CMMGMT_CM_DS_CHANNEL)*count);
+
             if(!pDsFreq)
             {
                 printf("Memory has not allocated successfully \n ");
@@ -243,33 +251,36 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
             else
             {
                 return_status = docsis_GetDSChannel(&pDsFreq);
-                int i;
+
+                int i = 0;
                 strcpy(value, "");
                 for(i=0;i<count;i++)
                 {
-                    printf("ssp_CMHAL_GetParamCharValue: DS Modulation retreived :%s\n",pDsFreq->Modulation);
-                    printf("ssp_CMHAL_GetParamCharValue: DS SNR Level retreived :%s\n",pDsFreq->SNRLevel);
-                    char SNRString[64];
-                    strcpy(SNRString,pDsFreq->SNRLevel);
-                    SNRString[strlen(SNRString)- 3]  = '\0';
-                    strcat(value, pDsFreq->Modulation);
+                    printf("ssp_CMHAL_GetParamCharValue: DS Modulation retreived :%s\n",pDsFreq[i].Modulation);
+                    printf("ssp_CMHAL_GetParamCharValue: DS SNR Level retreived :%s\n",pDsFreq[i].SNRLevel);
+                    char SNRString[64] = {0};
+                    strcpy(SNRString,pDsFreq[i].SNRLevel);
+                    strcat(value, pDsFreq[i].Modulation);
                     strcat(value, ":");
                     strcat(value, SNRString);
                     strcat(value, ",");
-                    pDsFreq++;
                 }
             }
-            free(pDsFreq);
+            if(pDsFreq != NULL)
+            {
+                 free(pDsFreq);
+            }
         }
     }
     else if( !(strcmp(paramName, "LockStatusAndChannelID")) )
     {
-        long unsigned int  count;
+        long unsigned int  count = 0;
         return_status = docsis_GetNumOfActiveRxChannels(&count);
         printf("Count of Active Rx channels is %d\n",count);
         if (return_status == 0)
         {
             pDsFreq = (PCMMGMT_CM_DS_CHANNEL) malloc(sizeof(CMMGMT_CM_DS_CHANNEL)*count);
+
             if(!pDsFreq)
             {
                 printf("Memory has not allocated successfully \n ");
@@ -277,27 +288,30 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
             else
             {
                 return_status = docsis_GetDSChannel(&pDsFreq);
-                int i;
+
+                int i = 0;
                 strcpy(value, "");
                 for(i=0;i<count;i++)
                 {
-                    printf("ssp_CMHAL_GetParamCharValue: DS LockStatus retreived :%s\n",pDsFreq->LockStatus);
-                    printf("ssp_CMHAL_GetParamCharValue: DS ChannelID retreived :%d\n",pDsFreq->ChannelID);
-                    char Channelid[16];
-                    sprintf(Channelid,"%d",pDsFreq->ChannelID);
-                    strcat(value, pDsFreq->LockStatus);
+                    printf("ssp_CMHAL_GetParamCharValue: DS LockStatus retreived :%s\n",pDsFreq[i].LockStatus);
+                    printf("ssp_CMHAL_GetParamCharValue: DS ChannelID retreived :%d\n",pDsFreq[i].ChannelID);
+                    char Channelid[16] = {0};
+                    sprintf(Channelid,"%d",pDsFreq[i].ChannelID);
+                    strcat(value, pDsFreq[i].LockStatus);
 		    strcat(value, ":");
                     strcat(value, Channelid);
                     strcat(value, ",");
-                    pDsFreq++;
                 }
             }
-            free(pDsFreq);
+            if(pDsFreq != NULL)
+            {
+                 free(pDsFreq);
+            }
         }
     }
     else if( !(strcmp(paramName, "ModulationAndUSPower")) )
     {
-        long unsigned int  count;
+        long unsigned int  count = 0;
         return_status = docsis_GetNumOfActiveTxChannels(&count);
         printf("Count of Active Tx channels is %d\n",count);
         if (return_status == 0)
@@ -310,14 +324,14 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
             else
             {
                 return_status =  docsis_GetUSChannel(&pUsPower);
-                int i;
+                int i = 0;
                 strcpy(value, "");
                 temp_UsPower=pUsPower;
                 for(i=0;i<count;i++)
                 {
                     printf("ssp_CMHAL_GetParamCharValue: US Modulation retreived :%s\n",pUsPower->Modulation);
                     printf("ssp_CMHAL_GetParamCharValue: US Power Level retreived :%s\n",pUsPower->PowerLevel);
-                    char PowerString[64];
+                    char PowerString[64] = {0};
                     strcpy(PowerString,pUsPower->PowerLevel);
                     strcat(value, pUsPower->Modulation);
                     strcat(value, ":");

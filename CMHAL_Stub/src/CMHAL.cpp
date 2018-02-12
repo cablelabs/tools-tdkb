@@ -74,7 +74,7 @@ void CMHAL::CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& 
 
     int returnValue = 0;
     char paramName[100];
-    char Details[64] = {'\0'};
+    char Details[800] = {'\0'};
     char value[700];
     char paramType[10] = {'\0'};
 
