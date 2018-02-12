@@ -26,3 +26,7 @@ int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, 
 int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, char* method);
 int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* method);
 int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method);
+int ssp_WIFIHALGetIndexFromName(char* ssidName, int* output);
+int ssp_WIFIHALClearRadioResetCount();
+int ssp_WIFIHALReset();
+int ssp_WIFIHALGetOrSetSecurityRadiusServer(int radioIndex, char* IPAddress, unsigned int* port, char* RadiusSecret, char* method);

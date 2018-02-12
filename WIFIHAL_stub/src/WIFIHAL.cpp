@@ -132,7 +132,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
     enable = req["param"].asInt();
     strcpy(paramType, req["paramType"].asCString());
 
-    if(strstr(methodName, "set"))
+    if(!strncmp(methodName, "set",3))
     {
         returnValue = ssp_WIFIHALGetOrSetParamBoolValue(radioIndex, &enable, methodName);
         if(0 == returnValue)
@@ -197,7 +197,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
     uLongVar = (unsigned long)req["param"].asLargestUInt();
     strcpy(paramType, req["paramType"].asCString());
 
-    if(strstr(methodName, "set"))
+    if(!strncmp(methodName, "set",3))
     {
         returnValue = ssp_WIFIHALGetOrSetParamULongValue(radioIndex, &uLongVar, methodName);
         if(0 == returnValue)
@@ -262,7 +262,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
     strcpy(paramType, req["paramType"].asCString());
     strcpy(param, req["param"].asCString());
 
-    if(strstr(methodName, "set"))
+    if(!strncmp(methodName, "set",3))
     {
         returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, param, methodName);
         if(0 == returnValue)
@@ -338,7 +338,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json:
     radioIndex = req["radioIndex"].asInt();
     strcpy(paramType, req["paramType"].asCString());
 
-    if(strstr(methodName, "set"))
+    if(!strncmp(methodName, "set",3))
     {
         DEBUG_PRINT(DEBUG_TRACE,"\n Set operation requested\n");
         printf("MethodName : %s\n",methodName);
@@ -407,7 +407,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Jso
     radioIndex = req["radioIndex"].asInt();
     strcpy(paramType, req["paramType"].asCString());
 
-    if(strstr(methodName, "set"))
+    if(!strncmp(methodName, "set",3))
     {
         DEBUG_PRINT(DEBUG_TRACE,"\n Set operation requested\n");
         printf("MethodName : %s\n",methodName);
@@ -444,6 +444,183 @@ void WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Jso
      response["result"]="FAILURE";
      response["details"]=details;
      DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForUInt --->Error in execution\n");
+     return;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetIndexFromName
+ * Description          : This function invokes WiFi hal api wifi_getIndexFromName()
+
+ * @param [in] req-     : param     - the ssid name to be passed
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_GetIndexFromName (IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetIndexFromName ----->Entry\n");
+
+    int returnValue;
+    int output = 1;
+    char ssidName[10] = {'\0'};
+    char details[200] = {'\0'};
+
+    strcpy(ssidName, req["param"].asCString());
+
+    returnValue = ssp_WIFIHALGetIndexFromName(ssidName, &output);
+    if(0 == returnValue)
+       {
+            DEBUG_PRINT(DEBUG_TRACE,"\n output: %d\n",output);
+            sprintf(details, "Value returned is :%d", output);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+       }
+    else
+       {
+            sprintf(details, "GetIndexFromName operation failed");
+            response["result"]="FAILURE";
+            response["details"]=details;
+            return;
+       }
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetIndexFromName  --->Exit\n");
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_ClearRadioResetCount
+ * Description          : This function invokes WiFi hal api wifi_clearRadioResetCount()
+
+ * @param [in] req-     : NIL
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_ClearRadioResetCount (IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_ClearRadioResetCount ----->Entry\n");
+
+    int returnValue;
+    char details[200] = {'\0'};
+
+    returnValue = ssp_WIFIHALClearRadioResetCount();
+    if(0 == returnValue)
+       {
+            sprintf(details, "ClearRadioResetCount operation success");
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+       }
+    else
+       {
+            sprintf(details, "ClearRadioResetCount operation failed");
+            response["result"]="FAILURE";
+            response["details"]=details;
+            return;
+       }
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_ClearRadioResetCount  --->Exit\n");
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_Reset
+ * Description          : This function invokes WiFi hal api wifi_reset()
+
+ * @param [in] req-     : NIL
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_Reset (IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_Reset ----->Entry\n");
+
+    int returnValue;
+    char details[200] = {'\0'};
+
+    returnValue = ssp_WIFIHALReset();
+    if(0 == returnValue)
+       {
+            sprintf(details, "wifi_reset operation success");
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+       }
+    else
+       {
+            sprintf(details, "wifi_reset operation failed");
+            response["result"]="FAILURE";
+            response["details"]=details;
+            return;
+       }
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_Reset --->Exit\n");
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetOrSetSecurityRadiusServer
+ * Description          : This function invokes WiFi hal's get/set api's which are
+                          related to SecurityRadiusServer
+ *
+ * @param [in] req-    :  methodName - identifier for the hal api name
+                          radioIndex - radio index value of wifi
+                          IPAddress - IP Address of the RADIUS server used for WLAN security
+			  port - port  number of the RADIUS server used for WLAN security
+			  RadiusSecret - RadiusSecret of the RADIUS server used for WLAN security
+                          paramType  - To indicate negative test scenario. it is set as NULL for negative sceanario, otherwise empty
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_GetOrSetSecurityRadiusServer(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetSecurityRadiusServer----->Entry\n");
+    char methodName[50] = {'\0'};
+    int radioIndex = 1;
+    int returnValue;
+    char details[200] = {'\0'};
+    char paramType[10] = {'\0'};
+    unsigned int port = 1;
+    char IPAddress[50] = {'\0'};
+    char RadiusSecret[100] = {'\0'};
+
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+    port = req["port"].asInt();
+    strcpy(IPAddress, req["IPAddress"].asCString());
+    strcpy(RadiusSecret, req["RadiusSecret"].asCString());
+    strcpy(paramType, req["paramType"].asCString());
+
+    if(!strncmp(methodName, "set",3))
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n Set operation requested\n");
+        printf("MethodName : %s\n",methodName);
+        returnValue = ssp_WIFIHALGetOrSetSecurityRadiusServer(radioIndex, IPAddress, &port, RadiusSecret, methodName);
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+    }
+    else
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n Get operation requested\n");
+        printf("MethodName : %s\n",methodName);
+        //paramType is set as NULL for negative test scenarios, for NULL pointer checks
+        if(strcmp(paramType, "NULL"))
+            //When the paramType is not equal to NULL
+            returnValue = ssp_WIFIHALGetOrSetSecurityRadiusServer(radioIndex, IPAddress, &port, RadiusSecret, methodName);
+        else
+            //When the paramType is NULL i.e., negative scenario
+            returnValue = ssp_WIFIHALGetOrSetSecurityRadiusServer(radioIndex, NULL, NULL, NULL, methodName);
+        if(0 == returnValue)
+        {
+            DEBUG_PRINT(DEBUG_TRACE,"\n output: %s\n%d\n%s\n",IPAddress,port,RadiusSecret);
+            sprintf(details, "Value returned is :IPAddress=%s,Port=%d,RadiusSecret=%s",IPAddress, port, RadiusSecret);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+     }
+     sprintf(details, "%s operation failed", methodName);
+     response["result"]="FAILURE";
+     response["details"]=details;
+     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetSecurityRadiusServer ---->Error in execution\n");
      return;
 }
 /**************************************************************************

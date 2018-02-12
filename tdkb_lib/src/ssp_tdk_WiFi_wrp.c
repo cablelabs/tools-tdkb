@@ -205,6 +205,14 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
         return_status = wifi_getRadioAMSDUEnable(radioIndex, enable);
     else if(!strcmp(method, "setRadioAMSDUEnable"))
         return_status = wifi_setRadioAMSDUEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getApRtsThresholdSupported"))
+        return_status = wifi_getApRtsThresholdSupported(radioIndex, enable);
+    else if(!strcmp(method, "pushSsidAdvertisementEnable"))
+        return_status = wifi_pushSsidAdvertisementEnable(radioIndex, *enable);
+    else if(!strcmp(method, "setRadioCtsProtectionEnable"))
+        return_status = wifi_setRadioCtsProtectionEnable(radioIndex, *enable);
+    else if(!strcmp(method, "setRadioObssCoexistenceEnable"))
+        return_status = wifi_setRadioObssCoexistenceEnable(radioIndex, *enable);
     else
     {
         return_status = SSP_FAILURE;
@@ -261,6 +269,10 @@ int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, 
         return_status = wifi_setApWpsDevicePIN(radioIndex, *uLongVar);
     else if(!strcmp(method, "getRadioUpTime"))
         return_status = wifi_getRadioUpTime(radioIndex, uLongVar);
+    else if(!strcmp(method, "getApAssociatedDevicesHighWatermarkDate"))
+        return_status = wifi_getApAssociatedDevicesHighWatermarkDate(radioIndex, uLongVar);
+    else if(!strcmp(method, "getRadioResetCount"))
+        return_status = wifi_getRadioResetCount(radioIndex, uLongVar);
     else
     {
         return_status = SSP_FAILURE;
@@ -335,6 +347,8 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
         return_status = wifi_setApBeaconType(radioIndex,output);
     else if(!strcmp(method, "getApSecurityModeEnabled"))
 	return_status = wifi_getApSecurityModeEnabled(radioIndex,output);
+    else if(!strcmp(method, "setApSecurityModeEnabled"))
+	return_status = wifi_setApSecurityModeEnabled(radioIndex,output);
     else if(!strcmp(method, "getApWpaEncryptionMode"))
 	return_status = wifi_getApWpaEncryptionMode(radioIndex,output);
     else if(!strcmp(method, "setApWpaEncryptionMode"))
@@ -361,8 +375,12 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
 	return_status = wifi_getApSecurityModesSupported(radioIndex,output);
     else if(!strcmp(method, "getApSecurityPreSharedKey"))
 	return_status = wifi_getApSecurityPreSharedKey(radioIndex,output);
+    else if(!strcmp(method, "setApSecurityPreSharedKey"))
+	return_status = wifi_setApSecurityPreSharedKey(radioIndex,output);
     else if(!strcmp(method, "getApSecurityKeyPassphrase"))
 	return_status = wifi_getApSecurityKeyPassphrase(radioIndex,output);
+    else if(!strcmp(method, "setApSecurityKeyPassphrase"))
+	return_status = wifi_setApSecurityKeyPassphrase(radioIndex,output);
     else if(!strcmp(method, "getApWpsConfigMethodsSupported"))
 	return_status = wifi_getApWpsConfigMethodsSupported(radioIndex,output);
     else if(!strcmp(method, "getApWpsConfigMethodsEnabled"))
@@ -389,7 +407,10 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
         return_status = wifi_getBandSteeringApGroup(output);
     else if(!strcmp(method, "setBandSteeringApGroup"))
         return_status = wifi_setBandSteeringApGroup(output);
-
+    else if(!strcmp(method, "pushSSID"))
+        return_status = wifi_pushSSID(radioIndex, output);
+    else if(!strcmp(method, "getApName"))
+        return_status = wifi_getApName(radioIndex, output);
     else
     {
         return_status = SSP_FAILURE;
@@ -460,6 +481,14 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
         return_status = wifi_getBandSteeringPhyRateThreshold(radioIndex, output);
     else if(!strcmp(method, "setBandSteeringPhyRateThreshold"))
         return_status = wifi_setBandSteeringPhyRateThreshold(radioIndex, *output);
+    else if(!strcmp(method, "getApManagementFramePowerControl"))
+        return_status = wifi_getApManagementFramePowerControl(radioIndex, output);
+    else if(!strcmp(method, "setApManagementFramePowerControl"))
+        return_status = wifi_setApManagementFramePowerControl(radioIndex, *output);
+    else if(!strcmp(method, "getApVlanID"))
+        return_status = wifi_getApVlanID(radioIndex, output);
+    else if(!strcmp(method, "setApSecurityReset"))
+        return_status = wifi_setApSecurityReset(radioIndex);
     else
     {
         return_status = SSP_FAILURE;
@@ -505,8 +534,14 @@ int ssp_WIFIHALGetOrSetParamUIntValue(int radioIndex, unsigned int* output, char
         return_status = wifi_getApMaxAssociatedDevices(radioIndex, output);
     else if(!strcmp(method, "getApAssociatedDevicesHighWatermarkThreshold"))
         return_status = wifi_getApAssociatedDevicesHighWatermarkThreshold(radioIndex, output);
+    else if(!strcmp(method, "setApAssociatedDevicesHighWatermarkThreshold"))
+        return_status = wifi_setApAssociatedDevicesHighWatermarkThreshold(radioIndex, *output);
+    else if(!strcmp(method, "getApAssociatedDevicesHighWatermark"))
+        return_status = wifi_getApAssociatedDevicesHighWatermark(radioIndex, output);
     else if(!strcmp(method, "setApRtsThreshold"))
         return_status = wifi_setApRtsThreshold(radioIndex, *output);
+    else if(!strcmp(method, "pushChannel"))
+        return_status = wifi_pushChannel(radioIndex, *output);
     else
     {
         return_status = SSP_FAILURE;
@@ -515,5 +550,134 @@ int ssp_WIFIHALGetOrSetParamUIntValue(int radioIndex, unsigned int* output, char
 
     printf("ssp_WiFiHalCallMethodForUInt: return value is %d\n", *output);
     printf("\n ssp_WiFiHalCallMethodForUInt--> Exit\n");
+    return return_status;
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetIndexFromName
+ * Description          : This function invokes WiFi hal api wifi_getIndexFromName()
+
+ * @param [in]          : param     - the ssid name to be passed
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ *
+ ********************************************************************************************/
+int ssp_WIFIHALGetIndexFromName(char* ssidName, int *output)
+{
+    printf("\n ssp_WIFIHALGetIndexFromName ----> Entry\n");
+    printf("ssidName: %s\n", ssidName);
+    int return_status = 0;
+
+    return_status = wifi_getIndexFromName(ssidName, output);
+    printf("return value from ssp_WIFIHALGetIndexFromName is %d\n",return_status);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_WIFIHALGetIndexFromName::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\nssp_WIFIHALGetIndexFromName::Success\n");
+     return return_status;
+    }
+    printf("\n ssp_WIFIHALGetIndexFromName ----> Exit\n");
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_ClearRadioResetCount
+ * Description          : This function invokes WiFi hal api wifi_clearRadioResetCount()
+
+ * @param [in]          : NIL
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ *
+ ********************************************************************************************/
+int ssp_WIFIHALClearRadioResetCount()
+{
+    printf("\n ssp_WIFIHALClearRadioResetCount ----> Entry\n");
+    int return_status = 0;
+
+    return_status = wifi_clearRadioResetCount();
+    printf("return value from ssp_WIFIHALClearRadioResetCount is %d\n",return_status);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_WIFIHALClearRadioResetCount::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\nssp_WIFIHALClearRadioResetCount::Success\n");
+     return return_status;
+    }
+    printf("\n ssp_WIFIHALClearRadioResetCount ----> Exit\n");
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_Reset
+ * Description          : This function invokes WiFi hal api wifi_reset()
+
+ * @param [in]          : NIL
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ *
+ ********************************************************************************************/
+int ssp_WIFIHALReset()
+{
+    printf("\n ssp_WIFIHALReset ----> Entry\n");
+    int return_status = 0;
+
+    return_status = wifi_reset();
+    printf("return value from ssp_WIFIHALReset is %d\n",return_status);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_WIFIHALReset::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\nssp_WIFIHALReset::Success\n");
+     return return_status;
+    }
+    printf("\n ssp_WIFIHALReset ----> Exit\n");
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHALGetOrSetSecurityRadiusServer
+ * Description          : This function invokes WiFi hal's get/set api's which are
+                          related to SecurityRadiusServer
+ *
+ * @param [in]          : radioIndex - WiFi radio index value
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [in]          : IPAddress - IP Address of the RADIUS server used for WLAN security
+ * @param [in]          : port - port  number of the RADIUS server used for WLAN security
+ * @param [in]          : RadiusSecret - RadiusSecret of the RADIUS server used for WLAN security
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALGetOrSetSecurityRadiusServer(int radioIndex, char* IPAddress, unsigned int* port, char* RadiusSecret, char* method)
+{
+    printf("\n ssp_WIFIHALGetOrSetSecurityRadiusServer ----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    printf("IPAddress : %s\n",IPAddress);
+    printf("Port : %u\n" ,*port);
+    printf("RadiusSecret : %s\n",RadiusSecret);
+    printf("MethodName: %s\n", method);
+    int return_status = 0;
+
+    if(!strcmp(method, "getApSecurityRadiusServer"))
+        return_status = wifi_getApSecurityRadiusServer(radioIndex, IPAddress, port, RadiusSecret);
+    else if(!strcmp(method, "setApSecurityRadiusServer"))
+        return_status = wifi_setApSecurityRadiusServer(radioIndex, IPAddress, *port, RadiusSecret);
+    else if(!strcmp(method, "getApSecuritySecondaryRadiusServer"))
+        return_status = wifi_getApSecuritySecondaryRadiusServer(radioIndex, IPAddress, port, RadiusSecret);
+    else if(!strcmp(method, "setApSecuritySecondaryRadiusServer"))
+        return_status = wifi_setApSecuritySecondaryRadiusServer(radioIndex, IPAddress, *port, RadiusSecret);
+    else
+    {
+        return_status = SSP_FAILURE;
+        printf("\n ssp_WiFiHalCallMethodForSecurityRadiusServer: Invalid methodName\n");
+    }
+    printf("\n ssp_WiFiHalCallMethodForSecurityRadiusServer--> Exit\n");
     return return_status;
 }
