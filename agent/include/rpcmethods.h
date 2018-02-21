@@ -146,6 +146,7 @@ class RpcMethods : public AbstractServer<RpcMethods>
         void CallReboot();
         void ResetCrashStatus();
         void SetCrashStatus (const char* pszExecId, const char* pszDeviceId, const char* pszTestCaseId, const char* pszExecDevId, const char* pszResultId);
+        void RedirectJsonRequest (const Json::Value& request, Json::Value& response, std::string method);
 
 }; /* End of RpcMethods */
 

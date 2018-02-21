@@ -20,6 +20,7 @@
 AM_CXXFLAGS = -DYOCTO_LIB_LOADING -DDEBUG_LEVEL_TRACE -DRDKVERSION="\"${RDK_VERSION}\"" $(GST_CFLAGS) $(GST_LIBS) $(AGENT_FLAGS) \
               -I./include/ -I${top_srcdir}/agent/include -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)
 
+AM_CXXFLAGS += -DREDIRECT_FLAG=$(REDIRECT_FLAG)
 bin_PROGRAMS = rdk_tdk_agent_process
 rdk_tdk_agent_processdir = ${bindir}
 rdk_tdk_agent_process_SOURCES = src/rpcmethods.cpp src/agentmain.cpp

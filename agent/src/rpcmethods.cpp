@@ -48,7 +48,7 @@ extern RDKTestAgent o_Agent;
 bool   	     bBenchmarkEnabled;
 std::string GetSubString (std::string strLine, std::string strDelimiter);
 #define LOCAL_SERVER_ADDR "127.0.0.1"
-#define LOCAL_PORT        18087
+#define LOCAL_PORT        8087
 /* Constants */
 #define LIB_NAME_SIZE 50       // Maximum size of component interface library name
 #define COMMAND_SIZE  500      // Maximum size of command
@@ -79,6 +79,7 @@ std::string GetSubString (std::string strLine, std::string strDelimiter);
 #define UPLOAD_LOG_SCRIPT "$TDK_PATH/uploadLogs.sh"       // Script to upload log files when device IP is configured for IPv6
 #define NULL_LOG_FILE        "cat /dev/null > "
 #define GET_IMAGENAME_CMD    "cat /version.txt | grep imagename | cut -d: -f 2 | cut -d= -f 2"
+#define GET_ATOM_ARP_IP  "cat /etc/device.properties | grep ATOM_ARPING_IP | cut -d= -f 2" //Get the ATOM IP in multicore processor platform
 
 #define TCP_PORT_1 18086
 #define TCP_PORT_2 18087
@@ -143,6 +144,59 @@ int RpcMethods::sm_nDeviceStatusFlag = DEVICE_FREE;        // Setting status of 
 std::string RpcMethods::sm_strConsoleLogPath = "";
 
 static volatile bool b_stubServerFlag =false;
+
+/* Get the ATOM/ARM IP used for ARP in multicore processor platform */
+std::string GetInterfaceIP(char* interfaceName)
+{
+    DEBUG_PRINT (DEBUG_LOG, "\nGetInterfaceIP:: Entry\n");
+
+    char ipAddress[50] = {'\0'};
+    FILE *fp = NULL;
+
+    /* Open the file */
+    fp = popen(interfaceName, "r");
+    if (fp == NULL)
+    {
+        DEBUG_PRINT(DEBUG_ERROR, "popen() failure\n");
+        return NULL;
+    }
+
+    /* Parse and get the ARP IP */
+    while (fgets(ipAddress, sizeof(ipAddress)-1, fp) != NULL)
+    {
+       strtok(ipAddress, "\n");
+       printf("IP Address is:%s\n",ipAddress);
+    }
+
+    DEBUG_PRINT (DEBUG_LOG, "\nGetInterfaceIP:: Exit\n");
+    return std::string(ipAddress);
+}
+
+/* This function is to post the JSON request to other side in case of multiprocessor platform */
+void RpcMethods::RedirectJsonRequest (const Json::Value& request, Json::Value& response, std::string method)
+{
+        DEBUG_PRINT (DEBUG_LOG, "\nRedirectJsonRequest:: Entry\n");
+
+        cout << "Received query: \n" << request << endl;
+
+        std::string ipAddress;
+        ipAddress = GetInterfaceIP(GET_ATOM_ARP_IP);
+
+        TcpSocketClient client(ipAddress,LOCAL_PORT);
+        Client c(client);
+
+        DEBUG_PRINT (DEBUG_LOG, "\nRedirectJsonRequest:: Method Requested:%s\n",method.c_str());
+        DEBUG_PRINT (DEBUG_LOG, "\nRedirectJsonRequest:: IPAddress:%s\n",ipAddress.c_str());
+
+        try {
+               response = c.CallMethod(method,request);
+               cout<< "Received response \n" <<response <<endl;
+        } catch (JsonRpcException &e) {
+        cerr << e.what() << endl;
+        }
+
+        DEBUG_PRINT (DEBUG_LOG, "\nRedirectJsonRequest:: Exit\n");
+}
 
 void *Createstubserver (void *modulename)
 {
@@ -843,6 +897,16 @@ void RpcMethods::CallReboot()
 *********************************************************************************************************************/
 void RpcMethods::RPCLoadModule (const Json::Value& request, Json::Value& response)
 {
+    const char* pszModuleName = NULL;
+    pszModuleName = request ["param1"].asCString();
+
+    /* Redirect the JSON request to the ATOM side for WIFI HAL test scripts */
+    if((REDIRECT_FLAG == 1) && (!strcmp(pszModuleName, "wifihal")))
+    {
+        RedirectJsonRequest(request,response,"loadModule");
+    }
+    else
+    {
     bool bRet = true;
 
     std::string strFilePath;
@@ -859,7 +923,6 @@ void RpcMethods::RPCLoadModule (const Json::Value& request, Json::Value& respons
     const char* pszExecDevId = NULL;
     const char* pszTestCaseId = NULL;
     const char* pszSysDiagFlag = NULL;
-    const char* pszModuleName = NULL;
     const char* pszBenchMarkingFlag = NULL;
 
     RpcMethods::sm_nDeviceStatusFlag = DEVICE_BUSY;
@@ -955,7 +1018,6 @@ void RpcMethods::RPCLoadModule (const Json::Value& request, Json::Value& respons
     cout << "Received query: \n" << request << endl;
 
     /* Extract module name from json request, construct library name and load that library using LoadLibrary() */
-    pszModuleName = request ["param1"].asCString();
     if (NULL != pszModuleName && (LIB_NAME_SIZE - 12) > strlen (pszModuleName))
     {
 #ifdef YOCTO_LIB_LOADING
@@ -1018,6 +1080,7 @@ void RpcMethods::RPCLoadModule (const Json::Value& request, Json::Value& respons
 
     DEBUG_PRINT (DEBUG_LOG, "\nRPC Load Module --> Exit \n");
 
+    }
     return;
 
 } /* End of RPCLoadModule */
@@ -1039,9 +1102,18 @@ void RpcMethods::RPCLoadModule (const Json::Value& request, Json::Value& respons
 *********************************************************************************************************************/
 void RpcMethods::RPCUnloadModule (const Json::Value& request, Json::Value& response)
 {
+    const char* pszModuleName = NULL;
+    pszModuleName = request ["param1"].asCString();
+
+    /* Redirect the JSON request to the ATOM side for WIFI HAL test scripts */
+    if((REDIRECT_FLAG == 1) && (!strcmp(pszModuleName, "wifihal")))
+    {
+        RedirectJsonRequest(request,response,"unloadModule");
+    }
+    else
+    {
     bool bRet = true;
     void* pvHandle = NULL;
-    const char* pszModuleName;
     const char* pszScriptSuiteEnabled;
     char szLibName [LIB_NAME_SIZE];
     std::string strUnloadModuleDetails;
@@ -1055,7 +1127,6 @@ void RpcMethods::RPCUnloadModule (const Json::Value& request, Json::Value& respo
     cout << "Received query: \n" << request << endl;
 
     /* Extracting module name and constructing corresponding library name */
-    pszModuleName = request["param1"].asCString();
 #ifdef YOCTO_LIB_LOADING
         sprintf (szLibName, "lib%sstub.so.0", pszModuleName);
 #else
@@ -1106,6 +1177,8 @@ void RpcMethods::RPCUnloadModule (const Json::Value& request, Json::Value& respo
         }
     }
     b_stubServerFlag=false;
+
+    }
     return;
 
 } /* End of RPCUnloadModule */
@@ -2316,6 +2389,15 @@ void RpcMethods::RPCGetImageName(const Json::Value& request, Json::Value& respon
 *********************************************************************************************************************/
 void RpcMethods::RPCExecuteTestCase(const Json::Value& request, Json::Value& response)
 {
+    const char* libname = request["module"].asCString();
+
+    /* Redirect the JSON request to the ATOM side for WIFI HAL test scripts */
+    if((REDIRECT_FLAG == 1) && (!strcmp(libname, "wifihal")))
+    {
+        RedirectJsonRequest(request,response,"executeTestCase");
+    }
+    else
+    {
     bool bRet = true;
     int nReturnValue = 0;
     char szCommand[COMMAND_SIZE];
@@ -2328,7 +2410,6 @@ void RpcMethods::RPCExecuteTestCase(const Json::Value& request, Json::Value& res
     response["id"] = request["id"];
     std::map <int, std::string>::iterator o_gTcpPortMapIter;
 
-    const char* libname = request["module"].asCString();
     #ifdef YOCTO_LIB_LOADING
         sprintf (szLibName, "lib%sstub.so.0", libname);
     #else
@@ -2365,6 +2446,7 @@ void RpcMethods::RPCExecuteTestCase(const Json::Value& request, Json::Value& res
     cout<< "Received response \n" <<response <<endl;
     response["result"]=response["result"];
 
+   }
    return ;
 
 }/* End of RPCEnableTDK */

@@ -92,6 +92,23 @@ AC_ARG_ENABLE([platform],
 esac],[platform=false])
 AM_CONDITIONAL([PLATFORM_ENABLED], [test x$platform = xtrue])
 
+
+REDIRECT_FLAG=0
+
+AC_ARG_ENABLE([redirect],
+        AS_HELP_STRING([--enable-redirect],[enable redirect]),
+        [
+          case "${enableval}" in
+             yes) REDIRECT_FLAG=1 ;;
+           no) REDIRECT_FLAG=0 ;;
+          *) AC_MSG_ERROR([bad value ${enableval} for --enable-redirect ]) ;;
+           esac
+           ],
+         [echo "Redirect Flag enabled"])
+
+AC_SUBST(REDIRECT_FLAG)
+
+
 AC_SUBST(COPTS)
 AC_SUBST(AGENT_FLAGS)
 AC_SUBST(CONFIG_PREFIX)
