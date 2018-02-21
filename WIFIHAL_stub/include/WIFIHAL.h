@@ -39,7 +39,7 @@
 extern "C"
 {
     int ssp_wifi_init();
-    int ssp_WIFIHALApplySettings(int radioIndex);
+    int ssp_WIFIHALApplySettings(int radioIndex, char* methodName);
     int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *output, char* method);
     int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, char* methodName);
     int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char *output, char* methodName);
@@ -57,7 +57,6 @@ class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
     public:
 	 WIFIHAL(TcpSocketServer &ptrRpcServer) : AbstractServer <WIFIHAL>(ptrRpcServer)
                 {
-		  this->bindAndAddMethod(Procedure("WIFIHAL_ApplySettings", PARAMS_BY_NAME, JSON_STRING,"radioIndex", JSON_INTEGER,NULL), &WIFIHAL::WIFIHAL_ApplySettings);
                   this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetParamBoolValue", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER,"param", JSON_INTEGER, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetParamBoolValue);
 		  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetParamULongValue", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER,"param", JSON_INTEGER, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetParamULongValue);
 		  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetParamStringValue", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER, "param", JSON_STRING, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetParamStringValue);
@@ -75,7 +74,6 @@ class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
         bool testmodulepost_requisites();
 
         /*WIFIHAL Stub Wrapper functions*/
-	void WIFIHAL_ApplySettings(IN const Json::Value& req, OUT Json::Value& response);
         void WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Json::Value& response);
         void WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json::Value& response);
         void WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Json::Value& response);

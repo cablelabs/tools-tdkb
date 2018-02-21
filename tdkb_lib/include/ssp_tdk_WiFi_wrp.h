@@ -21,7 +21,7 @@
 #define SSP_FAILURE       1
 
 int ssp_wifi_init();
-int ssp_WIFIHALApplySettings(int radioIndex);
+int ssp_WIFIHALApplySettings(int radioIndex, char* methodName);
 int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, char* methodName);
 int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, char* method);
 int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* method);

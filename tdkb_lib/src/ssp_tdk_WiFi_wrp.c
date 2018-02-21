@@ -61,25 +61,36 @@ int ssp_wifi_init()
  * Function Name        : ssp_WIFIHALApplySettings
  * Description          : This function invokes WiFi hal api wifi_applyRadioSettings
  * @param [in] req-     : radioIndex - radio index value of wifi
+			  methodName - name of the wifi hal api to be invoked
  * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
  *
  ********************************************************************************************/
-int ssp_WIFIHALApplySettings(int radioIndex)
+int ssp_WIFIHALApplySettings(int radioIndex, char* methodName)
 {
     printf("\n ssp_WIFIHALApplySettings-----> Entry\n");
+    printf("Radio/SSID index:%d\n",radioIndex);
+    printf("MethodName: %s\n", methodName);
     int return_status = 0;
 
-    return_status = wifi_applyRadioSettings(radioIndex);
-    printf("return value from ssp_WIFIHALApplySettings is %d\n",return_status);
+    if(strstr(methodName, "setRadio"))
+    {
+        return_status = wifi_applyRadioSettings(radioIndex);
+        printf("return value from wifi_applyRadioSettings is %d\n",return_status);
+    }
+    else if(strstr(methodName, "setSSID"))
+    {
+        return_status = wifi_applySSIDSettings(radioIndex);
+        printf("return value from wifi_applySSIDSettings is %d\n",return_status);
+    }
     if(return_status != SSP_SUCCESS)
     {
-     printf("\nssp_WIFIHALApplySettings::Failed\n");
-     return SSP_FAILURE;
+        printf("\nssp_WIFIHALApplySettings::Failed\n");
+        return SSP_FAILURE;
     }
     else
     {
-     printf("\nssp_WIFIHALApplySettings::Success\n");
-     return return_status;
+        printf("\nssp_WIFIHALApplySettings::Success\n");
+        return return_status;
     }
 
     printf("\n ssp_WIFIHALApplySettings----> Exit\n");

@@ -73,39 +73,6 @@ bool WIFIHAL::testmodulepost_requisites()
 
 /*******************************************************************************************
  *
- * Function Name        : WIFIHAL_ApplySettings
- * Description          : This function invokes WiFi hal api wifi_applyRadioSettings
- * @param [in] req-     : radioIndex - radio index value of wifi
- * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
- *
- ********************************************************************************************/
-void WIFIHAL::WIFIHAL_ApplySettings(IN const Json::Value& req, OUT Json::Value& response)
-{
-    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_ApplySettings  --->Entry\n");
-    int radioIndex;
-    int returnValue;
-    char details[200] = {'\0'};
-    radioIndex = req["radioIndex"].asInt();
-    returnValue = ssp_WIFIHALApplySettings(radioIndex);
-    if(0 == returnValue)
-       {
-            sprintf(details, "applyRadioSettings operation success");
-            response["result"]="SUCCESS";
-            response["details"]=details;
-            return;
-       }
-    else
-       {
-            sprintf(details, "applyRadioSettings operation failed");
-            response["result"]="FAILURE";
-            response["details"]=details;
-            return;
-       }
-    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_ApplySettings  --->Exit\n");
-}
-
-/*******************************************************************************************
- *
  * Function Name        : WIFIHAL_GetOrSetParamBoolValue
  * Description          : This function invokes WiFi hal's get/set apis, when the value to be
                           get /set is BOOL
@@ -124,6 +91,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
     int radioIndex;
     unsigned char enable;
     int returnValue;
+    int retValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
 
@@ -134,18 +102,35 @@ void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
 
     if(!strncmp(methodName, "set",3))
     {
+	printf("wifi_set operation to be done\n");
         returnValue = ssp_WIFIHALGetOrSetParamBoolValue(radioIndex, &enable, methodName);
         if(0 == returnValue)
         {
             sprintf(details, "%s operation success", methodName);
             response["result"]="SUCCESS";
             response["details"]=details;
-	    return;
-
+        
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID"))
+            {
+                retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
+                if(0 == retValue)
+                {
+                    printf("applyRadioSettings operation success\n");
+                    return;
+                }
+                else
+                {
+                    printf("applyRadioSettings operation failed\n");
+                    return;
+                }
+            }
+	    else
+		return;
         }
     }
     else
     {
+        printf("wifi_get operation to be done\n");
         //paramType is set as NULL for negative test scenarios, for NULL pointer checks
         if(strcmp(paramType, "NULL"))
             returnValue = ssp_WIFIHALGetOrSetParamBoolValue(radioIndex, &enable, methodName);
@@ -189,6 +174,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
     unsigned long uLongVar = 1;
     unsigned long nullValue = NULL;
     int returnValue;
+    int retValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
 
@@ -199,17 +185,35 @@ void WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
 
     if(!strncmp(methodName, "set",3))
     {
+	printf("wifi_set operation to be done\n");
         returnValue = ssp_WIFIHALGetOrSetParamULongValue(radioIndex, &uLongVar, methodName);
         if(0 == returnValue)
         {
             sprintf(details, "%s operation success", methodName);
             response["result"]="SUCCESS";
             response["details"]=details;
-	    return;
+        
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID"))
+            {
+                retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
+                if(0 == retValue)
+                {
+                    printf("applyRadioSettings operation success\n");
+                    return;
+                }
+                else
+                {
+                    printf("applyRadioSettings operation failed\n");
+                    return;
+                }
+            }
+	    else
+		return;
         }
     }
     else
     {
+       printf("wifi_get operation to be done\n");
        //paramType is set as NULL for negative test scenarios, for NULL pointer checks
        if(strcmp(paramType, "NULL"))
            returnValue = ssp_WIFIHALGetOrSetParamULongValue(radioIndex, &uLongVar, methodName);
@@ -253,6 +257,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
     int radioIndex = 1;
     char output[1000] = {'\0'};
     int returnValue;
+    int retValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
     char param[200] = {'\0'};
@@ -264,13 +269,30 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
 
     if(!strncmp(methodName, "set",3))
     {
+	printf("wifi_set operation to be done\n");
         returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, param, methodName);
         if(0 == returnValue)
         {
             sprintf(details, "%s operation success", methodName);
             response["result"]="SUCCESS";
             response["details"]=details;
-            return;
+        
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID"))
+            {
+                retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
+                if(0 == retValue)
+                {
+                    printf("applyRadioSettings operation success\n");
+                    return;
+                }
+                else
+                {
+                    printf("applyRadioSettings operation failed\n");
+                    return;
+                }
+            }
+	    else
+		return;
         }
         else
         {
@@ -280,10 +302,10 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
             DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForString --->Error in execution\n");
             return;
         }
-
     }
     else
     {
+        printf("wifi_get operation to be done\n");
         //paramType is set as NULL for negative test scenarios, for NULL pointer checks
         if(strcmp(paramType, "NULL"))
             returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, output, methodName);
@@ -330,6 +352,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json:
     int radioIndex = 1;
     int intParam = 1;
     int returnValue;
+    int retValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
 
@@ -340,7 +363,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json:
 
     if(!strncmp(methodName, "set",3))
     {
-        DEBUG_PRINT(DEBUG_TRACE,"\n Set operation requested\n");
+	printf("wifi_set operation to be done\n");
         printf("MethodName : %s\n",methodName);
         returnValue = ssp_WIFIHALGetOrSetParamIntValue(radioIndex, &intParam, methodName);
         if(0 == returnValue)
@@ -348,12 +371,28 @@ void WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json:
             sprintf(details, "%s operation success", methodName);
             response["result"]="SUCCESS";
             response["details"]=details;
-            return;
+        
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID"))
+            {
+                retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
+                if(0 == retValue)
+                {
+                    printf("applyRadioSettings operation success\n");
+                    return;
+                }
+                else
+                {
+                    printf("applyRadioSettings operation failed\n");
+                    return;
+                }
+            }
+	    else
+		return;
         }
     }
     else
     {
-        DEBUG_PRINT(DEBUG_TRACE,"\n Get operation requested\n");
+        printf("wifi_get operation to be done\n");
         printf("MethodName : %s\n",methodName);
         //paramType is set as NULL for negative test scenarios, for NULL pointer checks
         if(strcmp(paramType, "NULL"))
@@ -399,6 +438,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Jso
     int radioIndex = 1;
     unsigned int uintParam = 1;
     int returnValue;
+    int retValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
 
@@ -409,7 +449,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Jso
 
     if(!strncmp(methodName, "set",3))
     {
-        DEBUG_PRINT(DEBUG_TRACE,"\n Set operation requested\n");
+	printf("wifi_set operation to be done\n");
         printf("MethodName : %s\n",methodName);
         returnValue = ssp_WIFIHALGetOrSetParamUIntValue(radioIndex, &uintParam, methodName);
         if(0 == returnValue)
@@ -417,12 +457,28 @@ void WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Jso
             sprintf(details, "%s operation success", methodName);
             response["result"]="SUCCESS";
             response["details"]=details;
-            return;
+        
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID"))
+            {
+                retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
+                if(0 == retValue)
+                {
+                    printf("applyRadioSettings operation success\n");
+                    return;
+                }
+                else
+                {
+                    printf("applyRadioSettings operation failed\n");
+                    return;
+                }
+            }
+	    else
+		return;
         }
     }
     else
     {
-        DEBUG_PRINT(DEBUG_TRACE,"\n Get operation requested\n");
+        printf("wifi_get operation to be done\n");
         printf("MethodName : %s\n",methodName);
         //paramType is set as NULL for negative test scenarios, for NULL pointer checks
         if(strcmp(paramType, "NULL"))
