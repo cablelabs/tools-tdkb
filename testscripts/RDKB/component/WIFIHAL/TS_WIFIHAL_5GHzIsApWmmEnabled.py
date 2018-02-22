@@ -156,7 +156,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "wifi_getApWMMCapability function called successfully and %s"%details
             tdkTestObj.setResultStatus("SUCCESS");
             print "ApWMMCapability received: %s"%ApWMMCapability;
-            print "ApWMMCapability is enabled"
+            print "ApWMMCapability is disabled"
     else:
         print "wifi_getApWMMCapability function call failed";
         tdkTestObj.setResultStatus("FAILURE");
