@@ -224,6 +224,8 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
         return_status = wifi_setRadioCtsProtectionEnable(radioIndex, *enable);
     else if(!strcmp(method, "setRadioObssCoexistenceEnable"))
         return_status = wifi_setRadioObssCoexistenceEnable(radioIndex, *enable);
+    else if(!strcmp(method, "setRadioSTBCEnable"))
+        return_status = wifi_setRadioSTBCEnable(radioIndex, *enable);
     else
     {
         return_status = SSP_FAILURE;
