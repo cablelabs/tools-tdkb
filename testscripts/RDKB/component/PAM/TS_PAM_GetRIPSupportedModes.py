@@ -44,7 +44,7 @@
     <test_objective>This test case will retrieve the current RIP mode supported and the retrieved value should be a subset of [Send, Receive, Both]</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3, RPI</test_setup>
-    <pre_requisite>1.Ccsp Components in DUT should be in a running state 
+    <pre_requisite>1.Ccsp Components in DUT should be in a running state
 2.TDK Agent should be in running state</pre_requisite>
     <api_or_interface_used>CcspBaseIf_getParameterValues</api_or_interface_used>
     <input_parameters>Device.Routing.RIP.SupportedModes</input_parameters>
@@ -62,7 +62,7 @@
 
 '''
 						#import statement
-import tdklib; 
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("pam","RDKB");
@@ -88,7 +88,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-		
+
     if expectedresult in actualresult:
 	if ("Send" or "Receive" or "Both" in details) and details:
             #Set the result status of execution
@@ -97,9 +97,9 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "EXPECTED RESULT 1:RIP Supported Modes should be a subset of [Send, Receive, Both]";
             print "ACTUAL RESULT 1: RIP Supported Modes:%s" %details;
             #Get the result of execution
-            print "[TEST EXECUTION RESULT] : SUCCESS" 
+            print "[TEST EXECUTION RESULT] : SUCCESS"
         else:
-            tdkTestObj.setResultStatus("FAILURE");	
+            tdkTestObj.setResultStatus("FAILURE");
             print "TEST STEP 1: Retrieve the RIP Supported Modes";
             print "EXPECTED RESULT 1:RIP Supported Modes should be a subset of [Send, Receive, Both]";
             print "ACTUAL RESULT 1: RIP Supported Modes:%s" %details;
@@ -111,12 +111,12 @@ if "SUCCESS" in loadmodulestatus.upper():
 	print "ACTUAL RESULT 1: Failed to retrieve the RIP Supported Modes: %s" %details;
 	print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("pam");
-   		 
-else:   
+
+else:
         print "Failed to load pam module";
         obj.setLoadModuleStatus("FAILURE");
-        print "Module loading failed";				
+        print "Module loading failed";
 
-					
 
-					
+
+

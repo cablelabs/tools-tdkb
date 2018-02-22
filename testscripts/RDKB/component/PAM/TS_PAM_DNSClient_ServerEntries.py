@@ -45,7 +45,7 @@
     <test_objective>This test case will retrieve the DNS Client's server number of entries and ensure the value retrieved is not zero.</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3, RPI, Emulator</test_setup>
-    <pre_requisite>1.Ccsp Components in DUT should be in a running state 
+    <pre_requisite>1.Ccsp Components in DUT should be in a running state
 2.TDK Agent should be in running state</pre_requisite>
     <api_or_interface_used>CcspBaseIf_getParameterValues</api_or_interface_used>
     <input_parameters>Device.DNS.Client.ServerNumberOfEntries</input_parameters>
@@ -61,8 +61,8 @@
 </xml>
 
 '''
-																																																																		
-#use tdklib library,which provides a wrapper for tdk testcase script 
+
+#use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import time;
 
@@ -97,21 +97,21 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "EXPECTED RESULT 1: Should retrieve the DNS Client's Server Entries successfully";
             print "ACTUAL RESULT 1: DNS Client's Server Entries: %s" %details;
             #Get the result of execution
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
+            print "[TEST EXECUTION RESULT] : %s" %actualresult ;
         else:
             tdkTestObj.setResultStatus("FAILURE");
             details = tdkTestObj.getResultDetails();
             print "TEST STEP 1: Retrieve the DNS Client's Server Entries";
             print "EXPECTED RESULT 1: Should retrieve the DNS Client's Server Entries successfully";
             print "ACTUAL RESULT 1: DNS Client's Server Entries: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ;              
-            
+            print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+
         obj.unloadModule("pam");
 else:
         print "Failed to load the module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";
 
-					
 
-					
+
+

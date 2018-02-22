@@ -45,7 +45,7 @@
     <test_objective>This test case will check whether setting the DHCP End IP as invalid IP beyond the subnet range is not allowed.</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3, RPI, Emulator</test_setup>
-    <pre_requisite>1.Ccsp Components in DUT should be in a running state 
+    <pre_requisite>1.Ccsp Components in DUT should be in a running state
 2.TDK Agent should be in running state</pre_requisite>
     <api_or_interface_used>CcspBaseIf_getParameterValues
 CcspBaseIf_setParameterValues</api_or_interface_used>
@@ -86,7 +86,7 @@ print "[LIB LOAD STATUS]  :  %s" %loadModuleresult;
 
 if "SUCCESS" in loadModuleresult.upper():
         obj.setLoadModuleStatus("SUCCESS");
-        
+
         tdkTestObj = obj.createTestStep("pam_GetParameterValues");
         tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress");
         expectedresult = "SUCCESS";
@@ -101,7 +101,7 @@ if "SUCCESS" in loadModuleresult.upper():
                 print "[EXPECTED RESULT 1]: Should Retrieve the current LAN IP address";
                 print "[ACTUAL RESULT 1]: %s" %ipaddress;
                 print "[TEST EXECUTION RESULT] : %s" %actualresult;
-                
+
                 tdkTestObj = obj.createTestStep("pam_SetParameterValues");
                 tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanSubnetMask");
                 tdkTestObj.addParameter("Type","string");
@@ -167,4 +167,4 @@ else:
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
 
-					
+

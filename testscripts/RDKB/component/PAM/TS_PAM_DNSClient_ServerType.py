@@ -45,7 +45,7 @@
     <test_objective>This test case will retrieve the Server type of the DNS Client and checks whether the retrieved server type is a subset of [DHCPv4, DHCPv6, IPCP, Static or RouterAdvertisement]</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3, RPI, Emulator</test_setup>
-    <pre_requisite>1.Ccsp Components in DUT should be in a running state 
+    <pre_requisite>1.Ccsp Components in DUT should be in a running state
 2.TDK Agent should be in running state</pre_requisite>
     <api_or_interface_used>CcspBaseIf_getParameterValues</api_or_interface_used>
     <input_parameters>Device.DNS.Client.Server.1.Type</input_parameters>
@@ -63,7 +63,7 @@
 
 '''
 												#import statement
-import tdklib; 
+import tdklib;
 
 #Test component to be tested
 pamObj = tdklib.TDKScriptingLibrary("pam","RDKB");
@@ -119,24 +119,24 @@ if "SUCCESS" in loadmodulestatus.upper():
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE, %s" %details
     else:
-        tdkTestObj.setResultStatus("FAILURE");	
+        tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get an IP Interface"
         print "EXPECTED RESULT 1: Should get an IP Interface"
         print "ACTUAL RESULT 1: Failure in getting the Interface. Details : %s" %interface;
         print "[TEST EXECUTION RESULT] : FAILURE";
     pamObj.unloadModule("pam");
-   		 
-else:   
+
+else:
         print "Failed to load pam module";
         pamObj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";
 
-					
 
-					
 
-					
 
-					
 
-					
+
+
+
+
+

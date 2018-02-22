@@ -60,7 +60,7 @@
 </xml>
 '''
 #import statement
-import tdklib; 
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("pam","RDKB");
@@ -96,7 +96,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "EXPECTED RESULT 1: Should not set Password Reset as true";
         print "ACTUAL RESULT 1: %s" %details;
 	print "[TEST EXECUTION RESULT] : SUCCESS";
-     
+
     else:
         tdkTestObj.setResultStatus("FAILURE");
         details = tdkTestObj.getResultDetails();
@@ -105,8 +105,8 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT 1: %s" %details;
 	print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("pam");
-   		 
-else:   
+
+else:
         print "Failed to load pam module";
         obj.setLoadModuleStatus("FAILURE");
-        print "Module loading failed";				
+        print "Module loading failed";

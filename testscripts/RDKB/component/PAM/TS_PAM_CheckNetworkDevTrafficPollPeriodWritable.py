@@ -58,7 +58,7 @@
 </xml>
 '''
 #import statements
-import tdklib;						
+import tdklib;
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("pam","RDKB");
 
@@ -74,11 +74,11 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
 if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
-    obj.setLoadModuleStatus("SUCCESS");		
+    obj.setLoadModuleStatus("SUCCESS");
     tdkTestObj = obj.createTestStep('pam_GetParameterNames');
     tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesTraffic.PollingPeriod");
     tdkTestObj.addParameter("ParamList","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesTraffic.");
- 	
+
     expectedresult="SUCCESS";
 
     #Execute the test case in STB
@@ -86,27 +86,27 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-		
+
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "[TEST EXECUTION RESULT] : %s" %actualresult ;
 	print "%s" %details;
-	 
-    else:   
+
+    else:
         tdkTestObj.setResultStatus("FAILURE");
-	print "[TEST EXECUTION RESULT] : %s" %actualresult ;	
-	print "%s" %details;		 
-    
+	print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+	print "%s" %details;
+
     obj.unloadModule("pam");
-   		 
-else:   
+
+else:
         print "Failed to load pam module";
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";
 
-								
 
-					
 
-					
+
+
+

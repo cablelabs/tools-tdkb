@@ -45,7 +45,7 @@
     <test_objective>This test case will check whether setting the DNS Server IP is not allowed when server type is not static</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3, RPI, Emulator</test_setup>
-    <pre_requisite>1.Ccsp Components in DUT should be in a running state 
+    <pre_requisite>1.Ccsp Components in DUT should be in a running state
 2.TDK Agent should be in running state</pre_requisite>
     <api_or_interface_used>CcspBaseIf_getParameterValues
 CcspBaseIf_setParameterValues</api_or_interface_used>
@@ -67,7 +67,7 @@ pam_GetParameterValues</test_stub_interface>
 
 '''
 #import statement
-import tdklib; 
+import tdklib;
 
 #Test component to be tested
 pamObj = tdklib.TDKScriptingLibrary("pam","RDKB");
@@ -150,20 +150,20 @@ if "SUCCESS" in loadmodulestatus.upper():
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE, %s" %details
     else:
-        tdkTestObj.setResultStatus("FAILURE");	
+        tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get an IP Interface"
         print "EXPECTED RESULT 1: Should get an IP Interface"
         print "ACTUAL RESULT 1: Failure in getting the Interface. Details : %s" %interface;
         print "[TEST EXECUTION RESULT] : FAILURE";
     pamObj.unloadModule("pam");
-   		 
-else:   
+
+else:
         print "Failed to load pam module";
         pamObj.setLoadModuleStatus("FAILURE");
         print "Module loading failed";
 
-					
 
-					
 
-					
+
+
+

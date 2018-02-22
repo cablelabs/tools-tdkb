@@ -44,7 +44,7 @@
     <test_objective>This test case will retrieve the current RIP protocol version. The Send and receive protocol version of RIP should be RIP2</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3, RPI</test_setup>
-    <pre_requisite>1.Ccsp Components in DUT should be in a running state 
+    <pre_requisite>1.Ccsp Components in DUT should be in a running state
 2.TDK Agent should be in running state</pre_requisite>
     <api_or_interface_used>CcspBaseIf_getParameterValues</api_or_interface_used>
     <input_parameters>Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_SendVersion
@@ -64,7 +64,7 @@ Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_ReceiveVersion</automation_app
 
 '''
 						#import statement
-import tdklib; 
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("pam","RDKB");
@@ -90,7 +90,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     SendVersion = tdkTestObj.getResultDetails();
-		
+
     if expectedresult in actualresult and "RIP2" in SendVersion:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
@@ -99,7 +99,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT 1: RIP Protocol Version: SendVersion:%s" %SendVersion;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS"
-            
+
             tdkTestObj = obj.createTestStep('pam_GetParameterValues');
             tdkTestObj.addParameter("ParamName","Device.Routing.RIP.InterfaceSetting.1.X_CISCO_COM_ReceiveVersion");
             expectedresult="SUCCESS";
@@ -116,24 +116,24 @@ if "SUCCESS" in loadmodulestatus.upper():
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : SUCCESS"
             else:
-                tdkTestObj.setResultStatus("FAILURE");	
+                tdkTestObj.setResultStatus("FAILURE");
                 print "TEST STEP 2: Retrieve the RIP Protocol Version";
                 print "EXPECTED RESULT 2:RIP Protocol Version should be RIP2";
                 print "ACTUAL RESULT 2: RIP Protocol Version: ReceiveVersion:%s" %ReceiveVersion;
                 print "[TEST EXECUTION RESULT] : FAILURE";
     else:
-        tdkTestObj.setResultStatus("FAILURE");	
+        tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Retrieve the RIP Protocol Version";
         print "EXPECTED RESULT 1:RIP Protocol Version should be RIP2";
         print "ACTUAL RESULT 1: RIP Protocol Version: SendVersion:%s" %SendVersion;
         print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("pam");
-   		 
-else:   
+
+else:
         print "Failed to load pam module";
         obj.setLoadModuleStatus("FAILURE");
-        print "Module loading failed";				
+        print "Module loading failed";
 
-					
 
-					
+
+

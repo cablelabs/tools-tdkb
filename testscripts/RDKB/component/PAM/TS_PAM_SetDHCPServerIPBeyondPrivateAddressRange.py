@@ -45,7 +45,7 @@
     <test_objective>This test case will check whether setting the DHCP server IP beyond the allowed private address range is not allowed</test_objective>
     <test_type>Positive</test_type>
     <test_setup>XB3, RPI, Emulator</test_setup>
-    <pre_requisite>1.Ccsp Components in DUT should be in a running state 
+    <pre_requisite>1.Ccsp Components in DUT should be in a running state
 2.TDK Agent should be in running state</pre_requisite>
     <api_or_interface_used>CcspBaseIf_setParameterValues</api_or_interface_used>
     <input_parameters>Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanIPAddress
@@ -110,4 +110,4 @@ else:
         obj.setLoadModuleStatus("FAILURE");
         print "Module loading FAILURE";
 
-					
+
