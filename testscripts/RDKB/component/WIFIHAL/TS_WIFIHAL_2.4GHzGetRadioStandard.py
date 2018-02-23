@@ -103,7 +103,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "[TEST EXECUTION RESULT] : SUCCESS";
 
         #Script to load the configuration file of the component
-        tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetParamStringValue");
+        tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetRadioStandard");
         #Giving the method name to invoke the api wifi_getRadioStandard()
         tdkTestObj.addParameter("methodName","getRadioStandard")
         #Radio index is 0 for 2.4GHz and 1 for 5GHz
@@ -113,15 +113,23 @@ if "SUCCESS" in loadmodulestatus.upper():
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
         if expectedresult in actualresult :
-            CurrStandard = details.split(":")[1];
+            CurrStandard = details.split(":")[1].split(" ")[0];
+	    gOnly = details.split(":")[1].split(" ")[1].strip();
+	    nOnly = details.split(":")[1].split(" ")[2].strip();
+	    acOnly = details.split(":")[1].split(" ")[3].strip();
             if CurrStandard in ActualList:
-                #Set the result status of execution
+                if int(gOnly) == 0 and int(nOnly) == 1 and int(acOnly) == 0:
+                    radioStd = "n"
+                elif int(gOnly) == 1 and int(nOnly) == 0 and int(acOnly) == 0:
+                    radioStd = "g,n"
+                else:
+                    radioStd = "b,g,n"
                 tdkTestObj.setResultStatus("SUCCESS");
                 print "TEST STEP 2: Get the current Radio standard";
                 print "EXPECTED RESULT 2: Should get the Radio standard for 2.4GHz";
-                print "ACTUAL RESULT 2: %s" %details;
-                #Get the result of execution
+                print "ACTUAL RESULT 2: %s" %radioStd;
                 print "[TEST EXECUTION RESULT] : SUCCESS";
+
 	    else:
 		tdkTestObj.setResultStatus("FAILURE");
 		print "FAILURE: Current radio std: not in Supported std list"

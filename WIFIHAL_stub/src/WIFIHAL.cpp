@@ -260,7 +260,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
     int retValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
-    char param[200] = {'\0'};
+    char param[200] = {'\0'}; 
 
     strcpy(methodName, req["methodName"].asCString());
     radioIndex = req["radioIndex"].asInt();
@@ -326,6 +326,105 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
             response["result"]="FAILURE";
             response["details"]=details;
             DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForString --->Error in execution\n");
+            return;
+        }
+    }
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetOrSetRadioStandard
+ * Description          : This function invokes WiFi hal's get/set apis, when the value to be
+                          get /set is a string
+ *
+ * @param [in] req-    : methodName - identifier for the hal api name
+                          radioIndex - radio index value of wifi
+                          param     - the string value to be get
+                          paramType  - To indicate negative test scenario. it is set as NULL for negative sceanario, otherwise empty
+			  gOnly, nOnly, acOnly - the bool values to be set/get
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_GetOrSetRadioStandard(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetParamRadioStandard ----->Entry\n");
+    char methodName[50] = {'\0'};
+    int radioIndex = 1;
+    char output[1000] = {'\0'};
+    int returnValue;
+    int retValue;
+    char details[200] = {'\0'};
+    char paramType[10] = {'\0'};
+    char param[200] = {'\0'};
+    unsigned char gOnly, nOnly, acOnly;
+
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+    strcpy(paramType, req["paramType"].asCString());
+    strcpy(param, req["param"].asCString());
+    gOnly = req["gOnly"].asInt();
+    nOnly = req["nOnly"].asInt();
+    acOnly = req["acOnly"].asInt();
+
+    if(!strncmp(methodName, "set",3))
+    {
+        printf("wifi_set operation to be done\n");
+        returnValue = ssp_WIFIHALGetOrSetRadioStandard(radioIndex, param, methodName, &gOnly, &nOnly, &acOnly);
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID")||strstr(methodName, "Ap"))
+            {
+                retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
+                if(0 == retValue)
+                {
+                    printf("applyRadioSettings operation success\n");
+                    return;
+                }
+                else
+                {
+                    printf("applyRadioSettings operation failed\n");
+                    return;
+                }
+            }
+            else
+                return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForRadioStandard --->Error in execution\n");
+            return;
+        }
+    }
+    else
+    {
+        printf("wifi_get operation to be done\n");
+        //paramType is set as NULL for negative test scenarios, for NULL pointer checks
+        if(strcmp(paramType, "NULL"))
+            returnValue = ssp_WIFIHALGetOrSetRadioStandard(radioIndex, output, methodName, &gOnly, &nOnly, &acOnly);
+        else
+            returnValue = ssp_WIFIHALGetOrSetRadioStandard(radioIndex, NULL, methodName, &gOnly, &nOnly, &acOnly);
+
+        if(0 == returnValue)
+        {
+            DEBUG_PRINT(DEBUG_TRACE,"\n output: %s\n",output);
+            sprintf(details, "Value returned is :%s %d %d %d", output,gOnly,nOnly,acOnly);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForRadioStandard --->Error in execution\n");
             return;
         }
     }

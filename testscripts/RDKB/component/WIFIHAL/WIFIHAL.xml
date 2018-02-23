@@ -84,6 +84,19 @@
         <function>WIFIHAL_ClearRadioResetCount</function>
         <parameters/>
       </primitiveTest>
+      <primitiveTest name="WIFIHAL_GetOrSetRadioStandard" id=" " version="1">
+        <function>WIFIHAL_GetOrSetRadioStandard</function>
+        <parameters>
+          <parameter name="acOnly" value="0"/>
+          <parameter name="gOnly" value="0"/>
+          <parameter name="methodName" value="0"/>
+          <parameter name="nOnly" value="0"/>
+          <parameter name="param" value="0"/>
+          <parameter name="paramType" value="0"/>
+          <parameter name="radioIndex" value="0"/>
+        </parameters>
+      </primitiveTest>
+
     </primitiveTests>
   </module>
 </xml>

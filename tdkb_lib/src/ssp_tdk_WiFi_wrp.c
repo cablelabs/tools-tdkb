@@ -316,7 +316,6 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
     printf("GetorSetParam: %s\n" , output);
     printf("MethodName: %s\n", method);
     int return_status = 0;
-    unsigned char gOnly,nOnly,acOnly;
 
     if(!strcmp(method, "getRadioChannelsInUse"))
         return_status = wifi_getRadioChannelsInUse(radioIndex, output);
@@ -344,10 +343,6 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
         return_status = wifi_getRadioSupportedStandards(radioIndex, output);
     else if(!strcmp(method, "getRadioIfName"))
         return_status = wifi_getRadioIfName(radioIndex, output);
-    else if(!strcmp(method, "getRadioStandard"))
-        return_status = wifi_getRadioStandard(radioIndex, output, &gOnly, &nOnly, &acOnly);
-    else if(!strcmp(method, "setRadioChannelMode"))
-        return_status = wifi_setRadioChannelMode(radioIndex, output, gOnly, nOnly, acOnly);
     else if(!strcmp(method, "getSSIDStatus"))
         return_status = wifi_getSSIDStatus(radioIndex, output);
     else if(!strcmp(method, "getApBasicAuthenticationMode"))
@@ -435,6 +430,43 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
     return return_status;
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WiFiHalCallMethodForRadioStandard
+ * Description          : This function invokes WiFi hal's get/set apis, when the value to be
+                          get /set is a radio standard
+ *
+ * @param [in]          : radioIndex - WiFi radio index value
+ * @param [in]          : gOnly,nOnly,acOnly - the values to be get/set
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALGetOrSetRadioStandard(int radioIndex, char* output, char* method, unsigned char *gOnly, unsigned char *nOnly, unsigned char *acOnly)
+{
+    printf("\n ssp_WIFIHALGetOrSetParamStringValue----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    printf("GetorSetParam: %s\n" , output);
+    printf("MethodName: %s\n", method);
+    printf("gOnly: %d\n",*gOnly);
+    printf("nOnly: %d\n",*nOnly);
+    printf("acOnly: %d\n",*acOnly);
+
+    int return_status = 0;
+
+    if(!strcmp(method, "getRadioStandard"))
+        return_status = wifi_getRadioStandard(radioIndex, output, gOnly, nOnly, acOnly);
+    else if(!strcmp(method, "setRadioChannelMode"))
+        return_status = wifi_setRadioChannelMode(radioIndex, output, *gOnly, *nOnly, *acOnly);
+    else
+    {
+        return_status = SSP_FAILURE;
+        printf("\n ssp_WiFiHalCallMethodForRadioStandard: Invalid methodName\n");
+    }
+
+    printf("ssp_WiFiHalCallMethodForRadioStandard: return value is %s %d %d %d\n", output, *gOnly, *nOnly, *acOnly);
+    printf("\n ssp_WiFiHalCallMethodForRadioStandard--> Exit\n");
+    return return_status;
+}
 
 /*******************************************************************************************
  *
