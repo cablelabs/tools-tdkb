@@ -146,6 +146,7 @@ def setandgetAutoChannelRefreshPeriod():
                 print "Automatic channel selection is done only at boot time"
                 tdkTestObj.setResultStatus("SUCCESS");
             else:
+		tdkTestObj.setResultStatus("SUCCESS");
                 print "*********************************************************";
                 #Giving the method name to invoke the api wifi_getRadioChannel()
                 primitive = 'WIFIHAL_GetOrSetParamULongValue'
@@ -166,9 +167,7 @@ def setandgetAutoChannelRefreshPeriod():
                 tdkTestObj ,actualresult ,details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, setRefreshPeriod, setMethod)
 
                 if expectedresult in actualresult:
-                    print "*********************************************************";
-                    tdkTestObj ,actualresult ,details = ExecuteWIFIApplySettings(obj,0);
-                    if expectedresult in actualresult:
+                        print "*********************************************************";
 			tdkTestObj.setResultStatus("SUCCESS");
                         print "*********************************************************";
                         #Giving the method name to invoke the api wifi_getRadioAutoChannelRefreshPeriod()
@@ -224,8 +223,10 @@ def setandgetAutoChannelRefreshPeriod():
                             tdkTestObj ,actualresult ,details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, setRadioCh, setMethod)
                             if expectedresult in actualresult:
                                 print "Successfully reverted the radio channel to initial channel"
+				tdkTestObj.setResultStatus("SUCCESS");
                             else:
                                 print "Unable to revert the radio channel to initial channel"
+				tdkTestObj.setResultStatus("FAILURE");
                         else:
                             tdkTestObj.setResultStatus("FAILURE");
                             print "EXPECTED RESULT: Get the currently used radio channel and it should differ from the initial radio channel";
@@ -243,15 +244,16 @@ def setandgetAutoChannelRefreshPeriod():
                         tdkTestObj ,actualresult ,details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, setRefreshPeriod, setMethod)
                         if expectedresult in actualresult:
                             print "Successfully reverted the auto channel refresh period back to initialRefreshPeriod";
+			    tdkTestObj.setResultStatus("SUCCESS");
                         else:
                             print "Unable to revert the auto channel refresh period back to initialRefreshPeriod";
-                    else:
-                        print "Wifi_ApplySettings failed"
-			tdkTestObj.setResultStatus("FAILURE");
+			    tdkTestObj.setResultStatus("FAILURE");
                 else:
                     print "Set auto channel refresh period failed"
+		    tdkTestObj.setResultStatus("FAILURE");
         else:
             print "Get auto channel refresh period failed"
+	    tdkTestObj.setResultStatus("FAILURE");
 
     elif expectedresult in actualresult and "Disabled" in enable:
         tdkTestObj.setResultStatus("FAILURE");
@@ -333,6 +335,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             radioIndex = 1
             tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 1, setMethod)
             if expectedresult in actualresult:
+		tdkTestObj.setResultStatus("SUCCESS");
                 print "Auto channel enable set as true for 2.4GHz";
 
                 #Giving the method name to invoke the api wifi_getRadioAutoChannelEnable()
@@ -345,16 +348,16 @@ if "SUCCESS" in loadmodulestatus.upper():
                 enable = details.split(":")[1].strip();
                 if expectedresult in actualresult and "Enabled" in enable:
                     print "Auto channel Enabled"
-
+		    tdkTestObj.setResultStatus("SUCCESS");
 
                     setandgetAutoChannelRefreshPeriod();
 
                 else:
                     print "Unable to enable Auto channel"
-
+		    tdkTestObj.setResultStatus("FAILURE");
             else:
                 print "Unable to set auto channel enable as true for 2.4GHz";
-
+		tdkTestObj.setResultStatus("FAILURE");
     else:
         #Set the result status of execution
         tdkTestObj.setResultStatus("FAILURE");

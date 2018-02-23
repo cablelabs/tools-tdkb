@@ -146,17 +146,19 @@ if "SUCCESS" in loadmodulestatus.upper():
 
                         #Revert the BeaconType back to initial value
                         tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, initialBeaconType, setMethod)
-                        tdkTestObj ,actualresult ,details = ExecuteWIFIApplySettings(obj,apIndex);
                         if expectedresult in actualresult:
                             print "Successfully reverted the BeaconType to initial value"
+			    tdkTestObj.setResultStatus("SUCCESS");
                         else:
                             print "Unable to revert the BeaconType"
-
+			    tdkTestObj.setResultStatus("FAILURE");
                     else:
                         print "wifi_getApBeaconType() call failed"
+			tdkTestObj.setResultStatus("FAILURE");
 
                 else:
                     print "wifi_setApBeaconType() call failed"
+		    tdkTestObj.setResultStatus("FAILURE");
                 break;
     else:
         tdkTestObj.setResultStatus("FAILURE");

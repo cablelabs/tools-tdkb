@@ -74,6 +74,7 @@ methodName   :    setRadioChannel</input_parameters>
 # use tdklib library,which provides a wrapper for tdk testcase script 
 import tdklib; 
 from wifiUtility import *
+import time;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("wifihal","1");
@@ -113,7 +114,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 if int(possibleCh[index]) != currChannel:
                     channel = int(possibleCh[index]) ;
                     break;
-
+	    print "Channel to be set :",channel
 	    #setchannel with the above selected channel number
 	    setMethod = "setRadioChannel"
             primitive = 'WIFIHAL_GetOrSetParamULongValue'
@@ -121,6 +122,8 @@ if "SUCCESS" in loadmodulestatus.upper():
 	    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, channel, setMethod)
             if expectedresult in actualresult :
                 print "Radio channel set"
+		
+		time.sleep(20)
 
 		#Verify set operation with a get operation
                 getMethod = "getRadioChannel"

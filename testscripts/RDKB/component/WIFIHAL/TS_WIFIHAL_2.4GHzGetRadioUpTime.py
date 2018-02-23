@@ -79,7 +79,7 @@ obj.configureTestCase(ip,port,'TS_WIFIHAL_2.4GHzGetRadioUpTime');
 #Get the result of connection with test component and STB
 loadmodulestatus =obj.getLoadModuleResult();
 
-print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus1
+print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");

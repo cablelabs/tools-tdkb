@@ -91,7 +91,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 	setMode = 1
         primitive = 'WIFIHAL_GetOrSetParamIntValue'
 
-        #Calling the method to execute wifi_getApMacAddressControlMode()
+        #Calling the method to execute wifi_setApAuthMode()
         tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, setMode, setMethod)
 
 	if expectedresult in actualresult:

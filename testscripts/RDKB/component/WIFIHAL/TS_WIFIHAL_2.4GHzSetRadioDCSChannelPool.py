@@ -122,9 +122,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 	    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, setDcsChPool, setMethod)
 
 	    if expectedresult in actualresult:
-	        radioIndex = 0
-	        tdkTestObj ,actualresult ,details = ExecuteWIFIApplySettings(obj,radioIndex);
-	        if expectedresult in actualresult:
+	            radioIndex = 0
                     expectedresult="SUCCESS";
                     radioIndex = 0
 	            getMethod = "getRadioDCSChannelPool"
@@ -152,11 +150,12 @@ if "SUCCESS" in loadmodulestatus.upper():
 
 			#Revert the DCS Channel Pool back to initial value
 			tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, initialDCSChPool, setMethod)
-			tdkTestObj ,actualresult ,details = ExecuteWIFIApplySettings(obj,radioIndex);
 			if expectedresult in actualresult:
 			    print "Successfully reverted DCS Channel Pool to initial value"
+			    tdkTestObj.setResultStatus("SUCCESS");
 			else:
 			    print "Unable to revert the DCS Channel Pool"
+			    tdkTestObj.setResultStatus("FAILURE");
 		    else:
 			print "wifi_getRadioDCSChannelPool() failed";
 			tdkTestObj.setResultStatus("FAILURE");
