@@ -110,7 +110,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
             response["result"]="SUCCESS";
             response["details"]=details;
         
-            if(strstr(methodName, "Radio")||strstr(methodName, "SSID"))
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID")||strstr(methodName, "Ap"))
             {
                 retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
                 if(0 == retValue)
@@ -193,7 +193,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamULongValue(IN const Json::Value& req, OUT Jso
             response["result"]="SUCCESS";
             response["details"]=details;
         
-            if(strstr(methodName, "Radio")||strstr(methodName, "SSID"))
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID")||strstr(methodName, "Ap"))
             {
                 retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
                 if(0 == retValue)
@@ -277,7 +277,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
             response["result"]="SUCCESS";
             response["details"]=details;
         
-            if(strstr(methodName, "Radio")||strstr(methodName, "SSID"))
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID")||strstr(methodName, "Ap"))
             {
                 retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
                 if(0 == retValue)
@@ -372,7 +372,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamIntValue(IN const Json::Value& req, OUT Json:
             response["result"]="SUCCESS";
             response["details"]=details;
         
-            if(strstr(methodName, "Radio")||strstr(methodName, "SSID"))
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID")||strstr(methodName, "Ap"))
             {
                 retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
                 if(0 == retValue)
@@ -458,7 +458,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamUIntValue (IN const Json::Value& req, OUT Jso
             response["result"]="SUCCESS";
             response["details"]=details;
         
-            if(strstr(methodName, "Radio")||strstr(methodName, "SSID"))
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID")||strstr(methodName, "Ap"))
             {
                 retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
                 if(0 == retValue)
