@@ -35,7 +35,7 @@
   <box_types>
     <box_type>Broadband</box_type>
     <box_type>Emulator</box_type>
-    
+
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
@@ -77,8 +77,8 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
 </xml>
 
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("lmlite","RDKB");
@@ -129,7 +129,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
         print "EXPECTED RESULT : Should disable WiFi";
         print "ACTUAL RESULT :%s" %Details;
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS";    
+        print "[TEST EXECUTION RESULT] : SUCCESS";
 
         #Get the number of LAN clients connected. Should be greater than zero
         tdkTestObj = obj.createTestStep('LMLiteStub_Get');
@@ -149,7 +149,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
             print "ACTUAL RESULT 1: Number of active LAN clients connected :%s" %NoOfClients;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
-            
+
             #Get the LAN client ip from the box
             tdkTestObj = sysObj.createTestStep('ExecuteCmd');
             tdkTestObj.addParameter("command","arp | grep \"brlan0\" | tr \"\n\" \" \"");
@@ -165,7 +165,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
 	        #get the IP addresses of active LAN clients as list from obtained string. len(IP) will be the number of active LAN clients
 	        IP = [p.split(')')[0] for p in IP_details.split('(') if ')' in p]
 	        print "ACTUAL RESULT 2:", IP;
-	    
+
 	        tdkTestObj = obj.createTestStep('LMLiteStub_Get');
                 tdkTestObj.addParameter("paramName","Device.Hosts.HostNumberOfEntries");
                 expectedresult="SUCCESS";

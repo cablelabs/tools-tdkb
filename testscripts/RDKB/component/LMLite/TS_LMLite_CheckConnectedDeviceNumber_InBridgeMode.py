@@ -93,7 +93,7 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
+# use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 from time import sleep;
 
@@ -120,13 +120,13 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
     tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
     tdkTestObj.addParameter("paramValue","false");
     tdkTestObj.addParameter("paramType","boolean");
-   
-    expectedresult="SUCCESS" 
+
+    expectedresult="SUCCESS"
     #Execute the test case in DUT
     tdkTestObj.executeTestCase(expectedresult);
     actualresult1 = tdkTestObj.getResult();
     Details = tdkTestObj.getResultDetails();
- 
+
     tdkTestObj = wifiobj.createTestStep('WIFIAgent_Set');
     tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Enable");
     tdkTestObj.addParameter("paramValue","false");
@@ -146,7 +146,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
         print "ACTUAL RESULT :%s" %Details;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
- 
+
         #Check if device is in bridge mode or not
         tdkTestObj = obj.createTestStep('LMLiteStub_Get');
         tdkTestObj.addParameter("paramName","Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode");
@@ -179,7 +179,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                 #Execute the test case in DUT
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
-                details = tdkTestObj.getResultDetails();	
+                details = tdkTestObj.getResultDetails();
                 if expectedresult in actualresult:
             	    #Set the result status of execution
                     tdkTestObj.setResultStatus("SUCCESS");
@@ -202,7 +202,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
 
             #Wait for few seconds for the Lan mode to get reflected
 	    sleep(30);
-	    
+
             tdkTestObj = obj.createTestStep('LMLiteStub_Get');
             tdkTestObj.addParameter("paramName","Device.Hosts.X_CISCO_COM_ConnectedDeviceNumber");
             #Execute the test case in DUT

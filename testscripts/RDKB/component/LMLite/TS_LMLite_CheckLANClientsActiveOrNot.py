@@ -52,7 +52,7 @@
     <!--  -->
     <box_type>Emulator</box_type>
     <!--  -->
-    
+
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
@@ -92,8 +92,8 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("lmlite","1");
@@ -233,7 +233,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
         tdkTestObj.executeTestCase(expectedresult);
         actualresult1 = tdkTestObj.getResult();
         Details = tdkTestObj.getResultDetails();
-	
+
 	tdkTestObj = wifiobj.createTestStep('WIFIAgent_Set');
         tdkTestObj.addParameter("paramName","Device.WiFi.SSID.2.Enable");
         tdkTestObj.addParameter("paramValue","true");
@@ -274,4 +274,4 @@ else:
     print "Failed to load lmlite module";
     obj.setLoadModuleStatus("FAILURE");
     print "Module loading failed";
-		    
+

@@ -50,6 +50,8 @@
   <box_types>
     <box_type>Broadband</box_type>
     <!--  -->
+    <box_type>Emulator</box_type>
+    <!--  -->
     <box_type>RPI</box_type>
     <!--  -->
   </box_types>
@@ -90,8 +92,8 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   </test_cases>
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("lmlite","1");
@@ -109,14 +111,14 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
-   
+
     tdkTestObj = obj.createTestStep('LMLiteStub_Get');
     tdkTestObj.addParameter("paramName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.ReportingPeriod");
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     default = tdkTestObj.getResultDetails();
-   
+
     if expectedresult in actualresult:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
@@ -132,7 +134,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         expectedresult="SUCCESS";
 
         PollingPeriod_list=['5','10','15','30','60','300','900','1800','3600','10800','21600','43200','86400'];
-        
+
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
@@ -154,7 +156,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 tdkTestObj.addParameter("ParamValue",reportingperiod);
                 tdkTestObj.addParameter("Type","unsignedint");
                 expectedresult="FAILURE";
-                
+
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
                 details = tdkTestObj.getResultDetails();
@@ -167,7 +169,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     print "ACTUAL RESULT 3: %s" %details;
                     #Get the result of execution
                     print "[TEST EXECUTION RESULT] : SUCCESS";
-		    
+
                 else:
                     #Set the result status of execution
                     tdkTestObj.setResultStatus("FAILURE");
@@ -193,7 +195,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.addParameter("ParamValue",default);
         tdkTestObj.addParameter("Type","unsignedint");
         expectedresult="SUCCESS";
-        
+
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();

@@ -50,6 +50,8 @@
   <box_types>
     <box_type>Broadband</box_type>
     <!--  -->
+    <box_type>Emulator</box_type>
+    <!--  -->
     <box_type>RPI</box_type>
     <!--  -->
   </box_types>
@@ -129,7 +131,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
 	Index = PollingPeriod_list.index(details);
-	
+
 	tdkTestObj = obj.createTestStep('LMLiteStub_Get');
     	tdkTestObj.addParameter("paramName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Enabled");
     	expectedresult="SUCCESS";
@@ -149,7 +151,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 	    if "true" in default:
 	        if Index != 0:
                     pollingperiod = PollingPeriod_list[Index+1];
-                    print " The polling period to be set is :%s" %pollingperiod;	    
+                    print " The polling period to be set is :%s" %pollingperiod;
 		    tdkTestObj = obj.createTestStep('LMLiteStub_Set');
             	    tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod");
             	    tdkTestObj.addParameter("ParamValue",pollingperiod);
@@ -159,7 +161,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             	    tdkTestObj.executeTestCase(expectedresult);
             	    actualresult = tdkTestObj.getResult();
             	    details = tdkTestObj.getResultDetails();
-		   
+
 		    if expectedresult in actualresult:
                         #Set the result status of execution
                         tdkTestObj.setResultStatus("SUCCESS");
@@ -168,7 +170,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         print "ACTUAL RESULT 3: %s" %details;
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : SUCCESS";
-			
+
 		    else:
 		        #Set the result status of execution
                         tdkTestObj.setResultStatus("FAILURE");
@@ -189,7 +191,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             	tdkTestObj.executeTestCase(expectedresult);
             	actualresult = tdkTestObj.getResult();
             	details = tdkTestObj.getResultDetails();
-     
+
 	    	if Index != 0:
                     pollingperiod = PollingPeriod_list[Index+1];
 		    print " The polling period to be set is :%s" %pollingperiod;
@@ -228,7 +230,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             tdkTestObj.addParameter("ParamValue",default);
             tdkTestObj.addParameter("Type","boolean");
             expectedresult="SUCCESS";
-            
+
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
@@ -261,7 +263,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT 2: NetworkDeviceStatus is :%s" %default;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
-         
+
     else:
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the PollingPeriod of NetworkDevicesStatus";

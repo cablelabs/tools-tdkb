@@ -52,7 +52,7 @@
     <!--  -->
     <box_type>Emulator</box_type>
     <!--  -->
-    
+
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
@@ -71,7 +71,7 @@ Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod</input_paramet
     <automation_approch>1. Load Lmlite modules
 2. From script invoke LMLiteStub_Get to get the override TTL
 3. Set a valid value to polling period
-4.Check if the polling period is changed to default value after override TTL 
+4.Check if the polling period is changed to default value after override TTL
 5. Set the polling period to default value.
 6. Validation of  the result is done within the python script and send the result status to Test Manager.
 7.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from lmlite stub.</automation_approch>
@@ -93,8 +93,8 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 import time;
 
 #Test component to be tested
@@ -153,7 +153,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             actualresult = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
             override=int(details);
-         
+
             if expectedresult in actualresult:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
@@ -162,7 +162,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 print "ACTUAL RESULT 2: OverrideTTL of NetworkDevicesStatus :%s" %details;
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : SUCCESS";
-                
+
                 tdkTestObj = obj.createTestStep('LMLiteStub_Get');
                 tdkTestObj.addParameter("paramName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Enabled");
                 #Execute the test case in DUT
@@ -191,7 +191,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         print "ACTUAL RESULT 4: current Polling period of NetworkDevicesStatus are : %s" %Polling_Time;
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : SUCCESS";
-                        
+
                         #check if current polling period is default polling period or not
                         if int(Polling_Time) == int(default_polling):
 
@@ -204,7 +204,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                             #Execute the test case in DUT
                             tdkTestObj.executeTestCase(expectedresult);
                             actualresult = tdkTestObj.getResult();
-                            details = tdkTestObj.getResultDetails();	
+                            details = tdkTestObj.getResultDetails();
             		    if expectedresult in actualresult:
             		        #Set the result status of execution
                                 tdkTestObj.setResultStatus("SUCCESS");
@@ -262,7 +262,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             		        exit();
                         else:
             		    print "Polling period is already different from default polling time"
-            
+
             	        tdkTestObj = obj.createTestStep('LMLiteStub_Set');
                         tdkTestObj.addParameter("ParamName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.Enabled");
                         tdkTestObj.addParameter("ParamValue","true");
@@ -293,11 +293,11 @@ if "SUCCESS" in loadmodulestatus.upper():
                     	    tdkTestObj = obj.createTestStep('LMLiteStub_Get');
         	            tdkTestObj.addParameter("paramName","Device.X_RDKCENTRAL-COM_Report.NetworkDevicesStatus.PollingPeriod");
         	            expectedresult="SUCCESS";
-        	        	
+
         	            tdkTestObj.executeTestCase(expectedresult);
         	            actualresult = tdkTestObj.getResult();
         	            details = tdkTestObj.getResultDetails();
-                 
+
                     	    if expectedresult in actualresult and int(details)==int(default_polling):
                     	        #Set the result status of execution
                     	        tdkTestObj.setResultStatus("SUCCESS");
@@ -367,7 +367,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 print "ACTUAL RESULT : %s" %details;
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : SUCCESS";
-        
+
             else:
                 #Set the result status of execution
                 tdkTestObj.setResultStatus("FAILURE");

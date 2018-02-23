@@ -52,7 +52,7 @@
     <!--  -->
     <box_type>Emulator</box_type>
     <!--  -->
-    
+
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
@@ -68,7 +68,7 @@
     <api_or_interface_used>LMLiteStub_Get</api_or_interface_used>
     <input_parameters>Device.Hosts.Host.%d.IPv4AddressNumberOfEntries</input_parameters>
     <automation_approch>1. Load Lmlite modules
-2. From script invoke LMLiteStub_Get to get the IPv4AddressNumberOfEntries 
+2. From script invoke LMLiteStub_Get to get the IPv4AddressNumberOfEntries
 3. It should be one
 4. Validation of  the result is done within the python script and send the result status to Test Manager.
 5.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from lmlite stub.</automation_approch>
@@ -90,8 +90,8 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("lmlite","1");
@@ -160,7 +160,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
             print "ACTUAL RESULT 1: Number of active clients connected :%s" %NoOfClients;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
-	
+
 	    tdkTestObj = obj.createTestStep('LMLiteStub_Get');
             tdkTestObj.addParameter("paramName","Device.Hosts.HostNumberOfEntries");
             expectedresult="SUCCESS";
@@ -204,9 +204,9 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
                         tdkTestObj.executeTestCase(expectedresult);
                         actualresult = tdkTestObj.getResult();
                         Details = tdkTestObj.getResultDetails();
-		    
+
 		        if "0" in Details:
-		            print "IPv4AddressNumberOfEntries of host number ",i,"is zero" 
+		            print "IPv4AddressNumberOfEntries of host number ",i,"is zero"
 		            ret = 1;
 	            if expectedresult in actualresult and ret == 0:
 		        #Set the result status of execution
@@ -248,7 +248,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
             print "ACTUAL RESULT 1: Number of hosts:%s" %NoOfClients;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
-    
+
         #Enabling WiFi before exiting the test
         tdkTestObj = wifiobj.createTestStep('WIFIAgent_Set');
         tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");

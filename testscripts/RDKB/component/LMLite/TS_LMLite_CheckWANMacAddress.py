@@ -91,7 +91,7 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
+# use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 import snmplib;
 
@@ -275,7 +275,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
             print "ACTUAL RESULT 2: Number of active clients connected :%s" %NoOfClients;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
-   
+
         #Enabling WiFi before exiting the test
         tdkTestObj = wifiobj.createTestStep('WIFIAgent_Set');
         tdkTestObj.addParameter("paramName","Device.WiFi.SSID.1.Enable");
@@ -295,7 +295,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
         #Execute the test case in DUT
         tdkTestObj.executeTestCase(expectedresult);
         actualresult2 = tdkTestObj.getResult();
-        Details = tdkTestObj.getResultDetails();	
+        Details = tdkTestObj.getResultDetails();
         if expectedresult in (actualresult1 and actualresult2):
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");

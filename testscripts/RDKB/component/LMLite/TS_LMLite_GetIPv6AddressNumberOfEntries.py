@@ -48,7 +48,7 @@
     <api_or_interface_used>LMLiteStub_Get</api_or_interface_used>
     <input_parameters>Device.Hosts.Host.%d.IPv6AddressNumberOfEntries</input_parameters>
     <automation_approch>1. Load Lmlite modules
-2. From script invoke LMLiteStub_Get to get the IPv6AddressNumberOfEntries 
+2. From script invoke LMLiteStub_Get to get the IPv6AddressNumberOfEntries
 3. It should be greater than zero
 4. Validation of  the result is done within the python script and send the result status to Test Manager.
 5.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from lmlite stub.</automation_approch>
@@ -71,8 +71,8 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
 </xml>
 
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("lmlite","1");
@@ -273,7 +273,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
         print "EXPECTED RESULT : Should disable WiFi";
         print "ACTUAL RESULT :%s" %Details;
         #Get the result of execution
-        print "[TEST EXECUTION RESULT] : FAILURE"; 
+        print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("lmlite");
     wifiobj.unloadModule("wifiagent");

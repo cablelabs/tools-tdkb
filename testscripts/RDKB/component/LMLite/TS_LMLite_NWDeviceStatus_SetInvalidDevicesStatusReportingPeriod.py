@@ -50,6 +50,8 @@
   <box_types>
     <box_type>Broadband</box_type>
     <!--  -->
+    <box_type>Emulator</box_type>
+    <!--  -->
     <box_type>RPI</box_type>
     <!--  -->
   </box_types>
@@ -89,8 +91,8 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   </test_cases>
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("lmlite","1");
@@ -112,7 +114,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
 
     PollingPeriod_list={'5','10','15','30','60','300','900','1800','3600','10800','21600','43200','86400'};
-    
+
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details_reporting = tdkTestObj.getResultDetails();
@@ -130,7 +132,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.addParameter("ParamValue","100");
         tdkTestObj.addParameter("Type","unsignedint");
         expectedresult="FAILURE";
-        
+
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();
@@ -157,7 +159,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.addParameter("ParamValue",details_reporting);
         tdkTestObj.addParameter("Type","unsignedint");
         expectedresult="SUCCESS";
-        
+
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
         details = tdkTestObj.getResultDetails();

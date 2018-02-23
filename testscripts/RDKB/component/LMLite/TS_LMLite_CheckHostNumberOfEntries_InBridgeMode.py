@@ -67,7 +67,7 @@
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components.
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>LMLiteStub_Get</api_or_interface_used>
-    <input_parameters>Device.Hosts.HostNumberOfEntries 
+    <input_parameters>Device.Hosts.HostNumberOfEntries
 Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode</input_parameters>
     <automation_approch>1. Load Lmlite modules
 2. From script invoke LMLiteStub_Get to get the number of hosts.
@@ -93,8 +93,8 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 from time import sleep;
 
 #Test component to be tested
@@ -201,7 +201,7 @@ if "SUCCESS" in (loadmodulestatus.upper() and wifiloadmodulestatus.upper()):
 
             #Wait for few seconds for the Lan mode to get reflected
 	    sleep(30);
-	    
+
             tdkTestObj = obj.createTestStep('LMLiteStub_Get');
             tdkTestObj.addParameter("paramName","Device.Hosts.HostNumberOfEntries");
             #Execute the test case in DUT
