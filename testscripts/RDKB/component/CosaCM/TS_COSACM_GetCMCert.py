@@ -30,9 +30,8 @@
   <execution_time>1</execution_time>
   <long_duration>false</long_duration>
   <remarks>This API validated is currently a dummy function in RDKB stack and will always returns failure</remarks>
-  <skip>true</skip>
+  <skip>false</skip>
   <box_types>
-    <box_type>Broadband</box_type>
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>

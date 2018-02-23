@@ -45,15 +45,9 @@
   <!-- execution_time is the time out time for test execution -->
   <remarks>Needs more analysis</remarks>
   <!-- Reason for skipping the tests if marked to skip -->
-  <skip>true</skip>
+  <skip>false</skip>
   <!--  -->
   <box_types>
-    <box_type>Broadband</box_type>
-    <!--  -->
-    <box_type>Emulator</box_type>
-    <!--  -->
-    <box_type>RPI</box_type>
-    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>

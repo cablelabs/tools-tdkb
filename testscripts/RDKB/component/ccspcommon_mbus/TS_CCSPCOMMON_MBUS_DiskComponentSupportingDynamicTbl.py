@@ -30,10 +30,8 @@
   <execution_time>1</execution_time>
   <long_duration>false</long_duration>
   <remarks>RDKB-112 Currently there is no support in RDK-B stack for other CCSP components to invoke this API</remarks>
-  <skip>true</skip>
+  <skip>false</skip>
   <box_types>
-    <box_type>Broadband</box_type>
-    <box_type>RPI</box_type>
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
