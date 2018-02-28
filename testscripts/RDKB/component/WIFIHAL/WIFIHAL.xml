@@ -96,7 +96,17 @@
           <parameter name="radioIndex" value="0"/>
         </parameters>
       </primitiveTest>
-
+      <primitiveTest name="WIFIHAL_GetOrSetSecurityRadiusServer" id=" " version="1">
+        <function>WIFIHAL_GetOrSetSecurityRadiusServer</function>
+        <parameters>
+          <parameter name="IPAddress" value="0"/>
+          <parameter name="methodName" value="0"/>
+          <parameter name="paramType" value="0"/>
+          <parameter name="port" value="0"/>
+          <parameter name="radioIndex" value="0"/>
+          <parameter name="RadiusSecret" value="0"/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>
