@@ -41,17 +41,17 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_168</test_case_id>
+    <test_case_id>TC_WIFIHAL_169</test_case_id>
     <test_objective>To get the index of 5GHz from its corresponding ssid string</test_objective>
     <test_type>Positive</test_type>
-    <test_setup>Broadband, Emulator, RPI </test_setup>
+    <test_setup>Broadband, Emulator, RPI</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>wifi_getIndexFromName()</api_or_interface_used>
     <input_parameters>methodName  : getIndexFromName
 ApIndex : 1</input_parameters>
     <automation_approch>1. Load wifihal module
-2. Using WIFIHAL_GetIndexFromName invoke wifi_getIndexFromName() with parameter as "ath1" 
+2. Using WIFIHAL_GetIndexFromName invoke wifi_getIndexFromName() with parameter as "ath1"
 3. Compare if the value returned is 1 , if yes return SUCCESS, else return FAILURE
 4. Unload wifihal module</automation_approch>
     <except_output>Should return 1</except_output>
@@ -65,8 +65,8 @@ ApIndex : 1</input_parameters>
 </xml>
 
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 from wifiUtility import *;
 
 #Test component to be tested
