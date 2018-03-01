@@ -419,6 +419,8 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
         return_status = wifi_pushSSID(radioIndex, output);
     else if(!strcmp(method, "getApName"))
         return_status = wifi_getApName(radioIndex, output);
+    else if(!strcmp(method, "setApWpsEnrolleePin"))
+        return_status = wifi_setApWpsEnrolleePin(radioIndex, output);
     else
     {
         return_status = SSP_FAILURE;
