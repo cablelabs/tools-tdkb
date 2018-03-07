@@ -536,6 +536,14 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
         return_status = wifi_getApVlanID(radioIndex, output);
     else if(!strcmp(method, "setApSecurityReset"))
         return_status = wifi_setApSecurityReset(radioIndex);
+    else if(!strcmp(method, "getBandSteeringOverloadInactiveTime"))
+        return_status = wifi_getBandSteeringOverloadInactiveTime(radioIndex, output);
+    else if(!strcmp(method, "setBandSteeringOverloadInactiveTime"))
+        return_status = wifi_setBandSteeringOverloadInactiveTime(radioIndex, *output);
+    else if(!strcmp(method, "getBandSteeringIdleInactiveTime"))
+        return_status = wifi_getBandSteeringIdleInactiveTime(radioIndex, output);
+    else if(!strcmp(method, "setBandSteeringIdleInactiveTime"))
+        return_status = wifi_setBandSteeringIdleInactiveTime(radioIndex, *output);
     else
     {
         return_status = SSP_FAILURE;
@@ -728,3 +736,40 @@ int ssp_WIFIHALGetOrSetSecurityRadiusServer(int radioIndex, char* IPAddress, uns
     printf("\n ssp_WiFiHalCallMethodForSecurityRadiusServer--> Exit\n");
     return return_status;
 }
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHAL_GetOrSetApBridgeInfo
+ * Description          : This function invokes WiFi hal's get/set api's which are
+                          related to ApBridgeInfo
+ *
+ * @param [in]          : radioIndex - WiFi radio index value
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [in]          : bridgeName 
+ * @param [in]          : IP 
+ * @param [in]          : subnet
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALGetOrSetApBridgeInfo(int radioIndex, char* bridgeName, char* IP, char* subnet, char* method)
+{
+    printf("\n ssp_WIFIHALGetOrSetApBridgeInfo ----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    printf("IPAddress : %s\n",IP);
+    printf("bridgeName : %s\n" ,bridgeName);
+    printf("subnet : %s\n",subnet);
+    printf("MethodName: %s\n", method);
+    int return_status = 0;
+
+    if(!strcmp(method, "getApBridgeInfo"))
+        return_status = wifi_getApBridgeInfo(radioIndex, bridgeName, IP, subnet);
+    else if(!strcmp(method, "setApBridgeInfo"))
+        return_status = wifi_setApBridgeInfo(radioIndex, bridgeName, IP, subnet);
+    else
+    {
+        return_status = SSP_FAILURE;
+        printf("\n ssp_WiFiHalCallMethodForApBridgeInfo: Invalid methodName\n");
+    }
+    printf("\n ssp_WiFiHalCallMethodForApBridgeInfo--> Exit\n");
+    return return_status;
+}
+

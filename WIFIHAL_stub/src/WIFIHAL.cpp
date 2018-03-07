@@ -778,6 +778,98 @@ void WIFIHAL::WIFIHAL_GetOrSetSecurityRadiusServer(IN const Json::Value& req, OU
      DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetSecurityRadiusServer ---->Error in execution\n");
      return;
 }
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetOrSetApBridgeInfo
+ * Description          : This function invokes WiFi hal's get/set apis, when the value to be
+                          get /set is related to ApBridgeInfo
+ *
+ * @param [in] req-    : methodName - identifier for the hal api name
+                          radioIndex - radio index value of wifi
+                          bridgeName,IP,subnet - the string value to be get/set
+                          paramType  - To indicate negative test scenario. it is set as NULL for negative sceanario, otherwise empty
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_GetOrSetApBridgeInfo(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetApBridgeInfo  ----->Entry\n");
+    char methodName[50] = {'\0'};
+    int radioIndex = 1;
+    char output[1000] = {'\0'};
+    int returnValue;
+    int retValue;
+    char details[200] = {'\0'};
+    char paramType[10] = {'\0'};
+    char bridgeName[32] = {'\0'};
+    char IP[20] = {'\0'};
+    char subnet[50] = {'\0'};
+
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+    strcpy(paramType, req["paramType"].asCString());
+    strcpy(bridgeName, req["bridgeName"].asCString());
+    strcpy(IP, req["IP"].asCString());
+    strcpy(subnet, req["subnet"].asCString());
+
+    if(!strncmp(methodName, "set",3))
+    {
+        printf("wifi_set operation to be done\n");
+        returnValue = ssp_WIFIHALGetOrSetApBridgeInfo(radioIndex, bridgeName, IP, subnet, methodName);
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+
+            retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
+            if(0 == retValue)
+            {
+                printf("applyRadioSettings operation success\n");
+                return;
+            }
+            else
+            {
+                printf("applyRadioSettings operation failed\n");
+                return;
+            }
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForApBridgeInfo --->Error in execution\n");
+            return;
+        }
+    }
+    else
+    {
+        printf("wifi_get operation to be done\n");
+        //paramType is set as NULL for negative test scenarios, for NULL pointer checks
+        if(strcmp(paramType, "NULL"))
+            returnValue = ssp_WIFIHALGetOrSetApBridgeInfo(radioIndex, bridgeName, IP, subnet, methodName);
+        else
+            returnValue = ssp_WIFIHALGetOrSetApBridgeInfo(radioIndex, NULL, NULL, NULL, methodName);
+
+        if(0 == returnValue)
+        {
+            DEBUG_PRINT(DEBUG_TRACE,"\n output: %s\n%s\n%s\n",bridgeName,IP,subnet);
+            sprintf(details, "Value returned is :bridgeName=%s,IP=%s,subnet=%s",bridgeName,IP,subnet);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForApBridgeInfo --->Error in execution\n");
+            return;
+	}
+    }
+}
 /**************************************************************************
  * Function Name        : CreateObject
  * Description  : This function will be used to create a new object for the

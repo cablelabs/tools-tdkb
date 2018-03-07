@@ -50,6 +50,7 @@ extern "C"
     int ssp_WIFIHALClearRadioResetCount();
     int ssp_WIFIHALReset();
     int ssp_WIFIHALGetOrSetSecurityRadiusServer(int radioIndex, char* IPAddress, unsigned int* port, char* RadiusSecret, char* method);
+    int ssp_WIFIHALGetOrSetApBridgeInfo(int radioIndex, char* bridgeName, char* IP, char* subnet, char* method);
 };
 
 class RDKTestAgent;
@@ -68,6 +69,7 @@ class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
 		  this->bindAndAddMethod(Procedure("WIFIHAL_ClearRadioResetCount", PARAMS_BY_NAME, JSON_STRING, NULL), &WIFIHAL::WIFIHAL_ClearRadioResetCount);
                   this->bindAndAddMethod(Procedure("WIFIHAL_Reset", PARAMS_BY_NAME, JSON_STRING, NULL), &WIFIHAL::WIFIHAL_Reset);
                   this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetSecurityRadiusServer", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER, "port", JSON_INTEGER, "IPAddress", JSON_STRING, "RadiusSecret", JSON_STRING, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetSecurityRadiusServer);
+                  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetApBridgeInfo", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER, "bridgeName", JSON_STRING, "IP", JSON_STRING, "subnet", JSON_STRING, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetApBridgeInfo);
                 }
         /*inherited functions*/
         bool initialize(IN const char* szVersion);
@@ -86,6 +88,7 @@ class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
 	void WIFIHAL_ClearRadioResetCount(IN const Json::Value& req, OUT Json::Value& response);
 	void WIFIHAL_Reset(IN const Json::Value& req, OUT Json::Value& response);
 	void WIFIHAL_GetOrSetSecurityRadiusServer(IN const Json::Value& req, OUT Json::Value& response);
+	void WIFIHAL_GetOrSetApBridgeInfo(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__WIFIHAL_STUB_H__
 
