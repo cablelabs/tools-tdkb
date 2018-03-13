@@ -95,8 +95,9 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails();
-    if expectedresult in actualresult and details.isdigit() :
+    actualdetails = tdkTestObj.getResultDetails();
+    details = (actualdetails.split(":")[1]);
+    if expectedresult in actualresult and details.isdigit() or 'b/s' in details:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the Radio Max Bit Rate for 5GHz";
@@ -110,7 +111,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the Radio Max Bit Rate for 5GHz";
         print "EXPECTED RESULT 1: Should get the Radio Max Bit Rate for 5GHz";
-        print "ACTUAL RESULT 1: %s" %details;
+        print "ACTUAL RESULT 1: %s" %actualdetails;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("wifihal");
