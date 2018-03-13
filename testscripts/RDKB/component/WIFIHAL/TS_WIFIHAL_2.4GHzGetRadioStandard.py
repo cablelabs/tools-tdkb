@@ -84,6 +84,7 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
     #Script to load the configuration file of the component
+
     tdkTestObj = obj.createTestStep("WIFIHAL_GetOrSetParamStringValue");
     #Giving the method name to invoke the api for getting Supported standards. ie,wifi_getRadioSupportedStandards()
     tdkTestObj.addParameter("methodName","getRadioSupportedStandards");
@@ -94,7 +95,8 @@ if "SUCCESS" in loadmodulestatus.upper():
     actualresult = tdkTestObj.getResult();
     SupportedStandards = tdkTestObj.getResultDetails();
     if expectedresult in actualresult:
-        ActualList = SupportedStandards.split(":")[1].split(",");
+        SplitList = SupportedStandards.split(":")[1].split(",");
+        ActualList = [s.strip() for s in SplitList];
 	tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the Radio Supported Standards for 2.4GHz";
         print "EXPECTED RESULT 1: Should get the Radio Supported Standards for 2.4GHz";
