@@ -102,7 +102,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, "0", getMethod)
 
     #Default supported modes
-    defaultSupportedModes = ['None', 'WPA-Personal', 'WPA2-Personal', 'WPA-WPA2-Personal', 'WPA-Enterprise', 'WPA2-Enterprise', 'WPA-WPA2-Enterprise']
+    defaultSupportedModes = ['None', 'WPA-Personal', 'WPA2-Personal', 'WPA-WPA2-Personal', 'WPA-Enterprise', 'WPA2-Enterprise', 'WPA-WPA2-Enterprise', 'WEP-64', 'WEP-128']
 
     if expectedresult in actualresult:
         actualSupportedModes = list(details.split(":")[1].strip().split(","))
