@@ -94,7 +94,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-    if expectedresult in actualresult and "wifi0" in details:
+    if expectedresult in actualresult and "wifi0" in details or "wl0" in details:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the Radio interface name";

@@ -25,7 +25,7 @@
   <primitive_test_name>WIFIHAL_GetOrSetParamStringValue</primitive_test_name>
   <primitive_test_version>2</primitive_test_version>
   <status>FREE</status>
-  <synopsis>To get the Radio interface name for 5GHzand check whether it is "wifi1"</synopsis>
+  <synopsis>To get the Radio interface name for 5GHz and check whether it is "wifi1"</synopsis>
   <groups_id/>
   <execution_time>10</execution_time>
   <long_duration>false</long_duration>
@@ -95,8 +95,8 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-    if expectedresult in actualresult and "wifi1" in details:
-        #Set the result status of execution
+    if expectedresult in actualresult and "wifi1" in details or "wl1" in details:
+       #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the Radio interface name";
         print "EXPECTED RESULT 1: Should get the interface name as wifi1 for 5GHz";
