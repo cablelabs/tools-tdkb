@@ -85,11 +85,73 @@ obj.configureTestCase(ip,port,'TS_WIFIHAL_2.4GHzSetApBasicAuthenticationMode');
 #Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
+def setApBeaconType(obj):
+
+    expectedresult="SUCCESS";
+    apIndex = 0
+    getMethod = "getApBeaconType"
+    primitive = 'WIFIHAL_GetOrSetParamStringValue'
+
+    #Calling the method to execute wifi_getApBeaconType()
+    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, "0", getMethod)
+
+    if expectedresult in actualresult:
+            initialBeaconType = details.split(":")[1].strip()
+            tdkTestObj.setResultStatus("SUCCESS");
+            expectedresult = "SUCCESS";
+            apIndex = 0
+            setMethod = "setApBeaconType"
+            setBeaconType = 'None'
+            primitive = 'WIFIHAL_GetOrSetParamStringValue'
+
+            #Calling the method to execute wifi_setApBeaconType()
+            tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, setBeaconType, setMethod)
+
+            if expectedresult in actualresult:
+                expectedresult="SUCCESS";
+                apIndex = 0
+                getMethod = "getApBeaconType"
+                primitive = 'WIFIHAL_GetOrSetParamStringValue'
+
+                #Calling the method to execute wifi_getApBeaconType()
+                tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, "0", getMethod)
+                finalBeaconType = details.split(":")[1].strip()
+
+                if expectedresult in actualresult:
+                    if finalBeaconType == setBeaconType:
+                        tdkTestObj.setResultStatus("SUCCESS");
+                        print "TEST STEP: Compare the set and get values of ApBeaconType"
+                        print "EXPECTED RESULT: Set and get values of ApBeaconType should be same"
+                        print "ACTUAL RESULT: Set and get values of ApBeaconType are the same"
+                        print "setBeaconType = ",setBeaconType
+                        print "getBeaconType = ",finalBeaconType
+                        print "TEST EXECUTION RESULT : SUCCESS"
+                    else:
+                        tdkTestObj.setResultStatus("FAILURE");
+                        print "TEST STEP: Compare the set and get values of ApBeaconType"
+                        print "EXPECTED RESULT: Set and get values of ApBeaconType should be same"
+                        print "ACTUAL RESULT: Set and get values of ApBeaconType are NOT the same"
+                        print "setBeaconType = ",setBeaconType
+                        print "getBeaconType = ",finalBeaconType
+                        print "TEST EXECUTION RESULT : FAILURE"
+
+                else:
+                    print "wifi_getApBeaconType() call failed"
+                    tdkTestObj.setResultStatus("FAILURE");
+
+            else:
+                print "wifi_setApBeaconType() call failed"
+                tdkTestObj.setResultStatus("FAILURE");
+
+    #break;
+    return (initialBeaconType);
+
+
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
 
-    supportedModes = ['None', 'EAPAuthentication', 'SharedAuthentication']
+    supportedModes = ['None','SharedAuthentication','EAPAuthentication']
 
     expectedresult="SUCCESS";
     apIndex = 0
@@ -107,6 +169,11 @@ if "SUCCESS" in loadmodulestatus.upper():
             if initialMode == setMode:
                 continue;
             else:
+                if (setMode == 'None'):
+                    #Calling the function to perform the settings and getting and verification of becon type to be none.
+                    initialBeaconType = setApBeaconType(obj);
+
+
                 expectedresult = "SUCCESS";
                 apIndex = 0
                 setMethod = "setApBasicAuthenticationMode"
@@ -160,7 +227,23 @@ if "SUCCESS" in loadmodulestatus.upper():
                 else:
                     print "wifi_setApBasicAuthenticationMode() call failed"
 		    tdkTestObj.setResultStatus("FAILURE");
+
+                if (setMode == 'None'):
+                    expectedresult="SUCCESS";
+                    apIndex = 0
+                    setMethod = "setApBeaconType"
+                    primitive = 'WIFIHAL_GetOrSetParamStringValue'
+
+                    #Revert the BeaconType back to initial value
+                    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, initialBeaconType, setMethod)
+                    if expectedresult in actualresult:
+                        print "Successfully reverted the BeaconType to initial value"
+                        tdkTestObj.setResultStatus("SUCCESS");
+                    else:
+                        print "Unable to revert the BeaconType"
+                        tdkTestObj.setResultStatus("FAILURE");
                 break;
+
     else:
         tdkTestObj.setResultStatus("FAILURE");
 
