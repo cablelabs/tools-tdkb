@@ -21,10 +21,10 @@ AM_CFLAGS = -D_ANSC_LINUX
 AM_CFLAGS += -D_ANSC_USER
 AM_CFLAGS += -D_ANSC_LITTLE_ENDIAN_
 AM_LDFLAGS = -lccsp_common
-AM_LDFLAGS += -lcm_mgnt
-AM_LDFLAGS += -lcm_tr181
-AM_LDFLAGS += -lmta_tr181
 if PLATFORM_ENABLED
+AM_LDFLAGS += -lmta_tr181
+AM_LDFLAGS += -lcm_tr181
+AM_LDFLAGS += -lcm_mgnt
 AM_LDFLAGS += -ltr181
 endif
 AM_CFLAGS += -DeRT=$(ERT_VALUE)
@@ -42,5 +42,5 @@ endif
 if PLATFORM_ENABLED
 libtdkagentssp_la_LDFLAGS =  -lccsp_common -lcm_mgnt -lcm_tr181 -lmta_tr181 -ltr181 -ldmltad -lhal_wifi
 else
-libtdkagentssp_la_LDFLAGS =  -lccsp_common -lcm_mgnt -lcm_tr181 -lmta_tr181 -ldmltad -lhal_wifi
+libtdkagentssp_la_LDFLAGS =  -lccsp_common -lhal_wifi
 endif
