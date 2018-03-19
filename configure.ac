@@ -138,5 +138,6 @@ AC_CONFIG_FILES([Makefile
 	 CMHAL_Stub/Makefile
 	 ethsw_hal_stub/Makefile
 	 dhcp_hal_stub/Makefile
+	 platform_hal_stub/Makefile
 	 tdkb_e2e_stub/Makefile])
 AC_OUTPUT
