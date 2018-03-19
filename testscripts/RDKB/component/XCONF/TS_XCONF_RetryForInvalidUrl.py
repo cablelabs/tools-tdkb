@@ -70,7 +70,7 @@ CDN_FILE
 "mv " + xconfFile + " " + xconfFile + "_bck ; echo " + XCONF_INVALID_URL + " &gt; " + xconfFile
 "rm " + cdnLog
 "sh " + cdnFile + " 0 1 &amp;"
-"grep -inr \"http_code: 000\" " + cdnLog + " | wc -l "
+"grep -inr \"http_code:000\" " + cdnLog + " | wc -l "
 mv " + xconfFile + "_bck " + xconfFile</input_parameters>
     <automation_approch>1. Load sysutil module
 2. Get override file name from device
@@ -157,15 +157,16 @@ if "SUCCESS" in result.upper() :
                 print "EXPECTED RESULT 5: firmware download should be initiated"
                 print "ACTUAL RESULT 5: is %s " %details
                 print "[TEST EXECUTION RESULT] : FAILURE"
-
+	    
+  	    time.sleep(10)
             ######since the url is invalid, on each retry http code 000 should be returned
             tdkTestObj = obj.createTestStep('ExecuteCmd');
-            tdkTestObj.addParameter("command","grep -inr \"http_code: 000\" " + cdnLog + " | wc -l ")
+            tdkTestObj.addParameter("command","grep -inr \"http_code:000\" " + cdnLog + " | wc -l ")
             tdkTestObj.executeTestCase("SUCCESS");
 
             result = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
-            if "3" in details.lower():
+            if "1" in details.lower():
                 print "TEST STEP 6: Search for pattern in logs"
                 print "EXPECTED RESULT 6: Should find the pattern in the logs"
                 print "ACTUAL RESULT 6: is %s " %details

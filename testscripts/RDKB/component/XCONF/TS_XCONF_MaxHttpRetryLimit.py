@@ -53,7 +53,7 @@ CDN_LOG
 CDN_FILE
 "rm " + cdnLog
 "sh " + cdnFile + " 0 5 &amp;"
-"grep -inr \"http_code: 000\" " + cdnLog + " | wc -l "
+"grep -inr \"http_code:000\" " + cdnLog + " | wc -l "
 mv " + xconfFile + "_bck " + xconfFile</input_parameters>
     <automation_approch>1. Load sysutil module
 2. Get override file name from device
@@ -144,13 +144,14 @@ if "SUCCESS" in result.upper() :
                 print "[TEST EXECUTION RESULT] : FAILURE"
 
             ######since the url is invalid, on each retry http code 000 should be returned
+	    time.sleep(30)
             tdkTestObj = obj.createTestStep('ExecuteCmd');
-            tdkTestObj.addParameter("command","grep -inr \"http_code: 000\" " + cdnLog + " | wc -l ")
+            tdkTestObj.addParameter("command","grep -inr \"http_code:000\" " + cdnLog + " | wc -l ")
             tdkTestObj.executeTestCase("SUCCESS");
 
             result = tdkTestObj.getResult();
             details = tdkTestObj.getResultDetails();
-            if "3" in details.lower():
+            if "1" in details.lower():
                 print "TEST STEP 6: Search for pattern in logs"
                 print "EXPECTED RESULT 6: Should find the pattern in the logs"
                 print "ACTUAL RESULT 6: is %s " %details

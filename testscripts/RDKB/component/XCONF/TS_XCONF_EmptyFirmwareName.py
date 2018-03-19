@@ -190,7 +190,7 @@ if "SUCCESS" in result.upper() :
 
     tdkTestObj = obj.createTestStep('ExecuteCmd');
     ######search in log whether download is failing
-    tdkTestObj.addParameter("command","grep \"imgae () returned NULL. No Upgrade/Downgrade\" " + cdnLog + " ;echo $?")
+    tdkTestObj.addParameter("command","grep \"No Upgrade/Downgrade\" " + cdnLog + " ;echo $?")
     tdkTestObj.executeTestCase("SUCCESS");
 
     result = tdkTestObj.getResult();

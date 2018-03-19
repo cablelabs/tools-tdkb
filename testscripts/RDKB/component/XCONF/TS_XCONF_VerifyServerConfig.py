@@ -25,13 +25,13 @@
   <primitive_test_name>XCONF_DoNothing</primitive_test_name>
   <primitive_test_version>1</primitive_test_version>
   <status>FREE</status>
-  <synopsis>Check if the values we set for server configuration itself is returned as the response	for the query from client</synopsis>
+  <synopsis>Check if the values we set for server configuration itself is returned as the response for the query from client.Skipping as the execution causes bad state in the device</synopsis>
   <groups_id/>
   <execution_time>10</execution_time>
   <long_duration>false</long_duration>
   <advanced_script>false</advanced_script>
   <remarks/>
-  <skip>false</skip>
+  <skip>true</skip>
   <box_types>
     <box_type>Broadband</box_type>
   </box_types>

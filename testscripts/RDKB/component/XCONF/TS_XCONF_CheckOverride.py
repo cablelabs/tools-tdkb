@@ -149,7 +149,6 @@ if "SUCCESS" in result.upper() :
 	    tdkTestObj = obj.createTestStep('ExecuteCmd');
 	    tdkTestObj.addParameter("command","grep -inr \"CURL_CMD\" " + cdnLog + " | grep " + XCONF_OVERRIDE_URL + " ;echo $?")
 	    tdkTestObj.executeTestCase("SUCCESS");
-
 	    result = tdkTestObj.getResult();
 	    details = tdkTestObj.getResultDetails();
     	    if "0" in details.lower():

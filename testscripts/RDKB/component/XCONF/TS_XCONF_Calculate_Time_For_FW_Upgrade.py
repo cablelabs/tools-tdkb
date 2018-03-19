@@ -159,14 +159,14 @@ if "SUCCESS" in result.upper() :
     
         #Remove the exsisting logs
         result = xconfUtilityLib.removeLog(obj, cdnLog);
-        if "SUCCESS" in result:
-    	#Take the Initial time using datetime.now() and Store to Initial_Time varaible
-    	Initial_Time=datetime.now()
-    	print "Initial_Time is ",Initial_Time
     	if "SUCCESS" in result:	
+    		#Take the Initial time using datetime.now() and Store to Initial_Time varaible
+	    	Initial_Time=datetime.now()
+    		print "Initial_Time is ",Initial_Time
+
     		#Execute cdnFile
     	        tdkTestObj.addParameter("command", cdnFile + " > /dev/null 2>&1 &");
-                    tdkTestObj.executeTestCase("SUCCESS");
+                tdkTestObj.executeTestCase("SUCCESS");
     
     	        result = tdkTestObj.getResult();
     	        details = tdkTestObj.getResultDetails();
@@ -211,7 +211,7 @@ if "SUCCESS" in result.upper() :
     	                        print "EXPECTED RESULT : The Latest FirmwareVersion and FirmwareFilename should not be same as the old and the total time taken for FW updation is less than 10 minutes"
             	                print "ACTUAL RESULT : The FirmwareVersion and FirmwareFilename are should not remains same.Time taken for FW updation is less than 10 minutes"
                     	        print "[TEST EXECUTION RESULT] : SUCCESS"
-                            else:
+                        else:
     	                	tdkTestObj.setResultStatus("FAILURE");
     	        	        print "EXPECTED RESULT : The Latest FirmwareVersion and FirmwareFilename should not be same as the old and the total time taken for FW updation is less than 10 minutes"
     	                	print "ACTUAL RESULT :The FirmwareVersion and FirmwareFilename are same or time taken for FW updation is greater  than 10 minutes"
