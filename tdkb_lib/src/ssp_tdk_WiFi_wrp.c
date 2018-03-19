@@ -211,7 +211,7 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
     else if(!strcmp(method, "getApWpsEnable"))
         return_status = wifi_getApWpsEnable(radioIndex,enable);
     else if(!strcmp(method, "setApWpsEnable"))
-        return_status = wifi_setApWpsEnable(radioIndex,enable);
+        return_status = wifi_setApWpsEnable(radioIndex,*enable);
     else if(!strcmp(method, "getRadioAMSDUEnable"))
         return_status = wifi_getRadioAMSDUEnable(radioIndex, enable);
     else if(!strcmp(method, "setRadioAMSDUEnable"))
@@ -544,6 +544,14 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
         return_status = wifi_getBandSteeringIdleInactiveTime(radioIndex, output);
     else if(!strcmp(method, "setBandSteeringIdleInactiveTime"))
         return_status = wifi_setBandSteeringIdleInactiveTime(radioIndex, *output);
+    else if(!strcmp(method, "getRadioTxChainMask"))
+        return_status = wifi_getRadioTxChainMask(radioIndex, output);
+    else if(!strcmp(method, "setRadioTxChainMask"))
+        return_status = wifi_setRadioTxChainMask(radioIndex, *output);
+    else if(!strcmp(method, "getRadioRxChainMask"))
+        return_status = wifi_getRadioRxChainMask(radioIndex, output);
+    else if(!strcmp(method, "setRadioRxChainMask"))
+        return_status = wifi_setRadioRxChainMask(radioIndex, *output);
     else
     {
         return_status = SSP_FAILURE;
@@ -771,5 +779,34 @@ int ssp_WIFIHALGetOrSetApBridgeInfo(int radioIndex, char* bridgeName, char* IP, 
     }
     printf("\n ssp_WiFiHalCallMethodForApBridgeInfo--> Exit\n");
     return return_status;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_Down
+ * Description          : This function invokes WiFi hal api wifi_down()
+
+ * @param [in]          : NIL
+ * @param [out]         : return status as integer value 0-success and 1-Failure
+ *
+ ********************************************************************************************/
+int ssp_WIFIHALDown()
+{
+    printf("\n ssp_WIFIHALDown ----> Entry\n");
+    int return_status = 0;
+
+    return_status = wifi_down();
+    printf("return value from ssp_WIFIHALDown is %d\n",return_status);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_WIFIHALDown::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\nssp_WIFIHALDown::Success\n");
+     return return_status;
+    }
+    printf("\n ssp_WIFIHALDown ----> Exit\n");
 }
 
