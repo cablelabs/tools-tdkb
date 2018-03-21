@@ -110,7 +110,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
             response["result"]="SUCCESS";
             response["details"]=details;
         
-            if(strstr(methodName, "Radio")||strstr(methodName, "SSID")||strstr(methodName, "Ap"))
+            if(strstr(methodName, "Radio")||strstr(methodName, "SSID")||strstr(methodName, "Ap")||strstr(methodName, "BandSteering"))
             {
                 retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
                 if(0 == retValue)
