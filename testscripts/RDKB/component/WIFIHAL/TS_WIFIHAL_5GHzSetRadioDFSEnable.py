@@ -120,6 +120,12 @@ if "SUCCESS" in loadmodulestatus.upper():
             else:
                 print "Set validation with get api failed"
                 tdkTestObj.setResultStatus("FAILURE");
+	else:
+	    print "wifi_setRadioDFSEnable() call failed"
+            tdkTestObj.setResultStatus("FAILURE");
+    else:
+        print "wifi_getRadioDFSEnable() call failed"
+        tdkTestObj.setResultStatus("FAILURE");
 
     obj.unloadModule("wifihal");
 

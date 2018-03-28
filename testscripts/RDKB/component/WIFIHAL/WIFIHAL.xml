@@ -107,6 +107,17 @@
           <parameter name="RadiusSecret" value="0"/>
         </parameters>
       </primitiveTest>
+      <primitiveTest name="WIFIHAL_GetOrSetApBridgeInfo" id=" " version="1">
+        <function>WIFIHAL_GetOrSetApBridgeInfo</function>
+        <parameters>
+          <parameter name="bridgeName" value="0"/>
+          <parameter name="IP" value="0"/>
+          <parameter name="methodName" value="0"/>
+          <parameter name="paramType" value="0"/>
+          <parameter name="radioIndex" value="0"/>
+          <parameter name="subnet" value="0"/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>
