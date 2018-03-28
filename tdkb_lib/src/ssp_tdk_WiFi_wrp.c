@@ -601,6 +601,8 @@ int ssp_WIFIHALGetOrSetParamUIntValue(int radioIndex, unsigned int* output, char
         return_status = wifi_setApAssociatedDevicesHighWatermarkThreshold(radioIndex, *output);
     else if(!strcmp(method, "getApAssociatedDevicesHighWatermark"))
         return_status = wifi_getApAssociatedDevicesHighWatermark(radioIndex, output);
+    else if(!strcmp(method, "getApAssociatedDevicesHighWatermarkThresholdReached"))
+        return_status = wifi_getApAssociatedDevicesHighWatermarkThresholdReached(radioIndex, output);
     else if(!strcmp(method, "setApRtsThreshold"))
         return_status = wifi_setApRtsThreshold(radioIndex, *output);
     else if(!strcmp(method, "pushChannel"))

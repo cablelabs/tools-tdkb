@@ -905,6 +905,40 @@ void WIFIHAL::WIFIHAL_Down (IN const Json::Value& req, OUT Json::Value& response
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_Down --->Exit\n");
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_Init
+ * Description          : This function invokes WiFi hal api wifi_init()
+
+ * @param [in] req-     : NIL
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_Init (IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_Init ----->Entry\n");
+
+    int returnValue;
+    char details[200] = {'\0'};
+
+    returnValue = ssp_wifi_init();
+    if(0 == returnValue)
+       {
+            sprintf(details, "wifi_init operation success");
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+       }
+    else
+       {
+            sprintf(details, "wifi_init operation failed");
+            response["result"]="FAILURE";
+            response["details"]=details;
+            return;
+       }
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_Init --->Exit\n");
+}
+
 /**************************************************************************
  * Function Name        : CreateObject
  * Description  : This function will be used to create a new object for the
