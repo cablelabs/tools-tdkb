@@ -101,12 +101,12 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, "0", getMethod)
 
     #List of default WPS config mode supported
-    defaultWpsConfigModesSupported = ['USBFlashDrive', 'Ethernet', 'ExternalNFCToken', 'IntegratedNFCToken', 'NFCInterface', 'PushButton', 'PIN']
+    defaultWpsConfigModesSupported = ['USBFlashDrive', 'Ethernet', 'ExternalNFCToken', 'IntegratedNFCToken', 'NFCInterface', 'PushButton', 'PIN', 'Label', 'Display']
 
     if expectedresult in actualresult:
        supportedWpsConfigModes = details.split(":")[1].strip()
        for item in list(supportedWpsConfigModes.split(",")):
-           if item in defaultWpsConfigModesSupported:
+           if item.strip() in defaultWpsConfigModesSupported:
                print "getApWpsConfigMethodsSupported function successful %s"%details
                tdkTestObj.setResultStatus("SUCCESS");
                print "TEST STEP 1: Validate the wifi_getApWpsConfigMethodsSupported Function";
