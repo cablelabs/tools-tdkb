@@ -170,7 +170,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     else:
                         tdkTestObj.setResultStatus("FAILURE");
                         print "setRadioTransmitPower() call failed"
-               break;
+                break;
         else:
             tdkTestObj.setResultStatus("FAILURE");
             print "getRadioTransmitPower() call failed"
