@@ -61,7 +61,7 @@
 </xml>
 
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
+# use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
 
 #Test component to be tested
@@ -89,31 +89,32 @@ if "SUCCESS" in loadmodulestatus.upper():
         actualresult = tdkTestObj.getResult();
 
         details = tdkTestObj.getResultDetails();
+        details1 = details.strip (' \\n\t\n');
         if expectedresult in actualresult and details:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 1: Retrieve the dhcp_stub_hal_get_ert_ifname";
             print "EXPECTED RESULT 1: Should retrieve the dhcp_stub_hal_get_ert_ifname successfully";
-            print "ACTUAL RESULT 1: %s" %details;
-            print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
-            if details == 'erouter0':
+            print "ACTUAL RESULT 1: %s" %details1;
+            print "[TEST EXECUTION RESULT] : %s" %actualresult ;
+            if details1 == 'erouter0':
                 tdkTestObj.setResultStatus("SUCCESS");
                 print "TEST STEP 2: Verify the value";
                 print "EXPECTED RESULT 2: Value should be valid";
                 print "ACTUAL RESULT 2: Value is valid";
-                print "[TEST EXECUTION RESULT] : %s" %actualresult ; 
+                print "[TEST EXECUTION RESULT] : %s" %actualresult ;
             else:
                 tdkTestObj.setResultStatus("FAILURE");
                 print "TEST STEP 2: Verify the value";
                 print "EXPECTED RESULT 2: Value should be valid";
                 print "ACTUAL RESULT 2: Value is not valid";
-                print "[TEST EXECUTION RESULT] : Failure"; 
+                print "[TEST EXECUTION RESULT] : Failure";
         else:
             tdkTestObj.setResultStatus("FAILURE");
             print "TEST STEP 1: Retrieve the dhcp_stub_hal_get_ert_ifname";
             print "EXPECTED RESULT 1: Should retrieve the dhcp_stub_hal_get_ert_ifname successfully";
             print "ACTUAL RESULT 1: %s" %details;
-            print "[TEST EXECUTION RESULT] : Failure"; 
+            print "[TEST EXECUTION RESULT] : Failure";
 
         obj.unloadModule("dhcp");
 else:
