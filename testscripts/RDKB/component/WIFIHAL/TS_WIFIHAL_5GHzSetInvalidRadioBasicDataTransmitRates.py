@@ -40,7 +40,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_225</test_case_id>
+    <test_case_id>TC_WIFIHAL_224</test_case_id>
     <test_objective>To set the basic data transmit rate with a value not in the supported data transmit rates and check whether the set operation is failing.</test_objective>
     <test_type>Negative</test_type>
     <test_setup>Broadband,RPI</test_setup>

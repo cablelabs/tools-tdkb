@@ -60,7 +60,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_228</test_case_id>
+    <test_case_id>TC_WIFIHAL_227</test_case_id>
     <test_objective>To get the number of times the current total number of associated device has reached the HighWatermarkThreshold value for 5GHz</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband, Emulator, Rpi</test_setup>

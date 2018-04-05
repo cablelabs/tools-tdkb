@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_208</test_case_id>
+    <test_case_id>TC_WIFIHAL_207</test_case_id>
     <test_objective>To set dynamic channel pool outside the set of possible channels and verify whether we are able to set it.</test_objective>
     <test_type>Negative</test_type>
     <test_setup>Broadband</test_setup>

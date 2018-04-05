@@ -34,8 +34,6 @@
   <skip>false</skip>
   <box_types>
     <box_type>Broadband</box_type>
-    <box_type>Emulator</box_type>
-    <box_type>RPI</box_type>
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
@@ -44,7 +42,7 @@
     <test_case_id>TC_WIFIHAL_214</test_case_id>
     <test_objective>To get the supported transmit power for 5GHz and try to set a transmit power outside the range of supported values</test_objective>
     <test_type>Negative</test_type>
-    <test_setup>Broadband, Emulator, RPI</test_setup>
+    <test_setup>Broadband</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
 2.TDK Agent should be in running state or invoke it Through StartTdk.sh script</pre_requisite>
     <api_or_interface_used>wifi_getRadioTransmitPowerSupported()

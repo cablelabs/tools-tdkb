@@ -60,7 +60,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WIFIHAL_230</test_case_id>
+    <test_case_id>TC_WIFIHAL_229</test_case_id>
     <test_objective>To get the Date and Time at which the maximum number of associated devices that has ever associated with the access point concurrently since the last reset of the device or WiFi module for 5GHz</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband, Emulator, Rpi</test_setup>
