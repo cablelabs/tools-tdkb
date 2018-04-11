@@ -90,8 +90,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     #Giving the method name to invoke the api for getting SSID Enable Status. ie,wifi_getSSIDEnable()
     tdkTestObj.addParameter("methodName","getSSIDEnable");
     #Radio index stands for SSID index here.
-    #It should be 1 for 2.4GHz and 2 for 5GHz
-    tdkTestObj.addParameter("radioIndex",1);
+    tdkTestObj.addParameter("radioIndex",0);
     expectedresult="SUCCESS";
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
@@ -116,8 +115,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Giving the method name to invoke the api for setting SSID Enable Status. ie,wifi_setSSIDEnable()
         tdkTestObj.addParameter("methodName","setSSIDEnable");
         #Radio index stands for SSID index here.
-        #It should be 1 for 2.4GHz and 2 for 5GHz
-        tdkTestObj.addParameter("radioIndex",1);
+        tdkTestObj.addParameter("radioIndex",0);
         tdkTestObj.addParameter("param",newEnable);
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
@@ -137,8 +135,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             #Giving the method name to invoke the api wifi_getSSIDStatus()
             tdkTestObj.addParameter("methodName","getSSIDStatus")
             #Radio index stands for SSID index here.
-            #It should be 1 for 2.4GHz and 2 for 5GHz
-            tdkTestObj.addParameter("radioIndex",1);
+            tdkTestObj.addParameter("radioIndex",0);
             expectedresult="SUCCESS";
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
@@ -177,8 +174,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         #Giving the method name to invoke the api for setting SSID Enable Status. ie,wifi_setSSIDEnable()
         tdkTestObj.addParameter("methodName","setSSIDEnable");
         #Radio index stands for SSID index here.
-        #It should be 1 for 2.4GHz and 2 for 5GHz
-        tdkTestObj.addParameter("radioIndex",1);
+        tdkTestObj.addParameter("radioIndex",0);
         tdkTestObj.addParameter("param",oldEnable);
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
