@@ -145,7 +145,7 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
     else if(!strcmp(method, "getAutoChannelSupported"))
         return_status = wifi_getRadioAutoChannelSupported(radioIndex, enable);
     else if(!strcmp(method, "getRadioStatus"))
-        return_status = wifi_getRadioStatus(radioIndex, *enable);
+        return_status = wifi_getRadioStatus(radioIndex,enable);
     else if(!strcmp(method, "getApEnable"))
         return_status = wifi_getApEnable(radioIndex,enable);
     else if(!strcmp(method, "setApEnable"))
@@ -266,6 +266,8 @@ int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, 
         return_status = wifi_getRadioAutoChannelRefreshPeriod(radioIndex, uLongVar);
     else if(!strcmp(method, "setAutoChannelRefreshPeriod"))
         return_status = wifi_setRadioAutoChannelRefreshPeriod(radioIndex, *uLongVar);
+    else if(!strcmp(method, "setRadioDfsRefreshPeriod"))
+        return_status = wifi_setRadioDfsRefreshPeriod(radioIndex, *uLongVar);
     else if(!strcmp(method, "getRadioNumberOfEntries"))
         return_status = wifi_getRadioNumberOfEntries(*uLongVar);
     else if(!strcmp(method, "getSSIDNumberOfEntries"))
@@ -488,7 +490,7 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
     printf("GetorSetParam: %d\n" , *output);
     printf("MethodName: %s\n", method);
     int return_status = 0;
-    int interval_seconds ,dwell_milliseconds;
+    
 
     if(!strcmp(method, "getRadioMCS"))
         return_status = wifi_getRadioMCS(radioIndex, output);
@@ -502,10 +504,6 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
         return_status = wifi_setApRadioIndex(radioIndex, *output);
     else if(!strcmp(method, "getSSIDRadioIndex"))
         return_status = wifi_getSSIDRadioIndex(radioIndex, output);
-    else if(!strcmp(method, "getRadioDCSScanTime"))
-        return_status = wifi_getRadioDCSScanTime(radioIndex, &interval_seconds, &dwell_milliseconds);
-    else if(!strcmp(method, "setRadioDCSScanTime"))
-        return_status = wifi_setRadioDCSScanTime(radioIndex, interval_seconds, dwell_milliseconds);
     else if(!strcmp(method, "setApBeaconInterval"))
         return_status = wifi_setApBeaconInterval(radioIndex, *output);
     else if(!strcmp(method, "setDTIMInterval"))
@@ -552,6 +550,11 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
         return_status = wifi_getRadioRxChainMask(radioIndex, output);
     else if(!strcmp(method, "setRadioRxChainMask"))
         return_status = wifi_setRadioRxChainMask(radioIndex, *output);
+    else if(!strcmp(method, "getRadioCarrierSenseThresholdRange"))
+        return_status = wifi_getRadioCarrierSenseThresholdRange(radioIndex, output);
+    else if(!strcmp(method, "getRadioCarrierSenseThresholdInUse"))
+        return_status = wifi_getRadioCarrierSenseThresholdInUse(radioIndex, output);
+
     else
     {
         return_status = SSP_FAILURE;
@@ -595,6 +598,8 @@ int ssp_WIFIHALGetOrSetParamUIntValue(int radioIndex, unsigned int* output, char
         return_status = wifi_setApRetryLimit(radioIndex, *output);
     else if(!strcmp(method, "getApMaxAssociatedDevices"))
         return_status = wifi_getApMaxAssociatedDevices(radioIndex, output);
+    else if(!strcmp(method, "setApMaxAssociatedDevices"))
+        return_status = wifi_setApMaxAssociatedDevices(radioIndex, *output);
     else if(!strcmp(method, "getApAssociatedDevicesHighWatermarkThreshold"))
         return_status = wifi_getApAssociatedDevicesHighWatermarkThreshold(radioIndex, output);
     else if(!strcmp(method, "setApAssociatedDevicesHighWatermarkThreshold"))
@@ -607,6 +612,8 @@ int ssp_WIFIHALGetOrSetParamUIntValue(int radioIndex, unsigned int* output, char
         return_status = wifi_setApRtsThreshold(radioIndex, *output);
     else if(!strcmp(method, "pushChannel"))
         return_status = wifi_pushChannel(radioIndex, *output);
+    else if(!strcmp(method, "setRadioFragmentationThreshold"))
+        return_status = wifi_setRadioFragmentationThreshold(radioIndex, *output);
     else
     {
         return_status = SSP_FAILURE;
@@ -780,6 +787,39 @@ int ssp_WIFIHALGetOrSetApBridgeInfo(int radioIndex, char* bridgeName, char* IP, 
         printf("\n ssp_WiFiHalCallMethodForApBridgeInfo: Invalid methodName\n");
     }
     printf("\n ssp_WiFiHalCallMethodForApBridgeInfo--> Exit\n");
+    return return_status;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHAL_GetOrSetRadioDCSScanTime
+ * Description          : This function invokes WiFi hal's get/set api's which are
+                          related to RadioDCSScanTime
+ *
+ * @param [in]          : radioIndex - WiFi radio index value
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [in]          : output_interval_seconds
+ * @param [in]          : output_dwell_milliseconds
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALGetOrSetRadioDCSScanTime(int radioIndex, int* output_interval_seconds, int* output_dwell_milliseconds,char* method)
+{
+    printf("\n ssp_WIFIHALGetOrSetRadioDCSScanTime----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    printf("output_interval_seconds : %d\n", *output_interval_seconds);
+    printf("output_dwell_milliseconds : %d\n", *output_dwell_milliseconds);
+    printf("MethodName: %s\n", method);
+    int return_status = 0;
+
+    if(!strcmp(method, "getRadioDCSScanTime"))
+        return_status = wifi_getRadioDCSScanTime(radioIndex, output_interval_seconds, output_dwell_milliseconds);
+    else if(!strcmp(method, "setRadioDCSScanTime"))
+        return_status = wifi_setRadioDCSScanTime(radioIndex, *output_interval_seconds, *output_dwell_milliseconds);
+    else
+    {
+        return_status = SSP_FAILURE;
+        printf("\n ssp_WiFiHalCallMethodForRadioDCSScanTime: Invalid methodName\n");
+    }
+    printf("\n ssp_WiFiHalCallMethodForRadioDCSScanTime--> Exit\n");
     return return_status;
 }
 

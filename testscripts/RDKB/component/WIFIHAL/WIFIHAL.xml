@@ -118,6 +118,16 @@
           <parameter name="subnet" value="0"/>
         </parameters>
       </primitiveTest>
+      <primitiveTest name="WIFIHAL_GetOrSetRadioDCSScanTime" id=" " version="2">
+        <function>WIFIHAL_GetOrSetRadioDCSScanTime</function>
+        <parameters>
+          <parameter name="methodName" value="0"/>
+          <parameter name="radioIndex" value="0"/>
+          <parameter name="output_interval_seconds" value="0"/>
+          <parameter name="output_dwell_milliseconds" value="0"/>
+          <parameter name="paramType" value="0"/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>

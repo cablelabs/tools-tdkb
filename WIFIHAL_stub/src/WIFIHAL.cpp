@@ -870,6 +870,96 @@ void WIFIHAL::WIFIHAL_GetOrSetApBridgeInfo(IN const Json::Value& req, OUT Json::
 	}
     }
 }
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetOrSetRadioDCSScanTime
+ * Description          : This function invokes WiFi hal's get/set apis, when the value to be
+                          get /set is related to RadioDCSScanTime
+ *
+ * @param [in] req-    : methodName - identifier for the hal api name
+                         radioIndex - radio index value of wifi
+                         output_interval_seconds,output_dwell_milliseconds - the integer value to be get/set
+                         paramType  - To indicate negative test scenario. it is set as NULL for negative sceanario, otherwise empty
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_GetOrSetRadioDCSScanTime(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetRadioDCSScanTime----->Entry\n");
+    char methodName[50] = {'\0'};
+    int radioIndex = 1;
+    char output[1000] = {'\0'};
+    int returnValue;
+    int retValue;
+    char details[200] = {'\0'};
+    char paramType[10] = {'\0'};
+    int output_interval_seconds = 1;
+    int output_dwell_milliseconds = 1;
+
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+    strcpy(paramType, req["paramType"].asCString());
+    output_interval_seconds = req["output_interval_seconds"].asInt();
+    output_dwell_milliseconds = req["output_dwell_milliseconds"].asInt();
+
+    if(!strncmp(methodName, "set",3))
+    {
+        printf("wifi_set operation to be done\n");
+        returnValue = ssp_WIFIHALGetOrSetRadioDCSScanTime(radioIndex, &output_interval_seconds, &output_dwell_milliseconds, methodName);
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+
+            retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
+            if(0 == retValue)
+            {
+                printf("applyRadioSettings operation success\n");
+                return;
+            }
+            else
+            {
+                printf("applyRadioSettings operation failed\n");
+                return;
+            }
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForRadioDCSScanTime --->Error in execution\n");
+            return;
+        }
+    }
+    else
+    {
+        printf("wifi_get operation to be done\n");
+        //paramType is set as NULL for negative test scenarios, for NULL pointer checks
+        if(strcmp(paramType, "NULL"))
+            returnValue = ssp_WIFIHALGetOrSetRadioDCSScanTime(radioIndex, &output_interval_seconds, &output_dwell_milliseconds, methodName);
+        else
+            returnValue = ssp_WIFIHALGetOrSetRadioDCSScanTime(radioIndex, NULL, NULL, methodName);
+
+        if(0 == returnValue)
+        {
+            DEBUG_PRINT(DEBUG_TRACE,"\n output: %d\n%d\n",output_interval_seconds,output_dwell_milliseconds);
+            sprintf(details, "Value returned is :output_interval_seconds=%d,output_dwell_milliseconds=%d",output_interval_seconds,output_dwell_milliseconds);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForRadioDCSScanTime --->Error in execution\n");
+            return;
+        }
+    }
+}
 
 /*******************************************************************************************
  *
