@@ -101,7 +101,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         expectedresult="SUCCESS";
         radioIndex = 1
         setMethod = "setApWpsDevicePIN"
-        setPIN = 1234
+        setPIN = 23344556
         primitive = 'WIFIHAL_GetOrSetParamULongValue'
         tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, setPIN, setMethod)
 
