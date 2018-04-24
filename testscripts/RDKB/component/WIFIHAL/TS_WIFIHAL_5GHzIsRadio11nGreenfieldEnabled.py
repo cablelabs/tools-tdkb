@@ -2,7 +2,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2017 RDK Management
+# Copyright 2018 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,11 +45,14 @@
     <test_setup>XB3. XB6</test_setup>
     <pre_requisite>1.Ccsp Components  should be in a running state else invoke cosa_start.sh manually that includes all the ccsp components and TDK Component
 2.TDK Agent should be in running state or invoke it through StartTdk.sh script</pre_requisite>
-    <api_or_interface_used>wifi_getRadio11nGreenfieldEnable()</api_or_interface_used>
-    <input_parameters>methodName   :   getRadio11nGreenfieldEnable
+    <api_or_interface_used>wifi_getRadio11nGreenfieldEnable()
+wifi_getRadio11nGreenfieldSupported()
+wifi_setRadio11nGreenfieldEnable()</api_or_interface_used>
+    <input_parameters>methodName   :   getRadio11nGreenfieldSupported
+methodName   :   getRadio11nGreenfieldEnable
 methodName   :   setRadio11nGreenfieldEnable
 radioIndex   :    1</input_parameters>
-    <automation_approch>1.Configure the Function info in Test Manager GUI  which needs to be tested  
+    <automation_approch>1.Configure the Function info in Test Manager GUI  which needs to be tested
 (WIFIHAL_GetOrSetParamBoolValue  - func name - "If not exists already"
  WIFIHAL - module name
  Necessary I/P args as Mentioned in Input)
@@ -61,9 +64,9 @@ wifi_getRadio11nGreenfieldEnable() and wifi_setRadio11nGreenfieldEnable()
 6.Response(s)(printf) from TDK Component,Ccsp Library function and wifihalstub would be logged in Agent Console log based on the debug info redirected to agent console
 7.wifihalstub will validate the available result (from agent console log and Pointer to instance as updated) with expected result
 8.Test Manager will publish the result in GUI as SUCCESS/FAILURE based on the response from wifihalstub</automation_approch>
-    <except_output>CheckPoint 
-1:wifi_getRadio11nGreenfieldEnable from DUT should be available in Agent Console LogCheckPoint 
-2:TDK agent Test Function will log the test case result as PASS based on API response CheckPoint 
+    <except_output>CheckPoint
+1:wifi_getRadio11nGreenfieldEnable from DUT should be available in Agent Console LogCheckPoint
+2:TDK agent Test Function will log the test case result as PASS based on API response CheckPoint
 3:Test Manager GUI will publish the result as SUCCESS in Execution page</except_output>
     <priority>High</priority>
     <test_stub_interface>WIFIHAL</test_stub_interface>
@@ -76,8 +79,8 @@ wifi_getRadio11nGreenfieldEnable() and wifi_setRadio11nGreenfieldEnable()
 </xml>
 
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 from wifiUtility import *;
 
 #Test component to be tested
@@ -97,49 +100,66 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     expectedresult="SUCCESS";
     radioIndex = 1
-    getMethod = "getRadio11nGreenfieldEnable"
+    getMethod = "getRadio11nGreenfieldSupported"
     primitive = 'WIFIHAL_GetOrSetParamBoolValue'
-    #Getting the default enable mode
+
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
     if expectedresult in actualresult :
         tdkTestObj.setResultStatus("SUCCESS");
         enable = details.split(":")[1].strip()
         if "Enabled" in enable:
-            print "11nGreenfield is Enabled for Radio 5GHz"
-            oldEnable = 1
-            newEnable = 0
-        else:
-            print "11nGreenfield is Disabled for Radio 5GHz "
-	    oldEnable = 0
-            newEnable = 1
 
-        setMethod = "setRadio11nGreenfieldEnable"
-        #Toggle the enable status using set
-        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, newEnable, setMethod) 
+            expectedresult="SUCCESS";
+            radioIndex = 1
+            getMethod = "getRadio11nGreenfieldEnable"
+            primitive = 'WIFIHAL_GetOrSetParamBoolValue'
+            #Getting the default enable mode
+            tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+            if expectedresult in actualresult :
+                tdkTestObj.setResultStatus("SUCCESS");
+                enable = details.split(":")[1].strip()
+                if "Enabled" in enable:
+                    print "11nGreenfield is Enabled for Radio 5GHz"
+                    oldEnable = 1
+                    newEnable = 0
+                else:
+                    print "11nGreenfield is Disabled for Radio 5GHz "
+                    oldEnable = 0
+                    newEnable = 1
 
-        if expectedresult in actualresult :
-            print "Enable state toggled using set"
-            # Get the New enable status
-            tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod) 
-
-            if expectedresult in actualresult and enable not in details.split(":")[1].strip():
-                print "getRadio11nGreenfieldEnable Success, verified along with setRadio11nGreenfieldEnable() api"
-                #Revert back to original Enable status
-                tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, oldEnable, setMethod)
+                setMethod = "setRadio11nGreenfieldEnable"
+                #Toggle the enable status using set
+                tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, newEnable, setMethod)
 
                 if expectedresult in actualresult :
-                    print "Enable status reverted back";
+                    print "Enable state toggled using set"
+                    # Get the New enable status
+                    tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 0, getMethod)
+
+                    if expectedresult in actualresult and enable not in details.split(":")[1].strip():
+                        print "getRadio11nGreenfieldEnable Success, verified along with setRadio11nGreenfieldEnable() api"
+                        #Revert back to original Enable status
+                        tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, oldEnable, setMethod)
+
+                        if expectedresult in actualresult :
+                            print "Enable status reverted back";
+                        else:
+                            print "Couldn't revert enable status"
+                            tdkTestObj.setResultStatus("FAILURE");
+                    else:
+                        print "getRadio11nGreenfieldEnable() failed after set function"
+                        tdkTestObj.setResultStatus("FAILURE");
                 else:
-                    print "Couldn't revert enable status"
+                    print "setRadio11nGreenfieldEnable() failed"
                     tdkTestObj.setResultStatus("FAILURE");
             else:
-                print "getRadio11nGreenfieldEnable() failed after set function"
-		tdkTestObj.setResultStatus("FAILURE");
+                print "getRadio11nGreenfieldEnable() failed"
+                tdkTestObj.setResultStatus("FAILURE");
         else:
-	    print "setRadio11nGreenfieldEnable() failed"
-            tdkTestObj.setResultStatus("FAILURE");
+            print "Radio11nGreenfield is not supported"
+            tdkTestObj.setResultStatus("SUCCESS");
     else:
-	print "getRadio11nGreenfieldEnable() failed"
+        print "getRadio11nGreenfieldSupported() call failed"
         tdkTestObj.setResultStatus("FAILURE");
 
     obj.unloadModule("wifihal");
@@ -147,3 +167,4 @@ if "SUCCESS" in loadmodulestatus.upper():
 else:
     print "Failed to load wifi module";
     obj.setLoadModuleStatus("FAILURE");
+

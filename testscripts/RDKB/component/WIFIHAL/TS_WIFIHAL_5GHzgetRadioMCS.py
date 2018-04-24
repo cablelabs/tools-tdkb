@@ -95,11 +95,13 @@ if "SUCCESS" in loadmodulestatus.upper():
 
 	if (-1 <= MCS and MCS <= 15) or (16 <= MCS and MCS <= 31):
 	    print "MCS value is in the valid range of [-1:15, 16:31]"
+	    tdkTestObj.setResultStatus("SUCCESS");
 	else:
 	    print "MCS value is not in the valid range of [-1:15, 16:31]"
 	    tdkTestObj.setResultStatus("FAILURE");
     else:
 	print "Call to getRadioMCS() failed"
+	tdkTestObj.setResultStatus("FAILURE");
 
     obj.unloadModule("wifihal");
 
