@@ -94,16 +94,16 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     if expectedresult in actualresult:
 	SSIDNumber = details.split(":")[1].strip()
-	if int(SSIDNumber) == 16:
+	if int(SSIDNumber) == 16 or int(SSIDNumber) == 6:
 	    tdkTestObj.setResultStatus("SUCCESS");
-	    print "TEST STEP: Check if the SSIDNumberOfEntries returned is 16"
-	    print "EXPECTED RESULT: Return value is 16"
+	    print "TEST STEP: Check if the SSIDNumberOfEntries returned is 16 or 6"
+	    print "EXPECTED RESULT: Return value is 16 or 6"
 	    print "ACTUAL RESULT: SSIDNumber =",SSIDNumber
 	    print "TEST EXECUTION RESULT: SUCCESS"
 	else:
 	    tdkTestObj.setResultStatus("FAILURE");
-	    print "TEST STEP: Check if the SSIDNumberOfEntries returned is 16"
-	    print "EXPECTED RESULT: Return value is 16"
+	    print "TEST STEP: Check if the SSIDNumberOfEntries returned is 16 or 6"
+	    print "EXPECTED RESULT: Return value is 16 or 6"
 	    print "ACTUAL RESULT: SSIDNumber =",SSIDNumber
 	    print "TEST EXECUTION RESULT: FAILURE"
 
