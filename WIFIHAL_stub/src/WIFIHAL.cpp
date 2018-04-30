@@ -960,7 +960,71 @@ void WIFIHAL::WIFIHAL_GetOrSetRadioDCSScanTime(IN const Json::Value& req, OUT Js
         }
     }
 }
-
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_AddorDelApAclDevice
+ * Description          : This function invokes WiFi hal's add/delete apis, when the value to be
+                          added/deleted is related to ApAclDevice
+ *
+ * @param [in] req-    : methodName - identifier for the hal api name
+                          apIndex - ap index value of wifi
+                          DeviceMacAddress - the MacAddress(string)of the device to be added/deleted
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_AddorDelApAclDevice(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_AddorDelApAclDevice------>Entry\n");
+    char methodName[50] = {'\0'};
+    int apIndex = 1;
+    char output[1000] = {'\0'};
+    int returnValue;
+    char details[200] = {'\0'};
+    char DeviceMacAddress[64] = {'\0'};
+    strcpy(methodName, req["methodName"].asCString());
+    apIndex = req["apIndex"].asInt();
+    strcpy(DeviceMacAddress, req["DeviceMacAddress"].asCString());
+    if(!strncmp(methodName, "add",3))
+    {
+        printf("wifi_add operation to be done\n");
+        returnValue = ssp_WIFIHALAddorDelApAclDevice(apIndex, DeviceMacAddress, methodName);
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForAddApAclDevice --->Error in execution\n");
+            return;
+        }
+    }
+    else
+    {
+        printf("wifi_delete operation to be done\n");
+	returnValue = ssp_WIFIHALAddorDelApAclDevice(apIndex, DeviceMacAddress, methodName);
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForDelApAclDevice --->Error in execution\n");
+            return;
+	}
+    }
+}
 /*******************************************************************************************
  *
  * Function Name        : WIFIHAL_Down

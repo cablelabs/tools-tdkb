@@ -97,8 +97,8 @@ int ssp_WIFIHALApplySettings(int radioIndex, char* methodName)
 }
 
 
-/*******************************************************************************************
- *
+/********************************************************************************************
+ * 
  * Function Name        : ssp_WIFIHALGetOrSetParamBoolValue
  * Description          : This function invokes WiFi hal's get/set apis, when the value to be
                           get /set is Bool
@@ -226,6 +226,14 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
         return_status = wifi_setRadioObssCoexistenceEnable(radioIndex, *enable);
     else if(!strcmp(method, "setRadioSTBCEnable"))
         return_status = wifi_setRadioSTBCEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getDeclineBARequestEnable"))
+        return_status = wifi_getDeclineBARequestEnable(radioIndex, *enable);
+    else if(!strcmp(method, "setDeclineBARequestEnable"))
+        return_status = wifi_setDeclineBARequestEnable(radioIndex, *enable);
+    else if(!strcmp(method, "getDfsEnable"))
+        return_status = wifi_getDfsEnable(radioIndex, *enable);
+    else if(!strcmp(method, "setDfsEnable"))
+        return_status = wifi_setDfsEnable(radioIndex, *enable);
     else
     {
         return_status = SSP_FAILURE;
@@ -822,7 +830,37 @@ int ssp_WIFIHALGetOrSetRadioDCSScanTime(int radioIndex, int* output_interval_sec
     printf("\n ssp_WiFiHalCallMethodForRadioDCSScanTime--> Exit\n");
     return return_status;
 }
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHAL_AddorDelApAclDevice
+ * Description          : This function invokes WiFi hal's add/delete apis, when the value to be
+                          added/deleted is related to ApAclDevice
+ *
+ * @param [in]          : apIndex - WiFi ap index value
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [in]          : DeviceMacAddress - MacAddress of the device to be added/deleted
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALAddorDelApAclDevice(int apIndex, char* DeviceMacAddress, char* method)
+{
+    printf("\n ssp_WIFIHALAddorDelApAclDevice ----> Entry\n");
+    printf("ap index:%d\n",apIndex);
+    printf("DeviceMacAddress : %s\n",DeviceMacAddress);
+    printf("MethodName: %s\n", method);
+    int return_status = 0;
 
+    if(!strcmp(method, "addApAclDevice"))
+        return_status = wifi_addApAclDevice(apIndex, DeviceMacAddress);
+    else if(!strcmp(method, "delApAclDevice"))
+        return_status = wifi_delApAclDevice(apIndex, DeviceMacAddress);
+    else
+    {
+        return_status = SSP_FAILURE;
+        printf("\n ssp_WiFiHalCallMethodForAddorDelApAclDevice: Invalid methodName\n");
+    }
+    printf("\n ssp_WiFiHalCallMethodForAddorDelApAclDevice--> Exit\n");
+    return return_status;
+}
 /*******************************************************************************************
  *
  * Function Name        : WIFIHAL_Down
