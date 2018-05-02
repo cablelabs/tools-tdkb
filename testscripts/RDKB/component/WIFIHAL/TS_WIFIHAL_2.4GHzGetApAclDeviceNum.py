@@ -65,8 +65,8 @@ radioIndex : 0</input_parameters>
 </xml>
 
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 from wifiUtility import *;
 
 #Test component to be tested

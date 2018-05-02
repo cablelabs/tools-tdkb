@@ -25,7 +25,7 @@
   <primitive_test_name>WIFIHAL_GetOrSetParamIntValue</primitive_test_name>
   <primitive_test_version>3</primitive_test_version>
   <status>FREE</status>
-  <synopsis>To set the radioIndex of an odd number of access point to 0</synopsis>
+  <synopsis>To set the radioIndex of an even number of access point to 1</synopsis>
   <groups_id/>
   <execution_time>5</execution_time>
   <long_duration>false</long_duration>
@@ -67,8 +67,8 @@ apIndex : 12</input_parameters>
 </xml>
 
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 from wifiUtility import *;
 
 #Test component to be tested
@@ -102,7 +102,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         setMethod = "setApRadioIndex"
         setRadioIndex = 1
         primitive = 'WIFIHAL_GetOrSetParamIntValue'
- 
+
 	#Calling the method from wifiUtility to execute test case and set result status for the test.
         tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, setRadioIndex, setMethod)
 
