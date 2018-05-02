@@ -2,7 +2,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2016 RDK Management
+# Copyright 2018 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>16</version>
+  <version>17</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_PAM_SetDiagnosticState</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
@@ -33,11 +33,11 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>This test cases will set the download Diagnostics state as Requested.</synopsis>
+  <synopsis>This test cases will set the download Diagnostics state as Requested if a valid download URL is present.</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
-  <execution_time>1</execution_time>
+  <execution_time>2</execution_time>
   <!--  -->
   <long_duration>false</long_duration>
   <!--  -->
@@ -68,6 +68,7 @@ API Name
 pam_SetParameterValues
 Input:
 ParamName - Device.IP.Diagnostics.DownloadDiagnostics.DiagnosticsState
+          - Device.IP.Diagnostics.DownloadDiagnostics.DownloadURL
 ParamValue - Valid
 Type - String</input_parameters>
     <automation_approch>1.Function which needs to be tested will be configured in Test Manager GUI.
@@ -96,7 +97,7 @@ TestManager GUI will publish the result as PASS in Execution/Console page of Tes
   <script_tags />
 </xml>
 '''
-                                                #import statement
+#import statement
 import tdklib;
 
 #Test component to be tested
@@ -115,36 +116,115 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 if "SUCCESS" in loadmodulestatus.upper():
     #Set the result status of execution
     obj.setLoadModuleStatus("SUCCESS");
-
-    tdkTestObj = obj.createTestStep('pam_SetParameterValues');
-    tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.DownloadDiagnostics.DiagnosticsState");
-    tdkTestObj.addParameter("ParamValue","Requested");
-    tdkTestObj.addParameter("Type","string");
+    #get the download URL
+    tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+    tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.DownloadDiagnostics.DownloadURL");
     expectedresult="SUCCESS";
-
     #Execute the test case in DUT
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-
-    if expectedresult in actualresult:
-        #Set the result status of execution
-        tdkTestObj.setResultStatus("SUCCESS");
-        print "TEST STEP 1: Set the diagnostic state";
-        print "EXPECTED RESULT 1: Should set the diagnostic state";
-        print "ACTUAL RESULT 1: Diagnostic state is %s" %details;
-        #Get the result of execution
-        print "[TEST EXECUTION RESULT] : SUCCESS, %s" %details;
+    if expectedresult in actualresult and not details:
+        print "TEST STEP 1: Get the Diagnostic state download URL";
+        print "EXPECTED RESULT 1: Should Get the Diagnostic state download URL";
+        print "ACTUAL RESULT 1: Diagnostic state download URL is empty";
+        print "URL RETURNED IS:",details;
+        #set the download URL
+        tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+        tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.DownloadDiagnostics.DownloadURL");
+        tdkTestObj.addParameter("ParamValue","http://download.thinkbroadband.com/5MB.zip");
+        tdkTestObj.addParameter("Type","string");
+        expectedresult="SUCCESS";
+        #Execute the test case in DUT
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        details = tdkTestObj.getResultDetails();
+        if expectedresult in actualresult:
+            #Get the set value
+            tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+            tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.DownloadDiagnostics.DownloadURL");
+            expectedresult="SUCCESS";
+            #Execute the test case in DUT
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            details = tdkTestObj.getResultDetails();
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP 1: Set the Diagnostic state download URL";
+            print "EXPECTED RESULT 1: Should set the Diagnostic state download  URL";
+            print "ACTUAL RESULT 1: Returned Diagnostic state download URL";
+            print "URL RETURNED IS:",details;
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+            #set Diagnosticstate as "Requested"
+            tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+            tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.DownloadDiagnostics.DiagnosticsState");
+            tdkTestObj.addParameter("ParamValue","Requested");
+            tdkTestObj.addParameter("Type","string");
+            expectedresult="SUCCESS";
+            #Execute the test case in DUT
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            details = tdkTestObj.getResultDetails();
+            if expectedresult in actualresult:
+                tdkTestObj.setResultStatus("SUCCESS");
+                #Get the set value
+                tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+                tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.DownloadDiagnostics.DiagnosticsState");
+                expectedresult="SUCCESS";
+                #Execute the test case in DUT
+                tdkTestObj.executeTestCase(expectedresult);
+                actualresult = tdkTestObj.getResult();
+                details = tdkTestObj.getResultDetails();
+                print "TEST STEP 2: Set the diagnostic state";
+                print "EXPECTED RESULT 2: Should set the diagnostic state";
+                print "ACTUAL RESULT 2: Diagnostic state is",details;
+                print "[TEST EXECUTION RESULT] : SUCCESS";
+            else:
+                tdkTestObj.setResultStatus("FAILURE");
+                print "TEST STEP 2: Set the diagnostic state";
+                print "EXPECTED RESULT 2: Should set the diagnostic state";
+                print "ACTUAL RESULT 2: Diagnostic state is",details;
+                print "[TEST EXECUTION RESULT] : FAILURE";
+        else:
+            tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP 1: Set the Diagnostic state download URL";
+            print "EXPECTED RESULT 1: Should set the Diagnostic state download  URL";
+            print "ACTUAL RESULT 1: Failed to set Diagnostic state download URL";
+            print "URL RETURNED IS:",details;
+            print "[TEST EXECUTION RESULT] : FAILURE";
     else:
-        tdkTestObj.setResultStatus("FAILURE");
-        print "TEST STEP 1: Set the diagnostic state";
-        print "EXPECTED RESULT 1: Should set the diagnostic state";
-        print "ACTUAL RESULT 1: Diagnostic state is %s" %details;
-        print "[TEST EXECUTION RESULT] : FAILURE";
+        #Set the diagnosticstate as 'Requested'
+        tdkTestObj = obj.createTestStep('pam_SetParameterValues');
+        tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.DownloadDiagnostics.DiagnosticsState");
+        tdkTestObj.addParameter("ParamValue","Requested");
+        tdkTestObj.addParameter("Type","string");
+        expectedresult="SUCCESS";
+        #Execute the test case in DUT
+        tdkTestObj.executeTestCase(expectedresult);
+        actualresult = tdkTestObj.getResult();
+        details = tdkTestObj.getResultDetails();
+        if expectedresult in actualresult:
+            tdkTestObj.setResultStatus("SUCCESS");
+            #Get the set value
+            tdkTestObj = obj.createTestStep('pam_GetParameterValues');
+            tdkTestObj.addParameter("ParamName","Device.IP.Diagnostics.DownloadDiagnostics.DiagnosticsState");
+            expectedresult="SUCCESS";
+            #Execute the test case in DUT
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            details = tdkTestObj.getResultDetails();
+            print "TEST STEP 1: Set the diagnostic state";
+            print "EXPECTED RESULT 1: Should set the diagnostic state";
+            print "ACTUAL RESULT 1: Diagnostic state is",details;
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+        else:
+            tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP 1: Set the diagnostic state";
+            print "EXPECTED RESULT 1: Should set the diagnostic state";
+            print "ACTUAL RESULT 1: Diagnostic state is",details;
+            print "[TEST EXECUTION RESULT] : FAILURE";
     obj.unloadModule("pam");
-
 else:
-        print "Failed to load pam module";
-        obj.setLoadModuleStatus("FAILURE");
-        print "Module loading failed";
+    print "Failed to load pam module";
+    obj.setLoadModuleStatus("FAILURE");
+    print "Module loading failed";
 
