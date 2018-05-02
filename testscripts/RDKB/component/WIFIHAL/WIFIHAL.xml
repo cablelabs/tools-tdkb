@@ -136,6 +136,17 @@
           <parameter name="methodName" value="0"/>
         </parameters>
       </primitiveTest>
+      <primitiveTest id=" " name="WIFIHAL_IfConfigUporDown" version="1">
+        <function>WIFIHAL_IfConfigUporDown</function>
+        <parameters>
+          <parameter name="apIndex" value="0"/>
+          <parameter name="methodName" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="WIFIHAL_Down" id="" version="1">
+        <function>WIFIHAL_Down</function>
+        <parameters/>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>

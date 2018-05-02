@@ -1027,6 +1027,67 @@ void WIFIHAL::WIFIHAL_AddorDelApAclDevice(IN const Json::Value& req, OUT Json::V
 }
 /*******************************************************************************************
  *
+ * Function Name        : WIFIHAL_IfConfigUporDown
+ * Description          : This function invokes WiFi hal api's wifi_ifConfigDown() or wifi_ifConfigUp()
+
+ * @param [in] req-     :  apIndex - ap Index value of wifi
+                           methodName - identifier for the hal api name
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_IfConfigUporDown(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_IfConfigUporDown------>Entry\n");
+    char methodName[50] = {'\0'};
+    int apIndex = 1;
+    char output[1000] = {'\0'};
+    int returnValue;
+    char details[200] = {'\0'};
+    strcpy(methodName, req["methodName"].asCString());
+    apIndex = req["apIndex"].asInt();
+    if(!strcmp(methodName, "ifConfigUp"))
+    {
+        printf("wifi_IfConfigUp operation to be done\n");
+        returnValue = ssp_WIFIHALIfConfigUporDown(apIndex, methodName);
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+	    return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForIfConfigUp --->Error in execution\n");
+            return;
+        }
+    }
+    else
+    {
+        printf("wifi_IfConfigDown operation to be done\n");
+	returnValue = ssp_WIFIHALIfConfigUporDown(apIndex, methodName);
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForIfConfigDown --->Error in execution\n");
+            return;
+	}
+    }
+}
+/*******************************************************************************************
+ *
  * Function Name        : WIFIHAL_Down
  * Description          : This function invokes WiFi hal api wifi_down()
 

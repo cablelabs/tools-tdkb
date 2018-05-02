@@ -34,4 +34,5 @@ int ssp_WIFIHALGetOrSetSecurityRadiusServer(int radioIndex, char* IPAddress, uns
 int ssp_WIFIHALGetOrSetApBridgeInfo(int radioIndex, char* bridgeName, char* IP, char* subnet, char* method);
 int ssp_WIFIHALGetOrSetRadioDCSScanTime(int radioIndex, int* output_interval_seconds,int* output_dwell_milliseconds, char* methodName);
 int ssp_WIFIHALAddorDelApAclDevice(int apIndex, char* DeviceMacAddress, char* method);
+int ssp_WIFIHALIfConfigUporDown(int apIndex, char* method);
 int ssp_WIFIHALDown();

@@ -862,6 +862,34 @@ int ssp_WIFIHALAddorDelApAclDevice(int apIndex, char* DeviceMacAddress, char* me
     return return_status;
 }
 /*******************************************************************************************
+*
+ * Function Name        : ssp_WIFIHAL_IfConfigUporDown
+ * Description          : This function invokes WiFi hal api's wifi_ifConfigDown() or wifi_ifConfigUp()
+ *
+ * @param [in]          : apIndex - WiFi ap index value
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALIfConfigUporDown(int apIndex, char* method)
+{
+    printf("\n ssp_WIFIHALIfConfigUporDown ----> Entry\n");
+    printf("ap index:%d\n",apIndex);
+    printf("MethodName: %s\n", method);
+    int return_status = 0;
+
+    if(!strcmp(method, "ifConfigUp"))
+        return_status = wifi_ifConfigUp(apIndex);
+    else if(!strcmp(method, "ifConfigDown"))
+        return_status = wifi_ifConfigDown(apIndex);
+    else
+    {
+        return_status = SSP_FAILURE;
+        printf("\n ssp_WiFiHalCallMethodForIfConfigUporDown: Invalid methodName\n");
+    }
+    printf("\n ssp_WiFiHalCallMethodForIfConfigUporDown ---> Exit\n");
+    return return_status;
+}
+/*******************************************************************************************
  *
  * Function Name        : WIFIHAL_Down
  * Description          : This function invokes WiFi hal api wifi_down()
