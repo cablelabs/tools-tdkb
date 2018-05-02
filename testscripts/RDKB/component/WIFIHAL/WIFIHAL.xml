@@ -128,6 +128,14 @@
           <parameter name="paramType" value="0"/>
         </parameters>
       </primitiveTest>
+      <primitiveTest id=" " name="WIFIHAL_AddorDelApAclDevice" version="1">
+        <function>WIFIHAL_AddorDelApAclDevice</function>
+        <parameters>
+          <parameter name="apIndex" value="0"/>
+          <parameter name="DeviceMacAddress" value="0"/>
+          <parameter name="methodName" value="0"/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>
