@@ -72,7 +72,7 @@ int ssp_WIFIHALApplySettings(int radioIndex, char* methodName)
     printf("MethodName: %s\n", methodName);
     int return_status = 0;
 
-    if(strstr(methodName, "setRadio")||strstr(methodName, "setAp")||strstr(methodName, "setBandSteering"))
+    if(strstr(methodName, "setRadio")||strstr(methodName, "setAp")||strstr(methodName, "setBandSteering")||strstr(methodName, "wifi_down"))
     {
         return_status = wifi_applyRadioSettings(radioIndex);
         printf("return value from wifi_applyRadioSettings is %d\n",return_status);

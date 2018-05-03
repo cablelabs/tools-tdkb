@@ -1101,14 +1101,25 @@ void WIFIHAL::WIFIHAL_Down (IN const Json::Value& req, OUT Json::Value& response
 
     int returnValue;
     char details[200] = {'\0'};
-
+    int retValue;
+    int radioIndex;
     returnValue = ssp_WIFIHALDown();
     if(0 == returnValue)
        {
             sprintf(details, "wifi_down operation success");
             response["result"]="SUCCESS";
             response["details"]=details;
-            return;
+            retValue = ssp_WIFIHALApplySettings(radioIndex,"wifi_down");
+            if(0 == retValue)
+            {
+                printf("applyRadioSettings operation success\n");
+                return;
+            }
+            else
+            {
+                printf("applyRadioSettings operation failed\n");
+                return;
+            }
        }
     else
        {
