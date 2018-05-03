@@ -147,6 +147,10 @@
         <function>WIFIHAL_Down</function>
         <parameters/>
       </primitiveTest>
+      <primitiveTest name="WIFIHAL_Init" id="" version="1">
+        <function>WIFIHAL_Init</function>
+        <parameters/>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>
