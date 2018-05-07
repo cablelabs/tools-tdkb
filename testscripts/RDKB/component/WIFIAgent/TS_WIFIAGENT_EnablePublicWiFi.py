@@ -181,7 +181,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1:Get values of Public WiFi params"
         print "TEST STEP 1 : Should get values of Public WiFi params"
-        print "ACTUAL RESULT 1:%s" %details
+        print "ACTUAL RESULT 1:%s" %orgValue
         print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("wifiagent");
