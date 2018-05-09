@@ -99,8 +99,8 @@ if "SUCCESS" in loadmodulestatus.upper():
     if expectedresult in actualresult:
 	initFPC = details.split(":")[1].strip()
 
-	#ApManagementFramePowerControl varies in the range -20dBm to 20dBm
-        r = range(-20,21)
+	#ApManagementFramePowerControl varies in the range -20dBm to 0dBm
+        r = range(-20,0)
         setFPC = random.choice(r)
 
         expectedresult="SUCCESS";
