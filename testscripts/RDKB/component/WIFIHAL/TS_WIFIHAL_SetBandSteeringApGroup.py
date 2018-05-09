@@ -111,7 +111,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 		tdkTestObj.setResultStatus("SUCCESS");
 		setMethod = "setBandSteeringApGroup"
 		primitive = 'WIFIHAL_GetOrSetParamStringValue'
-		setValue = "2,3"
+		setValue = "3,4"
 		tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, 0, setValue, setMethod)
 
 		if expectedresult in actualresult:
