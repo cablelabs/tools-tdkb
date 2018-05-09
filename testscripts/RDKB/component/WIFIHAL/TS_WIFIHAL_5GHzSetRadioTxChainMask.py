@@ -107,7 +107,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         expectedresult="SUCCESS";
         radioIndex = 1
         setMethod = "setRadioTxChainMask"
-        r = range(1,initMask) + range(initMask+1, 256)
+        r = range(1,initMask) + range(initMask+1, 32)
         setMask = random.choice(r)
         primitive = 'WIFIHAL_GetOrSetParamIntValue'
         print "Set RadioTxChainMask = ",setMask
