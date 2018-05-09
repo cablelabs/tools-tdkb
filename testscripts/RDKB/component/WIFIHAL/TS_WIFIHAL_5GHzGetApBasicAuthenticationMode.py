@@ -114,7 +114,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     #Calling the method from wifiUtility to execute test case and set result status for the test.
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, 1, "0", getMethod)
-    supportedModes = ['None', 'EAPAuthentication', 'SharedAuthentication']
+    supportedModes = ['None', 'EAPAuthentication', 'SharedAuthentication', 'PSKAuthentication']
 
     if expectedresult in actualresult :
         receivedMode = details.split(":")[1].strip()
@@ -122,14 +122,14 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "BasicAuthenticationMode is in valid Authentication mode %s"%details
 	    tdkTestObj.setResultStatus("SUCCESS");
 	    print "TEST STEP 1: Validate the Basic Authentication modes";
-	    print "EXPECTED RESULT 1: Authentication modes should be in ['None', 'EAPAuthentication', 'SharedAuthentication']";
+	    print "EXPECTED RESULT 1: Authentication modes should be in ['None', 'EAPAuthentication', 'SharedAuthentication', 'PSKAuthentication']";
 	    print "ACTUAL RESULT 1: Authentication mode received: %s"%receivedMode;
 	    print "[TEST EXECUTION RESULT] : SUCCESS";
 	else:
 	    print "BasicAuthenticationMode is NOT in valid Authentication mode %s"%details
             tdkTestObj.setResultStatus("FAILURE");
 	    print "TEST STEP 1: Validate the Basic Authentication modes";
-	    print "EXPECTED RESULT 1: Authentication modes should be in ['None', 'EAPAuthentication', 'SharedAuthentication']";
+	    print "EXPECTED RESULT 1: Authentication modes should be in ['None', 'EAPAuthentication', 'SharedAuthentication', 'PSKAuthentication']";
 	    print "ACTUAL RESULT 1:  Authentication mode received: %s"%receivedMode;
 	    print "[TEST EXECUTION RESULT] : FAILURE";
     else:

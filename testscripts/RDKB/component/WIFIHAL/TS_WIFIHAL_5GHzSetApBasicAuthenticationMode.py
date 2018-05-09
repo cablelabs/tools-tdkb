@@ -142,7 +142,7 @@ print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
 
-    supportedModes = ['None', 'EAPAuthentication', 'SharedAuthentication']
+    supportedModes = ['None', 'EAPAuthentication', 'SharedAuthentication', 'PSKAuthentication']
 
     expectedresult="SUCCESS";
     apIndex = 1

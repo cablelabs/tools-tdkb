@@ -151,7 +151,7 @@ def setApBeaconType(obj):
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
 
-    supportedModes = ['None','SharedAuthentication','EAPAuthentication']
+    supportedModes = ['None','SharedAuthentication','EAPAuthentication', 'PSKAuthentication']
 
     expectedresult="SUCCESS";
     apIndex = 0
