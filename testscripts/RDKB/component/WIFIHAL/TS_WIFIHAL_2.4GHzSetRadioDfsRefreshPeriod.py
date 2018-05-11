@@ -303,7 +303,7 @@ if "SUCCESS" in loadmodulestatus.upper():
             tdkTestObj.setResultStatus("SUCCESS");
             print "Auto channel enable returned true"
 
-            setandgetAutoChannelRefreshPeriod();
+            setandgetDfsChannelRefreshPeriod();
 
         elif expectedresult in actualresult and "Disabled" in enable:
             #Set the result status of execution
