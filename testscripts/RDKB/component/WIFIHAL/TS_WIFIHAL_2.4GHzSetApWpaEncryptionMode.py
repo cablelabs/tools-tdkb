@@ -97,7 +97,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, apIndex, "0", getMethod)
 
     #List of supported modes
-    supportedModes = ['TKIPEncryption', 'AESEncryption', 'TKIPandAESEncryption']
+    supportedModes = ['AESEncryption', 'TKIPandAESEncryption', 'TKIPEncryption']
 
     if expectedresult in actualresult:
         initialMode = details.split(":")[1].strip()
