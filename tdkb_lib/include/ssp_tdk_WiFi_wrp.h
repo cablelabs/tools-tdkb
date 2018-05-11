@@ -17,6 +17,7 @@
  * limitations under the License.
 */
 
+#include "wifi_hal.h"
 #define SSP_SUCCESS       0
 #define SSP_FAILURE       1
 
@@ -35,4 +36,10 @@ int ssp_WIFIHALGetOrSetApBridgeInfo(int radioIndex, char* bridgeName, char* IP, 
 int ssp_WIFIHALGetOrSetRadioDCSScanTime(int radioIndex, int* output_interval_seconds,int* output_dwell_milliseconds, char* methodName);
 int ssp_WIFIHALAddorDelApAclDevice(int apIndex, char* DeviceMacAddress, char* method);
 int ssp_WIFIHALIfConfigUporDown(int apIndex, char* method);
+int ssp_WIFIHALParamRadioIndex(int radioIndex, char* method);
+int ssp_WIFIHALStartorStopHostApd(char* method);
+int ssp_WIFIHALFactoryReset(char* method);
+int ssp_WIFIHALGetOrSetSecurityRadiusSettings(int radioIndex, wifi_radius_setting_t *radiusSetting, char* method);
+int ssp_WIFIHALGetSSIDTrafficStats2(int radioIndex,  wifi_ssidTrafficStats2_t *ssidTrafficStats2);
+int ssp_WIFIHAL_GetRadioTrafficStats2(int radioIndex, wifi_radioTrafficStats2_t *TrafficStats2);
 int ssp_WIFIHALDown();

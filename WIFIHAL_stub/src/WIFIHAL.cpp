@@ -100,7 +100,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
     enable = req["param"].asInt();
     strcpy(paramType, req["paramType"].asCString());
 
-    if(!strncmp(methodName, "set",3))
+    if(!(strncmp(methodName, "set",3)&&strncmp(methodName, "push",4)))
     {
 	printf("wifi_set operation to be done\n");
         returnValue = ssp_WIFIHALGetOrSetParamBoolValue(radioIndex, &enable, methodName);
@@ -267,7 +267,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
     strcpy(paramType, req["paramType"].asCString());
     strcpy(param, req["param"].asCString());
 
-    if(!strncmp(methodName, "set",3))
+    if(!(strncmp(methodName, "set",3)&&strncmp(methodName, "push",4)))
     {
 	printf("wifi_set operation to be done\n");
         returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, param, methodName);
@@ -1084,6 +1084,277 @@ void WIFIHAL::WIFIHAL_IfConfigUporDown(IN const Json::Value& req, OUT Json::Valu
             DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForIfConfigDown --->Error in execution\n");
             return;
 	}
+    }
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_ParamRadioIndex
+ * Description          : This function invokes WiFi hal api's which require radioIndex as input
+ * @param [in] req-     :  radioIndex - radio Index value of wifi
+                           methodName - identifier for the hal api name
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_ParamRadioIndex(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_ParamRadioIndex------>Entry\n");
+    char methodName[50] = {'\0'};
+    int radioIndex = 1;
+    char output[1000] = {'\0'};
+    int returnValue;
+    char details[200] = {'\0'};
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+    if(strstr(methodName, "cancel")||strstr(methodName, "set")||strstr(methodName, "reset")||strstr(methodName, "disable")||strstr(methodName, "remove")||strstr(methodName, "init")||strstr(methodName, "factoryReset"))
+    {
+        returnValue = ssp_WIFIHALParamRadioIndex(radioIndex, methodName);
+	if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForParamRadioIndex --->Error in execution\n");
+            return;
+	}
+    }
+    else
+        return;
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_ParamRadioIndex --->Exit\n");
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_StartorStopHostApd
+ * Description          : This function invokes WiFi hal api's wifi_startHostApd() and wifi_stopHostApd()
+ * @param [in] req-     : methodName - identifier for the hal api name
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_StartorStopHostApd(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_StartorStopHostApd ----->Entry\n");
+    int returnValue;
+    char details[200] = {'\0'};
+    char output[1000] = {'\0'};
+    char methodName[50] = {'\0'};
+    strcpy(methodName, req["methodName"].asCString());
+    if(strstr(methodName, "start")||strstr(methodName, "stop"))
+    {
+        returnValue = ssp_WIFIHALStartorStopHostApd(methodName);
+	if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForStartorStopHostApd --->Error in execution\n");
+            return;
+	}
+    }
+    else
+        return;
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_StartorStopHostApd --->Exit\n");
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_FactoryReset
+ * Description          : This function invokes WiFi hal api's wifi_factoryResetRadios() and wifi_factoryReset()
+ * @param [in] req-     : methodName - identifier for the hal api name
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_FactoryReset(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_FactoryReset ----->Entry\n");
+    int returnValue;
+    char details[200] = {'\0'};
+    char output[1000] = {'\0'};
+    char methodName[50] = {'\0'};
+    strcpy(methodName, req["methodName"].asCString());
+    if(strstr(methodName, "Reset")||strstr(methodName, "ResetRadios"))
+    {
+        returnValue = ssp_WIFIHALFactoryReset(methodName);
+	if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+        else
+        {
+            sprintf(details, "%s operation failed", methodName);
+            response["result"]="FAILURE";
+            response["details"]=details;
+            DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForFactoryReset --->Error in execution\n");
+            return;
+	}
+    }
+    else
+        return;
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_FactoryReset --->Exit\n");
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetOrSetSecurityRadiusSettings
+ * Description          : This function invokes WiFi hal get/set api's which are
+                          related to SecurityRadiusSettings()
+
+ * @param [in] req-     : radioIndex - radio Index value of wifi
+                          methodName - identifier for the hal api name
+			  RadiusServerRetries - Number of retries for Radius requests
+			  RadiusServerRequestTimeout - Radius request timeout in seconds after which the request must be retransmitted for the # of 
+                                                       retries available
+			  PMKLifetime - Default time in seconds after which a Wi-Fi client is forced to ReAuthenticate (def 8 hrs)
+			  PMKCaching - Time interval in seconds after which the PMKSA (Pairwise Master Key Security Association)cache is purged (def 5min)
+			  MaxAuthenticationAttempts - Indicates the # of time, a client can attempt to login with incorrect credentials.
+                                                      When this limit is reached, the client is blacklisted and not allowed to attempt loging
+                                                      into the network. Settings this parameter to 0 (zero) disables the blacklisting feature.
+			  BlacklistTableTimeout - Time interval in seconds for which a client will continue to be blacklisted once it is marked so
+			  IdentityRequestRetryInterval - Time Interval in seconds between identity requests retries. A value of 0 (zero) disables it
+			  QuietPeriodAfterFailedAuthentication - The enforced quiet period (time interval) in seconds following failed authentication.
+                                                                 A value of 0 (zero) disables it
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_GetOrSetSecurityRadiusSettings (IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetSecurityRadiusSettings ----->Entry\n");
+
+    wifiRadiusSetting radiusSetting;
+    char methodName[50] = {'\0'};
+    int radioIndex = 1;
+    int returnValue;
+    char details[500] = {'\0'};
+
+    strcpy(methodName, req["methodName"].asCString());
+    radioIndex = req["radioIndex"].asInt();
+    radiusSetting.RadiusServerRetries = req["RadiusServerRetries"].asInt();
+    radiusSetting.RadiusServerRequestTimeout = req["RadiusServerRequestTimeout"].asInt();
+    radiusSetting.PMKLifetime = req["PMKLifetime"].asInt();
+    radiusSetting.PMKCaching = req["PMKCaching"].asInt();
+    radiusSetting.PMKCacheInterval = req["PMKCacheInterval"].asInt();
+    radiusSetting.MaxAuthenticationAttempts = req["MaxAuthenticationAttempts"].asInt();
+    radiusSetting.BlacklistTableTimeout = req["BlacklistTableTimeout"].asInt();
+    radiusSetting.IdentityRequestRetryInterval = req["IdentityRequestRetryInterval"].asInt();
+    radiusSetting.QuietPeriodAfterFailedAuthentication = req["QuietPeriodAfterFailedAuthentication"].asInt();
+
+    if(!strncmp(methodName, "set",3))
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n Set operation requested\n");
+        printf("MethodName : %s\n",methodName);
+        returnValue = ssp_WIFIHALGetOrSetSecurityRadiusSettings(radioIndex, &radiusSetting, methodName);
+        if(0 == returnValue)
+        {
+            sprintf(details, "%s operation success", methodName);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+    }
+    else
+    {
+        DEBUG_PRINT(DEBUG_TRACE,"\n Get operation requested\n");
+        printf("MethodName : %s\n",methodName);
+        returnValue = ssp_WIFIHALGetOrSetSecurityRadiusSettings(radioIndex, &radiusSetting, methodName);
+        if(0 == returnValue)
+        {
+            DEBUG_PRINT(DEBUG_TRACE,"\n output: ");
+            sprintf(details, "Value returned is :RadiusServerRetries=%d,RadiusServerRequestTimeout=%d,PMKLifetime=%d,PMKCaching=%d,PMKCacheInterval=%d,MaxAuthenticationAttempts=%d,BlacklistTableTimeout=%d,IdentityRequestRetryInterval=%d,QuietPeriodAfterFailedAuthentication=%d",radiusSetting.RadiusServerRetries,radiusSetting.RadiusServerRequestTimeout,radiusSetting.PMKLifetime,radiusSetting.PMKCaching,radiusSetting.PMKCacheInterval,radiusSetting.MaxAuthenticationAttempts,radiusSetting.BlacklistTableTimeout,radiusSetting.IdentityRequestRetryInterval,radiusSetting.QuietPeriodAfterFailedAuthentication);
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
+        }
+     }
+     sprintf(details, "%s operation failed", methodName);
+     response["result"]="FAILURE";
+     response["details"]=details;
+     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetOrSetSecurityRadiusSettings ---->Error in execution\n");
+     return;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetSSIDTrafficStats2
+ * Description          : This function invokes WiFi hal api wifi_getSSIDTrafficStats2
+
+ * @param [in] req-     : radioIndex - radio index of the wifi
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_GetSSIDTrafficStats2(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetSSIDTrafficStats2 ----->Entry\n");
+
+    wifi_ssidTrafficStats2_t ssidTrafficStats2;
+    int radioIndex = 1;
+    int returnValue;
+    char details[1000] = {'\0'};
+
+    radioIndex = req["radioIndex"].asInt();
+
+    returnValue = ssp_WIFIHALGetSSIDTrafficStats2(radioIndex, &ssidTrafficStats2);
+    if(0 == returnValue)
+    {
+        sprintf(details, "Value returned is :ssid_BytesSent=%d,ssid_BytesReceived=%d,ssid_PacketsSent=%d,ssid_PacketsReceived=%d,ssid_RetransCount=%d,ssid_FailedRetransCount=%d,ssid_RetryCount=%d,ssid_MultipleRetryCount=%d,ssid_ACKFailureCount=%d,ssid_AggregatedPacketCount=%d,ssid_ErrorsSent=%d,ssid_ErrorsReceived=%d,ssid_UnicastPacketsSent=%d,ssid_UnicastPacketsReceived=%d,ssid_DiscardedPacketsSent=%d,ssid_UnicastPacketsReceived=%d,ssid_DiscardedPacketsSent%d,ssid_DiscardedPacketsReceived=%d,ssid_MulticastPacketsSent=%d,ssid_MulticastPacketsReceived=%d,ssid_BroadcastPacketsSent=%d,ssid_BroadcastPacketsRecevied=%d,ssid_UnknownPacketsReceived=%d\n",ssidTrafficStats2.ssid_BytesSent,ssidTrafficStats2.ssid_BytesReceived,ssidTrafficStats2.ssid_PacketsSent,ssidTrafficStats2.ssid_PacketsReceived,ssidTrafficStats2.ssid_RetransCount,ssidTrafficStats2.ssid_FailedRetransCount,ssidTrafficStats2.ssid_RetryCount,ssidTrafficStats2.ssid_MultipleRetryCount,ssidTrafficStats2.ssid_ACKFailureCount,ssidTrafficStats2.ssid_AggregatedPacketCount,ssidTrafficStats2.ssid_ErrorsSent,ssidTrafficStats2.ssid_ErrorsReceived,ssidTrafficStats2.ssid_UnicastPacketsSent,ssidTrafficStats2.ssid_UnicastPacketsReceived,ssidTrafficStats2.ssid_DiscardedPacketsSent,ssidTrafficStats2.ssid_UnicastPacketsReceived,ssidTrafficStats2.ssid_DiscardedPacketsSent,ssidTrafficStats2.ssid_DiscardedPacketsReceived,ssidTrafficStats2.ssid_MulticastPacketsSent,ssidTrafficStats2.ssid_MulticastPacketsReceived,ssidTrafficStats2.ssid_BroadcastPacketsSent,ssidTrafficStats2.ssid_BroadcastPacketsRecevied,ssidTrafficStats2.ssid_UnknownPacketsReceived);
+        response["result"]="SUCCESS";
+        response["details"]=details;
+        return;
+    }
+    else
+    {
+        sprintf(details, "wifi_getSSIDTrafficStats2 operation failed");
+        response["result"]="FAILURE";
+        response["details"]=details;
+        DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetSSIDTrafficStats2 ---->Error in execution\n");
+        return;
+    }
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetRadioTrafficStats2
+ * Description          : This function invokes WiFi hal get api which are
+                          related to wifi_getRadioTrafficStats2()
+
+ * @param [in] req-     : NIL
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_GetRadioTrafficStats2 (IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_WIFIHAL_GetRadioTrafficStats2 ----->Entry\n");
+    GetRadioTrafficStats2 TrafficStats2;
+    int radioIndex = 1;
+    int returnValue;
+    char details[1000] = {'\0'};
+    radioIndex = req["radioIndex"].asInt();
+    DEBUG_PRINT(DEBUG_TRACE,"\n Get operation requested\n");
+    returnValue = ssp_WIFIHAL_GetRadioTrafficStats2(radioIndex, &TrafficStats2);
+    if(0 == returnValue)
+    {
+        sprintf(details, "Value returned is :radio_BytesSent=%d,radio_BytesReceived=%d,radio_PacketsSent=%d,radio_ErrorsSent=%d,radio_PacketsReceived=%d,radio_ErrorsReceived=%d,radio_DiscardPacketsSent=%d,radio_DiscardPacketsReceived=%d,radio_PLCPErrorCount=%d,radio_FCSErrorCount=%d,radio_InvalidMACCount=%d,radio_PacketsOtherReceived=%d,radio_NoiseFloor=%d,radio_ChannelUtilization=%d,radio_ActivityFactor=%d,radio_CarrierSenseThreshold_Exceeded=%d,radio_RetransmissionMetirc=%d,radio_MaximumNoiseFloorOnChannel=%d,radio_MinimumNoiseFloorOnChannel=%d,radio_MedianNoiseFloorOnChannel=%d,radio_StatisticsStartTime=%d",TrafficStats2.radio_BytesSent,TrafficStats2.radio_BytesReceived,TrafficStats2.radio_PacketsSent,TrafficStats2.radio_ErrorsSent,TrafficStats2.radio_PacketsReceived,TrafficStats2.radio_ErrorsReceived,TrafficStats2.radio_DiscardPacketsSent,TrafficStats2.radio_DiscardPacketsReceived,TrafficStats2.radio_PLCPErrorCount,TrafficStats2.radio_FCSErrorCount,TrafficStats2.radio_InvalidMACCount,TrafficStats2.radio_PacketsOtherReceived,TrafficStats2.radio_NoiseFloor,TrafficStats2.radio_ChannelUtilization,TrafficStats2.radio_ActivityFactor,TrafficStats2.radio_CarrierSenseThreshold_Exceeded,TrafficStats2.radio_RetransmissionMetirc,TrafficStats2.radio_MaximumNoiseFloorOnChannel,TrafficStats2.radio_MinimumNoiseFloorOnChannel,TrafficStats2.radio_MedianNoiseFloorOnChannel,TrafficStats2.radio_StatisticsStartTime);
+        response["result"]="SUCCESS";
+        response["details"]=details;
+	return;
+    }
+    else
+    {
+        sprintf(details, "wifi_getRadioTrafficStats2 operation failed");
+        response["result"]="FAILURE";
+        response["details"]=details;
+        DEBUG_PRINT(DEBUG_TRACE,"\n WiFiCallMethodForGetRadioTrafficStats2  --->Error in execution\n");
+        return;
     }
 }
 /*******************************************************************************************

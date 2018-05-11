@@ -35,6 +35,69 @@
 #define TEST_SUCCESS true
 #define TEST_FAILURE false
 
+typedef struct _wifi_radius_setting_t
+{
+    int RadiusServerRetries;
+    int RadiusServerRequestTimeout;
+    int PMKLifetime;
+    int PMKCaching;
+    int PMKCacheInterval;
+    int MaxAuthenticationAttempts;
+    int BlacklistTableTimeout;
+    int IdentityRequestRetryInterval;
+    int QuietPeriodAfterFailedAuthentication;
+}wifiRadiusSetting;
+
+typedef struct _wifi_ssidTrafficStats2
+{
+    unsigned long ssid_BytesSent;
+    unsigned long ssid_BytesReceived;
+    unsigned long ssid_PacketsSent;
+    unsigned long ssid_PacketsReceived;
+    unsigned long ssid_RetransCount;
+    unsigned long ssid_FailedRetransCount;
+    unsigned long ssid_RetryCount;
+    unsigned long ssid_MultipleRetryCount;
+    unsigned long ssid_ACKFailureCount;
+    unsigned long ssid_AggregatedPacketCount;
+    unsigned long ssid_ErrorsSent;
+    unsigned long ssid_ErrorsReceived;
+    unsigned long ssid_UnicastPacketsSent;
+    unsigned long ssid_DiscardedPacketsSent;
+    unsigned long ssid_UnicastPacketsReceived;
+    unsigned long ssid_DiscardedPacketsReceived;
+    unsigned long ssid_MulticastPacketsSent;
+    unsigned long ssid_MulticastPacketsReceived;
+    unsigned long ssid_BroadcastPacketsSent;
+    unsigned long ssid_BroadcastPacketsRecevied;
+    unsigned long ssid_UnknownPacketsReceived;
+}wifi_ssidTrafficStats2_t;
+
+typedef struct _wifi_radioTrafficStats2_t
+{
+    unsigned long radio_BytesSent;
+    unsigned long radio_BytesReceived;
+    unsigned long radio_PacketsSent;
+    unsigned long radio_ErrorsSent;
+    unsigned long radio_PacketsReceived;
+    unsigned long radio_ErrorsReceived;
+    unsigned long radio_DiscardPacketsSent;
+    unsigned long radio_DiscardPacketsReceived;
+    unsigned long radio_PLCPErrorCount;
+    unsigned long radio_FCSErrorCount;
+    unsigned long radio_InvalidMACCount;
+    unsigned long radio_PacketsOtherReceived;
+    unsigned long radio_NoiseFloor;
+    unsigned long radio_ChannelUtilization;
+    unsigned long radio_ActivityFactor;
+    unsigned long radio_CarrierSenseThreshold_Exceeded;
+    unsigned long radio_RetransmissionMetirc;
+    unsigned long radio_MaximumNoiseFloorOnChannel;
+    unsigned long radio_MinimumNoiseFloorOnChannel;
+    unsigned long radio_MedianNoiseFloorOnChannel;
+    unsigned long radio_StatisticsStartTime;
+}GetRadioTrafficStats2;
+
 /* To provide external linkage to C Functions defined in TDKB Component folder */
 extern "C"
 {
@@ -55,6 +118,12 @@ extern "C"
     int ssp_WIFIHALGetOrSetRadioDCSScanTime(int radioIndex, int* output_interval_seconds,int* output_dwell_milliseconds, char* methodName);
     int ssp_WIFIHALAddorDelApAclDevice(int apIndex, char* DeviceMacAddress, char* method);
     int ssp_WIFIHALIfConfigUporDown(int apIndex, char* method);
+    int ssp_WIFIHALParamRadioIndex(int radioIndex, char* method);
+    int ssp_WIFIHALStartorStopHostApd(char* method);
+    int ssp_WIFIHALFactoryReset(char* method);
+    int ssp_WIFIHALGetOrSetSecurityRadiusSettings(int radioIndex, wifiRadiusSetting *radiusSetting, char* method);
+    int ssp_WIFIHALGetSSIDTrafficStats2(int radioIndex,  wifi_ssidTrafficStats2_t *ssidTrafficStats2);
+    int ssp_WIFIHAL_GetRadioTrafficStats2(int radioIndex, GetRadioTrafficStats2 *TrafficStats2);
 };
 
 class RDKTestAgent;
@@ -77,6 +146,12 @@ class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
                   this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetRadioDCSScanTime", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER, "output_interval_seconds", JSON_INTEGER, "output_dwell_milliseconds", JSON_INTEGER, "paramType",  JSON_STRING,NULL), &WIFIHAL::WIFIHAL_GetOrSetRadioDCSScanTime);
                   this->bindAndAddMethod(Procedure("WIFIHAL_AddorDelApAclDevice", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"apIndex", JSON_INTEGER, "DeviceMacAddress", JSON_STRING,NULL), &WIFIHAL::WIFIHAL_AddorDelApAclDevice);
                   this->bindAndAddMethod(Procedure("WIFIHAL_IfConfigUporDown", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"apIndex", JSON_INTEGER,NULL), &WIFIHAL::WIFIHAL_IfConfigUporDown);
+                  this->bindAndAddMethod(Procedure("WIFIHAL_ParamRadioIndex", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,"radioIndex", JSON_INTEGER,NULL), &WIFIHAL::WIFIHAL_ParamRadioIndex);
+                  this->bindAndAddMethod(Procedure("WIFIHAL_StartorStopHostApd", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,NULL), &WIFIHAL::WIFIHAL_StartorStopHostApd);
+                  this->bindAndAddMethod(Procedure("WIFIHAL_FactoryReset", PARAMS_BY_NAME, JSON_STRING,"methodName", JSON_STRING,NULL), &WIFIHAL::WIFIHAL_FactoryReset);
+                  this->bindAndAddMethod(Procedure("WIFIHAL_GetOrSetSecurityRadiusSettings",PARAMS_BY_NAME, JSON_STRING, "methodName", JSON_STRING,"radioIndex", JSON_INTEGER, "RadiusServerRetries", JSON_INTEGER, "RadiusServerRequestTimeout", JSON_INTEGER, "PMKLifetime", JSON_INTEGER, "PMKCaching", JSON_INTEGER, "PMKCacheInterval", JSON_INTEGER, "MaxAuthenticationAttempts", JSON_INTEGER, "BlacklistTableTimeout", JSON_INTEGER, "IdentityRequestRetryInterval", JSON_INTEGER, "QuietPeriodAfterFailedAuthentication", JSON_INTEGER, NULL), &WIFIHAL::WIFIHAL_GetOrSetSecurityRadiusSettings);
+		  this->bindAndAddMethod(Procedure("WIFIHAL_GetSSIDTrafficStats2",PARAMS_BY_NAME, JSON_STRING, "radioIndex",JSON_INTEGER,NULL), &WIFIHAL::WIFIHAL_GetSSIDTrafficStats2);
+                  this->bindAndAddMethod(Procedure("WIFIHAL_GetRadioTrafficStats2",PARAMS_BY_NAME, JSON_STRING, "radioIndex",JSON_INTEGER,NULL), &WIFIHAL::WIFIHAL_GetRadioTrafficStats2);
                   this->bindAndAddMethod(Procedure("WIFIHAL_Down", PARAMS_BY_NAME, JSON_STRING, NULL), &WIFIHAL::WIFIHAL_Down);
                   this->bindAndAddMethod(Procedure("WIFIHAL_Init", PARAMS_BY_NAME, JSON_STRING, NULL), &WIFIHAL::WIFIHAL_Init);
                 }
@@ -101,6 +176,12 @@ class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
         void WIFIHAL_GetOrSetRadioDCSScanTime(IN const Json::Value& req, OUT Json::Value& response);
         void WIFIHAL_AddorDelApAclDevice(IN const Json::Value& req, OUT Json::Value& response);
         void WIFIHAL_IfConfigUporDown(IN const Json::Value& req, OUT Json::Value& response);
+        void WIFIHAL_ParamRadioIndex(IN const Json::Value& req, OUT Json::Value& response);
+        void WIFIHAL_StartorStopHostApd(IN const Json::Value& req, OUT Json::Value& response);
+        void WIFIHAL_FactoryReset(IN const Json::Value& req, OUT Json::Value& response);
+        void WIFIHAL_GetOrSetSecurityRadiusSettings(IN const Json::Value& req, OUT Json::Value& response);
+	void WIFIHAL_GetSSIDTrafficStats2(IN const Json::Value& req, OUT Json::Value& response);
+        void WIFIHAL_GetRadioTrafficStats2(IN const Json::Value& req, OUT Json::Value& response);
 	void WIFIHAL_Down(IN const Json::Value& req, OUT Json::Value& response);
 	void WIFIHAL_Init(IN const Json::Value& req, OUT Json::Value& response);
 };

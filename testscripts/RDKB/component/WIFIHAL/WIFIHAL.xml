@@ -151,6 +151,53 @@
         <function>WIFIHAL_Init</function>
         <parameters/>
       </primitiveTest>
+      <primitiveTest id=" " name="WIFIHAL_GetOrSetSecurityRadiusSettings" version="1">
+        <function>WIFIHAL_GetOrSetSecurityRadiusSettings</function>
+        <parameters>
+          <parameter name="BlacklistTableTimeout" value="0"/>
+          <parameter name="IdentityRequestRetryInterval" value="0"/>
+          <parameter name="MaxAuthenticationAttempts" value="0"/>
+          <parameter name="methodName" value="NULL"/>
+          <parameter name="PMKCacheInterval" value="0"/>
+          <parameter name="PMKCaching" value="0"/>
+          <parameter name="PMKLifetime" value="0"/>
+          <parameter name="QuietPeriodAfterFailedAuthentication" value="0"/>
+          <parameter name="radioIndex" value="0"/>
+          <parameter name="RadiusServerRequestTimeout" value="0"/>
+          <parameter name="RadiusServerRetries" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WIFIHAL_GetRadioTrafficStats2" version="2">
+        <function>WIFIHAL_GetRadioTrafficStats2</function>
+        <parameters>
+          <parameter name="radioIndex" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WIFIHAL_ParamRadioIndex" version="1">
+        <function>WIFIHAL_ParamRadioIndex</function>
+        <parameters>
+          <parameter name="methodName" value="0"/>
+          <parameter name="radioIndex" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WIFIHAL_StartorStopHostApd" version="1">
+        <function>WIFIHAL_StartorStopHostApd</function>
+        <parameters>
+          <parameter name="methodName" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="WIFIHAL_FactoryReset" version="1">
+        <function>WIFIHAL_FactoryReset</function>
+        <parameters>
+          <parameter name="methodName" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="WIFIHAL_GetSSIDTrafficStats2" id=" " version="1">
+        <function>WIFIHAL_GetSSIDTrafficStats2</function>
+        <parameters>
+          <parameter name="radioIndex" value="0"/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>

@@ -19,7 +19,7 @@
 
 #include <stdio.h>
 #include "ssp_tdk_WiFi_wrp.h"
-#include "wifi_hal.h"
+
 
 /*******************************************************************************************
  *
@@ -227,13 +227,21 @@ int ssp_WIFIHALGetOrSetParamBoolValue(int radioIndex, unsigned char *enable, cha
     else if(!strcmp(method, "setRadioSTBCEnable"))
         return_status = wifi_setRadioSTBCEnable(radioIndex, *enable);
     else if(!strcmp(method, "getDeclineBARequestEnable"))
-        return_status = wifi_getDeclineBARequestEnable(radioIndex, *enable);
+        return_status = wifi_getDeclineBARequestEnable(radioIndex, enable);
     else if(!strcmp(method, "setDeclineBARequestEnable"))
         return_status = wifi_setDeclineBARequestEnable(radioIndex, *enable);
     else if(!strcmp(method, "getDfsEnable"))
-        return_status = wifi_getDfsEnable(radioIndex, *enable);
+        return_status = wifi_getDfsEnable(radioIndex, enable);
     else if(!strcmp(method, "setDfsEnable"))
         return_status = wifi_setDfsEnable(radioIndex, *enable);
+    else if(!strcmp(method, "pushSsidAdvertisementEnable"))
+        return_status = wifi_pushSsidAdvertisementEnable(radioIndex, *enable);
+    else if(!strcmp(method, "createHostApdConfig"))
+        return_status = wifi_createHostApdConfig(radioIndex, *enable);
+    else if(!strcmp(method, "kickApAclAssociatedDevices"))
+        return_status = wifi_kickApAclAssociatedDevices(radioIndex, *enable);
+    else if(!strcmp(method, "setRadioTrafficStatsRadioStatisticsEnable"))
+        return_status = wifi_setRadioTrafficStatsRadioStatisticsEnable(radioIndex, *enable);
     else
     {
         return_status = SSP_FAILURE;
@@ -302,7 +310,7 @@ int ssp_WIFIHALGetOrSetParamULongValue(int radioIndex, unsigned long *uLongVar, 
         printf("\n ssp_WiFiHalCallMethodForULong: Invalid methodName\n");
     }
 
-    printf("ssp_WiFiHalCallMethodForULong:: return value is %lu\n", *uLongVar);
+    printf("ssp_WiFiHalCallMethodForULong:: return value is %lu, ret:status %d\n", *uLongVar,return_status);
     printf("\n ssp_WiFiHalCallMethodForULong---> Exit\n");
     return return_status;
 }
@@ -431,13 +439,15 @@ int ssp_WIFIHALGetOrSetParamStringValue(int radioIndex, char* output, char* meth
         return_status = wifi_getApName(radioIndex, output);
     else if(!strcmp(method, "setApWpsEnrolleePin"))
         return_status = wifi_setApWpsEnrolleePin(radioIndex, output);
+    else if(!strcmp(method, "kickApAssociatedDevice"))
+        return_status = wifi_kickApAssociatedDevice(radioIndex, output);
     else
     {
         return_status = SSP_FAILURE;
         printf("\n ssp_WiFiHalCallMethodForString: Invalid methodName\n");
     }
 
-    printf("ssp_WiFiHalCallMethodForString: return value is %s\n", output);
+    printf("ssp_WiFiHalCallMethodForString: return value is %s, ret:status %d\n", output,return_status);
     printf("\n ssp_WiFiHalCallMethodForString--> Exit\n");
     return return_status;
 }
@@ -569,7 +579,7 @@ int ssp_WIFIHALGetOrSetParamIntValue(int radioIndex, int* output, char* method)
         printf("\n ssp_WiFiHalCallMethodForInt: Invalid methodName\n");
     }
 
-    printf("ssp_WiFiHalCallMethodForInt: return value is %d\n", *output);
+    printf("ssp_WiFiHalCallMethodForInt: return value is %d, ret:status %d\n", *output, return_status);
     printf("\n ssp_WiFiHalCallMethodForInt--> Exit\n");
     return return_status;
 }
@@ -628,7 +638,7 @@ int ssp_WIFIHALGetOrSetParamUIntValue(int radioIndex, unsigned int* output, char
         printf("\n ssp_WiFiHalCallMethodForUInt: Invalid methodName\n");
     }
 
-    printf("ssp_WiFiHalCallMethodForUInt: return value is %d\n", *output);
+    printf("ssp_WiFiHalCallMethodForUInt: return value is %d, ret:status %d\n", *output, return_status);
     printf("\n ssp_WiFiHalCallMethodForUInt--> Exit\n");
     return return_status;
 }
@@ -888,6 +898,182 @@ int ssp_WIFIHALIfConfigUporDown(int apIndex, char* method)
     }
     printf("\n ssp_WiFiHalCallMethodForIfConfigUporDown ---> Exit\n");
     return return_status;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHAL_ParamradioIndex
+ * Description          : This function invokes WiFi hal api's which require radioIndex as input
+ *
+ * @param [in]          : radioIndex - WiFi radio index value
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALParamRadioIndex(int radioIndex, char* method)
+{
+    printf("\n ssp_WIFIHALParamRadioIndex ----> Entry\n");
+    printf("radio index:%d\n",radioIndex);
+    printf("MethodName: %s\n", method);
+    int return_status = 0;
+    if(!strcmp(method, "cancelApWPS"))
+        return_status = wifi_cancelApWPS(radioIndex);
+    else if(!strcmp(method, "setApSecurityReset"))
+        return_status = wifi_setApSecurityReset(radioIndex);
+    else if(!strcmp(method, "resetApVlanCfg"))
+	return_status = wifi_resetApVlanCfg(radioIndex);
+    else if(!strcmp(method,"disableApEncryption"))
+	return_status = wifi_disableApEncryption(radioIndex);
+    else if(!strcmp(method,"removeApSecVaribles"))
+	return_status = wifi_removeApSecVaribles(radioIndex);
+    else if(!strcmp(method, "initRadio"))
+        return_status = wifi_initRadio(radioIndex);
+    else if(!strcmp(method, "factoryResetRadio"))
+        return_status = wifi_factoryResetRadio(radioIndex);
+    else
+    {
+        return_status = SSP_FAILURE;
+        printf("\n ssp_WiFiHalCallMethodForParamRadioIndex: Invalid methodName\n");
+    }
+    printf("\n ssp_WiFiHalCallMethodForParamRadioIndex ---> Exit\n");
+    return return_status;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHAL_StartorStopHostApd
+ * Description          : This function invokes WiFi hal api's wifi_startHostApd() and wifi_stopHostApd()
+ *
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALStartorStopHostApd(char* method)
+{
+    printf("\n ssp_WIFIHALStartorStopHostApd ----> Entry\n");
+    printf("MethodName: %s\n", method);
+    int return_status = 0;
+    if(!strcmp(method, "startHostApd"))
+        return_status = wifi_startHostApd();
+    else if(!strcmp(method, "stopHostApd"))
+        return_status = wifi_stopHostApd();
+    else
+    {
+        return_status = SSP_FAILURE;
+        printf("\n ssp_WiFiHalCallMethodForStartorStopHostApd: Invalid methodName\n");
+    }
+    printf("\n ssp_WiFiHalCallMethodForStartorStopHostApd ---> Exit\n");
+    return return_status;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHAL_FactoryReset
+ * Description          : This function invokes WiFi hal api's wifi_factoryResetRadios() and wifi_factoryReset()
+ *
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALFactoryReset(char* method)
+{
+    printf("\n ssp_WIFIHALFactoryReset ----> Entry\n");
+    printf("MethodName: %s\n", method);
+    int return_status = 0;
+    if(!strcmp(method, "factoryReset"))
+        return_status = wifi_factoryReset();
+    else if(!strcmp(method, "factoryResetRadios"))
+        return_status = wifi_factoryResetRadios();
+    else
+    {
+        return_status = SSP_FAILURE;
+        printf("\n ssp_WiFiHalCallMethodForFactoryReset: Invalid methodName\n");
+    }
+    printf("\n ssp_WiFiHalCallMethodForFactoryReset ---> Exit\n");
+    return return_status;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHALGetOrSetSecurityRadiusSettings
+ * Description          : This function invokes WiFi hal's get/set api's which are
+                          related to SecurityRadiusSettings
+ *
+ * @param [in]          : radioIndex - WiFi radio index value
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [in]          : wifi_radius_setting_t - structure with radius settings parameters
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALGetOrSetSecurityRadiusSettings(int radioIndex,  wifi_radius_setting_t *radiusSetting, char* method)
+{
+    printf("\n ssp_WIFIHALGetOrSetSecurityRadiusSettings ----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    printf("MethodName: %s\n", method);
+    int return_status = 0;
+
+    if(!strcmp(method, "getApSecurityRadiusSettings"))
+        return_status = wifi_getApSecurityRadiusSettings(radioIndex, radiusSetting);
+    else if(!strcmp(method, "setApSecurityRadiusSettings"))
+        return_status = wifi_setApSecurityRadiusSettings(radioIndex, radiusSetting);
+    else
+    {
+        return_status = SSP_FAILURE;
+        printf("\n ssp_WiFiHalCallMethodForSecurityRadiusSettings: Invalid methodName\n");
+    }
+    printf("\n ssp_WiFiHalCallMethodForSecurityRadiusSettings---> Exit\n");
+    return return_status;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHALGetSSIDTrafficStats2
+ * Description          : This function invokes WiFi HAL api wifi_getSSIDTrafficStats2
+ *
+ * @param [in]          : radioIndex - WiFi radio index value
+ * @param [in]          : wifi_ssidTrafficStats2_t- structure with ssid traffic static info
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALGetSSIDTrafficStats2(int radioIndex,  wifi_ssidTrafficStats2_t *ssidTrafficStats2)
+{
+    printf("\n ssp_WIFIHALGetSSIDTrafficStats2 ----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    int return_status = 0;
+
+    return_status = wifi_getSSIDTrafficStats2(radioIndex, ssidTrafficStats2);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_WIFIHALGetSSIDTrafficStats2::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\nssp_WIFIHALGetSSIDTrafficStats2::Success\n");
+     return return_status;
+    }
+    printf("\n ssp_WIFIHALGetSSIDTrafficStats2 ---> Exit\n");
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHAL_GetRadioTrafficStats2
+ * Description          : This function invokes WiFi hal's get api's which are
+                          related to GetRadioTrafficStats2
+ *
+ * @param [in]          : radioIndex - WiFi radio index value
+ * @param [in]          : method     - name of the wifi hal api to be invoked
+ * @param [in]          : wifi_radioTrafficStats2_t - structure with radio stat Measure parameters
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHAL_GetRadioTrafficStats2(int radioIndex,  wifi_radioTrafficStats2_t *TrafficStats2)
+{
+    printf("\n ssp_WIFIHAL_GetRadioTrafficStats2 ----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    int return_status = 0;
+
+    return_status = wifi_getRadioTrafficStats2(radioIndex, TrafficStats2);
+    printf("return value from ssp_WIFIHAL_GetRadioTrafficStats2 is %d\n",return_status);
+    if(return_status != SSP_SUCCESS)
+    {
+        printf("\nssp_WIFIHAL_GetRadioTrafficStats2::Failed\n");
+        return SSP_FAILURE;
+    }
+    else
+    {
+        printf("\nssp_WIFIHAL_GetRadioTrafficStats2::Success\n");
+        return return_status;
+    }
+    printf("\n ssp_WiFiHalCallMethodForGetRadioTrafficStats2---> Exit\n");
 }
 /*******************************************************************************************
  *
