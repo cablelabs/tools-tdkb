@@ -89,7 +89,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     radioIndex = 1
     setMethod = "setApWpsEnrolleePin"
     primitive = 'WIFIHAL_GetOrSetParamStringValue'
-    setPIN = "pin"
+    setPIN = "12345670"
 
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, setPIN, setMethod)
 
