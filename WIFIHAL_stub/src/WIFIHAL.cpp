@@ -267,7 +267,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
     strcpy(paramType, req["paramType"].asCString());
     strcpy(param, req["param"].asCString());
 
-    if(!(strncmp(methodName, "set",3)&&strncmp(methodName, "push",4)))
+    if(!(strncmp(methodName, "set",3)&&strncmp(methodName, "push",4)&&strncmp(methodName, "kick",4)))
     {
 	printf("wifi_set operation to be done\n");
         returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, param, methodName);
@@ -1340,7 +1340,7 @@ void WIFIHAL::WIFIHAL_GetRadioTrafficStats2 (IN const Json::Value& req, OUT Json
     char details[1000] = {'\0'};
     radioIndex = req["radioIndex"].asInt();
     DEBUG_PRINT(DEBUG_TRACE,"\n Get operation requested\n");
-    returnValue = ssp_WIFIHAL_GetRadioTrafficStats2(radioIndex, &TrafficStats2);
+    returnValue = ssp_WIFIHALGetRadioTrafficStats2(radioIndex, &TrafficStats2);
     if(0 == returnValue)
     {
         sprintf(details, "Value returned is :radio_BytesSent=%d,radio_BytesReceived=%d,radio_PacketsSent=%d,radio_ErrorsSent=%d,radio_PacketsReceived=%d,radio_ErrorsReceived=%d,radio_DiscardPacketsSent=%d,radio_DiscardPacketsReceived=%d,radio_PLCPErrorCount=%d,radio_FCSErrorCount=%d,radio_InvalidMACCount=%d,radio_PacketsOtherReceived=%d,radio_NoiseFloor=%d,radio_ChannelUtilization=%d,radio_ActivityFactor=%d,radio_CarrierSenseThreshold_Exceeded=%d,radio_RetransmissionMetirc=%d,radio_MaximumNoiseFloorOnChannel=%d,radio_MinimumNoiseFloorOnChannel=%d,radio_MedianNoiseFloorOnChannel=%d,radio_StatisticsStartTime=%d",TrafficStats2.radio_BytesSent,TrafficStats2.radio_BytesReceived,TrafficStats2.radio_PacketsSent,TrafficStats2.radio_ErrorsSent,TrafficStats2.radio_PacketsReceived,TrafficStats2.radio_ErrorsReceived,TrafficStats2.radio_DiscardPacketsSent,TrafficStats2.radio_DiscardPacketsReceived,TrafficStats2.radio_PLCPErrorCount,TrafficStats2.radio_FCSErrorCount,TrafficStats2.radio_InvalidMACCount,TrafficStats2.radio_PacketsOtherReceived,TrafficStats2.radio_NoiseFloor,TrafficStats2.radio_ChannelUtilization,TrafficStats2.radio_ActivityFactor,TrafficStats2.radio_CarrierSenseThreshold_Exceeded,TrafficStats2.radio_RetransmissionMetirc,TrafficStats2.radio_MaximumNoiseFloorOnChannel,TrafficStats2.radio_MinimumNoiseFloorOnChannel,TrafficStats2.radio_MedianNoiseFloorOnChannel,TrafficStats2.radio_StatisticsStartTime);

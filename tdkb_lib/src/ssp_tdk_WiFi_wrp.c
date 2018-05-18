@@ -1046,7 +1046,7 @@ int ssp_WIFIHALGetSSIDTrafficStats2(int radioIndex,  wifi_ssidTrafficStats2_t *s
 }
 /*******************************************************************************************
  *
- * Function Name        : ssp_WIFIHAL_GetRadioTrafficStats2
+ * Function Name        : ssp_WIFIHALGetRadioTrafficStats2
  * Description          : This function invokes WiFi hal's get api's which are
                           related to GetRadioTrafficStats2
  *
@@ -1055,22 +1055,22 @@ int ssp_WIFIHALGetSSIDTrafficStats2(int radioIndex,  wifi_ssidTrafficStats2_t *s
  * @param [in]          : wifi_radioTrafficStats2_t - structure with radio stat Measure parameters
  * @param [out]         : return status an integer value 0-success and 1-Failure
  ********************************************************************************************/
-int ssp_WIFIHAL_GetRadioTrafficStats2(int radioIndex,  wifi_radioTrafficStats2_t *TrafficStats2)
+int ssp_WIFIHALGetRadioTrafficStats2(int radioIndex,  wifi_radioTrafficStats2_t *TrafficStats2)
 {
-    printf("\n ssp_WIFIHAL_GetRadioTrafficStats2 ----> Entry\n");
+    printf("\n ssp_WIFIHALGetRadioTrafficStats2 ----> Entry\n");
     printf("Radio index:%d\n",radioIndex);
     int return_status = 0;
 
     return_status = wifi_getRadioTrafficStats2(radioIndex, TrafficStats2);
-    printf("return value from ssp_WIFIHAL_GetRadioTrafficStats2 is %d\n",return_status);
+    printf("return value from ssp_WIFIHALGetRadioTrafficStats2 is %d\n",return_status);
     if(return_status != SSP_SUCCESS)
     {
-        printf("\nssp_WIFIHAL_GetRadioTrafficStats2::Failed\n");
+        printf("\nssp_WIFIHALGetRadioTrafficStats2::Failed\n");
         return SSP_FAILURE;
     }
     else
     {
-        printf("\nssp_WIFIHAL_GetRadioTrafficStats2::Success\n");
+        printf("\nssp_WIFIHALGetRadioTrafficStats2::Success\n");
         return return_status;
     }
     printf("\n ssp_WiFiHalCallMethodForGetRadioTrafficStats2---> Exit\n");

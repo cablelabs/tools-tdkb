@@ -123,7 +123,7 @@ extern "C"
     int ssp_WIFIHALFactoryReset(char* method);
     int ssp_WIFIHALGetOrSetSecurityRadiusSettings(int radioIndex, wifiRadiusSetting *radiusSetting, char* method);
     int ssp_WIFIHALGetSSIDTrafficStats2(int radioIndex,  wifi_ssidTrafficStats2_t *ssidTrafficStats2);
-    int ssp_WIFIHAL_GetRadioTrafficStats2(int radioIndex, GetRadioTrafficStats2 *TrafficStats2);
+    int ssp_WIFIHALGetRadioTrafficStats2(int radioIndex, GetRadioTrafficStats2 *TrafficStats2);
 };
 
 class RDKTestAgent;
