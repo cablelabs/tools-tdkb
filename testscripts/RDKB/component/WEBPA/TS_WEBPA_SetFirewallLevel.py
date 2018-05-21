@@ -17,21 +17,36 @@
 # limitations under the License.
 ##########################################################################
 '''
-<?xml version="1.0" encoding="UTF-8"?><xml>
-  <id/>
-  <version>1</version>
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <id></id>
+  <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
+  <version>3</version>
+  <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
   <name>TS_WEBPA_SetFirewallLevel</name>
-  <primitive_test_id/>
+  <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
+  <primitive_test_id></primitive_test_id>
+  <!-- Do not change primitive_test_id if you are editing an existing script. -->
   <primitive_test_name>WEBPA_Donothing</primitive_test_name>
+  <!--  -->
   <primitive_test_version>1</primitive_test_version>
+  <!--  -->
   <status>FREE</status>
+  <!--  -->
   <synopsis>Using webpa, set the firewall level of gateway</synopsis>
-  <groups_id/>
+  <!--  -->
+  <groups_id />
+  <!--  -->
   <execution_time>5</execution_time>
+  <!--  -->
   <long_duration>false</long_duration>
+  <!--  -->
   <advanced_script>false</advanced_script>
-  <remarks/>
+  <!-- execution_time is the time out time for test execution -->
+  <remarks></remarks>
+  <!-- Reason for skipping the tests if marked to skip -->
   <skip>false</skip>
+  <!--  -->
   <box_types>
     <box_type>Broadband</box_type>
     <!--  -->
@@ -42,6 +57,7 @@
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
+    <!--  -->
   </rdk_versions>
   <test_cases>
     <test_case_id>TC_WEBPA_2</test_case_id>
@@ -58,8 +74,7 @@ parseWebpaResponse</api_or_interface_used>
 4.  Set a new firewall level using webpa set query
 5. Get the new firewall level and compare that with the set value, both should be same
 6. Revert the firewall level
-7. Unload sysutil module
-</automation_approch>
+7. Unload sysutil module</automation_approch>
     <except_output>Firewall set operation should be success</except_output>
     <priority>High</priority>
     <test_stub_interface>sysutil</test_stub_interface>
@@ -68,8 +83,8 @@ parseWebpaResponse</api_or_interface_used>
     <release_version>M58</release_version>
     <remarks>None</remarks>
   </test_cases>
+  <script_tags />
 </xml>
-
 '''
 # use tdklib library,which provides a wrapper for tdk testcase script
 import tdklib;
@@ -97,7 +112,7 @@ if "SUCCESS" in result.upper() :
     queryParam = {"name":"Device.X_CISCO_COM_Security.Firewall.FirewallLevel"}
     queryResponse = webpaQuery(obj, queryParam)
 
-    parsedResponse = parseWebpaResponse(queryResponse)
+    parsedResponse = parseWebpaResponse(queryResponse, 1)
     tdkTestObj = obj.createTestStep('ExecuteCmd');
     tdkTestObj.executeTestCase("SUCCESS");
     if 200 in parsedResponse:
@@ -116,7 +131,7 @@ if "SUCCESS" in result.upper() :
 	print "TEST STEP 2: Set the new firewall level value"
 	queryParam = {"name":"Device.X_CISCO_COM_Security.Firewall.FirewallLevel","value":newValue,"dataType":0}
 	queryResponse = webpaQuery(obj, queryParam, "set")
-	parsedResponse = parseWebpaResponse(queryResponse, "set")
+	parsedResponse = parseWebpaResponse(queryResponse, 1, "set")
 	tdkTestObj.executeTestCase("SUCCESS");
         if 200 in parsedResponse:
             tdkTestObj.setResultStatus("SUCCESS");
@@ -126,7 +141,7 @@ if "SUCCESS" in result.upper() :
 	    print "TEST STEP 3: Get the new firewall level and check if its the same as the set value"
             queryParam = {"name":"Device.X_CISCO_COM_Security.Firewall.FirewallLevel"}
             queryResponse = webpaQuery(obj, queryParam)
-            parsedResponse = parseWebpaResponse(queryResponse)
+            parsedResponse = parseWebpaResponse(queryResponse, 1)
             tdkTestObj.executeTestCase("SUCCESS");
             if 200 in parsedResponse:
 		setValue = parsedResponse[1];
@@ -143,7 +158,7 @@ if "SUCCESS" in result.upper() :
 
 	    print "TEST STEP 4: Revert the firewall level"
 	    queryParam = {"name":"Device.X_CISCO_COM_Security.Firewall.FirewallLevel","value":orgValue,"dataType":0}
-            queryResponse = webpaQuery(obj, queryParam, "set")
+            queryResponse = webpaQuery(obj, queryParam, 1, "set")
             parsedResponse = parseWebpaResponse(queryResponse, "set")
             tdkTestObj.executeTestCase("SUCCESS");
             if 200 in parsedResponse:

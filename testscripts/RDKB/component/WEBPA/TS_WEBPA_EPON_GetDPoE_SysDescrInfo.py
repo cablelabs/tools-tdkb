@@ -21,9 +21,9 @@
 <xml>
   <id></id>
   <!-- Do not edit id. This will be auto filled while exporting. If you are adding a new script keep the id empty -->
-  <version>4</version>
+  <version>2</version>
   <!-- Do not edit version. This will be auto incremented while updating. If you are adding a new script you can keep the vresion as 1 -->
-  <name>TS_WEBPA_GetFirmwareName</name>
+  <name>TS_WEBPA_EPON_GetDPoE_SysDescrInfo</name>
   <!-- If you are adding a new script you can specify the script name. Script Name should be unique same as this file name with out .py extension -->
   <primitive_test_id></primitive_test_id>
   <!-- Do not change primitive_test_id if you are editing an existing script. -->
@@ -33,7 +33,7 @@
   <!--  -->
   <status>FREE</status>
   <!--  -->
-  <synopsis>Using WEBPA get the firmware name of gateway</synopsis>
+  <synopsis>Using webpa get the system description info from EPON parameters</synopsis>
   <!--  -->
   <groups_id />
   <!--  -->
@@ -50,35 +50,31 @@
   <box_types>
     <box_type>Broadband</box_type>
     <!--  -->
-    <box_type>Emulator</box_type>
-    <!--  -->
-    <box_type>RPI</box_type>
-    <!--  -->
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_WEBPA_1</test_case_id>
-    <test_objective>Using WEBPA get the firmware name of gateway</test_objective>
+    <test_case_id>TC_WEBPA_10</test_case_id>
+    <test_objective>Using webpa get the system description info from EPON parameters</test_objective>
     <test_type>Positive</test_type>
-    <test_setup>Broadband, RPI, Emulator</test_setup>
+    <test_setup>Broadband</test_setup>
     <pre_requisite>If SAT token is to be used, token should be created and made available in test manager. Also the config variables SAT_REQUIRED, SAT_TOKEN_FILE, SERVER_URI should be updated in webpaVariables.py</pre_requisite>
     <api_or_interface_used>webpaQuery
 parseWebpaResponse</api_or_interface_used>
-    <input_parameters>Device.DeviceInfo.X_CISCO_COM_FirmwareName</input_parameters>
+    <input_parameters>Device.DPoE.DPoE_DeviceSysDescrInfo.vendorName,Device.DPoE.DPoE_DeviceSysDescrInfo.modelNumber,Device.DPoE.DPoE_DeviceSysDescrInfo.hardwareVersion</input_parameters>
     <automation_approch>1. Load sysutil module
-2. Configure WEBPA server to send get request for Device.DeviceInfo.X_CISCO_COM_FirmwareName
+2. Configure WEBPA server to send get request for Device.DPoE.DPoE_DeviceSysDescrInfo.vendorName,Device.DPoE.DPoE_DeviceSysDescrInfo.modelNumber,Device.DPoE.DPoE_DeviceSysDescrInfo.hardwareVersion
 3. Parse the WEBPA response
 4.  If response status is 200 get operation was success otherwise failure
 5. Unload sysutil module</automation_approch>
-    <except_output>WEBPA response status should be 200</except_output>
+    <except_output>Get operation status should be 200</except_output>
     <priority>High</priority>
     <test_stub_interface>sysutil</test_stub_interface>
-    <test_script>TS_WEBPA_GetFirmwareName</test_script>
+    <test_script>TS_WEBPA_EPON_GetDPoE_SysDescrInfo</test_script>
     <skipped>No</skipped>
-    <release_version>M58</release_version>
+    <release_version>M59</release_version>
     <remarks>None</remarks>
   </test_cases>
   <script_tags />
@@ -95,7 +91,7 @@ obj = tdklib.TDKScriptingLibrary("sysutil","1");
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
-obj.configureTestCase(ip,port,'TS_WEBPA_GetFirmwareName');
+obj.configureTestCase(ip,port,'TS_WEBPA_GetDPoE_SysDescrInfo');
 
 #Get the result of connection with test component and STB
 result =obj.getLoadModuleResult();
@@ -105,10 +101,10 @@ if "SUCCESS" in result.upper() :
     #Set the module loading status
     obj.setLoadModuleStatus("SUCCESS");
 
-    queryParam = {"name":"Device.DeviceInfo.X_CISCO_COM_FirmwareName"}
+    queryParam = {"name":"Device.DPoE.DPoE_DeviceSysDescrInfo.vendorName,Device.DPoE.DPoE_DeviceSysDescrInfo.modelNumber,Device.DPoE.DPoE_DeviceSysDescrInfo.hardwareVersion"}
     queryResponse = webpaQuery(obj, queryParam)
 
-    parsedResponse = parseWebpaResponse(queryResponse, 1)
+    parsedResponse = parseWebpaResponse(queryResponse, 3)
     tdkTestObj = obj.createTestStep('ExecuteCmd');
     tdkTestObj.executeTestCase("SUCCESS");
     if 200 in parsedResponse:
@@ -122,4 +118,4 @@ if "SUCCESS" in result.upper() :
 else:
     print "FAILURE to load module";
     obj.setLoadModuleStatus("FAILURE");
-    print "Module loading FAILURE";    
+    print "Module loading FAILURE";
