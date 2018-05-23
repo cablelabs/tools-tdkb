@@ -1077,6 +1077,34 @@ int ssp_WIFIHALGetRadioTrafficStats2(int radioIndex,  wifi_radioTrafficStats2_t 
 }
 /*******************************************************************************************
  *
+ * Function Name        : ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult
+ * Description          : This function invokes WiFi HAL api wifi_getApAssociatedDeviceDiagnosticResult
+ *
+ * @param [in]          : apIndex - apIndex value
+ * @param [in]          : associated_dev - double pointer to a structure of type wifi_associated_dev_t
+ * @param [in]          : output_array_size - pointer to a variable storing the number of access points identified
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult(int apIndex, wifi_associated_dev_t **associated_dev, unsigned int *output_array_size)
+{
+    printf("\n ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult ----> Entry\n");
+    printf("Ap index:%d\n",apIndex);
+    int return_status = 0;
+    return_status = wifi_getApAssociatedDeviceDiagnosticResult(apIndex, associated_dev, output_array_size);
+    if(return_status != SSP_SUCCESS)
+    {
+        printf("\n ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult::Failed\n");
+        return SSP_FAILURE;
+    }
+    else
+    {
+        printf("\n ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult::Success\n");
+        return return_status;
+    }
+    printf("\n ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult ---> Exit\n");
+}
+/*******************************************************************************************
+ *
  * Function Name        : WIFIHAL_Down
  * Description          : This function invokes WiFi hal api wifi_down()
 
@@ -1102,5 +1130,33 @@ int ssp_WIFIHALDown()
      return return_status;
     }
     printf("\n ssp_WIFIHALDown ----> Exit\n");
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHALCreateInitialConfigFiles
+ * Description          : This function invokes WiFi hal api wifi_createInitialConfigFiles()
+
+ * @param [in]          : NIL
+ * @param [out]         : return status as integer value 0-success and 1-Failure
+ *
+ ********************************************************************************************/
+int ssp_WIFIHALCreateInitialConfigFiles()
+{
+    printf("\n ssp_WIFIHALCreateInitialConfigFiles ----> Entry\n");
+    int return_status = 0;
+
+    return_status = wifi_createInitialConfigFiles();
+    printf("return value from ssp_WIFIHALCreateInitialConfigFiles is %d\n",return_status);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_WIFIHALCreateInitialConfigFiles::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\nssp_WIFIHALCreateInitialConfigFiles::Success\n");
+     return return_status;
+    }
+    printf("\n ssp_WIFIHALCreateInitialConfigFiles ----> Exit\n");
 }
 

@@ -43,3 +43,5 @@ int ssp_WIFIHALGetOrSetSecurityRadiusSettings(int radioIndex, wifi_radius_settin
 int ssp_WIFIHALGetSSIDTrafficStats2(int radioIndex,  wifi_ssidTrafficStats2_t *ssidTrafficStats2);
 int ssp_WIFIHALGetRadioTrafficStats2(int radioIndex, wifi_radioTrafficStats2_t *TrafficStats2);
 int ssp_WIFIHALDown();
+int ssp_WIFIHALCreateInitialConfigFiles();
+int ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult(int apIndex, wifi_associated_dev_t **associated_dev, unsigned int *output_array_size);

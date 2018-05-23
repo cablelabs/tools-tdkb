@@ -100,7 +100,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamBoolValue(IN const Json::Value& req, OUT Json
     enable = req["param"].asInt();
     strcpy(paramType, req["paramType"].asCString());
 
-    if(!(strncmp(methodName, "set",3)&&strncmp(methodName, "push",4)))
+    if(!(strncmp(methodName, "set",3)&&strncmp(methodName, "push",4)&&strncmp(methodName, "create",6)))
     {
 	printf("wifi_set operation to be done\n");
         returnValue = ssp_WIFIHALGetOrSetParamBoolValue(radioIndex, &enable, methodName);
@@ -1359,6 +1359,41 @@ void WIFIHAL::WIFIHAL_GetRadioTrafficStats2 (IN const Json::Value& req, OUT Json
 }
 /*******************************************************************************************
  *
+ * Function Name        : WIFIHAL_GetApAssociatedDeviceDiagnosticResult
+ * Description          : This function invokes WiFi hal api wifi_getApAssociatedDeviceDiagnosticResult
+
+ * @param [in] req-     : apIndex - Access Point Index
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_GetApAssociatedDeviceDiagnosticResult(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetApAssociatedDeviceDiagnosticResult ----->Entry\n");
+    wifi_associated_dev_t *associated_dev;
+    unsigned int output_array_size;
+    int apIndex = 1;
+    int returnValue;
+    char details[1000] = {'\0'};
+    apIndex = req["apIndex"].asInt();
+    returnValue = ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult(apIndex, &associated_dev, &output_array_size);
+    if(0 == returnValue)
+    {
+	sprintf(details,"Value returned is :cli_MACAddress = %s,cli_IPAddress = %s,cli_AuthenticationState = %s,cli_LastDataDownlinkRate = %d,cli_LastDataUplinkRate = %d,cli_SignalStrength = %d,cli_Retransmissions = %d,cli_Active = %s,cli_OperatingStandard = %s,cli_OperatingChannelBandwidth = %s,cli_SNR = %d,cli_InterferenceSources = %s,cli_DataFramesSentAck = %d,cli_DataFramesSentNoAck = %d,cli_BytesSent = %d,cli_BytesReceived = %d,cli_RSSI = %d,cli_MinRSSI = %d,cli_MaxRSSI = %d,cli_Disassociations = %d,cli_AuthenticationFailures = %d\n",associated_dev->cli_MACAddress,associated_dev->cli_IPAddress,associated_dev->cli_AuthenticationState,associated_dev->cli_LastDataDownlinkRate,associated_dev->cli_LastDataUplinkRate,associated_dev->cli_SignalStrength,associated_dev->cli_Retransmissions,associated_dev->cli_Active,associated_dev->cli_OperatingStandard,associated_dev->cli_OperatingChannelBandwidth,associated_dev->cli_SNR,associated_dev->cli_InterferenceSources,associated_dev->cli_DataFramesSentAck,associated_dev->cli_DataFramesSentNoAck,associated_dev->cli_BytesSent,associated_dev->cli_BytesReceived,associated_dev->cli_RSSI,associated_dev->cli_MinRSSI,associated_dev->cli_MaxRSSI,associated_dev->cli_Disassociations,associated_dev->cli_AuthenticationFailures,output_array_size);
+	response["result"]="SUCCESS";
+	response["details"]=details;
+	return;
+    }
+    else
+    {
+	sprintf(details, "wifi_getApAssociatedDeviceDiagnosticResult operation failed");
+	response["result"]="FAILURE";
+	response["details"]=details;
+	DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetApAssociatedDeviceDiagnosticResult ---->Error in execution\n");
+	return;
+    }
+}
+/*******************************************************************************************
+ *
  * Function Name        : WIFIHAL_Down
  * Description          : This function invokes WiFi hal api wifi_down()
 
@@ -1434,6 +1469,38 @@ void WIFIHAL::WIFIHAL_Init (IN const Json::Value& req, OUT Json::Value& response
             return;
        }
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_Init --->Exit\n");
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_CreateInitialConfigFiles
+ * Description          : This function invokes WiFi hal api wifi_createInitialConfigFiles()
+
+ * @param [in] req-     : NIL
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_CreateInitialConfigFiles (IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_CreateInitialConfigFiles ----->Entry\n");
+
+    int returnValue;
+    char details[200] = {'\0'};
+    returnValue = ssp_WIFIHALCreateInitialConfigFiles();
+    if(0 == returnValue)
+       {
+            sprintf(details, "wifi_createInitialConfigFiles operation success");
+            response["result"]="SUCCESS";
+            response["details"]=details;
+       }
+    else
+       {
+            sprintf(details, "wifi_createInitialConfigFiles operation failed");
+            response["result"]="FAILURE";
+            response["details"]=details;
+            return;
+       }
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_CreateInitialConfigFiles --->Exit\n");
 }
 
 /**************************************************************************
