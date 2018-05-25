@@ -260,7 +260,7 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
     int retValue;
     char details[200] = {'\0'};
     char paramType[10] = {'\0'};
-    char param[200] = {'\0'}; 
+    char param[200] = {'\0'};
 
     strcpy(methodName, req["methodName"].asCString());
     radioIndex = req["radioIndex"].asInt();
@@ -1333,7 +1333,7 @@ void WIFIHAL::WIFIHAL_GetSSIDTrafficStats2(IN const Json::Value& req, OUT Json::
  ********************************************************************************************/
 void WIFIHAL::WIFIHAL_GetRadioTrafficStats2 (IN const Json::Value& req, OUT Json::Value& response)
 {
-    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_WIFIHAL_GetRadioTrafficStats2 ----->Entry\n");
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetRadioTrafficStats2 ----->Entry\n");
     GetRadioTrafficStats2 TrafficStats2;
     int radioIndex = 1;
     int returnValue;
@@ -1390,6 +1390,44 @@ void WIFIHAL::WIFIHAL_GetApAssociatedDeviceDiagnosticResult(IN const Json::Value
 	response["details"]=details;
 	DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetApAssociatedDeviceDiagnosticResult ---->Error in execution\n");
 	return;
+    }
+}
+/*******************************************************************************************
+ *
+ * Function Name        : WIFIHAL_GetNeighboringWiFiDiagnosticResult2
+ * Description          : This function invokes WiFi hal api wifi_getNeighboringWiFiDiagnosticResult2
+
+ * @param [in] req-     : radioIndex - radio index of the wifi
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
+ *
+ ********************************************************************************************/
+void WIFIHAL::WIFIHAL_GetNeighboringWiFiDiagnosticResult2(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetNeighboringWiFiDiagnosticResult2 ----->Entry\n");
+
+    wifi_neighbor_ap2_t *neighbor_ap2;
+    unsigned int output_array_size;
+    int radioIndex = 1;
+    int returnValue;
+    char details[1000] = {'\0'};
+
+    radioIndex = req["radioIndex"].asInt();
+
+    returnValue = ssp_WIFIHALGetNeighboringWiFiDiagnosticResult2(radioIndex, &neighbor_ap2, &output_array_size);
+    if(0 == returnValue)
+    {
+        sprintf(details, "Value returned is :ap_SSID=%s,ap_BSSID=%s,ap_Mode=%s,ap_Channel=%d,ap_SignalStrength=%d,ap_SecurityModeEnabled=%s,ap_EncryptionMode=%s,ap_OperatingFrequencyBand=%s,ap_SupportedStandards=%s,ap_OperatingStandards=%s,ap_OperatingChannelBandwidth=%s,ap_BeaconPeriod=%d,ap_Noise=%d,ap_BasicDataTransferRates=%s,ap_SupportedDataTransferRates=%s,ap_DTIMPeriod=%d,ap_ChannelUtilization=%d,output_array_size=%d",neighbor_ap2->ap_SSID,neighbor_ap2->ap_BSSID,neighbor_ap2->ap_Mode,neighbor_ap2->ap_Channel,neighbor_ap2->ap_SignalStrength,neighbor_ap2->ap_SecurityModeEnabled,neighbor_ap2->ap_EncryptionMode,neighbor_ap2->ap_OperatingFrequencyBand,neighbor_ap2->ap_SupportedStandards,neighbor_ap2->ap_OperatingStandards,neighbor_ap2->ap_OperatingChannelBandwidth,neighbor_ap2->ap_BeaconPeriod,neighbor_ap2->ap_Noise,neighbor_ap2->ap_BasicDataTransferRates,neighbor_ap2->ap_SupportedDataTransferRates,neighbor_ap2->ap_DTIMPeriod,neighbor_ap2->ap_ChannelUtilization,output_array_size);
+        response["result"]="SUCCESS";
+        response["details"]=details;
+        return;
+    }
+    else
+    {
+        sprintf(details, "wifi_getNeighboringWiFiDiagnosticResult2 operation failed");
+        response["result"]="FAILURE";
+        response["details"]=details;
+        DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetNeighboringWiFiDiagnosticResult2 ---->Error in execution\n");
+        return;
     }
 }
 /*******************************************************************************************

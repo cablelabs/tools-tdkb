@@ -1159,4 +1159,33 @@ int ssp_WIFIHALCreateInitialConfigFiles()
     }
     printf("\n ssp_WIFIHALCreateInitialConfigFiles ----> Exit\n");
 }
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_WIFIHALGetNeighboringWiFiDiagnosticResult2
+ * Description          : This function invokes WiFi HAL api wifi_getNeighboringWiFiDiagnosticResult2
+ *
+ * @param [in]          : radioIndex - WiFi radio index value
+ * @param [in]          : neighbor_ap2 - double pointer to a structure of type wifi_neighbor_ap2_t
+ * @param [in]          : output_array_size - pointer to a variable storing the number of access points identified
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_WIFIHALGetNeighboringWiFiDiagnosticResult2(int radioIndex, wifi_neighbor_ap2_t **neighbor_ap2, unsigned int *output_array_size)
+{
+    printf("\n ssp_WIFIHALGetNeighboringWiFiDiagnosticResult2 ----> Entry\n");
+    printf("Radio index:%d\n",radioIndex);
+    int return_status = 0;
+
+    return_status = wifi_getNeighboringWiFiDiagnosticResult2(radioIndex, neighbor_ap2, output_array_size);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_WIFIHALGetNeighboringWiFiDiagnosticResult2::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_WIFIHALGetNeighboringWiFiDiagnosticResult2::Success\n");
+     return return_status;
+    }
+    printf("\n ssp_WIFIHALGetNeighboringWiFiDiagnosticResult2 ---> Exit\n");
+}
 

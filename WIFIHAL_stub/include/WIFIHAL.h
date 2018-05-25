@@ -123,6 +123,27 @@ typedef struct _wifi_associated_dev
     unsigned int cli_AuthenticationFailures;
 }wifi_associated_dev_t;
 
+typedef struct _wifi_neighbor_ap2
+{
+    char ap_SSID[64];
+    char ap_BSSID[64];
+    char ap_Mode[64];
+    unsigned int ap_Channel;
+    int ap_SignalStrength;
+    char ap_SecurityModeEnabled[64];
+    char ap_EncryptionMode[64];
+    char ap_OperatingFrequencyBand[16];
+    char ap_SupportedStandards[64];
+    char ap_OperatingStandards[16];
+    char ap_OperatingChannelBandwidth[16];
+    unsigned int ap_BeaconPeriod;
+    int ap_Noise;
+    char ap_BasicDataTransferRates[256];
+    char ap_SupportedDataTransferRates[256];
+    unsigned int ap_DTIMPeriod;
+    unsigned int ap_ChannelUtilization;
+}wifi_neighbor_ap2_t;
+
 /* To provide external linkage to C Functions defined in TDKB Component folder */
 extern "C"
 {
@@ -151,6 +172,7 @@ extern "C"
     int ssp_WIFIHALGetRadioTrafficStats2(int radioIndex, GetRadioTrafficStats2 *TrafficStats2);
     int ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult(int apIndex, wifi_associated_dev_t **associated_dev, unsigned int *output_array_size);
     int ssp_WIFIHALCreateInitialConfigFiles();
+    int ssp_WIFIHALGetNeighboringWiFiDiagnosticResult2(int radioIndex, wifi_neighbor_ap2_t **neighbor_ap2, unsigned int *output_array_size);
 };
 
 class RDKTestAgent;
@@ -183,6 +205,7 @@ class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
                   this->bindAndAddMethod(Procedure("WIFIHAL_Down", PARAMS_BY_NAME, JSON_STRING, NULL), &WIFIHAL::WIFIHAL_Down);
                   this->bindAndAddMethod(Procedure("WIFIHAL_Init", PARAMS_BY_NAME, JSON_STRING, NULL), &WIFIHAL::WIFIHAL_Init);
                   this->bindAndAddMethod(Procedure("WIFIHAL_CreateInitialConfigFiles", PARAMS_BY_NAME, JSON_STRING, NULL), &WIFIHAL::WIFIHAL_CreateInitialConfigFiles);
+		  this->bindAndAddMethod(Procedure("WIFIHAL_GetNeighboringWiFiDiagnosticResult2",PARAMS_BY_NAME, JSON_STRING, "radioIndex",JSON_INTEGER,NULL), &WIFIHAL::WIFIHAL_GetNeighboringWiFiDiagnosticResult2);
                 }
         /*inherited functions*/
         bool initialize(IN const char* szVersion);
@@ -215,6 +238,7 @@ class WIFIHAL : public RDKTestStubInterface, public AbstractServer<WIFIHAL>
 	void WIFIHAL_Init(IN const Json::Value& req, OUT Json::Value& response);
 	void WIFIHAL_CreateInitialConfigFiles(IN const Json::Value& req, OUT Json::Value& response);
         void WIFIHAL_GetApAssociatedDeviceDiagnosticResult(IN const Json::Value& req, OUT Json::Value& response);
+	void WIFIHAL_GetNeighboringWiFiDiagnosticResult2(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__WIFIHAL_STUB_H__
 
