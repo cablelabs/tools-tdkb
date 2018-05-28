@@ -116,23 +116,37 @@ def wifidown ():
                 print "Radioenable status is :",RadioEnableStatus_afterwifidown;
                 print "wifi_down api functioned properly"
                 print "[TEST EXECUTION RESULT] : SUCCESS";
+
                 #Initializes the down radios
-                expectedresult="SUCCESS"
-                primitive = "WIFIHAL_Init"
-                tdkTestObj = obj.createTestStep("WIFIHAL_Init");
+                tdkTestObj = obj.createTestStep('WIFIHAL_ParamRadioIndex');
+                tdkTestObj.addParameter("radioIndex", 0);
+                tdkTestObj.addParameter("methodName", "initRadio");
+                expectedresult="SUCCESS";
+
+                #Execute the test case in DUT
                 tdkTestObj.executeTestCase(expectedresult);
-                actualresult = tdkTestObj.getResult();
+                actualresult0 = tdkTestObj.getResult();
                 details = tdkTestObj.getResultDetails();
-                if expectedresult in actualresult:
+
+                tdkTestObj = obj.createTestStep('WIFIHAL_ParamRadioIndex');
+                tdkTestObj.addParameter("radioIndex", 1);
+                tdkTestObj.addParameter("methodName", "initRadio");
+                expectedresult="SUCCESS";
+
+                #Execute the test case in DUT
+                tdkTestObj.executeTestCase(expectedresult);
+                actualresult1 = tdkTestObj.getResult();
+                details = tdkTestObj.getResultDetails();
+
+                if expectedresult in actualresult0 and expectedresult in actualresult1:
                     tdkTestObj.setResultStatus("SUCCESS");
-                    print "TEST STEP 6:INITIALIZES the wifi Radio";
-                    print "EXPECTED RESULT 6:Should INITIALIZES the wifi Radio 2.4 & 5 GHz";
-                    print "ACTUAL RESULT 6: Successfully initialize the wifi Radio 2.4 & 5 GHz"
+                    print "wifi_initRadio operation success"
+                    print "[TEST EXECUTION RESULT] : SUCCESS";
                 else:
                     tdkTestObj.setResultStatus("FAILURE");
-                    print "TEST STEP 6:INITIALIZES the wifi Radio";
-                    print "EXPECTED RESULT 6:Should INITIALIZES the wifi Radio 2.4 & 5 GHz";
-                    print "ACTUAL RESULT 6: FAILED to INITIALIZES the wifi Radio 5GHz"
+                    print "wifi_initRadio operation failed"
+                    print "[TEST EXECUTION RESULT] : FAILURE";
+
                 #Revert back to initial value
                 expectedresult="SUCCESS";
                 radioIndex = 1
