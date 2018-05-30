@@ -44,5 +44,5 @@ int ssp_WIFIHALGetSSIDTrafficStats2(int radioIndex,  wifi_ssidTrafficStats2_t *s
 int ssp_WIFIHALGetRadioTrafficStats2(int radioIndex, wifi_radioTrafficStats2_t *TrafficStats2);
 int ssp_WIFIHALDown();
 int ssp_WIFIHALCreateInitialConfigFiles();
-int ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult(int apIndex, wifi_associated_dev_t **associated_dev, unsigned int *output_array_size);
+int ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult(int radioIndex, wifi_associated_dev_t **associated_dev, unsigned int *output_array_size);
 int ssp_WIFIHALGetNeighboringWiFiDiagnosticResult2(int radioIndex, wifi_neighbor_ap2_t **neighbor_ap2, unsigned int *output_array_size);

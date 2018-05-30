@@ -1307,7 +1307,7 @@ void WIFIHAL::WIFIHAL_GetSSIDTrafficStats2(IN const Json::Value& req, OUT Json::
     returnValue = ssp_WIFIHALGetSSIDTrafficStats2(radioIndex, &ssidTrafficStats2);
     if(0 == returnValue)
     {
-        sprintf(details, "Value returned is :ssid_BytesSent=%d,ssid_BytesReceived=%d,ssid_PacketsSent=%d,ssid_PacketsReceived=%d,ssid_RetransCount=%d,ssid_FailedRetransCount=%d,ssid_RetryCount=%d,ssid_MultipleRetryCount=%d,ssid_ACKFailureCount=%d,ssid_AggregatedPacketCount=%d,ssid_ErrorsSent=%d,ssid_ErrorsReceived=%d,ssid_UnicastPacketsSent=%d,ssid_UnicastPacketsReceived=%d,ssid_DiscardedPacketsSent=%d,ssid_UnicastPacketsReceived=%d,ssid_DiscardedPacketsSent%d,ssid_DiscardedPacketsReceived=%d,ssid_MulticastPacketsSent=%d,ssid_MulticastPacketsReceived=%d,ssid_BroadcastPacketsSent=%d,ssid_BroadcastPacketsRecevied=%d,ssid_UnknownPacketsReceived=%d\n",ssidTrafficStats2.ssid_BytesSent,ssidTrafficStats2.ssid_BytesReceived,ssidTrafficStats2.ssid_PacketsSent,ssidTrafficStats2.ssid_PacketsReceived,ssidTrafficStats2.ssid_RetransCount,ssidTrafficStats2.ssid_FailedRetransCount,ssidTrafficStats2.ssid_RetryCount,ssidTrafficStats2.ssid_MultipleRetryCount,ssidTrafficStats2.ssid_ACKFailureCount,ssidTrafficStats2.ssid_AggregatedPacketCount,ssidTrafficStats2.ssid_ErrorsSent,ssidTrafficStats2.ssid_ErrorsReceived,ssidTrafficStats2.ssid_UnicastPacketsSent,ssidTrafficStats2.ssid_UnicastPacketsReceived,ssidTrafficStats2.ssid_DiscardedPacketsSent,ssidTrafficStats2.ssid_UnicastPacketsReceived,ssidTrafficStats2.ssid_DiscardedPacketsSent,ssidTrafficStats2.ssid_DiscardedPacketsReceived,ssidTrafficStats2.ssid_MulticastPacketsSent,ssidTrafficStats2.ssid_MulticastPacketsReceived,ssidTrafficStats2.ssid_BroadcastPacketsSent,ssidTrafficStats2.ssid_BroadcastPacketsRecevied,ssidTrafficStats2.ssid_UnknownPacketsReceived);
+        sprintf(details, "Value returned is :ssid_BytesSent=%lu,ssid_BytesReceived=%lu,ssid_PacketsSent=%lu,ssid_PacketsReceived=%lu,ssid_RetransCount=%lu,ssid_FailedRetransCount=%lu,ssid_RetryCount=%lu,ssid_MultipleRetryCount=%lu,ssid_ACKFailureCount=%lu,ssid_AggregatedPacketCount=%lu,ssid_ErrorsSent=%lu,ssid_ErrorsReceived=%lu,ssid_UnicastPacketsSent=%lu,ssid_UnicastPacketsReceived=%lu,ssid_DiscardedPacketsSent=%lu,ssid_UnicastPacketsReceived=%lu,ssid_DiscardedPacketsSent%lu,ssid_DiscardedPacketsReceived=%lu,ssid_MulticastPacketsSent=%lu,ssid_MulticastPacketsReceived=%lu,ssid_BroadcastPacketsSent=%lu,ssid_BroadcastPacketsRecevied=%lu,ssid_UnknownPacketsReceived=%lu\n",ssidTrafficStats2.ssid_BytesSent,ssidTrafficStats2.ssid_BytesReceived,ssidTrafficStats2.ssid_PacketsSent,ssidTrafficStats2.ssid_PacketsReceived,ssidTrafficStats2.ssid_RetransCount,ssidTrafficStats2.ssid_FailedRetransCount,ssidTrafficStats2.ssid_RetryCount,ssidTrafficStats2.ssid_MultipleRetryCount,ssidTrafficStats2.ssid_ACKFailureCount,ssidTrafficStats2.ssid_AggregatedPacketCount,ssidTrafficStats2.ssid_ErrorsSent,ssidTrafficStats2.ssid_ErrorsReceived,ssidTrafficStats2.ssid_UnicastPacketsSent,ssidTrafficStats2.ssid_UnicastPacketsReceived,ssidTrafficStats2.ssid_DiscardedPacketsSent,ssidTrafficStats2.ssid_UnicastPacketsReceived,ssidTrafficStats2.ssid_DiscardedPacketsSent,ssidTrafficStats2.ssid_DiscardedPacketsReceived,ssidTrafficStats2.ssid_MulticastPacketsSent,ssidTrafficStats2.ssid_MulticastPacketsReceived,ssidTrafficStats2.ssid_BroadcastPacketsSent,ssidTrafficStats2.ssid_BroadcastPacketsRecevied,ssidTrafficStats2.ssid_UnknownPacketsReceived);
         response["result"]="SUCCESS";
         response["details"]=details;
         return;
@@ -1343,7 +1343,7 @@ void WIFIHAL::WIFIHAL_GetRadioTrafficStats2 (IN const Json::Value& req, OUT Json
     returnValue = ssp_WIFIHALGetRadioTrafficStats2(radioIndex, &TrafficStats2);
     if(0 == returnValue)
     {
-        sprintf(details, "Value returned is :radio_BytesSent=%d,radio_BytesReceived=%d,radio_PacketsSent=%d,radio_ErrorsSent=%d,radio_PacketsReceived=%d,radio_ErrorsReceived=%d,radio_DiscardPacketsSent=%d,radio_DiscardPacketsReceived=%d,radio_PLCPErrorCount=%d,radio_FCSErrorCount=%d,radio_InvalidMACCount=%d,radio_PacketsOtherReceived=%d,radio_NoiseFloor=%d,radio_ChannelUtilization=%d,radio_ActivityFactor=%d,radio_CarrierSenseThreshold_Exceeded=%d,radio_RetransmissionMetirc=%d,radio_MaximumNoiseFloorOnChannel=%d,radio_MinimumNoiseFloorOnChannel=%d,radio_MedianNoiseFloorOnChannel=%d,radio_StatisticsStartTime=%d",TrafficStats2.radio_BytesSent,TrafficStats2.radio_BytesReceived,TrafficStats2.radio_PacketsSent,TrafficStats2.radio_ErrorsSent,TrafficStats2.radio_PacketsReceived,TrafficStats2.radio_ErrorsReceived,TrafficStats2.radio_DiscardPacketsSent,TrafficStats2.radio_DiscardPacketsReceived,TrafficStats2.radio_PLCPErrorCount,TrafficStats2.radio_FCSErrorCount,TrafficStats2.radio_InvalidMACCount,TrafficStats2.radio_PacketsOtherReceived,TrafficStats2.radio_NoiseFloor,TrafficStats2.radio_ChannelUtilization,TrafficStats2.radio_ActivityFactor,TrafficStats2.radio_CarrierSenseThreshold_Exceeded,TrafficStats2.radio_RetransmissionMetirc,TrafficStats2.radio_MaximumNoiseFloorOnChannel,TrafficStats2.radio_MinimumNoiseFloorOnChannel,TrafficStats2.radio_MedianNoiseFloorOnChannel,TrafficStats2.radio_StatisticsStartTime);
+        sprintf(details, "Value returned is :radio_BytesSent=%lu,radio_BytesReceived=%lu,radio_PacketsSent=%lu,radio_ErrorsSent=%lu,radio_PacketsReceived=%lu,radio_ErrorsReceived=%lu,radio_DiscardPacketsSent=%lu,radio_DiscardPacketsReceived=%lu,radio_PLCPErrorCount=%lu,radio_FCSErrorCount=%lu,radio_InvalidMACCount=%lu,radio_PacketsOtherReceived=%lu,radio_NoiseFloor=%lu,radio_ChannelUtilization=%lu,radio_ActivityFactor=%lu,radio_CarrierSenseThreshold_Exceeded=%lu,radio_RetransmissionMetirc=%lu,radio_MaximumNoiseFloorOnChannel=%lu,radio_MinimumNoiseFloorOnChannel=%lu,radio_MedianNoiseFloorOnChannel=%lu,radio_StatisticsStartTime=%lu",TrafficStats2.radio_BytesSent,TrafficStats2.radio_BytesReceived,TrafficStats2.radio_PacketsSent,TrafficStats2.radio_ErrorsSent,TrafficStats2.radio_PacketsReceived,TrafficStats2.radio_ErrorsReceived,TrafficStats2.radio_DiscardPacketsSent,TrafficStats2.radio_DiscardPacketsReceived,TrafficStats2.radio_PLCPErrorCount,TrafficStats2.radio_FCSErrorCount,TrafficStats2.radio_InvalidMACCount,TrafficStats2.radio_PacketsOtherReceived,TrafficStats2.radio_NoiseFloor,TrafficStats2.radio_ChannelUtilization,TrafficStats2.radio_ActivityFactor,TrafficStats2.radio_CarrierSenseThreshold_Exceeded,TrafficStats2.radio_RetransmissionMetirc,TrafficStats2.radio_MaximumNoiseFloorOnChannel,TrafficStats2.radio_MinimumNoiseFloorOnChannel,TrafficStats2.radio_MedianNoiseFloorOnChannel,TrafficStats2.radio_StatisticsStartTime);
         response["result"]="SUCCESS";
         response["details"]=details;
 	return;
@@ -1361,35 +1361,45 @@ void WIFIHAL::WIFIHAL_GetRadioTrafficStats2 (IN const Json::Value& req, OUT Json
  *
  * Function Name        : WIFIHAL_GetApAssociatedDeviceDiagnosticResult
  * Description          : This function invokes WiFi hal api wifi_getApAssociatedDeviceDiagnosticResult
-
- * @param [in] req-     : apIndex - Access Point Index
+ * @param [in] req-     : radioIndex - radio index of the wifi
  * @param [out] response - filled with SUCCESS or FAILURE based on the output status of operation
  *
  ********************************************************************************************/
 void WIFIHAL::WIFIHAL_GetApAssociatedDeviceDiagnosticResult(IN const Json::Value& req, OUT Json::Value& response)
 {
     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetApAssociatedDeviceDiagnosticResult ----->Entry\n");
-    wifi_associated_dev_t *associated_dev;
+    wifi_associated_dev_t *associated_dev = (wifi_associated_dev_t*)malloc(sizeof(wifi_associated_dev_t));
     unsigned int output_array_size;
-    int apIndex = 1;
+    int radioIndex = 1;
     int returnValue;
-    char details[1000] = {'\0'};
-    apIndex = req["apIndex"].asInt();
-    returnValue = ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult(apIndex, &associated_dev, &output_array_size);
-    if(0 == returnValue)
+    char details[2000] = {'\0'};
+    radioIndex = req["radioIndex"].asInt();
+    if (associated_dev != NULL)
     {
-	sprintf(details,"Value returned is :cli_MACAddress = %s,cli_IPAddress = %s,cli_AuthenticationState = %s,cli_LastDataDownlinkRate = %d,cli_LastDataUplinkRate = %d,cli_SignalStrength = %d,cli_Retransmissions = %d,cli_Active = %s,cli_OperatingStandard = %s,cli_OperatingChannelBandwidth = %s,cli_SNR = %d,cli_InterferenceSources = %s,cli_DataFramesSentAck = %d,cli_DataFramesSentNoAck = %d,cli_BytesSent = %d,cli_BytesReceived = %d,cli_RSSI = %d,cli_MinRSSI = %d,cli_MaxRSSI = %d,cli_Disassociations = %d,cli_AuthenticationFailures = %d\n",associated_dev->cli_MACAddress,associated_dev->cli_IPAddress,associated_dev->cli_AuthenticationState,associated_dev->cli_LastDataDownlinkRate,associated_dev->cli_LastDataUplinkRate,associated_dev->cli_SignalStrength,associated_dev->cli_Retransmissions,associated_dev->cli_Active,associated_dev->cli_OperatingStandard,associated_dev->cli_OperatingChannelBandwidth,associated_dev->cli_SNR,associated_dev->cli_InterferenceSources,associated_dev->cli_DataFramesSentAck,associated_dev->cli_DataFramesSentNoAck,associated_dev->cli_BytesSent,associated_dev->cli_BytesReceived,associated_dev->cli_RSSI,associated_dev->cli_MinRSSI,associated_dev->cli_MaxRSSI,associated_dev->cli_Disassociations,associated_dev->cli_AuthenticationFailures,output_array_size);
-	response["result"]="SUCCESS";
-	response["details"]=details;
-	return;
+         DEBUG_PRINT(DEBUG_TRACE,"\n Memory Allocated Successfully");
     }
     else
     {
-	sprintf(details, "wifi_getApAssociatedDeviceDiagnosticResult operation failed");
-	response["result"]="FAILURE";
-	response["details"]=details;
-	DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetApAssociatedDeviceDiagnosticResult ---->Error in execution\n");
-	return;
+         DEBUG_PRINT(DEBUG_TRACE, "\n Memory Allocation Failed");
+    }
+    returnValue = ssp_WIFIHALGetApAssociatedDeviceDiagnosticResult(radioIndex, &associated_dev, &output_array_size);
+    if(0 == returnValue)
+    {
+        //sprintf(details, "Value returned is :cli_MACAddress=%s,cli_IPAddress=%s,cli_AuthenticationState=%d,cli_LastDataDownlinkRate=%d,cli_LastDataUplinkRate=%d,cli_SignalStrength=%d,cli_Retransmissions=%d,cli_Active=%d,cli_OperatingStandard=%s,cli_OperatingChannelBandwidth=%s,cli_SNR=%d,cli_InterferenceSources=%s,cli_DataFramesSentAck=%lu,cli_DataFramesSentNoAck=%lu,cli_BytesSent=%lu,cli_BytesReceived=%lu,cli_RSSI=%d,cli_MinRSSI=%d,cli_MaxRSSI=%d,cli_Disassociations=%d,cli_AuthenticationFailures=%d,output_array_size=%d",associated_dev->cli_MACAddress,associated_dev->cli_IPAddress,associated_dev->cli_AuthenticationState,associated_dev->cli_LastDataDownlinkRate,associated_dev->cli_LastDataUplinkRate,associated_dev->cli_SignalStrength,associated_dev->cli_Retransmissions,associated_dev->cli_Active,associated_dev->cli_OperatingStandard,associated_dev->cli_OperatingChannelBandwidth,associated_dev->cli_SNR,associated_dev->cli_InterferenceSources,associated_dev->cli_DataFramesSentAck,associated_dev->cli_DataFramesSentNoAck,associated_dev->cli_BytesSent,associated_dev->cli_BytesReceived,associated_dev->cli_RSSI,associated_dev->cli_MinRSSI,associated_dev->cli_MaxRSSI,associated_dev->cli_Disassociations,associated_dev->cli_AuthenticationFailures,output_array_size);
+        sprintf(details,"Value returned is : output_array_size=%d",output_array_size);
+        response["result"]="SUCCESS";
+        response["details"]=details;
+        free(associated_dev);
+        return;
+    }
+    else
+    {
+        sprintf(details, "wifi_getApAssociatedDeviceDiagnosticResult operation failed");
+        response["result"]="FAILURE";
+        response["details"]=details;
+        free(associated_dev);
+        DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetApAssociatedDeviceDiagnosticResult ---->Error in execution\n");
+        return;
     }
 }
 /*******************************************************************************************
