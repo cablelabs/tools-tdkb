@@ -92,6 +92,7 @@ class RpcMethods : public AbstractServer<RpcMethods>
          this->bindAndAddMethod(Procedure("uploadLog", PARAMS_BY_NAME, JSON_STRING,"STBfilename",JSON_STRING,"TMfilename",JSON_STRING,"logUploadURL",JSON_STRING,NULL), &RpcMethods::RPCuploadLog);
          this->bindAndAddMethod(Procedure("getImageName", PARAMS_BY_NAME, JSON_STRING,NULL), &RpcMethods::RPCGetImageName);
          this->bindAndAddMethod(Procedure("executeTestCase", PARAMS_BY_NAME,JSON_STRING,NULL), &RpcMethods::RPCExecuteTestCase);
+	 this->bindAndAddMethod(Procedure("diagnosticsTest", PARAMS_BY_NAME, JSON_STRING,NULL), &RpcMethods::RPCDiagnosticsTest);
 
          /* Below methods are applicable only for Gateway boxes */
          #ifdef PORT_FORWARD
@@ -123,6 +124,7 @@ class RpcMethods : public AbstractServer<RpcMethods>
 	void RPCPushLog (const Json::Value& request, Json::Value& response);
 	void RPCuploadLog (const Json::Value& request, Json::Value& response);
 	void RPCGetImageName (const Json::Value& request, Json::Value& response);
+	void RPCDiagnosticsTest (const Json::Value& request, Json::Value& response);
 
         /* Below methods are applicable only for Gateway boxes */
         #ifdef PORT_FORWARD
