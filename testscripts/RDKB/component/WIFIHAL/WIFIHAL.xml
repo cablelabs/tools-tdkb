@@ -207,7 +207,7 @@
       <primitiveTest name="WIFIHAL_GetApAssociatedDeviceDiagnosticResult" id=" " version="1">
         <function>WIFIHAL_GetApAssociatedDeviceDiagnosticResult</function>
         <parameters>
-          <parameter name="apIndex" value="0"/>
+          <parameter name="radioIndex" value="0"/>
         </parameters>
       </primitiveTest>
     </primitiveTests>
