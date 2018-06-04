@@ -158,8 +158,8 @@ if "SUCCESS" in result.upper() :
 
 	    print "TEST STEP 4: Revert the firewall level"
 	    queryParam = {"name":"Device.X_CISCO_COM_Security.Firewall.FirewallLevel","value":orgValue,"dataType":0}
-            queryResponse = webpaQuery(obj, queryParam, 1, "set")
-            parsedResponse = parseWebpaResponse(queryResponse, "set")
+            queryResponse = webpaQuery(obj, queryParam, "set")
+            parsedResponse = parseWebpaResponse(queryResponse, 1, "set")
             tdkTestObj.executeTestCase("SUCCESS");
             if 200 in parsedResponse:
                 tdkTestObj.setResultStatus("SUCCESS");
