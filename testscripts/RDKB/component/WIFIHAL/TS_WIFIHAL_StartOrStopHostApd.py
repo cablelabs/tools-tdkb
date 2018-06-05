@@ -190,13 +190,14 @@ if "SUCCESS" in loadmodulestatus.upper():
                 tdkTestObj.setResultStatus("FAILURE");
                 print"TEST STEP:To start the HostApd using wifi_startHostApd() api and check whether the Apstatus is changed";
                 print"EXPECTED RESULT:The ApStatus should be changed to 'Up' for both 2.4GHz and 5GHz";
-                print"ACTUAL RESULT:The ApStatus is changed to 'Up' for both 2.4GHz and 5GHz";
+                print"ACTUAL RESULT:The ApStatus is not changed to 'Up' for both 2.4GHz and 5GHz";
                 print"[TEST EXECUTION RESULT]:FAILURE";
         else:
             tdkTestObj.setResultStatus("FAILURE");
             print"StartHostApd() operation failed";
     else:
         print "wifi_getApStatus is returning invalid status";
+        tdkTestObj.setResultStatus("FAILURE");
     obj.unloadModule("wifihal");
 else:
     print "Failed to load wifi module";
