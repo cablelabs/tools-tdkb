@@ -111,6 +111,12 @@ if "SUCCESS" in loadmodulestatus.upper():
             if setConfigMethod in initConfigMethodList:
 		continue;
 	    else:
+		#"PushButton" ---------------------------> PUSH Method
+		#"Keypad,Label,Display" -----------------> PIN method
+		#"PushButton,Keypad,Label,Display" ------> PUSH/PIN method
+                if setConfigMethod == "PIN":
+                    setConfigMethod = "Keypad,Label,Display"
+
                 expectedresult="SUCCESS";
 	        apIndex = 1
 	        setMethod = "setApWpsConfigMethodsEnabled"
@@ -130,7 +136,9 @@ if "SUCCESS" in loadmodulestatus.upper():
 
 		    if expectedresult in actualresult:
 			finalConfigMethod = details.split(":")[1].strip()
-			if finalConfigMethod == setConfigMethod:
+                        finalConfigMethod = finalConfigMethod.split(",")
+                        setConfigMethod = setConfigMethod.split(",")
+                        if set(finalConfigMethod) == set(setConfigMethod):
 			    tdkTestObj.setResultStatus("SUCCESS");
                             print "TEST STEP: Compare the set and get values of ApWpsConfigMethodsEnabled"
                             print "EXPECTED RESULT: Set and get values of ApWpsConfigMethodsEnabled should be same"
