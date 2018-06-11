@@ -273,26 +273,29 @@ void WIFIHAL::WIFIHAL_GetOrSetParamStringValue(IN const Json::Value& req, OUT Js
         returnValue = ssp_WIFIHALGetOrSetParamStringValue(radioIndex, param, methodName);
         if(0 == returnValue)
         {
-            sprintf(details, "%s operation success", methodName);
-            response["result"]="SUCCESS";
-            response["details"]=details;
-        
             if(strstr(methodName, "Radio")||strstr(methodName, "SSID")||strstr(methodName, "Ap"))
             {
                 retValue = ssp_WIFIHALApplySettings(radioIndex,methodName);
                 if(0 == retValue)
                 {
+                    sprintf(details, "%s operation success", methodName);
+                    response["result"]="SUCCESS";
+                    response["details"]=details;
                     printf("applyRadioSettings operation success\n");
                     return;
                 }
                 else
                 {
-                    printf("applyRadioSettings operation failed\n");
+                    sprintf(details, "%s operation failed", methodName);
+                    response["result"]="FAILURE";
+                    response["details"]=details;
+                    printf("applyRadioSettings operation Failed\n");
                     return;
                 }
             }
-	    else
-		return;
+            response["result"]="SUCCESS";
+            response["details"]=details;
+            return;
         }
         else
         {
