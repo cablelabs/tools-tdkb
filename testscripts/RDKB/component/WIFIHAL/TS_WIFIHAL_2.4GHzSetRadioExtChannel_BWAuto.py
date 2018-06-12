@@ -33,7 +33,6 @@
   <remarks/>
   <skip>false</skip>
   <box_types>
-    <box_type>Broadband</box_type>
   </box_types>
   <rdk_versions>
     <rdk_version>RDKB</rdk_version>
@@ -95,7 +94,6 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_WIFIHAL_2.4GHzSetRadioExtChannel_BWAuto');
 
-
 def ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, param, methodname):
     tdkTestObj = obj.createTestStep(primitive);
     tdkTestObj.addParameter("radioIndex", radioIndex);
@@ -108,26 +106,21 @@ def ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, param, methodname):
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
-
     return (tdkTestObj, actualresult, details);
-
     
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus
 
 if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
-
     #Calling the method to execute wifi_getRadioOperatingChannelBandwidth() inorder to get the initial channel bandwidth
     expectedresult = "SUCCESS";
     radioIndex = 0
     getMethod = "getChannelBandwidth"
     primitive = 'WIFIHAL_GetOrSetParamStringValue'
-
     #Calling the method to execute wifi_getRadioExtChannel()
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
     initBandwidth = details.split(":")[1].strip()
-
     if expectedresult in actualresult :
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
@@ -141,10 +134,8 @@ if "SUCCESS" in loadmodulestatus.upper():
         radioIndex = 0
         setMethod = "setChannelBandwidth"
         primitive = 'WIFIHAL_GetOrSetParamStringValue'
-
         #Calling the method to execute wifi_setRadioOperatingChannelBandwidth()
         tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, 'Auto', setMethod)
-
         if expectedresult in actualresult :
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
@@ -158,11 +149,9 @@ if "SUCCESS" in loadmodulestatus.upper():
             radioIndex = 0
             getMethod = "getChannelBandwidth"
             primitive = 'WIFIHAL_GetOrSetParamStringValue'
-
             #Calling the method to execute wifi_getRadioOperatingChannelBandwidth()
             tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
             bandWidth = details.split(":")[1].strip()
-
             bandWidthList = ['20MHz','40MHz','80MHz','160MHz','Auto'];
             if expectedresult in actualresult and bandWidth in bandWidthList:
                 #Set the result status of execution
@@ -177,20 +166,16 @@ if "SUCCESS" in loadmodulestatus.upper():
                 radioIndex = 0
                 getMethod = "getRadioExtChannel"
                 primitive = 'WIFIHAL_GetOrSetParamStringValue'
-
                 #Calling the method to execute wifi_getRadioExtChannel()
                 tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
-
                 possibleExtChannels = ['AboveControlChannel', 'BelowControlChannel', 'Auto']
                 initGetExtCh = details.split(":")[1].strip()
-
                 if expectedresult in actualresult and initGetExtCh in possibleExtChannels and len(initGetExtCh) <= 64:
                     tdkTestObj.setResultStatus("SUCCESS");
                     print "TEST STEP : Get the Radio Extension Channel";
                     print "EXPECTED RESULT : wifi_getRadioExtChannel should return a string value either AboveControlChannel or BelowControlChannel or Auto";
                     print "ACTUAL RESULT : Ext Channel value string received: %s"%initGetExtCh;
                     print "[TEST EXECUTION RESULT] : SUCCESS";
-
                     for setExtCh in possibleExtChannels:
                         if initGetExtCh == setExtCh:
                             continue;
@@ -199,10 +184,8 @@ if "SUCCESS" in loadmodulestatus.upper():
                             radioIndex = 0
                             setMethod = "setRadioExtChannel"
                             primitive = 'WIFIHAL_GetOrSetParamStringValue'
-
                             #Calling the method to execute wifi_setRadioExtChannel()
                             tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, setExtCh, setMethod)
-
                             if expectedresult in actualresult:
                                 #Set the result status of execution
                                 tdkTestObj.setResultStatus("SUCCESS");
@@ -216,11 +199,9 @@ if "SUCCESS" in loadmodulestatus.upper():
                                 radioIndex = 0
                                 setMethod = "getRadioExtChannel"
                                 primitive = 'WIFIHAL_GetOrSetParamStringValue'
-
                                 #Calling the method to execute wifi_getRadioExtChannel()
                                 tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
                                 getExtCh = details.split(":")[1].strip()
-
                                 if expectedresult in actualresult and getExtCh == setExtCh:
                                     #Set the result status of execution
                                     tdkTestObj.setResultStatus("SUCCESS");
@@ -244,18 +225,14 @@ if "SUCCESS" in loadmodulestatus.upper():
                                 radioIndex = 0
                                 setMethod = "setRadioExtChannel"
                                 primitive = 'WIFIHAL_GetOrSetParamStringValue'
-
                                 #Calling the method to execute wifi_setRadioExtChannel()
                                 tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, initGetExtCh, setMethod)
-
                                 if expectedresult in actualresult:
                                     tdkTestObj.setResultStatus("SUCCESS");
                                     print "Extension channel is successfully reverted to initial value"
-
                                 else:
                                     tdkTestObj.setResultStatus("FAILURE");
                                     print "Unable to revert the extension channel to initial value"
-
                             else:
                                 #Set the result status of execution
                                 tdkTestObj.setResultStatus("FAILURE");
@@ -286,18 +263,14 @@ if "SUCCESS" in loadmodulestatus.upper():
             radioIndex = 0
             setMethod = "setChannelBandwidth"
             primitive = 'WIFIHAL_GetOrSetParamStringValue'
-
             #Calling the method to execute wifi_setRadioOperatingChannelBandwidth()
             tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, initBandwidth, setMethod)
-
             if expectedresult in actualresult:
                 tdkTestObj.setResultStatus("SUCCESS");
                 print "Radio Operating Channel Bandwidth is successfully reverted to initial value"
-
             else:
                 tdkTestObj.setResultStatus("FAILURE");
                 print "Unable to revert the Radio Opertaing Channel Bandwidth to initial value"
-
         else:
             #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
@@ -306,7 +279,6 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT : %s " %details
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
-
     else:
         #Set the result status of execution
         tdkTestObj.setResultStatus("FAILURE");
@@ -315,9 +287,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT : %s " %details
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : FAILURE";
-
     obj.unloadModule("wifihal");
-
 else:
     print "Failed to load wifi module";
     obj.setLoadModuleStatus("FAILURE");
