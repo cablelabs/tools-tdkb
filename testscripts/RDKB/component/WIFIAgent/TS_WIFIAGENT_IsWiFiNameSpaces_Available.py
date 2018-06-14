@@ -87,49 +87,44 @@
   </script_tags>
 </xml>
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("wifiagent","1");
-sysObj = tdklib.TDKScriptingLibrary("sysutil","RDKB");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_WIFIAGENT_IsWiFiNameSpaces_Available');
-sysObj.configureTestCase(ip,port,'TS_WIFIAGENT_IsWiFiNameSpaces_Available');
 
 #Get the result of connection with test component and STB
-loadmodulestatus1 =obj.getLoadModuleResult();
-loadmodulestatus2 =sysObj.getLoadModuleResult();
+loadmodulestatus =obj.getLoadModuleResult();
 
-if "SUCCESS" in loadmodulestatus1.upper() and "SUCCESS" in loadmodulestatus2.upper():
+if "SUCCESS" in loadmodulestatus.upper():
     obj.setLoadModuleStatus("SUCCESS");
 
     expectedresult="SUCCESS";
-    tdkTestObj = obj.createTestStep('WIFIAgent_Get')
-    tdkTestObj.addParameter("paramName","Device.WiFi.")
+    tdkTestObj = obj.createTestStep('WIFIAgent_GetNames')
+    tdkTestObj.addParameter("pathname","Device.WiFi.");
+    tdkTestObj.addParameter("brecursive",1);
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
-    details = tdkTestObj.getResultDetails();
 
-    if expectedresult in actualresult and "Can't find destination component" not in details:
+    if expectedresult in actualresult :
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Check if wifi namespaces are available or not"
         print "EXPECTED RESULT 1: WiFi namespaces should be available"
         print "ACTUAL RESULT 1: SUCCESS";
     else:
-	#Set the result status of execution
+        #Set the result status of execution
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Check if wifi namespaces are available or not"
         print "EXPECTED RESULT 1: WiFi namespaces should be available"
         print "ACTUAL RESULT 1: FAILURE";
     obj.unloadModule("wifiagent");
-    sysObj.unloadModule("sysutil");
 else:
     print "Failed to load sysutil module";
     obj.setLoadModuleStatus("FAILURE");
-

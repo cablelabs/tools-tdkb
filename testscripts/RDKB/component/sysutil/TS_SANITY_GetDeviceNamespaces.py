@@ -109,7 +109,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     expectedresult="SUCCESS";
     tdkTestObj = obj.createTestStep('WIFIAgent_GetNames')
     tdkTestObj.addParameter("pathname","Device.")
-    tdkTestObj.addParameter("brecursive",0)
+    tdkTestObj.addParameter("brecursive",1)
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     details = tdkTestObj.getResultDetails();
