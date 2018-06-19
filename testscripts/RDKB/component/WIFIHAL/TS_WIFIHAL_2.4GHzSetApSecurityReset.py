@@ -136,35 +136,10 @@ def setRadioChannelMode(gOnly_set,nOnly_set,acOnly_set):
         tdkTestObj.setResultStatus("SUCCESS");
         return 1;
     else:
-       tdkTestObj.setResultStatus("FAILURE");
-       return 0;
+        tdkTestObj.setResultStatus("FAILURE");
+        return 0;
 
-if "SUCCESS" in loadmodulestatus.upper():
-    obj.setLoadModuleStatus("SUCCESS");
-    Currentchannel_initial,gOnly_initial,nOnly_initial,acOnly_initial = getRadioStandard();
-    print"gOnly initial value : ",gOnly_initial;
-    print"nOnly initial value: ",nOnly_initial;
-    print"acOnly initial value: ",acOnly_initial;
-    if (gOnly_initial,nOnly_initial,acOnly_initial) == (1,0,0):
-        gOnly_set,nOnly_set,acOnly_set = (0,1,0);
-        print"gOnly set value : ",gOnly_set;
-        print"nOnly set value: ",nOnly_set;
-        print"acOnly set value: ",acOnly_set;
-        retvalue = setRadioChannelMode(0,1,0);
-        if retvalue == 1:
-            print"wifi_setRadioChannelMode() operation success";
-        else:
-            print"wifi_setRadioChannelMode() operation failed";
-    else:
-        gOnly_set,nOnly_set,acOnly_set = (1,0,0);
-        print"gOnly set value : ",gOnly_set;
-        print"nOnly set value: ",nOnly_set;
-        print"acOnly set value: ",acOnly_set;
-        retvalue = setRadioChannelMode(1,0,0);
-        if retvalue == 1:
-            print"wifi_setRadioChannelMode() operation success";
-        else:
-            print"wifi_setRadioChannelMode() operation failed";
+def setApSecurityReset():
     #Script to load the configuration file of the component
     tdkTestObj = obj.createTestStep("WIFIHAL_ParamRadioIndex");
     #Giving the method name to invoke the api wifi_setApSecurityReset()
@@ -178,16 +153,17 @@ if "SUCCESS" in loadmodulestatus.upper():
     print"details",details;
     if expectedresult in actualresult:
         Currentchannel_final,gOnly_final,nOnly_final,acOnly_final = getRadioStandard();
-        print"gOnly value after reset : ",gOnly_final;
-        print"nOnly value after reset: ",nOnly_final;
-        print"acOnly value after reset: ",acOnly_final;
-        if (gOnly_final,nOnly_final,acOnly_final) != (gOnly_set,nOnly_set,acOnly_set):
-            tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 1: To invoke the api wifi_setApSecurityReset and check whether the mode is not equal to the set mode for 2.4GHz";
-            print "EXPECTED RESULT 1: The mode should not be equal to the set mode for 2.4GHz";
-            print "ACTUAL RESULT 1: The mode in not equal to the set mode for 2.4GHz";
-            #Get the result of execution
-            print "[TEST EXECUTION RESULT] : SUCCESS";
+	print"gOnly value after reset : ",gOnly_final;
+	print"nOnly value after reset: ",nOnly_final;
+	print"acOnly value after reset: ",acOnly_final;
+	print "Currentchannel_final : ",Currentchannel_final;
+	if (gOnly_final,nOnly_final,acOnly_final) == (1,0,0):
+	    tdkTestObj.setResultStatus("SUCCESS");
+	    print "TEST STEP 1: To invoke the api wifi_setApSecurityReset and check whether the mode is not equal to the set mode for 2.4GHz";
+	    print "EXPECTED RESULT 1: The mode should be equal to the default mode for 2.4GHz";
+	    print "ACTUAL RESULT 1: The mode is equal to the default mode for 2.4GHz";
+	    #Get the result of execution
+	    print "[TEST EXECUTION RESULT] : SUCCESS";
             #Revert the mode to initial mode
             revert = setRadioChannelMode(gOnly_initial,nOnly_initial,acOnly_initial);
             if revert == 1:
@@ -196,25 +172,49 @@ if "SUCCESS" in loadmodulestatus.upper():
             else:
                 print"Unable to revert back to initial value";
                 tdkTestObj.setResultStatus("FAILURE");
-        else:
+	else:
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 1: To invoke the api wifi_setApSecurityReset and check whether the mode is not equal to the set mode for 2.4GHz";
-            print "EXPECTED RESULT 1: The mode should not be equal to the set mode for 2.4GHz";
-            print "ACTUAL RESULT 1: The mode is equal to the set mode for 2.4GHz";
-            #Get the result of execution
-            print "[TEST EXECUTION RESULT] : FAILURE";
+	    print "TEST STEP 1: To invoke the api wifi_setApSecurityReset and check whether the mode is not equal to the set mode for 2.4GHz";
+	    print "EXPECTED RESULT 1: The mode should be equal to the default mode for 2.4GHz";
+	    print "ACTUAL RESULT 1: The mode in not equal to the default mode for 2.4GHz";
+	    #Get the result of execution
+	    print "[TEST EXECUTION RESULT] : FAILURE";
+            #Revert the mode to initial mode
+            revert = setRadioChannelMode(gOnly_initial,nOnly_initial,acOnly_initial);
+            if revert == 1:
+                print"Successfully reverted back to initial value";
+                tdkTestObj.setResultStatus("SUCCESS");
+            else:
+                print"Unable to revert back to initial value";
+                tdkTestObj.setResultStatus("FAILURE");
     else:
-        tdkTestObj.setResultStatus("FAILURE");
+	tdkTestObj.setResultStatus("FAILURE");
 	print "wifi_setApSecurityReset() operation failed";
-        #Revert the mode to initial mode
-        revert = setRadioChannelMode(gOnly_initial,nOnly_initial,acOnly_initial);
-        if revert == 1:
-            print"Successfully reverted back to initial value";
-            tdkTestObj.setResultStatus("SUCCESS");
-        else:
-            print"Unable to revert back to initial value";
-            tdkTestObj.setResultStatus("FAILURE");
-    obj.unloadModule("wifihal");
+
+if "SUCCESS" in loadmodulestatus.upper():
+    obj.setLoadModuleStatus("SUCCESS");
+    Currentchannel_initial,gOnly_initial,nOnly_initial,acOnly_initial = getRadioStandard();
+    print"gOnly initial value : ",gOnly_initial;
+    print"nOnly initial value: ",nOnly_initial;
+    print"acOnly initial value: ",acOnly_initial;
+    print "Currentchannel_initial : ",Currentchannel_initial
+    if (gOnly_initial,nOnly_initial,acOnly_initial) == (1,0,0):
+       gOnly_set,nOnly_set,acOnly_set = (0,1,0);
+       print"gOnly set value : ",gOnly_set;
+       print"nOnly set value: ",nOnly_set;
+       print"acOnly set value: ",acOnly_set;
+       retvalue = setRadioChannelMode(0,1,0);
+       if retvalue == 1:
+           print"wifi_setRadioChannelMode() operation success";
+           setApSecurityReset()
+       else:
+	   tdkTestObj.setResultStatus("FAILURE");
+           print"wifi_setRadioChannelMode() operation failed";
+    else:
+        print"Radio standard values are not same as default value 1 0 0, so calling setApSecurityReset() function";
+	setApSecurityReset()
+	obj.unloadModule("wifihal");
 else:
     print "Failed to load the module";
-    obj.setLoadModuleStatus("FAILURE"); 
+    obj.setLoadModuleStatus("FAILURE");
+
