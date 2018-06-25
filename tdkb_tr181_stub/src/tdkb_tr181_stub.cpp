@@ -27,6 +27,7 @@ extern "C"
     int ssp_setParameterValue(char *pParamName,char *pParamValue,char *pParamType, int commit);
     int ssp_addTableRow(char *pObjTbl,int *pInstanceNumber);
     int ssp_deleteTableRow(char *pObjTbl);
+    int ssp_setMultipleParameterValue(char **paramList, int size);
     void free_Memory_val(int size,GETPARAMVALUES *Freestruct);
 };
 /***************************************************************************
@@ -205,6 +206,64 @@ void TDKB_TR181Stub::TDKB_TR181Stub_AddObject(IN const Json::Value& req, OUT Jso
     }
     DEBUG_PRINT(DEBUG_TRACE,"\n TDKB_TR181Stub_AddObject --->Exit\n");
     return;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : TDKB_TR181Stub_SetMultiple
+ * Description          : This function will set multiple parameter value at one shot
+ *
+ * @param [in] req-        ParamList will hold the entire list to be set.
+ *
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value of
+ *                         ssp_setMultipleParameterValue
+********************************************************************************************/
+void TDKB_TR181Stub::TDKB_TR181Stub_SetMultiple(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n TDKB_TR181Stub_SetMultiple --->Entry\n");
+    int returnValue = 0;
+    char params[1000] = {'\0'};
+    char **paramlist  = NULL;
+    int num_spaces = 0;
+    int index = 0;
+    int size = 0;
+    strcpy(params,req["paramList"].asCString());
+    DEBUG_PRINT(DEBUG_TRACE,"\nTDKB_TR181Stub_Set:: ParamList input is %s\n",params);
+    char *list = strtok (params, "|");
+    while (list) {
+    paramlist = (char **) realloc (paramlist, ++num_spaces * sizeof(char *));
+    if (paramlist == NULL)
+    return; /* memory allocation failed */
+    paramlist[num_spaces-1] = list;
+    list = strtok (NULL, "|");
+   }
+   /* realloc one extra element for the last NULL */
+   paramlist = (char **) realloc (paramlist, (num_spaces+1) * sizeof(char *));
+   paramlist[num_spaces] = 0;
+   for (index = 0; index < (num_spaces); index++)
+   {
+     printf ("\nparamlist[%d] = %s\n", index, paramlist[index]);
+   }
+   printf("Index Count:%d\n",index);
+   size = index/3;
+   printf("ParamCount:%d\n",size);
+   printf("Invoking ssp_setMultipleParameterValue function\n");
+   returnValue = ssp_setMultipleParameterValue(paramlist,size);
+   if(0 == returnValue)
+   {
+       response["result"]="SUCCESS";
+       response["details"]="SET API Validation is Success";
+   }
+   else
+   {
+       response["result"]="FAILURE";
+       response["details"]="TDKB_TR181Stub::SET API Validation is Failure";
+       DEBUG_PRINT(DEBUG_TRACE,"\n TDKB_TR181Stub_SetMultiple: Failed to set multiple parameters !!! \n");
+   }
+    /* free the memory allocated */
+   free(paramlist);
+   DEBUG_PRINT(DEBUG_TRACE,"\n TDKB_TR181Stub_SetMultiple --->Exit\n");
+   return;
 }
 
 /*******************************************************************************************
