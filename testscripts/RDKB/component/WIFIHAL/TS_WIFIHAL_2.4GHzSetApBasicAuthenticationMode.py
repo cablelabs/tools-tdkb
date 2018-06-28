@@ -202,6 +202,15 @@ if "SUCCESS" in loadmodulestatus.upper():
                             print "setBasicAuthenticationMode = ",setMode
                             print "getBasicAuthenticationMode = ",finalMode
                             print "TEST EXECUTION RESULT : SUCCESS"
+                        elif finalMode == "PSKAuthentication" and setMode == "SharedAuthentication":
+                            tdkTestObj.setResultStatus("SUCCESS");
+                            #To handle the basic authentication mode in xf3 where setMode is equal to "SharedAuthentication"
+                            print "TEST STEP: Compare the set and get values of ApBasicAuthenticationMode"
+                            print "EXPECTED RESULT: Set and get values of ApBasicAuthenticationMode should be same(SharedAuthentication is same as PSKAuthentication)"
+                            print "ACTUAL RESULT: Set and get values of ApBasicAuthenticationMode are the same"
+                            print "setBasicAuthenticationMode = ",setMode
+                            print "getBasicAuthenticationMode = ",finalMode
+                            print "TEST EXECUTION RESULT : SUCCESS"
                         else:
                             tdkTestObj.setResultStatus("FAILURE");
                             print "TEST STEP: Compare the set and get values of ApBasicAuthenticationMode"
