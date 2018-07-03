@@ -107,6 +107,8 @@ if "SUCCESS" in result.upper() :
     #Set the module loading status
     obj.setLoadModuleStatus("SUCCESS");
 
+    firewallLevelList =  {"High", "Low", "Medium"}
+
     #get the current firewall level
     print "TEST STEP 1: Get and save the current firewall level"
     queryParam = {"name":"Device.X_CISCO_COM_Security.Firewall.FirewallLevel"}
@@ -115,7 +117,7 @@ if "SUCCESS" in result.upper() :
     parsedResponse = parseWebpaResponse(queryResponse, 1)
     tdkTestObj = obj.createTestStep('ExecuteCmd');
     tdkTestObj.executeTestCase("SUCCESS");
-    if 200 in parsedResponse:
+    if "SUCCESS" in parsedResponse[0] and parsedResponse[1] != "" and parsedResponse[1] in firewallLevelList:
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1 [TEST EXECUTION RESULT] : SUCCESS"
 
@@ -133,7 +135,7 @@ if "SUCCESS" in result.upper() :
 	queryResponse = webpaQuery(obj, queryParam, "set")
 	parsedResponse = parseWebpaResponse(queryResponse, 1, "set")
 	tdkTestObj.executeTestCase("SUCCESS");
-        if 200 in parsedResponse:
+        if "SUCCESS" in parsedResponse[0]:
             tdkTestObj.setResultStatus("SUCCESS");
             print "TEST STEP 2[TEST EXECUTION RESULT] : SUCCESS"
 
@@ -143,7 +145,7 @@ if "SUCCESS" in result.upper() :
             queryResponse = webpaQuery(obj, queryParam)
             parsedResponse = parseWebpaResponse(queryResponse, 1)
             tdkTestObj.executeTestCase("SUCCESS");
-            if 200 in parsedResponse:
+            if "SUCCESS" in parsedResponse[0] and parsedResponse[1] != "":
 		setValue = parsedResponse[1];
 		print "Firewall level after set is : ", setValue
 		if setValue == newValue:
@@ -161,7 +163,7 @@ if "SUCCESS" in result.upper() :
             queryResponse = webpaQuery(obj, queryParam, "set")
             parsedResponse = parseWebpaResponse(queryResponse, 1, "set")
             tdkTestObj.executeTestCase("SUCCESS");
-            if 200 in parsedResponse:
+            if "SUCCESS" in parsedResponse[0]:
                 tdkTestObj.setResultStatus("SUCCESS");
                 print "TEST STEP 4 [TEST EXECUTION RESULT] : SUCCESS"
             else:

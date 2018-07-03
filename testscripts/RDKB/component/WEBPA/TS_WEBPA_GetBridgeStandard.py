@@ -114,10 +114,11 @@ if "SUCCESS" in result.upper() :
     parsedResponse = parseWebpaResponse(queryResponse, 1)
     tdkTestObj = obj.createTestStep('ExecuteCmd');
     tdkTestObj.executeTestCase("SUCCESS");
-    if 200 in parsedResponse:
+    if "SUCCESS" in parsedResponse[0] and parsedResponse[1] != "":
         getStandard = parsedResponse[1];
         if getStandard in bridgeStd:
             tdkTestObj.setResultStatus("SUCCESS");
+            print "Device Bridge Standard:",getStandard
             print "[TEST EXECUTION RESULT] : SUCCESS"
         else:
             tdkTestObj.setResultStatus("FAILURE");

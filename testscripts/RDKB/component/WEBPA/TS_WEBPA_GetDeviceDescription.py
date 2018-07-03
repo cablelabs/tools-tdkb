@@ -111,8 +111,9 @@ if "SUCCESS" in result.upper() :
     parsedResponse = parseWebpaResponse(queryResponse, 1)
     tdkTestObj = obj.createTestStep('ExecuteCmd');
     tdkTestObj.executeTestCase("SUCCESS");
-    if 200 in parsedResponse:
+    if "SUCCESS" in parsedResponse[0] and parsedResponse[1] != "":
         tdkTestObj.setResultStatus("SUCCESS");
+        print "Device Description:",parsedResponse[1]
         print "[TEST EXECUTION RESULT] : SUCCESS"
     else:
         tdkTestObj.setResultStatus("FAILURE");

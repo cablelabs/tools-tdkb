@@ -71,8 +71,10 @@ parseWebpaResponse</api_or_interface_used>
     <automation_approch>1. Load sysutil module
 2. Configure WEBPA server to send get request for Device.DeviceInfo.X_CISCO_COM_FirmwareName
 3. Parse the WEBPA response
-4.  If response status is 200 get operation was success otherwise failure
-5. Unload sysutil module</automation_approch>
+4. Using sysutil ExecuteCmd command get the current firmware version using cat /version.txt
+5. If webpa response status is SUCCESS, get operation was success otherwise failure
+6. If the firmware name using cat /version.txt and webpa are same then script is success else failure
+7. Unload sysutil module</automation_approch>
     <except_output>WEBPA response status should be 200</except_output>
     <priority>High</priority>
     <test_stub_interface>sysutil</test_stub_interface>
@@ -105,17 +107,36 @@ if "SUCCESS" in result.upper() :
     #Set the module loading status
     obj.setLoadModuleStatus("SUCCESS");
 
+    #Post the curl query to webpa server to get  the firmware name
     queryParam = {"name":"Device.DeviceInfo.X_CISCO_COM_FirmwareName"}
     queryResponse = webpaQuery(obj, queryParam)
 
+    #Parse the response from the webpa server
     parsedResponse = parseWebpaResponse(queryResponse, 1)
+
+    #Get the current firmware name in the device using cat /version.txt command
+    expectedresult = "SUCCESS"
     tdkTestObj = obj.createTestStep('ExecuteCmd');
+    tdkTestObj.addParameter("command","cat /version.txt | grep imagename | cut -d: -f 2 | cut -d= -f 2 | tr -d '\n'");
     tdkTestObj.executeTestCase("SUCCESS");
-    if 200 in parsedResponse:
+
+    actualresult = tdkTestObj.getResult();
+    details = tdkTestObj.getResultDetails().strip();
+    FirmwareVersion = details;
+
+    print "Firmware Name from version.txt:",FirmwareVersion
+    print "Firmware Name via WEBPA:",parsedResponse[1]
+
+    #Compare whether the firmware name retrieved via version.txt and webpa are same
+    if expectedresult in actualresult and "SUCCESS" in parsedResponse[0] and parsedResponse[1] != "" and parsedResponse[1] == FirmwareVersion:
         tdkTestObj.setResultStatus("SUCCESS");
+        print "TEST STEP 1: Check whether firmware name retrieved via version.txt and webpa are same"
+        print "Actual Result: Firmware name retrieved via version.txt and webpa are same"
         print "[TEST EXECUTION RESULT] : SUCCESS"
     else:
         tdkTestObj.setResultStatus("FAILURE");
+        print "TEST STEP 1: Check whether firmware name retrieved via version.txt and webpa are same"
+        print "Actual Result: Firmware name retrieved via version.txt and webpa are not same"
         print "[TEST EXECUTION RESULT] : FAILURE"
     obj.unloadModule("sysutil");
 
