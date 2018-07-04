@@ -110,7 +110,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
         #Script to load the configuration file of the component
         tdkTestObj = obj.createTestStep("CosaCM_SetMDDIPOverride");
-        tdkTestObj.addParameter("value","IPv4");
+        tdkTestObj.addParameter("value","IPV4");
         expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
@@ -138,7 +138,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : %s" %actualresult ;
                 tdkTestObj = obj.createTestStep("CosaCM_SetMDDIPOverride");
-                tdkTestObj.addParameter("value","IPv6");
+                tdkTestObj.addParameter("value","IPV6");
                 expectedresult="SUCCESS";
                 tdkTestObj.executeTestCase(expectedresult);
                 actualresult = tdkTestObj.getResult();
@@ -167,7 +167,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                         #Get the result of execution
                         print "[TEST EXECUTION RESULT] : %s" %actualresult ;
                         tdkTestObj = obj.createTestStep("CosaCM_SetMDDIPOverride");
-                        tdkTestObj.addParameter("value","Honor");
+                        tdkTestObj.addParameter("value","HONOR");
                         expectedresult="SUCCESS";
                         tdkTestObj.executeTestCase(expectedresult);
                         actualresult = tdkTestObj.getResult();
@@ -224,7 +224,7 @@ if "SUCCESS" in loadmodulestatus.upper():
                     print "ACTUAL RESULT 3: %s" %details;
                     print "[TEST EXECUTION RESULT] : %s" %actualresult ;
                     tdkTestObj = obj.createTestStep("CosaCM_SetMDDIPOverride");
-                    tdkTestObj.addParameter("value","Honor");
+                    tdkTestObj.addParameter("value","HONOR");
                     expectedresult="SUCCESS";
                     tdkTestObj.executeTestCase(expectedresult);
             else:
@@ -244,28 +244,12 @@ if "SUCCESS" in loadmodulestatus.upper():
             print "ACTUAL RESULT 1: %s" %details;
             print "[TEST EXECUTION RESULT] : %s" %actualresult ;
             tdkTestObj = obj.createTestStep("CosaCM_SetMDDIPOverride");
-            tdkTestObj.addParameter("value","Honor");
+            tdkTestObj.addParameter("value","HONOR");
             expectedresult="SUCCESS";
             tdkTestObj.executeTestCase(expectedresult);
-            
+
         obj.unloadModule("cosacm");
 else:
         print "Failed to load the module";
         obj.setLoadModuleStatus("FAILURE");
-        print "Module loading failed";
-
-					
-
-					
-
-					
-
-					
-
-					
-
-					
-
-					
-
-					
+        print "Module loading failed";	
