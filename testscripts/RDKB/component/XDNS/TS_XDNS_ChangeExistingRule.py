@@ -161,9 +161,9 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in sysloadmodulestatus.up
             		details = tdkTestObj.getResultDetails();
             		if expectedresult in actualresult:
             		    tdkTestObj.setResultStatus("SUCCESS");
-            		    print "TEST STEP 2: Set all the values of the added row"
-            		    print "EXPECTED RESULT 2: Should set all the values"
-            		    print "ACTUAL RESULT 2: %s" %details;
+            		    print "TEST STEP 5: Set all the values of the added row"
+            		    print "EXPECTED RESULT 5: Should set all the values"
+            		    print "ACTUAL RESULT 5: %s" %details;
             		    print "TEST EXECUTION RESULT :SUCCESS";
 			    tdkTestObj = sysobj.createTestStep('ExecuteCmd');
 			    cmd = "cat %s/dnsmasq_servers.conf" %conf_path
@@ -177,21 +177,21 @@ if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in sysloadmodulestatus.up
 
                     	    if "a:b:c:d d.n.s.i p:q:r:s Default" in dns_conf_value:
                     	        tdkTestObj.setResultStatus("SUCCESS");
-                    	        print "TEST STEP 4: Get dnsmasq conf and validate"
-                    	        print "EXPECTED RESULT 4: dnsmasq conf file should contain the valid values"
-                    	        print "ACTUAL RESULT 4: %s" %details;
+                    	        print "TEST STEP 6: Get dnsmasq conf and validate"
+                    	        print "EXPECTED RESULT 6: dnsmasq conf file should contain the valid values"
+                    	        print "ACTUAL RESULT 6: %s" %details;
                     	        print "TEST EXECUTION RESULT :SUCCESS";
 			    else:
 				tdkTestObj.setResultStatus("FAILURE");
-                                print "TEST STEP 4: Get dnsmasq conf and validate"
-                                print "EXPECTED RESULT 4: dnsmasq conf file should contain the valid values"
-                                print "ACTUAL RESULT 4: %s" %details;
+                                print "TEST STEP 6: Get dnsmasq conf and validate"
+                                print "EXPECTED RESULT 6: dnsmasq conf file should contain the valid values"
+                                print "ACTUAL RESULT 6: %s" %details;
                                 print "TEST EXECUTION RESULT :FAILURE";
 			else:
 			    tdkTestObj.setResultStatus("FAILURE");
-                            print "TEST STEP 2: Set all the values of the added row"
-                            print "EXPECTED RESULT 2: Should set all the values"
-                            print "ACTUAL RESULT 2: %s" %details;
+                            print "TEST STEP 5: Set all the values of the added row"
+                            print "EXPECTED RESULT 5: Should set all the values"
+                            print "ACTUAL RESULT 5: %s" %details;
                             print "TEST EXECUTION RESULT :FAILURE";
                     else:
                         tdkTestObj.setResultStatus("FAILURE");
