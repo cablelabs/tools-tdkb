@@ -213,7 +213,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     else:
         print"Radio standard values are not same as default value 1 0 0, so calling setApSecurityReset() function";
 	setApSecurityReset()
-	obj.unloadModule("wifihal");
+    obj.unloadModule("wifihal");
 else:
     print "Failed to load the module";
     obj.setLoadModuleStatus("FAILURE");
