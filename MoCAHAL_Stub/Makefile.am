@@ -1,4 +1,3 @@
-##########################################################################
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
@@ -16,8 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
+ACLOCAL_AMFLAGS = -Im4 --install
+AM_CPPFLAGS = ${COPTS} -fPIC -DDEBUG_LEVEL_TRACE
+AM_CXXFLAGS = -I${top_srcdir}/MoCAHAL_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
+lib_LTLIBRARIES = libmocahalstub.la
+libmocahalstub_la_SOURCES = src/MoCAHAL.cpp
+libmocahalstub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la
+libmocahalstub_la_LIBADD =  $(libmocahalstub_la_DEPENDENCIES)
+libmocahalstub_la_includedir = ${includedir}
+libmocahalstub_la_include_HEADERS = ${top_srcdir}/MoCAHAL_Stub/include/MoCAHAL.h
 
-SUBDIRS = agent tdkb_lib RDKLogger_stub CMAgent_stub WIFIAgent_stub MBUS_Stub WECB_Stub CosaCM_Stub SNMP_PA_Stub TR069Pa_Stub Mta_agent_Stub AdvancedConfig_stub CosaMTA_Stub pam_stub SysUtil_stub TAD_stub Moca_Stub LMLite_Stub WIFIHAL_stub CMHAL_Stub ethsw_hal_stub dhcp_hal_stub tdkb_e2e_stub platform_hal_stub tdkb_tr181_stub MoCAHAL_Stub
-DIST_SUBDIRS = @SUBDIRS@
-
-distcleancheck_listfiles = *-libtool
