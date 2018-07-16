@@ -48,6 +48,13 @@ extern "C"
         int ssp_SetTelnetEnable(BOOLEAN);
         int ssp_SetWebAccessLevel(int,int,int);
         int ssp_SetWebUITimeout(unsigned long int);
+	int ssp_GetFactoryResetCount(unsigned long int*);
+        int ssp_ClearResetCount(BOOLEAN);
+        int ssp_GetTimeOffSet(char*);
+        int ssp_GetCMTSMac(char*);
+	int ssp_GetChipTemperature(unsigned int,unsigned long int*);
+        int ssp_GetFanSpeed(unsigned long int*);
+        int ssp_SetFanSpeed(unsigned long int);
 #ifdef __cplusplus
 }
 #endif

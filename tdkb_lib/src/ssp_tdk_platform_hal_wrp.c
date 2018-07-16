@@ -480,3 +480,133 @@ int ssp_SetWebUITimeout(unsigned long int Value)
 	}
 	return RETURN_OK;
 }
+
+/*******************************************************************************************
+ ** Function Name        : ssp_GetFactoryResetCount
+ ** Description          : This function will invoke the HAL API to GetFactory reset count
+ ** @param [in]          : String to fetch the factory reset count
+ ** @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+
+int ssp_GetFactoryResetCount(unsigned long int* pulSize)
+{
+        DEBUG_PRINT(DEBUG_TRACE, "Entering the ssp_GetFactoryResetCount wrapper\n");
+        CHECK_PARAM_AND_RET(pulSize);
+
+        if(platform_hal_GetFactoryResetCount(pulSize) != RETURN_OK)
+        {
+                DEBUG_PRINT(DEBUG_ERROR, "platform_hal_GetFactoryResetCount function failure\n");
+                return RETURN_ERR;
+        }
+        return RETURN_OK;
+}
+
+/*******************************************************************************************
+ ** Function Name        : ssp_ClearResetCount
+ ** Description          : This function will invoke the HAL API to clear the reset count
+ ** @param [in]          : boolean value
+ ** @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_ClearResetCount(BOOLEAN flag)
+{
+        DEBUG_PRINT(DEBUG_TRACE, "Entering the ssp_ClearResetCount wrapper\n");
+
+        if (platform_hal_ClearResetCount(flag) != RETURN_OK )
+        {
+                DEBUG_PRINT(DEBUG_ERROR, "HAL funtion returns failure\n");
+                return RETURN_ERR;
+        }
+        DEBUG_PRINT(DEBUG_TRACE, "HAL function returns success\n");
+        return RETURN_OK;
+
+}
+
+/*******************************************************************************************
+ * * Function Name       : ssp_GetTimeOffSet
+ ** Description          : This function will invoke the HAL API to get the TimeOffSet
+ **
+ ** @param [in]          : String to fetch the TimeOffSet
+ ** @param [out]         : return status an integer value 0-success and 1-Failure
+ *********************************************************************************************/
+int ssp_GetTimeOffSet(char* pValue)
+{
+        DEBUG_PRINT(DEBUG_TRACE, "Entering the ssp_GetTimeOffSet wrapper\n");
+
+        if (platform_hal_getTimeOffSet(pValue) != RETURN_OK)
+        {
+                DEBUG_PRINT(DEBUG_ERROR, " ssp_GetTimeOffSet function failure\n");
+                return RETURN_ERR;
+        }
+        return RETURN_OK;
+}
+
+/*******************************************************************************************
+ * * Function Name       : ssp_GetCMTSMac
+ ** Description          : This function will invoke the HAL API to get the CMTSMac
+ **
+ ** @param [in]          : String to fetch the CMTSMac
+ ** @param [out]         : return status an integer value 0-success and 1-Failure
+ *********************************************************************************************/
+int ssp_GetCMTSMac(char* pValue)
+{
+        DEBUG_PRINT(DEBUG_TRACE, "Entering the ssp_GetCMTSMac wrapper\n");
+
+        if (platform_hal_getCMTSMac(pValue) != RETURN_OK)
+        {
+                DEBUG_PRINT(DEBUG_ERROR, " ssp_GetCMTSMac function failure\n");
+                return RETURN_ERR;
+        }
+        return RETURN_OK;
+}
+
+/*******************************************************************************************
+ * * Function Name       : ssp_GetChipTemperature
+ ** Description          : This function will invoke the HAL API to get the ChipTemperature
+ ** @param [in]          : String to fetch the Fetch the ChipTemperature
+ ** @param [out]         : return status an integer value 0-success and 1-Failure
+ *********************************************************************************************/
+int ssp_GetChipTemperature(unsigned int chipIndex,unsigned long int* pTempValue)
+{
+        DEBUG_PRINT(DEBUG_TRACE, "Entering the ssp_GetChipTemperature wrapper\n");
+        if(platform_hal_GetChipTemperature(chipIndex,pTempValue) != RETURN_OK)
+        {
+                DEBUG_PRINT(DEBUG_ERROR, " platform_hal_GetChipTemperature function failure\n");
+                return RETURN_ERR;
+        }
+        return RETURN_OK;
+}
+
+/*******************************************************************************************
+ **Function Name         : ssp_GetFanSpeed
+ ** Description          : This function will invoke the HAL API to Get FanSpeed
+ ** @param [in]          : String to fetch FanSpeed
+ ** @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_GetFanSpeed(unsigned long int* pSpeedValue)
+{
+        DEBUG_PRINT(DEBUG_TRACE, "Entering the ssp_GetFanSpeed wrapper\n");
+//      CHECK_PARAM_AND_RET(pSpeedValue);
+        if(platform_hal_GetFanSpeed(pSpeedValue) != RETURN_OK)
+        {
+                DEBUG_PRINT(DEBUG_ERROR, "platform_hal_GetFanSpeed function failure\n");
+                return RETURN_ERR;
+        }
+        return RETURN_OK;
+}
+
+/*******************************************************************************************
+ ** Function Name        : ssp_SetFanSpeed
+ ** Description          : This function will invoke the HAL API to set the WebUI Timeout
+ ** @param [in]          : unsigned integer value
+ ** @param [out]         : return status an integer value 0-success and 1-Failure
+ *****************************************************************************************/
+int ssp_SetFanSpeed(unsigned long int Value)
+{
+        DEBUG_PRINT(DEBUG_TRACE, "Entering the ssp_SetFanSpeed wrapper\n");
+        if (platform_hal_SetFanSpeed(Value) != RETURN_OK)
+        {
+                DEBUG_PRINT(DEBUG_ERROR, "platform_hal_SetFanSpeed function failure\n");
+                return RETURN_ERR;
+        }
+        return RETURN_OK;
+}

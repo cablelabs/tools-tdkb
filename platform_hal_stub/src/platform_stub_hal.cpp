@@ -1160,6 +1160,286 @@ void platform_stub_hal::platform_stub_hal_SetWebUITimeout(IN const Json::Value& 
 	}
 }
 
+/***********************************************************************************************
+ *Function name : platform_stub_hal_GetFactoryResetCount
+ *Description   : This function will invoke the SSP  HAL wrapper to get the Get Factory Reset Count
+ *@param [in]   : req - ParamName : Holds the name of the parameter
+ *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
+ ****************************************************************************************************/
+void platform_stub_hal::platform_stub_hal_GetFactoryResetCount(IN const Json::Value& req, OUT Json::Value& response)
+{
+       unsigned long int resetCount = 0;
+       char getResult[MAX_STRING_SIZE] = {0};
+       int isNegativeScenario = 0;
+       int result = RETURN_FAILURE;
+       DEBUG_PRINT(DEBUG_TRACE,"Inside Function platform_stub_hal_GetFactoryResetCount\n");
+       if(&req["flag"])
+       {
+               isNegativeScenario = req["flag"].asInt();
+       }
+       if(isNegativeScenario)
+       {
+               DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
+               result = ssp_GetFactoryResetCount(NULL);
+       }
+       else
+       {
+               DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
+               result = ssp_GetFactoryResetCount(&resetCount);
+       }
+       if(result == RETURN_SUCCESS)
+       {
+               snprintf(getResult, MAX_STRING_SIZE, "%lu", resetCount);
+               response["result"] = "SUCCESS";
+               response["details"] = getResult;
+               DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, getResult);
+               return;
+       }
+       else
+       {
+               response["result"] = "FAILURE";
+               response["details"] = "Factory Reset count not  fetched successfully";
+               DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
+               return;
+       }
+}
+
+/***************************************************************************************************
+ *Function name : platform_stub_hal_ClearResetCount
+ *Description   : This function will invoke the SSP HAL wrapper to clear the reset count
+ *@param [in]   : req - ParamName : Holds the name of the parameter
+ *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
+ ****************************************************************************************************/
+void platform_stub_hal::platform_stub_hal_ClearResetCount(IN const Json::Value& req, OUT Json::Value& response)
+{
+        int index = 0;
+        DEBUG_PRINT(DEBUG_TRACE,"Inside Function platform_stub_hal_ClearResetCount stub\n");
+        if(&req["index"] == NULL)
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "NULL parameter as input argument";
+                return;
+        }
+        index = req["index"].asInt();
+        if(ssp_ClearResetCount(index) == RETURN_SUCCESS)
+        {
+                response["result"] = "SUCCESS";
+                response["details"] = "Cleared reset count successfully";
+                return;
+        }
+        else
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "Failed to clear the reset count";
+                return;
+        }
+}
+
+/***************************************************************************
+ *Function name : platform_stub_hal_GetTimeOffSet
+ *Description   : This function will invoke the SSP  HAL wrapper to get the GetTimeOffSet
+ *@param [in]   : req - ParamName : Holds the name of the parameter
+ *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
+ *****************************************************************************/
+void platform_stub_hal::platform_stub_hal_GetTimeOffSet(IN const Json::Value& req, OUT Json::Value& response)
+{
+        char getResult[MAX_STRING_SIZE] = {0};
+        int isNegativeScenario = 0;
+        int result = RETURN_FAILURE;
+        DEBUG_PRINT(DEBUG_TRACE,"Inside Function platform_stub_hal_GetTimeOffSet stub \n");
+        if(&req["flag"])
+        {
+                isNegativeScenario = req["flag"].asInt();
+        }
+        if(isNegativeScenario)
+        {
+                DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
+                result = ssp_GetTimeOffSet(NULL);
+        }
+        else
+        {
+                DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
+                result = ssp_GetTimeOffSet(getResult);
+        }
+        if(result == RETURN_SUCCESS)
+        {
+                response["result"] = "SUCCESS";
+                response["details"] = getResult;
+                DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, getResult);
+                return;
+        }
+        else
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "TimeOffSet details is not fetched successfully";
+                DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
+                return;
+        }
+}
+
+/***************************************************************************
+ *Function name : platform_stub_hal_GetCMTSMac
+ *Description   : This function will invoke the SSP  HAL wrapper to get the GetCMTSMac
+ *@param [in]   : req - ParamName : Holds the name of the parameter
+ *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
+ *****************************************************************************/
+void platform_stub_hal::platform_stub_hal_GetCMTSMac(IN const Json::Value& req, OUT Json::Value& response)
+{
+        char getResult[MAX_STRING_SIZE] = {0};
+        int isNegativeScenario = 0;
+        int result = RETURN_FAILURE;
+        DEBUG_PRINT(DEBUG_TRACE,"Inside Function platform_stub_hal_GetCMTSMac stub \n");
+        if(&req["flag"])
+        {
+                isNegativeScenario = req["flag"].asInt();
+        }
+        if(isNegativeScenario)
+        {
+                DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
+                result = ssp_GetCMTSMac(NULL);
+        }
+        else
+        {
+                DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
+                result = ssp_GetCMTSMac(getResult);
+        }
+        if(result == RETURN_SUCCESS)
+        {
+                response["result"] = "SUCCESS";
+                response["details"] = getResult;
+                DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, getResult);
+                return;
+        }
+        else
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "CMTSMac details is not fetched successfully";
+                DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
+                return;
+        }
+}
+
+/*************************************************************************************************
+ *Function name : platform_stub_hal_GetChipTemperature
+ *Description   : This function will invoke the SSP  HAL wrapper to get the ChipTemperature
+ *@param [in]   : req - ParamName : Holds the name of the parameter
+ *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
+**************************************************************************************************/
+void platform_stub_hal::platform_stub_hal_GetChipTemperature(IN const Json::Value& req, OUT Json::Value& response)
+{
+        unsigned int chipIndex = 0;
+        unsigned long int TempValue = 0;
+        char getResult[MAX_STRING_SIZE] = {0};
+        int isNegativeScenario = 0;
+        int result = RETURN_FAILURE;
+        DEBUG_PRINT(DEBUG_TRACE,"Inside Function platform_stub_hal_GetChipTemperature stub \n");
+        chipIndex = req["chipIndex"].asInt();
+        if(&req["flag"])
+        {
+                isNegativeScenario = req["flag"].asInt();
+        }
+        if(isNegativeScenario)
+        {
+                DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
+                result = ssp_GetChipTemperature(0, NULL);
+        }
+        else
+        {
+                DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
+                result = ssp_GetChipTemperature(chipIndex, &TempValue);
+        }
+        if(result == RETURN_SUCCESS)
+        {
+                snprintf(getResult, MAX_STRING_SIZE, "%lu", TempValue);
+                response["result"] = "SUCCESS";
+                response["details"] = getResult;
+                DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, getResult);
+                return;
+        }
+        else
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "ChipTemperature not fetched successfully";
+                DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
+                return;
+        }
+}
+
+/***********************************************************************************************
+ *Function name : platform_stub_hal_GetFanSpeed
+ *Description   : This function will invoke the SSP HAL wrapper to Get the FanSpeed
+ *@param [in]   : req - ParamName : Holds the name of the parameter
+ *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
+ ****************************************************************************************************/
+void platform_stub_hal::platform_stub_hal_GetFanSpeed(IN const Json::Value& req, OUT Json::Value& response)
+{
+        unsigned long int SpeedValue = 0;
+        char getResult[MAX_STRING_SIZE] = {0};
+        int isNegativeScenario = 0;
+        int result = RETURN_FAILURE;
+        DEBUG_PRINT(DEBUG_TRACE,"Inside Function platform_stub_hal_GetFanSpeed stub\n");
+        if(&req["flag"])
+        {
+                isNegativeScenario = req["flag"].asInt();
+        }
+        if(isNegativeScenario)
+        {
+                DEBUG_PRINT(DEBUG_TRACE, "Executing negative scenario\n");
+                result = ssp_GetFanSpeed(NULL);
+        }
+        else
+        {
+                DEBUG_PRINT(DEBUG_TRACE, "Executing positive scenario\n");
+                result = ssp_GetFanSpeed(&SpeedValue);
+        }
+        if(result == RETURN_SUCCESS)
+        {
+                snprintf(getResult, MAX_STRING_SIZE, "%lu", SpeedValue);
+                response["result"] = "SUCCESS";
+                response["details"] = getResult;
+                DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution successful:: result = %s\n", __func__, getResult);
+                return;
+        }
+        else
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "FanSpeed not  fetched successfully";
+                DEBUG_PRINT(DEBUG_TRACE, "%s:: Test execution failed\n", __func__);
+                return;
+        }
+}
+
+/***********************************************************************************************
+ *Function name : platform_stub_hal_SetFanSpeed
+ *Description   : This function will invoke the SSP HAL wrapper to Set FanSpeed
+ *@param [in]   : req - ParamName : Holds the name of the parameter
+ *@param [out]  : response - filled with SUCCESS or FAILURE based on the return value
+ ****************************************************************************************************/
+void platform_stub_hal::platform_stub_hal_SetFanSpeed(IN const Json::Value& req, OUT Json::Value& response)
+{
+        unsigned long int SpeeddInRpms = 0;
+        if(&req["index"] == NULL)
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "NULL parameter as input argument";
+                return;
+        }
+        SpeeddInRpms = req["index"].asInt();
+        DEBUG_PRINT(DEBUG_TRACE,"Inside Function platform_stub_hal_SetFanSpeed stub\n");
+        if(ssp_SetFanSpeed(SpeeddInRpms) == RETURN_SUCCESS)
+        {
+                response["result"] = "SUCCESS";
+                response["details"] = "Set fan speed successfully";
+                return;
+        }
+        else
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "Failed to set fan speed";
+                return;
+        }
+}
+
 /********************************************************************************************
  *Function Name   : CreateObject
  *Description     : This function is used to create a new object of the class "TR069Agent".

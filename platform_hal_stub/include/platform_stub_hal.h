@@ -64,6 +64,13 @@ class platform_stub_hal : public RDKTestStubInterface, public AbstractServer<pla
                         this->bindAndAddMethod(Procedure("platform_stub_hal_SetSSHEnable", PARAMS_BY_NAME, JSON_STRING, "index", JSON_INTEGER, NULL), &platform_stub_hal::platform_stub_hal_SetSSHEnable);
                         this->bindAndAddMethod(Procedure("platform_stub_hal_SetTelnetEnable", PARAMS_BY_NAME, JSON_STRING, "index", JSON_INTEGER, NULL), &platform_stub_hal::platform_stub_hal_SetTelnetEnable);
                         this->bindAndAddMethod(Procedure("platform_stub_hal_SetWebUITimeout", PARAMS_BY_NAME, JSON_STRING, "index", JSON_INTEGER, NULL), &platform_stub_hal::platform_stub_hal_SetWebUITimeout);
+			this->bindAndAddMethod(Procedure("platform_stub_hal_GetFactoryResetCount", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &platform_stub_hal::platform_stub_hal_GetFactoryResetCount);
+                        this->bindAndAddMethod(Procedure("platform_stub_hal_ClearResetCount", PARAMS_BY_NAME, JSON_STRING, "index", JSON_INTEGER, NULL), &platform_stub_hal::platform_stub_hal_ClearResetCount);
+                        this->bindAndAddMethod(Procedure("platform_stub_hal_GetTimeOffSet", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &platform_stub_hal::platform_stub_hal_GetTimeOffSet);
+                        this->bindAndAddMethod(Procedure("platform_stub_hal_GetCMTSMac", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &platform_stub_hal::platform_stub_hal_GetCMTSMac);
+			this->bindAndAddMethod(Procedure("platform_stub_hal_GetChipTemperature", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER,"chipIndex", JSON_INTEGER, NULL), &platform_stub_hal::platform_stub_hal_GetChipTemperature);
+                        this->bindAndAddMethod(Procedure("platform_stub_hal_GetFanSpeed", PARAMS_BY_NAME, JSON_STRING, "flag", JSON_INTEGER, NULL), &platform_stub_hal::platform_stub_hal_GetFanSpeed);
+                        this->bindAndAddMethod(Procedure("platform_stub_hal_SetFanSpeed", PARAMS_BY_NAME, JSON_STRING, "index", JSON_INTEGER, NULL), &platform_stub_hal::platform_stub_hal_SetFanSpeed);	
                 }
 
                 bool initialize(IN const char* szVersion);
@@ -97,6 +104,13 @@ class platform_stub_hal : public RDKTestStubInterface, public AbstractServer<pla
 		void platform_stub_hal_SetWebAccessLevel(IN const Json::Value& req, OUT Json::Value& response);
 		void platform_stub_hal_SetTelnetEnable(IN const Json::Value& req, OUT Json::Value& response);
 		void platform_stub_hal_SetWebUITimeout(IN const Json::Value& req, OUT Json::Value& response);
+		void platform_stub_hal_GetFactoryResetCount(IN const Json::Value& req, OUT Json::Value& response);
+                void platform_stub_hal_ClearResetCount(IN const Json::Value& req, OUT Json::Value& response);
+                void platform_stub_hal_GetTimeOffSet(IN const Json::Value& req, OUT Json::Value& response);
+                void platform_stub_hal_GetCMTSMac(IN const Json::Value& req, OUT Json::Value& response);
+		void platform_stub_hal_GetChipTemperature(IN const Json::Value& req, OUT Json::Value& response);
+                void platform_stub_hal_GetFanSpeed(IN const Json::Value& req, OUT Json::Value& response);
+                void platform_stub_hal_SetFanSpeed(IN const Json::Value& req, OUT Json::Value& response);
 
 };
 #endif
