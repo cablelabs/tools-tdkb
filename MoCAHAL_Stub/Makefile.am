@@ -1,7 +1,7 @@
 # If not stated otherwise in this file or this component's Licenses.txt
 # file the following copyright and licenses apply:
 #
-# Copyright 2016 RDK Management
+# Copyright 2018 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 ##########################################################################
 ACLOCAL_AMFLAGS = -Im4 --install
 AM_CPPFLAGS = ${COPTS} -fPIC -DDEBUG_LEVEL_TRACE
-AM_CXXFLAGS = -I${top_srcdir}/MoCAHAL_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
+AM_CXXFLAGS = -I${PKG_CONFIG_SYSROOT_DIR}$(includedir) -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)/ccsp -I${top_srcdir}/MoCAHAL_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
 lib_LTLIBRARIES = libmocahalstub.la
 libmocahalstub_la_SOURCES = src/MoCAHAL.cpp
 libmocahalstub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la

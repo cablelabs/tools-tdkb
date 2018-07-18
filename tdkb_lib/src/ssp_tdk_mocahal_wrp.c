@@ -2,7 +2,7 @@
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:
  *
- * Copyright 2016 RDK Management
+ * Copyright 2018 RDK Management
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ int ssp_MoCAHAL_IfGetDynamicInfo(unsigned long ifIndex, moca_dynamic_info_t *pdy
  * Function Name        : ssp_MoCAHAL_IfGetStaticInfo
  * Description          : This function invokes MoCA hal api moca_IfGetStaticInfo()
  * @param [in] req-     : ifIndex - index of the MoCA interface
-                          pdynamic_info - buffer to get the static info
+                          pstatic_info - buffer to get the static info
  * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
  *
  ********************************************************************************************/
@@ -109,7 +109,7 @@ int ssp_MoCAHAL_IfGetStaticInfo(unsigned long ifIndex, moca_static_info_t *pstat
  * Function Name        : ssp_MoCAHAL_IfGetStats
  * Description          : This function invokes MoCA hal api moca_IfGetStats()
  * @param [in] req-     : ifIndex - index of the MoCA interface
-                          pdynamic_info - buffer to get the moca_stats
+                          pmoca_stats - buffer to get the moca_stats
  * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
  *
  ********************************************************************************************/
@@ -165,7 +165,7 @@ int ssp_MoCAHAL_GetNumAssociatedDevices(unsigned long ifIndex, ULONG *pulCount)
  * Function Name        : ssp_MoCAHAL_IfGetExtCounter
  * Description          : This function invokes MoCA hal api moca_IfGetExtCounter()
  * @param [in] req-     : ifIndex - index of the MoCA interface
-                          pulCount - buffer to get the extCounter
+                          pmoca_mac_counters - buffer to get the extCounter
  * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
  *
  ********************************************************************************************/
@@ -187,3 +187,203 @@ int ssp_MoCAHAL_IfGetExtCounter(unsigned long ifIndex, moca_mac_counters_t *pmoc
     }
 }
 
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_MoCAHAL_IfGetExtAggrCounter
+ * Description          : This function invokes MoCA hal api moca_IfGetExtAggrCounter()
+ * @param [in] req-     : ifIndex - index of the MoCA interface
+                          pmoca_aggregate_counts - buffer to get Aggregate DATA
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+int ssp_MoCAHAL_IfGetExtAggrCounter(unsigned long ifIndex, moca_aggregate_counters_t *pmoca_aggregate_counts)
+{
+    printf("\n ssp_MoCAHAL_IfGetExtAggrCounter----> Entry\n");
+    int return_status = 0;
+
+    return_status = moca_IfGetExtAggrCounter(ifIndex, pmoca_aggregate_counts);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_MoCAHAL_IfGetExtAggrCounter::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_MoCAHAL_IfGetExtCounter::Success\n");
+     return SSP_SUCCESS;
+    }
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_MoCAHAL_GetMocaCPEs
+ * Description          : This function invokes MoCA hal api moca_GetMocaCPEs()
+ * @param [in] req-     : ifIndex - index of the MoCA interface
+			  cpes - buffer to get MAC Address of the Node
+                          pnum_cpes - buffer to get the extCounter
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+int ssp_MoCAHAL_GetMocaCPEs(unsigned long ifIndex, moca_cpe_t *cpes, int *pnum_cpes)
+{
+    printf("\n ssp_MoCAHAL_GetMocaCPEs----> Entry\n");
+    int return_status = 0;
+
+    return_status = moca_GetMocaCPEs(ifIndex, cpes, pnum_cpes);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_MoCAHAL_GetMocaCPEs::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_MoCAHAL_GetMocaCPEs::Success\n");
+     return SSP_SUCCESS;
+    }
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_MoCAHAL_GetAssociatedDevices
+ * Description          : This function invokes MoCA hal api moca_GetAssociatedDevices()
+ * @param [in] req-     : ifIndex - index of the MoCA interface
+                          ppdevice_array - bpointer to the buffer to get AssociatedDevices detials
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+int ssp_MoCAHAL_GetAssociatedDevices(unsigned long ifIndex, moca_associated_device_t **ppdevice_array)
+{
+    printf("\n ssp_MoCAHAL_GetAssociatedDevices----> Entry\n");
+    int return_status = 0;
+
+    return_status = moca_GetAssociatedDevices(ifIndex, ppdevice_array);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_MoCAHAL_GetAssociatedDevices::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_MoCAHAL_GetAssociatedDevices::Success\n");
+     return SSP_SUCCESS;
+    }
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_MoCAHAL_FreqMaskToValue
+ * Description          : This function invokes MoCA hal api moca_FreqMaskToValue()
+ * @param [in] req-     : mask - mask value to be converted to frequency
+ * @param [out] response - returns frequency value corresponding to the mask
+ *
+ ********************************************************************************************/
+int ssp_MoCAHAL_FreqMaskToValue(unsigned char* mask)
+{
+    printf("\n ssp_MoCAHAL_FreqMaskToValue----> Entry\n");
+
+    return moca_FreqMaskToValue(mask);
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_MoCAHAL_HardwareEquipped
+ * Description          : This function invokes MoCA hal api moca_HardwareEquipped()
+ * @param [out] response - return value of moca_HardwareEquipped()
+ *
+ ********************************************************************************************/
+int ssp_MoCAHAL_HardwareEquipped()
+{
+    printf("\n ssp_MoCAHAL_HardwareEquipped---> Entry\n");
+
+    return moca_HardwareEquipped();
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_MoCAHAL_GetFullMeshRates
+ * Description          : This function invokes MoCA hal api moca_GetFullMeshRates()
+ * @param [in] req-     : ifIndex - index of the MoCA interface
+                          pDevice_array - pointer to the buffer to get moca mesh table
+			  pulCount - buffer to get the no: of entries in mesh table
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+int ssp_MoCAHAL_GetFullMeshRates(unsigned long ifIndex, moca_mesh_table_t *pDeviceArray, ULONG *pulCount)
+{
+    printf("\n ssp_MoCAHAL_GetFullMeshRates----> Entry\n");
+    int return_status = 0;
+
+    return_status = moca_GetFullMeshRates(ifIndex, pDeviceArray, pulCount);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_MoCAHAL_GetFullMeshRates::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_MoCAHAL_GetFullMeshRates::Success\n");
+     return SSP_SUCCESS;
+    }
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_MoCAHAL_GetFlowStatistics
+ * Description          : This function invokes MoCA hal api moca_GetFlowStatistics()
+ * @param [in] req-     : ifIndex - index of the MoCA interface
+                          pDevice_array - pointer to the buffer to get moca flow table
+			  pulCount - buffer to get the no: of entries in flow table
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+int ssp_MoCAHAL_GetFlowStatistics(unsigned long ifIndex, moca_flow_table_t *pDeviceArray, unsigned long *pulCount)
+{
+    printf("\n ssp_MoCAHAL_GetFlowStatistics---> Entry\n");
+    int return_status = 0;
+
+    return_status = moca_GetFlowStatistics(ifIndex, pDeviceArray, pulCount);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_MoCAHAL_GetFlowStatistics::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_MoCAHAL_GetFlowStatistics::Success\n");
+     return SSP_SUCCESS;
+    }
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_MoCAHAL_GetResetCount
+ * Description          : This function invokes MoCA hal api moca_GetResetCount()
+ * @param [in] req-     : resetcnt - buffer to hold the reset count value
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+int ssp_MoCAHAL_GetResetCount(unsigned long *resetcnt)
+{
+    printf("\n ssp_MoCAHAL_GetResetCount----> Entry\n");
+    int return_status = 0;
+
+    return_status = moca_GetResetCount(resetcnt);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_MoCAHAL_GetResetCount::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_MoCAHAL_GetResetCount::Success\n");
+     return SSP_SUCCESS;
+    }
+}
