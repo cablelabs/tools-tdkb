@@ -51,10 +51,11 @@ Device.MoCA.Interface.1.Enable
 Device.MoCA.Interface.1.Status</input_parameters>
     <automation_approch>1. Load MOCA modules
 2. From script invoke Mocastub_Get to get the number of clients connected
-3. Disable the interface by invoking Mocastub_Set
-4. Get the status and check whether it is "Down" 
-5. Validation of  the result is done within the python script and send the result status to Test Manager.
-6.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from Moca stub.</automation_approch>
+3. Get the current MOCA interface status
+4. Disable the interface by invoking Mocastub_Set
+5. Get the status and check whether it is "Down" and revert MOCA interface status to default at the end of script
+6. Validation of  the result is done within the python script and send the result status to Test Manager.
+7.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from Moca stub.</automation_approch>
     <except_output>CheckPoint 1:
  The output  should be logged in the Agent console/Component log
 
@@ -108,52 +109,108 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT 1: Number of connected clients is :%s" %NoOfClients;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
-        tdkTestObj = obj.createTestStep('Mocastub_Set');
-        tdkTestObj.addParameter("ParamName","Device.MoCA.Interface.1.Enable");
-        tdkTestObj.addParameter("ParamValue","false");
-        tdkTestObj.addParameter("Type","bool");
-        expectedresult="SUCCESS";
 
-        #Execute the test case in DUT
+        #Get the current MOCA status
+        tdkTestObj = obj.createTestStep('Mocastub_Get');
+        tdkTestObj.addParameter("paramName","Device.MoCA.Interface.1.Enable");
+        expectedresult="SUCCESS";
         tdkTestObj.executeTestCase(expectedresult);
         actualresult = tdkTestObj.getResult();
-        details= tdkTestObj.getResultDetails();
+        originalMocaStatus = tdkTestObj.getResultDetails();
         if expectedresult in actualresult:
             #Set the result status of execution
             tdkTestObj.setResultStatus("SUCCESS");
-            print "TEST STEP 2: Disable Moca Interface";
-            print "EXPECTED RESULT 2: Should disable Moca Interface";
-            print "ACTUAL RESULT 2: %s" %details;
+            print "TEST STEP 2: Get the current MOCA status";
+            print "EXPECTED RESULT 2:Should get the current MOCA status";
+            print "ACTUAL RESULT 2: %s" %originalMocaStatus;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : SUCCESS";
-	    tdkTestObj = obj.createTestStep('Mocastub_Get');
-            tdkTestObj.addParameter("paramName","Device.MoCA.Interface.1.Status");
+
+            #Disable MOCA interface
+            tdkTestObj = obj.createTestStep('Mocastub_Set');
+            tdkTestObj.addParameter("ParamName","Device.MoCA.Interface.1.Enable");
+            tdkTestObj.addParameter("ParamValue","false");
+            tdkTestObj.addParameter("Type","bool");
             expectedresult="SUCCESS";
+
+            #Execute the test case in DUT
             tdkTestObj.executeTestCase(expectedresult);
             actualresult = tdkTestObj.getResult();
-            Status = tdkTestObj.getResultDetails();
-            if expectedresult in actualresult and "Down" in Status:
-		#Set the result status of execution
+            details= tdkTestObj.getResultDetails();
+            if expectedresult in actualresult:
+                #Set the result status of execution
                 tdkTestObj.setResultStatus("SUCCESS");
-                print "TEST STEP 3: Check if status is Down irrescpective of the number of conencted clients";
-                print "EXPECTED RESULT 3:Status should be Down irrescpective of the number of conencted clients";
-                print "ACTUAL RESULT 3: %s" %Status;
+                print "TEST STEP 3: Disable Moca Interface";
+                print "EXPECTED RESULT 3: Should disable Moca Interface";
+                print "ACTUAL RESULT 3: %s" %details;
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : SUCCESS";
-	    else:
-		#Set the result status of execution
+
+                #Get the MOCA status after disabling interface
+                tdkTestObj = obj.createTestStep('Mocastub_Get');
+                tdkTestObj.addParameter("paramName","Device.MoCA.Interface.1.Status");
+                expectedresult="SUCCESS";
+                tdkTestObj.executeTestCase(expectedresult);
+                actualresult = tdkTestObj.getResult();
+                Status = tdkTestObj.getResultDetails();
+                if expectedresult in actualresult and "Down" in Status:
+                    #Set the result status of execution
+                    tdkTestObj.setResultStatus("SUCCESS");
+                    print "TEST STEP 4: Check if status is Down irrescpective of the number of conencted clients";
+                    print "EXPECTED RESULT 4:Status should be Down irrescpective of the number of conencted clients";
+                    print "ACTUAL RESULT 4: %s" %Status;
+                    #Get the result of execution
+                    print "[TEST EXECUTION RESULT] : SUCCESS";
+                else:
+                    #Set the result status of execution
+                    tdkTestObj.setResultStatus("FAILURE");
+                    print "TEST STEP 4: Check if status is Down irrescpective of the number of conencted clients";
+                    print "EXPECTED RESULT 4:Status should be Down irrescpective of the number of conencted clients";
+                    print "ACTUAL RESULT 4: %s" %Status;
+                    #Get the result of execution
+                    print "[TEST EXECUTION RESULT] : FAILURE";
+            else:
+                #Set the result status of execution
                 tdkTestObj.setResultStatus("FAILURE");
-                print "TEST STEP 3: Check if status is Down irrescpective of the number of conencted clients";
-                print "EXPECTED RESULT 3:Status should be Down irrescpective of the number of conencted clients";
-                print "ACTUAL RESULT 3: %s" %Status;
+                print "TEST STEP 3: Disable Moca Interface";
+                print "EXPECTED RESULT 3: Should disable Moca Interface";
+                print "ACTUAL RESULT 3: %s" %details;
                 #Get the result of execution
                 print "[TEST EXECUTION RESULT] : FAILURE";
-	else:
-	    #Set the result status of execution
+
+            #Revert the MOCA status to original
+            tdkTestObj = obj.createTestStep('Mocastub_Set');
+            tdkTestObj.addParameter("ParamName","Device.MoCA.Interface.1.Enable");
+            tdkTestObj.addParameter("ParamValue",originalMocaStatus);
+            tdkTestObj.addParameter("Type","bool");
+            expectedresult="SUCCESS";
+
+            #Execute the test case in DUT
+            tdkTestObj.executeTestCase(expectedresult);
+            actualresult = tdkTestObj.getResult();
+            details= tdkTestObj.getResultDetails();
+            if expectedresult in actualresult:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("SUCCESS");
+                print "TEST STEP 5: Revert the MOCA status to original value";
+                print "EXPECTED RESULT 5: Should revert the MOCA status to original value";
+                print "ACTUAL RESULT 5: %s" %details;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : SUCCESS";
+            else:
+                #Set the result status of execution
+                tdkTestObj.setResultStatus("FAILURE");
+                print "TEST STEP 5: Revert the MOCA status to original value";
+                print "EXPECTED RESULT 5: Should revert the MOCA status to original value";
+                print "ACTUAL RESULT 5: %s" %details;
+                #Get the result of execution
+                print "[TEST EXECUTION RESULT] : FAILURE";
+        else:
+            #Set the result status of execution
             tdkTestObj.setResultStatus("FAILURE");
-            print "TEST STEP 2: Disable Moca Interface";
-            print "EXPECTED RESULT 2: Should disable Moca Interface";
-            print "ACTUAL RESULT 2: %s" %details;
+            print "TEST STEP 2: Get the current MOCA status";
+            print "EXPECTED RESULT 2:Should get the current MOCA status";
+            print "ACTUAL RESULT 2: %s" %originalMocaStatus;
             #Get the result of execution
             print "[TEST EXECUTION RESULT] : FAILURE";
     else:
