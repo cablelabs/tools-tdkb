@@ -49,7 +49,7 @@
     <input_parameters>None</input_parameters>
     <automation_approch>1. Load  platform module.
 2. From script invoke platform_hal_GetFactoryResetCount().
-3. Get the value 
+3. Get the value
 4. Validation of  the result is done within the python script and send the result status to Test Manager.
 5. Test Manager will publish the result in GUI as PASS/FAILURE based on the response from HAL_Platform stub.</automation_approch>
     <except_output>Should get the Factory reset count</except_output>
@@ -63,8 +63,8 @@
 </xml>
 
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("halplatform","1");
@@ -75,7 +75,7 @@ ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_platform_stub_hal_GetFactoryResetCount');
 
-#Get the result of connection with test component and STB
+#Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus;
 
