@@ -29,6 +29,7 @@ extern "C"
 	int ssp_ethsw_stub_hal_SetPortCfg(int portId, int linkRate, char *pDuplexmode);
 	int ssp_ethsw_stub_hal_SetPortAdminStatus(int portId, char *pAdminStatus);
 	int ssp_ethsw_stub_hal_SetAgingSpeed(int portId, int agingSpeed);
+	int ssp_ethsw_stub_hal_Get_AssociatedDevice(unsigned long int *array_size,eth_device_t *eth_device_conf, int isNegativeScenario);
 #ifdef __cplusplus
 }
 #endif

@@ -494,3 +494,33 @@ int ssp_ethsw_stub_hal_SetPortCfg(int portId, int linkRate, char *pDuplexMode)
 
 	return RETURN_OK;
 }
+/*****************************************************************************************************************
+ * Function Name : ssp_ethsw_stub_hal_Get_AssociatedDevice
+ * Description   : This function will Retrieve the config of associated device
+ * @param [in]   : array_size - size of the array
+                   eth_device_conf - for getting the conf of associated devices
+                   isNegativeScenario - for negative scenario
+ * @param [out]  : return status an integer value 0-success and 1-Failure
+ ******************************************************************************************************************/
+int ssp_ethsw_stub_hal_Get_AssociatedDevice(unsigned long int *array_size,eth_device_t *eth_device_conf, int isNegativeScenario)
+{
+        int result = RETURN_ERR;
+
+        DEBUG_PRINT(DEBUG_TRACE, "Entering the ssp_ethsw_stub_hal_Get_AssociatedDevice wrapper\n");
+
+        if(isNegativeScenario)
+        {
+                result = CcspHalExtSw_getAssociatedDevice(NULL, NULL);
+        }
+        else
+        {
+                result = CcspHalExtSw_getAssociatedDevice(array_size,eth_device_conf);
+        }
+
+        if(result == RETURN_OK)
+        {
+                DEBUG_PRINT(DEBUG_ERROR, "ssp_ethsw_stub_hal_Get_AssociatedDevice function returns failure\n");
+        }
+
+        return result;
+}

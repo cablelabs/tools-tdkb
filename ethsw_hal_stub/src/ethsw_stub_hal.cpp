@@ -406,7 +406,43 @@ void ethsw_stub_hal::ethsw_stub_hal_SetPortCfg(IN const Json::Value& req, OUT Js
 	}
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : ethsw_stub_hal_Get_AssociatedDevice
+ * Description          :This function will invoke the SSP  HAL wrapper to get the ethsw assocoated device
+ *
+ * @param [in] req-    :
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void ethsw_stub_hal::ethsw_stub_hal_Get_AssociatedDevice(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"Inside Function ethsw_stub_hal_Get_AssociatedDevice stub\n");
+    int isNegativeScenario = 0;
+    char details[120] = {'\0'};
+    eth_device_t eth_device_conf;
+    unsigned long int array_size = 0;
 
+    if(&req["flag"])
+    {
+        isNegativeScenario = req["flag"].asInt();
+    }
+
+    if(ssp_ethsw_stub_hal_Get_AssociatedDevice(&array_size,&eth_device_conf,isNegativeScenario) == RETURN_SUCCESS)
+        {
+                sprintf(details, "port: %d, mac address : %s, status: %d, lanid: %d, devTxRate: %d, devRxRate: %d",eth_device_conf.eth_port,eth_device_conf.eth_devMacAddress,eth_device_conf.eth_Active,eth_device_conf.eth_vlanid,eth_device_conf.eth_devTxRate,eth_device_conf.eth_devRxRate);
+                DEBUG_PRINT(DEBUG_TRACE, "Successfully retrieved the associated device status status\n");
+                response["result"] = "SUCCESS";
+                response["details"] = details;
+                return;
+        }
+        else
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "ethsw_stub_hal_Get_AssociatedDevice function has failed.Please check logs";
+                return;
+        }
+}
 /***************************************************************************************************
  *Function Name   : CreateObject
  *Description     : This function is used to create a new object of the class "ethsw_stub_hal".

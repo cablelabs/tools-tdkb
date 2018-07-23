@@ -17,7 +17,7 @@
 ##########################################################################
 ACLOCAL_AMFLAGS = -Im4 --install
 AM_CPPFLAGS = ${COPTS} -fPIC -DDEBUG_LEVEL_TRACE
-AM_CXXFLAGS = -I${top_srcdir}/CMHAL_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
+AM_CXXFLAGS = -I${PKG_CONFIG_SYSROOT_DIR}$(includedir) -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)/ccsp -I${top_srcdir}/CMHAL_Stub/include -I${top_srcdir}/agent/include -I${top_srcdir}/tdkb_lib/include
 lib_LTLIBRARIES = libcmhalstub.la
 libcmhalstub_la_SOURCES = src/CMHAL.cpp
 libcmhalstub_la_DEPENDENCIES= ${top_builddir}/tdkb_lib/.libs/libtdkagentssp.la

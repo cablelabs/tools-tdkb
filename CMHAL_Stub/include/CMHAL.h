@@ -31,20 +31,13 @@
 #include <sys/wait.h>
 #include <fstream>
 #include <sstream>
+#include "ssp_tdk_cmhal_wrp.h"
 #define IN
 #define OUT
 
 #define TEST_SUCCESS true
 #define TEST_FAILURE false
-
-/* To provide external linkage to C Functions defined in TDKB Component folder */
-
-extern "C"
-{
-    int ssp_CMHAL_GetParamCharValue(char* paramName, char* value);
-    int ssp_CMHAL_GetParamUlongValue(char* paramName, unsigned long* value);
-
-};
+#define DOCSIS_EVENT_LOG_SIZE 50
 
 class RDKTestAgent;
 
@@ -56,6 +49,10 @@ class CMHAL : public RDKTestStubInterface,  public AbstractServer<CMHAL>
                 {
                   this->bindAndAddMethod(Procedure("CMHAL_GetParamCharValue", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,"paramType", JSON_STRING,NULL), &CMHAL::CMHAL_GetParamCharValue);
                   this->bindAndAddMethod(Procedure("CMHAL_GetParamUlongValue", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,"paramType", JSON_STRING,NULL), &CMHAL::CMHAL_GetParamUlongValue);
+		  this->bindAndAddMethod(Procedure("CMHAL_GetErrorCodeWords", PARAMS_BY_NAME, JSON_STRING,"flag", JSON_INTEGER,NULL), &CMHAL::CMHAL_GetErrorCodeWords);
+                  this->bindAndAddMethod(Procedure("CMHAL_Init", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,NULL), &CMHAL::CMHAL_Init);
+		  this->bindAndAddMethod(Procedure("CMHAL_GetDocsisEventLogItems", PARAMS_BY_NAME, JSON_STRING,"flag", JSON_INTEGER,NULL), &CMHAL::CMHAL_GetDocsisEventLogItems);
+		  this->bindAndAddMethod(Procedure("CMHAL_SetLEDFlashStatus", PARAMS_BY_NAME, JSON_STRING,"LEDFlash", JSON_STRING,NULL), &CMHAL::CMHAL_SetLEDFlashStatus);
 		}
 
         /*inherited functions*/
@@ -67,7 +64,9 @@ class CMHAL : public RDKTestStubInterface,  public AbstractServer<CMHAL>
         /*CMHAL Stub Wrapper functions*/
 	void CMHAL_GetParamCharValue(IN const Json::Value& req, OUT Json::Value& response);
         void CMHAL_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value& response);
-
-
+	void CMHAL_GetErrorCodeWords(IN const Json::Value& req, OUT Json::Value& response);
+	void CMHAL_Init(IN const Json::Value& req, OUT Json::Value& response);
+	void CMHAL_GetDocsisEventLogItems(IN const Json::Value& req, OUT Json::Value& response);
+	void CMHAL_SetLEDFlashStatus(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__CMHAL_STUB_H__

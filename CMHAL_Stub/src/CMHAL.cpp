@@ -161,6 +161,149 @@ void CMHAL::CMHAL_GetParamUlongValue(IN const Json::Value& req, OUT Json::Value&
     return;
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_GetErrorCodeWords
+ * Description          :This function will invoke the SSP  HAL wrapper to get the ErrorCodeWords
+ *
+ * @param [in] req-    : flag: To handle negative scenario
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_GetErrorCodeWords(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"Inside Function CMHAL_GetErrorCodeWords stub\n");
+    int isNegativeScenario = 0;
+    char details[800] = {'\0'};
+    char value[800] = {'\0'};
+
+    if(&req["flag"])
+    {
+        isNegativeScenario = req["flag"].asInt();
+    }
+
+    if(ssp_CMHAL_GetErrorCodeWords(value,isNegativeScenario) == 0)
+        {
+                sprintf(details, "Value returned successfully\n");
+                DEBUG_PRINT(DEBUG_TRACE, "Successfully retrieved the ErrorCodeWords status\n");
+                response["result"] = "SUCCESS";
+                response["details"] = details;
+                return;
+        }
+        else
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "CMHAL_GetErrorCodeWords function has failed.Please check logs";
+                return;
+        }
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_Init
+ * Description          :This function will invoke the SSP  HAL wrapper to init the CM
+ *
+ * @param [in] req-     :ParamName : Name of the api
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_Init(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"Inside Function CMHAL_Init stub\n");
+    char details[64] = {'\0'};
+    char paramName[64] = {'\0'};
+
+    strcpy(paramName,req["paramName"].asCString());
+
+    if(ssp_CMHAL_Init(paramName) == 0)
+        {
+                sprintf(details, "CM  has initiated successfully\n");
+                DEBUG_PRINT(DEBUG_TRACE, "Successfully initiated the CM \n");
+                response["result"] = "SUCCESS";
+                response["details"] = details;
+                return;
+        }
+        else
+        {
+                response["result"] = "FAILURE";
+                response["details"] = "CMHAL_Init function has failed.Please check logs";
+                return;
+        }
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_GetDocsisEventLogItems
+ * Description          :This function will invoke the SSP  HAL wrapper to get the DocsisEventLogItems
+ *
+ * @param [in] req-    :flag- to execute negative scenarios
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_GetDocsisEventLogItems(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"Inside Function CMHAL_GetDocsisEventLogItems stub\n");
+    int isNegativeScenario = 0;
+    char details[120] = {'\0'};
+    CMMGMT_CM_EventLogEntry_t entries[DOCSIS_EVENT_LOG_SIZE];
+
+    if(&req["flag"])
+    {
+        isNegativeScenario = req["flag"].asInt();
+    }
+
+    if(ssp_CMHAL_GetDocsisEventLogItems(entries, DOCSIS_EVENT_LOG_SIZE,isNegativeScenario) == 0)
+    {
+        sprintf(details, "Retrieved the event log items  successfully");
+        DEBUG_PRINT(DEBUG_TRACE, "Successfully retrieved the event log items\n");
+        response["result"] = "SUCCESS";
+        response["details"] = details;
+        return;
+    }
+    else
+    {
+        response["result"] = "FAILURE";
+        response["details"] = "CMHAL_GetDocsisEventLogItems function has failed.Please check logs";
+        return;
+    }
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_SetLEDFlashStatus
+ * Description          :This function will invoke the SSP  HAL wrapper to set the LEDFlashStatus
+ *
+ * @param [in] req-    :LEDFlash - to enable LEDFlash status
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_SetLEDFlashStatus(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetLEDFlashStatus --->Entry \n");
+    int returnValue = 0;
+    unsigned char* LEDFlash;
+    char Details[64] = {'\0'};
+
+    LEDFlash=(unsigned char*)req["LEDFlash"].asCString();
+    returnValue = ssp_CMHAL_SetLEDFlashStatus(*LEDFlash);
+    if(0 == returnValue)
+    {
+        sprintf(Details,"CMHAL_SetLEDFlashStatus enabled successfully");
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to set enable status";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetLEDFlashStatus failed--->Exit\n");
+        return;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetLEDFlashStatus --->Exit\n");
+    return;
+}
+
 
 /**************************************************************************
  * Function Name        : CreateObject

@@ -17,11 +17,20 @@
  * limitations under the License.
 */
 
+#include "cm_hal.h"
 #define SSP_SUCCESS       0
 #define SSP_FAILURE       1
 
-
-int ssp_CMHAL_GetParamCharValue(char* paramName, char* value);
-int ssp_CMHAL_GetParamUlongValue(char* paramName, unsigned long* value);
-
-
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    int ssp_CMHAL_GetParamCharValue(char* paramName, char* value);
+    int ssp_CMHAL_GetParamUlongValue(char* paramName, unsigned long* value);
+    int ssp_CMHAL_GetErrorCodeWords(char *value, int isNegativeScenario);
+    int ssp_CMHAL_Init(char* paramName);
+    int ssp_CMHAL_GetDocsisEventLogItems(CMMGMT_CM_EventLogEntry_t *entryArray,int len,int isNegativeScenario);
+    int ssp_CMHAL_SetLEDFlashStatus(BOOLEAN LEDFlash);
+#ifdef __cplusplus
+}
+#endif

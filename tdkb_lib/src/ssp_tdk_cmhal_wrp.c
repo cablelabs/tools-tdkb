@@ -19,7 +19,6 @@
 
 #include <stdio.h>
 #include "ssp_tdk_cmhal_wrp.h"
-#include "cm_hal.h"
 
 
 /*******************************************************************************************
@@ -769,7 +768,16 @@ int ssp_CMHAL_GetParamCharValue(char* paramName, char* value)
         else
             return_status = docsis_GetDOCSISInfo(value);
     }
-
+    else if( !(strcmp(paramName, "Cert")) )
+    {
+        return_status = docsis_GetCert(value);
+        printf("Return status of docsis_GetCert %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHAL_GetCharParamValues : Failed to get Cert info\n");
+            return SSP_FAILURE;
+        }
+    }
     else
     {
          printf("Invalid parameter name");
@@ -794,6 +802,7 @@ int ssp_CMHAL_GetParamUlongValue(char* paramName, unsigned long* value)
 {
     int return_status = 0;
     CMMGMT_CM_DHCP_INFO v4dhcpinfo;
+    CMMGMT_CM_EventLogEntry_t entryArray[50];
     printf("\nEntering ssp_CMHAL_GetParamUlongValue function\n\n");
     if( !(strcmp(paramName, "DownFreq")) )
     {
@@ -837,6 +846,102 @@ int ssp_CMHAL_GetParamUlongValue(char* paramName, unsigned long* value)
         else
             return_status = cm_hal_GetDHCPInfo(value);
     }
+    else if( !(strcmp(paramName, "CertStatus")) )
+    {
+        return_status = docsis_GetCertStatus(value);
+        printf("Return status of docsis_GetCertStatus %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHAL_GetParamUlongValue : Failed to get CertStatus\n");
+            return_status =SSP_FAILURE;
+        }
+    }
+    else if( !(strcmp(paramName, "USChannelId")) )
+    {
+	*value = -1;
+        *value = docsis_GetUSChannelId();
+        printf("ssp_CMHAL_GetParamUlongValue:US Channel id is %d", *value);
+
+        if ( *value == -1)
+        {
+            printf("ssp_CMHAL_GetParamUlongValue : Failed to get the US Channel ID\n");
+            return_status =SSP_FAILURE;
+        }
+    }
+    else if( !(strcmp(paramName, "DownloadInterface")) )
+    {
+        return_status = cm_hal_Get_HTTP_Download_Interface(value);
+        printf("Return status of cm_hal_Get_HTTP_Download_Interface %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHAL_GetParamCharValue : Failed to get cm_hal_Get_HTTP_Download_Interface\n");
+            return_status =SSP_FAILURE;
+        }
+    }
+    else if( !(strcmp(paramName, "EventLogItemsCount")) )
+    {
+       memset(entryArray, 0, 50*sizeof(CMMGMT_CM_EventLogEntry_t));
+       *value = docsis_GetDocsisEventLogItems(entryArray,50);
+       if(value)
+       {
+           printf("ssp_CMHal_GetParamUlongValue: Number of Docsis Event log items:%d\n",value);
+           return_status = SSP_SUCCESS;
+       }
+       else
+       {
+           return_status =SSP_FAILURE;
+       }
+    }
+    else if( !(strcmp(paramName, "CableModemResetCount")) )
+    {
+        return_status = cm_hal_Get_CableModemResetCount(value);
+        printf("Return status of cm_hal_Get_CableModemResetCount %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHAL_GetParamUlongValue: Failed to get CableModemResetCount\n");
+            return_status =SSP_FAILURE;
+        }
+    }
+    else if( !(strcmp(paramName, "LocalResetCount")) )
+    {
+        return_status = cm_hal_Get_LocalResetCount(value);
+        printf("Return status of cm_hal_Get_LocalResetCount %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHAL_GetParamUlongValue: Failed to get LocalResetCount\n");
+            return_status =SSP_FAILURE;
+        }
+    }
+    else if( !(strcmp(paramName, "DocsisResetCount")) )
+    {
+        return_status = cm_hal_Get_DocsisResetCount(value);
+        printf("Return status of cm_hal_Get_DocsisResetCount %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHAL_GetParamUlongValue: Failed to get DocsisResetCount\n");
+            return_status =SSP_FAILURE;
+        }
+    }
+    else if( !(strcmp(paramName, "ErouterResetCount")) )
+    {
+        return_status = cm_hal_Get_ErouterResetCount(value);
+        printf("Return status of cm_hal_Get_ErouterResetCount %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHAL_GetParamUlongValue: Failed to get ErouterResetCount\n");
+            return_status =SSP_FAILURE;
+        }
+    }
+    else if( !(strcmp(paramName, "Reboot_Ready")) )
+    {
+        return_status = cm_hal_Reboot_Ready(value);
+        printf("Return status of cm_hal_Reboot_Ready %d", return_status);
+        if ( return_status != SSP_SUCCESS)
+        {
+            printf("ssp_CMHAL_GetParamUlongValue: Failed to get cm_hal_Reboot_Ready");
+            return_status =SSP_FAILURE;
+        }
+    }
     else
     {
         printf("Invalid parameter name");
@@ -846,5 +951,172 @@ int ssp_CMHAL_GetParamUlongValue(char* paramName, unsigned long* value)
 
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_GetErrorCodeWords
+ * Description          : This function will invoke the hal api of CM to get the error code words
+ *
+ * @param [in]          :  isNegativeScenario : for executing negative scenario
+                           value: returns the value of the parameter
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
 
+int ssp_CMHAL_GetErrorCodeWords(char *value, int isNegativeScenario)
+{
+    int return_status = 0;
+    int i=0;
+    PCMMGMT_CM_ERROR_CODEWORDS perrorcodes = NULL;
+    long unsigned int  count = 0;
+    printf("\nEntering ssp_CMHAL_GetErrorCodeWords function\n\n");
+
+    if(isNegativeScenario)
+    {
+        printf("Executing negative scenario\n");
+        return_status = docsis_GetErrorCodewords(NULL);
+    }
+    else
+    {
+        printf("Executing positive scenario\n");
+
+        return_status = docsis_GetNumOfActiveRxChannels(&count);
+        printf("Count of Active Rx channels is %d\n",count);
+        if (return_status == 0)
+        {
+            perrorcodes = (PCMMGMT_CM_ERROR_CODEWORDS) malloc(sizeof(CMMGMT_CM_ERROR_CODEWORDS)*count);
+
+            if(!perrorcodes)
+            {
+                printf("Memory has not allocated successfully \n ");
+		return_status = SSP_FAILURE;
+            }
+            else
+            {
+                return_status = docsis_GetErrorCodewords(&perrorcodes);
+                printf("Return status of docsis_GetErrorCodewords: %d\n",return_status);
+                strcpy(value,"");
+                for (i=0;i<count;i++)
+                {
+                    printf("UnerroredCodewords :%lu, CorrectableCodewords :%lu, UncorrectableCodewords :%lu\n",perrorcodes[i].UnerroredCodewords,perrorcodes[i].CorrectableCodewords,perrorcodes[i].UncorrectableCodewords);
+                    char str[64]= {0};
+                    sprintf(str,"%d,%d,%d",perrorcodes[i].UnerroredCodewords,perrorcodes[i].CorrectableCodewords,perrorcodes[i].UncorrectableCodewords);
+                    strcat(value,str);
+                    strcat(value," ");
+                }
+            }
+        }
+    }
+    if(perrorcodes != NULL)
+    {
+       free(perrorcodes);
+    }
+
+    return return_status;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_Init
+ * Description          : This function will invoke the hal api of CM to init the CM
+ *
+ * @param [in]          :  paramName: specifies the name of the API
+
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CMHAL_Init(char* paramName)
+{
+    int return_status = 0;
+    printf("\nEntering ssp_CMHAL_Init function\n\n");
+
+    if( !(strcmp(paramName, "InitDB")) )
+    {
+        return_status = cm_hal_InitDB();
+        printf("Return status of cm_hal_InitDB %d", return_status);
+    }
+    else if( !(strcmp(paramName, "InitDS")) )
+    {
+        return_status = docsis_InitDS();
+        printf("Return status of docsis_InitDS %d", return_status);
+    }
+    else if( !(strcmp(paramName, "InitUS")) )
+    {
+        return_status = docsis_InitUS();
+        printf("Return status of docsis_InitUS %d", return_status);
+    }
+    else if( !(strcmp(paramName, "ReinitMac")) )
+    {
+        return_status = cm_hal_ReinitMac();
+        printf("Return status of cm_hal_ReinitMac %d", return_status);
+    }
+    else
+    {
+         printf("Invalid parameter name");
+         return_status = SSP_FAILURE;
+    }
+    return return_status;
+}
+
+/*****************************************************************************************************************
+ * Function Name : ssp_CMHAL_GetDocsisEventLogItems
+ * Description   : This function will Retrieve the DocsisEventLogItems
+ * @param [in]   : entryArray - to get  the event log items
+ *		    len- length of array
+ *		   isNegativeScenario - to execute the negative scenarios
+ * @param [out]  : return status an integer value 0-success and 1-Failure
+ ******************************************************************************************************************/
+int ssp_CMHAL_GetDocsisEventLogItems(CMMGMT_CM_EventLogEntry_t *entryArray,int len,int isNegativeScenario)
+{
+       int result = RETURN_ERR;
+       int count =0;
+       int i =0;
+
+       printf("Entering the ssp_CMHAL_GetDocsisEventLogItems wrapper\n");
+
+       if(isNegativeScenario)
+       {
+           result = docsis_GetDocsisEventLogItems(NULL, NULL);
+       }
+       else
+       {
+          memset(entryArray, 0, len*sizeof(CMMGMT_CM_EventLogEntry_t));
+          count = docsis_GetDocsisEventLogItems(entryArray,len);
+          printf("Count is %d\n",count);
+              for (i=0;i<count;i++)
+              {
+		 printf("Time: %s,EventID: %lu,EventLevel : %lu, Description:%s",ctime(&(entryArray[i].docsDevEvFirstTime.tv_sec)), entryArray[i].docsDevEvId, entryArray[i].docsDevEvLevel, entryArray[i].docsDevEvText);
+                 result = RETURN_OK;
+              }
+        }
+
+        if(result == RETURN_OK)
+        {
+           printf("ssp_CMHAL_GetDocsisEventLogItems function returns success\n");
+        }
+        return result;
+}
+
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_SetLEDFlashStatus
+ * Description          : This function will invoke the hal api of cm_hal_HTTP_LED_Flash() to enable/disable LED Flash
+ *
+ * @param [in]          :  LedFlash: specifies enable/disable status
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CMHAL_SetLEDFlashStatus(BOOLEAN LedFlash)
+{
+    int return_status = 0;
+    printf("\nEntering ssp_CMHAL_SetLEDFlashStatus function\n\n");
+
+    return_status = cm_hal_HTTP_LED_Flash(LedFlash);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_CMHAL_SetLEDFlashStatus::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_CMHAL_SetLEDFlashStatus::Success\n");
+     return SSP_SUCCESS;
+    }
+}
 
