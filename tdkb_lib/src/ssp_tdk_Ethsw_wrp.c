@@ -142,6 +142,11 @@ int ssp_ethsw_stub_hal_GetPortCfg(int portId, char *pDuplexMode, int *pLinkRate,
 				}
 			case CCSP_HAL_ETHSW_LINK_Auto:
 				{
+					*pLinkRate = 1;
+					break;
+				}
+			case CCSP_HAL_ETHSW_LINK_NULL:
+				{
 					*pLinkRate = 0;
 					break;
 				}
@@ -269,6 +274,11 @@ int ssp_ethsw_stub_hal_GetPort_Status(int portId, char *pLinkStatus, int *pLinkR
 					break;
 				}
 			case CCSP_HAL_ETHSW_LINK_Auto:
+				{
+					*pLinkRate = 1;
+					break;
+				}
+			case CCSP_HAL_ETHSW_LINK_NULL:
 				{
 					*pLinkRate = 0;
 					break;
