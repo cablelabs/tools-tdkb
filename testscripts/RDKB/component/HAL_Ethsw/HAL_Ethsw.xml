@@ -16,7 +16,7 @@
 <?xml version="1.0" encoding="UTF-8"?><xml>
   <module name="HAL_Ethsw" testGroup="Component">
     <primitiveTests>
-      <primitiveTest name="ethsw_stub_hal_Get_Port_Admin_Status" id=" " version="3">
+      <primitiveTest id=" " name="ethsw_stub_hal_Get_Port_Admin_Status" version="3">
         <function>ethsw_stub_hal_Get_Port_Admin_Status</function>
         <parameters>
           <parameter name="PortID" value="1"/>
@@ -30,7 +30,7 @@
           <parameter name="flag" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="ethsw_stub_hal_Get_Port_Status" id=" " version="4">
+      <primitiveTest id=" " name="ethsw_stub_hal_Get_Port_Status" version="4">
         <function>ethsw_stub_hal_Get_Port_Status</function>
         <parameters>
           <parameter name="PortID" value="1"/>
@@ -44,7 +44,7 @@
           <parameter name="AgingSpeed" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="ethsw_stub_hal_SetPortAdminStatus" id=" " version="7">
+      <primitiveTest id=" " name="ethsw_stub_hal_SetPortAdminStatus" version="7">
         <function>ethsw_stub_hal_SetPortAdminStatus</function>
         <parameters>
           <parameter name="PortID" value="1"/>
@@ -59,16 +59,22 @@
           <parameter name="mode" value="CCSP_HAL_ETHSW_DUPLEX_Half"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="ethsw_stub_hal_LocatePort_By_MacAddress" id=" " version="4">
+      <primitiveTest id=" " name="ethsw_stub_hal_LocatePort_By_MacAddress" version="4">
         <function>ethsw_stub_hal_LocatePort_By_MacAddress</function>
         <parameters>
           <parameter name="macID" value="00:50:b6:02:e0:77"/>
           <parameter name="flag" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="ethsw_stub_hal_Init" id="" version="1">
+      <primitiveTest id="" name="ethsw_stub_hal_Init" version="1">
         <function>ethsw_stub_hal_Init</function>
         <parameters/>
+      </primitiveTest>
+      <primitiveTest name="ethsw_stub_hal_Get_AssociatedDevice" id=" " version="2">
+        <function>ethsw_stub_hal_Get_AssociatedDevice</function>
+        <parameters>
+          <parameter name="flag" value="0"/>
+        </parameters>
       </primitiveTest>
     </primitiveTests>
   </module>

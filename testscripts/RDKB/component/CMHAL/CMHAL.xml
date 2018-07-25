@@ -33,6 +33,18 @@
           <parameter name="paramType" value=""/>
         </parameters>
       </primitiveTest>
+      <primitiveTest id=" " name="CMHAL_GetErrorCodeWords" version="1">
+        <function>CMHAL_GetErrorCodeWords</function>
+        <parameters>
+          <parameter name="flag" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="CMHAL_Init" id=" " version="1">
+        <function>CMHAL_Init</function>
+        <parameters>
+          <parameter name="paramName" value=""/>
+        </parameters>
+      </primitiveTest>
     </primitiveTests>
   </module>
 </xml>
