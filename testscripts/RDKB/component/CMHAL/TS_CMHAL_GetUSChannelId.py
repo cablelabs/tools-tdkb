@@ -68,18 +68,21 @@ import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("cmhal","1");
+obj1 = tdklib.TDKScriptingLibrary("tdkbtr181","1");
 
 #IP and Port of box, No need to change,
 #This will be replaced with correspoing Box Ip and port while executing script
 ip = <ipaddress>
 port = <port>
 obj.configureTestCase(ip,port,'TS_CMHAL_GetUSChannelId');
+obj1.configureTestCase(ip,port,'TS_CMHAL_GetUSChannelId');
 
 #Get the result of connection with test component and DUT
 loadmodulestatus =obj.getLoadModuleResult();
+loadmodulestatus1 =obj1.getLoadModuleResult();
 print "[LIB LOAD STATUS]  :  %s" %loadmodulestatus ;
 
-if "SUCCESS" in loadmodulestatus.upper():
+if "SUCCESS" in loadmodulestatus.upper() and "SUCCESS" in loadmodulestatus1.upper():
     obj.setLoadModuleStatus("SUCCESS");
 
     #Script to load the configuration file of the component
@@ -98,6 +101,34 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "ACTUAL RESULT 1: US Channel ID is %s" %USChannelID;
         #Get the result of execution
         print "[TEST EXECUTION RESULT] : SUCCESS";
+
+	#Get the upstream locked channel ID
+	tdkTestObj = obj1.createTestStep('TDKB_TR181Stub_Get');
+	tdkTestObj.addParameter("ParamName","Device.X_CISCO_COM_CableModem.LockedUpstreamChID");
+    	expectedresult="SUCCESS";
+
+    	#Execute the test case in DUT
+    	tdkTestObj.executeTestCase(expectedresult);
+    	actualresult = tdkTestObj.getResult();
+    	LockedUSID = tdkTestObj.getResultDetails();
+
+	if expectedresult in actualresult and LockedUSID ==  USChannelID:
+	    #Set the result status of execution
+            tdkTestObj.setResultStatus("SUCCESS");
+            print "TEST STEP 2: Get the US locked Channel ID";
+            print "EXPECTED RESULT 2: Should get the US locked Channel ID same as US Channel ID";
+            print "ACTUAL RESULT 2: US locked Channel ID is %s" %LockedUSID;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : SUCCESS";
+	else:
+	    #Set the result status of execution
+            tdkTestObj.setResultStatus("FAILURE");
+            print "TEST STEP 2: Get the US locked Channel ID";
+            print "EXPECTED RESULT 2: Should get the US locked Channel ID same as US Channel ID";
+            print "ACTUAL RESULT 2: US locked Channel ID is %s" %LockedUSID;
+            #Get the result of execution
+            print "[TEST EXECUTION RESULT] : FAILURE";
+
     else:
         tdkTestObj.setResultStatus("FAILURE");
         print "TEST STEP 1: Get the US Channel ID";
@@ -106,6 +137,7 @@ if "SUCCESS" in loadmodulestatus.upper():
         print "[TEST EXECUTION RESULT] : FAILURE";
 
     obj.unloadModule("cmhal");
+    obj1.unloadModule("tdkbtr181");
 else:
         print "Failed to load the module";
         obj.setLoadModuleStatus("FAILURE");

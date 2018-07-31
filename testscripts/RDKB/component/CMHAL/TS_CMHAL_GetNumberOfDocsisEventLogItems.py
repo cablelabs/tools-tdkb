@@ -90,7 +90,7 @@ if "SUCCESS" in loadmodulestatus.upper():
     actualresult = tdkTestObj.getResult();
     count = tdkTestObj.getResultDetails();
 
-    if expectedresult in actualresult:
+    if expectedresult in actualresult and int(count) >= 0:
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the number of Docsis event log items";

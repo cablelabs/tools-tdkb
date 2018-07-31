@@ -48,7 +48,7 @@
     <api_or_interface_used>cm_hal_Get_HTTP_Download_Interface()</api_or_interface_used>
     <input_parameters>DownloadInterface</input_parameters>
     <automation_approch>1. Load  cmhal module
-2. From script invoke CMHAL_GetParamUlongValue() 
+2. From script invoke CMHAL_GetParamUlongValue()
 3. Get the download interface
 4. Validation of  the result is done within the stub and send the result status to Test Manager.
 5.Test Manager will publish the result in GUI as PASS/FAILURE based on the response from TAD stub.</automation_approch>
@@ -63,8 +63,8 @@
 </xml>
 
 '''
-# use tdklib library,which provides a wrapper for tdk testcase script 
-import tdklib; 
+# use tdklib library,which provides a wrapper for tdk testcase script
+import tdklib;
 
 #Test component to be tested
 obj = tdklib.TDKScriptingLibrary("cmhal","1");
@@ -93,8 +93,10 @@ if "SUCCESS" in loadmodulestatus.upper():
 	interface = "wan0";
     elif "1" in details:
 	interface = "erouter0";
+    else:
+	interface = "Failed to get the download interface"
 
-    if expectedresult in actualresult:
+    if expectedresult in actualresult and interface in "wan0" or interface in "erouter0":
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the Download interface";

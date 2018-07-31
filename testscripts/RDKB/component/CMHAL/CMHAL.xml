@@ -1,5 +1,5 @@
 <!--
- If not stated otherwise in this file or this component's Licenses.txt file the
+      If not stated otherwise in this file or this component's Licenses.txt file the
  following copyright and licenses apply:
 
  Copyright 2016 RDK Management
@@ -39,10 +39,22 @@
           <parameter name="flag" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="CMHAL_Init" id=" " version="1">
+      <primitiveTest id=" " name="CMHAL_Init" version="1">
         <function>CMHAL_Init</function>
         <parameters>
           <parameter name="paramName" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMHAL_GetDocsisEventLogItems" version="2">
+        <function>CMHAL_GetDocsisEventLogItems</function>
+        <parameters>
+          <parameter name="flag" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="CMHAL_SetLEDFlashStatus" id=" " version="2">
+        <function>CMHAL_SetLEDFlashStatus</function>
+        <parameters>
+          <parameter name="LEDFlash" value=""/>
         </parameters>
       </primitiveTest>
     </primitiveTests>
