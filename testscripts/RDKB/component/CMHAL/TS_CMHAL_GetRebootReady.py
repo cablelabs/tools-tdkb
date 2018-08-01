@@ -106,14 +106,14 @@ if "SUCCESS" in loadmodulestatus.upper():
     tdkTestObj.executeTestCase(expectedresult);
     actualresult = tdkTestObj.getResult();
     count = tdkTestObj.getResultDetails();
-    if count == 1:
+    if count == "1":
         status="ready"
-    elif count == 2:
+    elif count == "2":
         status == "not ready"
     else:
         status = "invalid"
 
-    if expectedresult in actualresult and (count==1 or count==2):
+    if expectedresult in actualresult and (count=="1" or count=="2"):
         #Set the result status of execution
         tdkTestObj.setResultStatus("SUCCESS");
         print "TEST STEP 1: Get the GetRebootReady status";
