@@ -95,7 +95,7 @@ if "SUCCESS" in loadmodulestatus.upper():
 
     #Calling the method from wifiUtility to execute test case and set result status for the test.
     tdkTestObj, actualresult, details = ExecuteWIFIHalCallMethod(obj, primitive, radioIndex, "0", getMethod)
-    MacAddress = details.split(" :")[1].strip()
+    MacAddress = details.split(" :")[1].rstrip("\\n")
 
     if expectedresult in actualresult:
         expectedresult="SUCCESS";
