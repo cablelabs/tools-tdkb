@@ -1,0 +1,76 @@
+<!-- 
+  If not stated otherwise in this file or this component's Licenses.txt file the 
+  following copyright and licenses apply: 
+  Copyright 2018 RDK Management 
+  Licensed under the Apache License, Version 2.0 (the "License"); 
+  you may not use this file except in compliance with the License. 
+  You may obtain a copy of the License at 
+  http://www.apache.org/licenses/LICENSE-2.0 
+  Unless required by applicable law or agreed to in writing, software 
+  distributed under the License is distributed on an "AS IS" BASIS, 
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+  See the License for the specific language governing permissions and 
+  limitations under the License. 
+--> 
+<?xml version='1.0' encoding='utf-8'?>
+<xml>
+  <module>
+  <!-- Module Name  -->
+    <moduleName>MoCAHAL</moduleName>
+  <!-- Category of the module  -->
+    <category>RDKB</category>
+  <!-- Excecution time out of module -->
+    <executionTimeOut>1</executionTimeOut>
+  <!-- Excecution time out of module -->
+    <testGroup>Component</testGroup>
+  <!-- Logs File Names of module -->
+    <logFileNames>[]</logFileNames>
+  <!-- Crash File Names of the module -->
+    <crashFileNames>[]</crashFileNames>
+  <!-- Total functions corresponding module  -->
+    <functions>
+      <function name='MoCAHAL_IfGetDynamicInfo' />
+      <function name='MoCAHAL_IfGetStaticInfo' />
+      <function name='MoCAHAL_IfGetStats' />
+      <function name='MoCAHAL_GetNumAssociatedDevices' />
+      <function name='MoCAHAL_IfGetExtCounter' />
+      <function name='MoCAHAL_IfGetExtAggrCounter' />
+      <function name='MoCAHAL_GetMocaCPEs' />
+      <function name='MoCAHAL_GetAssociatedDevices' />
+      <function name='MoCAHAL_GetIfConfig' />
+      <function name='MoCAHAL_FreqMaskToValue' />
+      <function name='MoCAHAL_HardwareEquipped' />
+      <function name='MoCAHAL_GetFullMeshRates' />
+      <function name='MoCAHAL_GetFlowStatistics' />
+      <function name='MoCAHAL_GetResetCount' />
+    </functions>
+  <!-- Total parameters corresponding module  -->
+    <parameters>
+      <parameter funName='MoCAHAL_IfGetDynamicInfo' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_IfGetDynamicInfo' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_IfGetStaticInfo' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_IfGetStaticInfo' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_IfGetStats' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_IfGetStats' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_GetNumAssociatedDevices' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_GetNumAssociatedDevices' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_IfGetExtCounter' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_IfGetExtCounter' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_IfGetExtAggrCounter' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_IfGetExtAggrCounter' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_GetMocaCPEs' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_GetMocaCPEs' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_GetAssociatedDevices' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_GetAssociatedDevices' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_GetAssociatedDevices' parameterName='devCount' parameterType='INTEGER' range='0-20' />
+      <parameter funName='MoCAHAL_GetIfConfig' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_GetIfConfig' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_FreqMaskToValue' parameterName='mask' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_GetFullMeshRates' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_GetFullMeshRates' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_GetFlowStatistics' parameterName='ifIndex' parameterType='INTEGER' range='0-5' />
+      <parameter funName='MoCAHAL_GetFlowStatistics' parameterName='paramType' parameterType='STRING' range='A-Z' />
+      <parameter funName='MoCAHAL_GetResetCount' parameterName='paramType' parameterType='STRING' range='A-Z' />
+    </parameters>
+  </module>
+</xml>
