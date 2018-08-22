@@ -53,6 +53,11 @@ class CMHAL : public RDKTestStubInterface,  public AbstractServer<CMHAL>
                   this->bindAndAddMethod(Procedure("CMHAL_Init", PARAMS_BY_NAME, JSON_STRING,"paramName", JSON_STRING,NULL), &CMHAL::CMHAL_Init);
 		  this->bindAndAddMethod(Procedure("CMHAL_GetDocsisEventLogItems", PARAMS_BY_NAME, JSON_STRING,"flag", JSON_INTEGER,NULL), &CMHAL::CMHAL_GetDocsisEventLogItems);
 		  this->bindAndAddMethod(Procedure("CMHAL_SetLEDFlashStatus", PARAMS_BY_NAME, JSON_STRING,"LEDFlash", JSON_STRING,NULL), &CMHAL::CMHAL_SetLEDFlashStatus);
+		  this->bindAndAddMethod(Procedure("CMHAL_ClearDocsisEventLog", PARAMS_BY_NAME, JSON_STRING,NULL), &CMHAL::CMHAL_ClearDocsisEventLog);
+                  this->bindAndAddMethod(Procedure("CMHAL_GetCPEList", PARAMS_BY_NAME, JSON_STRING,"flag", JSON_INTEGER,NULL), &CMHAL::CMHAL_GetCPEList);
+                  this->bindAndAddMethod(Procedure("CMHAL_SetMddIpModeOverride", PARAMS_BY_NAME, JSON_STRING,"value", JSON_STRING,NULL), &CMHAL::CMHAL_SetMddIpModeOverride);
+                  this->bindAndAddMethod(Procedure("CMHAL_SetStartFreq", PARAMS_BY_NAME, JSON_STRING,"Value", JSON_INTEGER,NULL), &CMHAL::CMHAL_SetStartFreq);
+                  this->bindAndAddMethod(Procedure("CMHAL_SetUSChannelId", PARAMS_BY_NAME, JSON_STRING,"Value", JSON_INTEGER,NULL), &CMHAL::CMHAL_SetUSChannelId);
 		}
 
         /*inherited functions*/
@@ -68,5 +73,10 @@ class CMHAL : public RDKTestStubInterface,  public AbstractServer<CMHAL>
 	void CMHAL_Init(IN const Json::Value& req, OUT Json::Value& response);
 	void CMHAL_GetDocsisEventLogItems(IN const Json::Value& req, OUT Json::Value& response);
 	void CMHAL_SetLEDFlashStatus(IN const Json::Value& req, OUT Json::Value& response);
+	void CMHAL_ClearDocsisEventLog(IN const Json::Value& req, OUT Json::Value& response);
+        void CMHAL_GetCPEList(IN const Json::Value& req, OUT Json::Value& response);
+        void CMHAL_SetMddIpModeOverride(IN const Json::Value& req, OUT Json::Value& response);
+        void CMHAL_SetStartFreq(IN const Json::Value& req, OUT Json::Value& response);
+        void CMHAL_SetUSChannelId(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__CMHAL_STUB_H__

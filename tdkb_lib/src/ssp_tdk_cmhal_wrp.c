@@ -1120,3 +1120,142 @@ int ssp_CMHAL_SetLEDFlashStatus(BOOLEAN LedFlash)
     }
 }
 
+/*****************************************************************************************************************
+ * Function Name : ssp_CMHAL_ClearDocsisEventLog
+ * Description   : This function will clear the docsis event log
+ * @param [in]   : None
+ * @param [out]  : return status an integer value 0-success and 1-Failure
+ ******************************************************************************************************************/
+int ssp_CMHAL_ClearDocsisEventLog(void)
+{
+       int result = RETURN_ERR;
+       printf("Entering the ssp_CMHAL_ClearDocsisEventLog wrapper\n");
+       result = docsis_ClearDocsisEventLog();
+       printf("result is %d\n",result);
+       if(result == RETURN_OK)
+       {
+          printf("ssp_CMHAL_ClearDocsisEventLog function returns success\n");
+       }
+       else
+       {
+          printf("ssp_CMHAL_ClearDocsisEventLog function returns failure\n");
+       }
+
+       return result;
+}
+
+/********************************************************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_GetCPEList
+ * Description          : This function will invoke the hal api of cm_hal_GetCPEList to get the list of CPEs connected to the CM
+ *
+ * @param [in]          : InstanceNum : To save the instance number
+ *			  cpeList : To save the cpeList
+ *			  isNegativeScenario : To execute the negative scenario
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************************************************/
+int ssp_CMHAL_GetCPEList(unsigned long int *InstanceNum, char *cpeList,int isNegativeScenario)
+{
+       int result = RETURN_ERR;
+       int return_status = RETURN_ERR;
+       PCMMGMT_DML_CPE_LIST pInfo = NULL;
+       char LanMode[60] = {'\0'};
+       int i =0;
+       printf("Entering the ssp_CMHAL_GetCPEList wrapper\n");
+       if(isNegativeScenario)
+       {
+           result = cm_hal_GetCPEList(NULL, NULL, NULL);
+       }
+       else
+       {
+          printf("Executing positive scenarios\n");
+          result = cm_hal_GetCPEList(&pInfo,InstanceNum,&LanMode);
+          printf("Result is %d, InstanceNum is :%d, LanMode is :%s\n",result,*InstanceNum,LanMode);
+          if (result == RETURN_OK)
+          {
+              printf("cm_hal_GetCPEList returns success\n");
+              if(*InstanceNum > 0)
+              {
+                printf("inst num is greater than zero\n");
+                strcpy(cpeList,"");
+                for (i=0;i<*InstanceNum;i++)
+                  {
+                     printf("IPaddress: %s, MACAddress: %s \n",pInfo[i].IPAddress,pInfo[i].MACAddress);
+                     strcat(cpeList,pInfo[i].IPAddress);
+                     strcat(cpeList,",");
+                     strcat(cpeList,pInfo[i].MACAddress);
+                     strcat(cpeList,"::");
+                     printf("cpeList:%s\n",cpeList);
+                     return_status = RETURN_OK;
+                  }
+              }
+              else{ printf("Instance number is not greater than zero\n");}
+           }
+           else{ printf("cm_hal_GetCPEList returns failure\n");}
+        }
+        if(return_status == RETURN_OK)
+        {
+           printf("ssp_CMHAL_GetDocsisEventLogItems function returns success\n");
+        }
+        return return_status;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_SetMddIpModeOverride
+ * Description          : This function will invoke the hal api of docsis_SetMddIpModeOverride to set MddIPModeOverride
+ *
+ * @param [in]          :  Value : The value of MddIpModeOverride to set
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CMHAL_SetMddIpModeOverride(char* Value)
+{
+    int return_status = 0;
+    printf("\nEntering ssp_CMHAL_SetMddIpModeOverride function\n");
+    return_status = docsis_SetMddIpModeOverride(Value);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_CMHAL_SetMddIpModeOverride::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_CMHAL_SetMddIpModeOverride::Success\n");
+     return SSP_SUCCESS;
+    }
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_SetStartFreq
+ * Description          : This function will invoke the cosa api of CM to set
+ *                        start frequency
+ *
+ * @param [in]          : Value - The value to set
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+ int ssp_CMHAL_SetStartFreq(unsigned long int Value)
+{
+    //Since the api is a void function, validation of this function is done inside the python scripts
+    printf("\n Entering ssp_CMHAL_SetStartFreq function\n");
+    docsis_SetStartFreq(Value);
+    return SSP_SUCCESS;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_SetUSChannelId
+ * Description          : This function will invoke the cosa api of CM to set
+ *                        USChannelId
+ *
+ * @param [in]          : Value - The value to set
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+ int ssp_CMHAL_SetUSChannelId(int Value)
+{
+    unsigned long int usChannelId =0;
+    printf(" Entering ssp_CMHAL_SetUSChannelId function\n");
+    //Since the api is a void function, validation of this function is done inside the python scripts
+    docsis_SetUSChannelId(Value);
+    return SSP_SUCCESS;
+}

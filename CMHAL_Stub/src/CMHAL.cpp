@@ -304,6 +304,183 @@ void CMHAL::CMHAL_SetLEDFlashStatus(IN const Json::Value& req, OUT Json::Value& 
     return;
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_ClearDocsisEventLog
+ * Description          :This function will invoke the SSP  HAL wrapper to clear the docsis event logs
+ *
+ * @param [in] req-    :
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_ClearDocsisEventLog(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"Inside Function CMHAL_ClearDocsisEventLog stub\n");
+    char details[120] = {'\0'};
+    int return_status = 0;
+    return_status=ssp_CMHAL_ClearDocsisEventLog();
+    if(return_status== 0)
+    {
+        sprintf(details, "Cleared the docsis log successfully\n");
+        response["result"] = "SUCCESS";
+        response["details"] = details;
+        return;
+    }
+    else
+    {
+        response["result"] = "FAILURE";
+        response["details"] = "CMHAL_ClearDocsisEventLog function has failed.Please check logs";
+        return;
+    }
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_GetCPEList
+ * Description          : This function will invoke the SSP  HAL wrapper to get the CPE List
+ *
+ * @param [in] req-     : flag- to execute negative scenarios
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_GetCPEList(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"Inside Function CMHAL_GetCPEList stub\n");
+    int isNegativeScenario = 0;
+    char details[120] = {'\0'};
+    unsigned long int InstanceNum =0;
+    char cpeList[120] = {'\0'};
+    if(&req["flag"])
+    {
+        isNegativeScenario = req["flag"].asInt();
+    }
+    if(ssp_CMHAL_GetCPEList(&InstanceNum,cpeList,isNegativeScenario) == 0)
+    {
+        sprintf(details, "%s InstNum :%d ", cpeList, InstanceNum);
+        DEBUG_PRINT(DEBUG_TRACE, "Successfully retrieved cpe list\n");
+        response["result"] = "SUCCESS";
+        response["details"] = details;
+        return;
+    }
+    else
+    {sprintf(details, "Failed to get the cpe List, InstNum :%d ",InstanceNum);
+        response["result"] = "FAILURE";
+        response["details"] = details;
+        return;
+    }
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_SetMddIpModeOverride
+ * Description          : This function will invoke the SSP  HAL wrapper to set the MddIpModeOverride
+ *
+ * @param [in] req-     : Value - To set the MddIpModeOverride
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_SetMddIpModeOverride(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetMddIpModeOverride --->Entry \n");
+    int returnValue = 0;
+    char Value[60];
+    char Details[64] = {'\0'};
+    strcpy(Value,req["value"].asCString());
+    returnValue = ssp_CMHAL_SetMddIpModeOverride(Value);
+    if(0 == returnValue)
+    {
+        sprintf(Details,"CMHAL_SetMddIpModeOverride:set function success");
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to set MddIpModeOverride";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetMddIpModeOverride failed--->Exit\n");
+        return;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetMddIpModeOverride --->Exit\n");
+    return;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name    : CMHAL_SetStartFreq
+ * Description      : This function will set the StartFreq
+ *
+ * @param [in] req-    : Value - Value to set the StartFreq
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+void CMHAL::CMHAL_SetStartFreq(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetStartFreq --->Entry \n");
+    int returnValue = 0;
+    int Value = 0;
+    /* Validate the input arguments */
+    if(&req["Value"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return;
+    }
+    Value = req["Value"].asInt();
+    returnValue = ssp_CMHAL_SetStartFreq(Value);
+    if(0 == returnValue)
+    {
+        response["result"]="SUCCESS";
+        response["details"]="Successfully set the StartFreq";
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to set the StartFreq";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetStartFreq --->Exit\n");
+        return;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetStartFreq  --->Exit\n");
+    return;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name    : CMHAL_SetUSChannelId
+ * Description      : This function will set the USChannelId
+ *
+ * @param [in] req-    : Value - Value to set the UDChannelId
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+void CMHAL::CMHAL_SetUSChannelId(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetUSChannelId --->Entry \n");
+    int returnValue = 0;
+    int Value = 0;
+    /* Validate the input arguments */
+    if(&req["Value"]==NULL)
+    {
+        response["result"]="FAILURE";
+        response["details"]="NULL parameter as input argument";
+        return;
+    }
+    Value = req["Value"].asInt();
+    returnValue = ssp_CMHAL_SetUSChannelId(Value);
+    if(0 == returnValue)
+    {
+        response["result"]="SUCCESS";
+        response["details"]="US Channel ID is set successfully";
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to set the US Channel ID";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetUSChannelId --->Exit\n");
+        return;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetUSChannelId  --->Exit\n");
+    return;
+}
 
 /**************************************************************************
  * Function Name        : CreateObject
