@@ -51,11 +51,64 @@
           <parameter name="flag" value="0"/>
         </parameters>
       </primitiveTest>
-      <primitiveTest name="CMHAL_SetLEDFlashStatus" id=" " version="2">
+      <primitiveTest id=" " name="CMHAL_SetLEDFlashStatus" version="2">
         <function>CMHAL_SetLEDFlashStatus</function>
         <parameters>
           <parameter name="LEDFlash" value=""/>
         </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="CMHAL_ClearDocsisEventLog" version="1">
+        <function>CMHAL_ClearDocsisEventLog</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMHAL_GetCPEList" version="1">
+        <function>CMHAL_GetCPEList</function>
+        <parameters>
+          <parameter name="flag" value="0"/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMHAL_SetMddIpModeOverride" version="1">
+        <function>CMHAL_SetMddIpModeOverride</function>
+        <parameters>
+          <parameter name="value" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMHAL_SetStartFreq" version="1">
+        <function>CMHAL_SetStartFreq</function>
+        <parameters>
+          <parameter name="Value" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest name="CMHAL_SetUSChannelId" id=" " version="1">
+        <function>CMHAL_SetUSChannelId</function>
+        <parameters>
+          <parameter name="Value" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMHAL_SetHTTP_Download_Interface" version="1">
+        <function>CMHAL_SetHTTP_Download_Interface</function>
+        <parameters>
+          <parameter name="interface" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="CMHAL_GetHTTP_Download_Url" version="1">
+        <function>CMHAL_GetHTTP_Download_Url</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest id=" " name="CMHAL_SetHTTP_Download_Url" version="1">
+        <function>CMHAL_SetHTTP_Download_Url</function>
+        <parameters>
+          <parameter name="filename" value=""/>
+          <parameter name="httpURL" value=""/>
+        </parameters>
+      </primitiveTest>
+      <primitiveTest id="" name="CMHAL_HTTP_Download" version="1">
+        <function>CMHAL_HTTP_Download</function>
+        <parameters/>
+      </primitiveTest>
+      <primitiveTest name="CMHAL_FWupdateAndFactoryReset" id="" version="1">
+        <function>CMHAL_FWupdateAndFactoryReset</function>
+        <parameters/>
       </primitiveTest>
     </primitiveTests>
   </module>
