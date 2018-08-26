@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_66</test_case_id>
+    <test_case_id>TC_CMHAL_34</test_case_id>
     <test_objective>To get the provisioned wan0 ip type and check whether it is valid or not</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

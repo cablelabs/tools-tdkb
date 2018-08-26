@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_17</test_case_id>
+    <test_case_id>TC_CMHAL_33</test_case_id>
     <test_objective>To check whether NumberOfActiveTxChannels is obtained with a null buffer.</test_objective>
     <test_type>Negative</test_type>
     <test_setup>Broadband</test_setup>

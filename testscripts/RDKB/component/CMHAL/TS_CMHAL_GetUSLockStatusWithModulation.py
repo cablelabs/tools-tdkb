@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_27</test_case_id>
+    <test_case_id>TC_CMHAL_44</test_case_id>
     <test_objective>To get the LockStatus and modulation of upstream channel. If the LockStatus is  "Not Locked",modulation should be empty. Otherwise it should not be empty</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

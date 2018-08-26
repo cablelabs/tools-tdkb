@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_92</test_case_id>
+    <test_case_id>TC_CMHAL_16</test_case_id>
     <test_objective>To get the download interface from the api cm_hal_Get_HTTP_Download_Interface()</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

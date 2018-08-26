@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_34</test_case_id>
+    <test_case_id>TC_CMHAL_23</test_case_id>
     <test_objective>To check whether the downstream ranging is Complete if the CMStatus is OPERTAIONAL</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

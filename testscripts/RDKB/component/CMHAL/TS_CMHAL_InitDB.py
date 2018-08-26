@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_80</test_case_id>
+    <test_case_id>TC_CMHAL_48</test_case_id>
     <test_objective>To initiate the CM HAL Data base using cm_hal_InitDB()</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

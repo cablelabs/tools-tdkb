@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_16</test_case_id>
+    <test_case_id>TC_CMHAL_30</test_case_id>
     <test_objective>To verify MDD IP mode Override by passing an invalid parameter</test_objective>
     <test_type>Negative</test_type>
     <test_setup>Broadband</test_setup>

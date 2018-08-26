@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_99</test_case_id>
+    <test_case_id>TC_CMHAL_31</test_case_id>
     <test_objective>To get the number of Docsis event log items using the api docsis_GetDocsisEventLogItems()</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

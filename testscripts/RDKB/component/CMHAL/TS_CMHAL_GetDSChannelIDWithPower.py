@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_33</test_case_id>
+    <test_case_id>TC_CMHAL_19</test_case_id>
     <test_objective>To get the channel ID and power of downstream channel. If the channel ID is zero,power should be empty. Otherwise it should not be empty</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

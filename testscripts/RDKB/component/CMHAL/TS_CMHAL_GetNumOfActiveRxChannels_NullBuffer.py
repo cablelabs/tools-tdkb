@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_74</test_case_id>
+    <test_case_id>TC_CMHAL_32</test_case_id>
     <test_objective>To check whether NumberOfActiveRxChannels is getting with a null buffer.</test_objective>
     <test_type>Negative</test_type>
     <test_setup>Broadband</test_setup>

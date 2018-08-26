@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_18</test_case_id>
+    <test_case_id>TC_CMHAL_28</test_case_id>
     <test_objective>To get the Market Info of cable modem  and check that it is not empty and returns a valid value.</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

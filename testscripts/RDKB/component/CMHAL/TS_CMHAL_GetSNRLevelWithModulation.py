@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_73</test_case_id>
+    <test_case_id>TC_CMHAL_36</test_case_id>
     <test_objective>To get the modulation and SNR Levels of downstream channels and check whether it is valid or not.</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

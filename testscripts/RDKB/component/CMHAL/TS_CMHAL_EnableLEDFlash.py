@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_98</test_case_id>
+    <test_case_id>TC_CMHAL_01</test_case_id>
     <test_objective>To test the CM hal api cm_hal_HTTP_LED_Flash()</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

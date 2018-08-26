@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_77</test_case_id>
+    <test_case_id>TC_CMHAL_39</test_case_id>
     <test_objective>To get the upstream data rate and validate it. It should be within 3 Mbit/s to 25 Mbit/s</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

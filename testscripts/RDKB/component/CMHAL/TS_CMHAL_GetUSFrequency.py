@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_72</test_case_id>
+    <test_case_id>TC_CMHAL_43</test_case_id>
     <test_objective>To get and validate the Upstream channel frequencies. The frequency must be within the range of  5 MHz to 85 MHz.</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

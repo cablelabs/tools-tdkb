@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_35</test_case_id>
+    <test_case_id>TC_CMHAL_11</test_case_id>
     <test_objective>To check if the Data reg status of DOCSIS is Complete if the cmstatus is OPERATIONAL</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_70</test_case_id>
+    <test_case_id>TC_CMHAL_10</test_case_id>
     <test_objective>To check whether the ConfigFileName of docsis is getting updated properly</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

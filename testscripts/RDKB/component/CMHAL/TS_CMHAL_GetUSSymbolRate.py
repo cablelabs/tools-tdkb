@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_23</test_case_id>
+    <test_case_id>TC_CMHAL_47</test_case_id>
     <test_objective>To check whether the symbol rate for the upstream channels is within {160,320,640,1280,2560,5120}</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

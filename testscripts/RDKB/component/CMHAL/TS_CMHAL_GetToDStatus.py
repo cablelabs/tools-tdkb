@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_28</test_case_id>
+    <test_case_id>TC_CMHAL_38</test_case_id>
     <test_objective>To check whether the ToD Status is Complete if the CMStatus is OPERTAIONAL</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

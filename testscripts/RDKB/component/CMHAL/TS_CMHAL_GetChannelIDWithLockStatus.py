@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_78</test_case_id>
+    <test_case_id>TC_CMHAL_07</test_case_id>
     <test_objective>To get the channelID and LockStatus. If the LockStatus is  "Not Locked" ChannelID should be zero. Otherwise it should not be zero</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

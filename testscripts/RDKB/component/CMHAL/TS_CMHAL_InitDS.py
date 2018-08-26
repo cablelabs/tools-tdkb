@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_81</test_case_id>
+    <test_case_id>TC_CMHAL_49</test_case_id>
     <test_objective>To initialize the Down Streaming of CM using cm_hal_InitDS()</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

@@ -39,7 +39,7 @@
     <rdk_version>RDKB</rdk_version>
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_COSACM_76</test_case_id>
+    <test_case_id>TC_CMHAL_17</test_case_id>
     <test_objective>To get the downstream Data rate and validate it. It should be within the range of 	6 Mbit/s to 35 Mbit/s</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

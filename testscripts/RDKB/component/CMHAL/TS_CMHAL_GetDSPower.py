@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_21</test_case_id>
+    <test_case_id>TC_CMHAL_22</test_case_id>
     <test_objective>To get the Power Levels of downstream channels and check whether it is valid or not.</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

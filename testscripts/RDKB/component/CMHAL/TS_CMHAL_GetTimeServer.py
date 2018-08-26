@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_19</test_case_id>
+    <test_case_id>TC_CMHAL_37</test_case_id>
     <test_objective>To check whether the Time Server of DHCP is getting updated properly</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>

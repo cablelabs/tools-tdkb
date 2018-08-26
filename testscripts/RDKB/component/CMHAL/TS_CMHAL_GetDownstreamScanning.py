@@ -56,7 +56,7 @@
     <!--  -->
   </rdk_versions>
   <test_cases>
-    <test_case_id>TC_CMHAL_25</test_case_id>
+    <test_case_id>TC_CMHAL_18</test_case_id>
     <test_objective>To retrieve DOCSIS Downstream scanning and to check whether DOCSISDownstreamScanning is Complete if CMStatus is OPERATIONAL</test_objective>
     <test_type>Positive</test_type>
     <test_setup>Broadband</test_setup>
