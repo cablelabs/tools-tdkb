@@ -482,6 +482,183 @@ void CMHAL::CMHAL_SetUSChannelId(IN const Json::Value& req, OUT Json::Value& res
     return;
 }
 
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_SetHTTP_Download_Interface
+ * Description          : This function will invoke the SSP  HAL wrapper to set the HTTP_Download_Interface
+ *
+ * @param [in] req-     : interface - The value of download interface
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_SetHTTP_Download_Interface(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetHTTP_Download_Interface --->Entry \n");
+    int returnValue = 0;
+    unsigned int interface =0;
+    char Details[64] = {'\0'};
+
+    interface =req["interface"].asInt();
+
+    returnValue = ssp_CMHAL_SetHTTP_Download_Interface(interface);
+
+    if(0 == returnValue)
+    {
+        sprintf(Details,"CMHAL_SetHTTP_Download_Interface set interface successfully");
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to set download interface";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetHTTP_Download_Interface failed--->Exit\n");
+        return;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetHTTP_Download_Interface --->Exit\n");
+    return;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_HTTP_Download
+ * Description          :This function will invoke the SSP  HAL wrapper to Download
+ *
+ * @param [in] req-     : None
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_HTTP_Download(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_HTTP_Download --->Entry \n");
+    int returnValue = 0;
+    char Details[64] = {'\0'};
+
+    returnValue = ssp_CMHAL_Download();
+    if(0 == returnValue)
+    {
+        sprintf(Details,"CMHAL_HTTP_Download: success");
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to download ";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_HTTP_Download failed--->Exit\n");
+        return;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_HTTP_Download --->Exit\n");
+    return;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name    : CMHAL_GetHTTP_Download_Url
+ * Description      : This will get the HTTP_Download_Url and filename
+ *
+ * @param [in]      : httpURL : To save the URL
+ *					: filename : To save the filename
+
+ * @param [out] response - filled with SUCCESS or FAILURE based on the return value
+ *
+ *******************************************************************************************/
+void CMHAL::CMHAL_GetHTTP_Download_Url(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_GetHTTP_Download_Url  --->Entry \n");
+    int returnValue = 0;
+    char httpURL[200]={'\0'};
+    char Details[800] = {'\0'};
+    char filename[200]= {'\0'};
+
+    returnValue = ssp_CMHAL_GetHTTP_Download_Url(httpURL,filename);
+
+    if(0 == returnValue)
+    {
+       sprintf(Details,"url is %s, filename is %s",httpURL,filename);
+       response["result"]="SUCCESS";
+       response["details"]=Details;
+    }
+    else
+    {
+       response["result"]="FAILURE";
+       response["details"]="Failed to get the value of URL and file";
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_GetHTTP_Download_Url --->Exit\n");
+    return;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_SetHTTP_Download_Url
+ * Description          : This function will invoke the SSP  HAL wrapper to set the HTTP_Download_Url
+ *
+ * @param [in] req-     : httpURL : The URL of the site from which the file is to be downloaded
+ *                        filename : The name of the file to be downloaded
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_SetHTTP_Download_Url(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetHTTP_Download_Url --->Entry \n");
+    int returnValue = 0;
+    char httpURL[60] = {'\0'};
+    char filename[60] = {'\0'};
+    char Details[64] = {'\0'};
+
+    strcpy(httpURL,req["httpURL"].asCString());
+    strcpy(filename,req["filename"].asCString());
+
+    returnValue = ssp_CMHAL_SetHTTP_Download_Url(httpURL,filename);
+    if(0 == returnValue)
+    {
+        sprintf(Details,"CMHAL_SetHTTP_Download_Url:set function success");
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to set HTTP_Download_Url";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetHTTP_Download_Url failed--->Exit\n");
+        return;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_SetHTTP_Download_Url --->Exit\n");
+    return;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : CMHAL_FWupdateAndFactoryReset
+ * Description          : This function will invoke the SSP  HAL wrapper to FWupdateAndFactoryReset
+ *
+ * @param [in] req-     : None
+ * @param [out] response - filled with SUCCESS or FAILURE based on the output staus of operation
+ *
+ ********************************************************************************************/
+void CMHAL::CMHAL_FWupdateAndFactoryReset(IN const Json::Value& req, OUT Json::Value& response)
+{
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_FWupdateAndFactoryReset --->Entry \n");
+    int returnValue = 0;
+    char Details[64] = {'\0'};
+
+    returnValue = ssp_CMHAL_FWupdateAndFactoryReset();
+    if(0 == returnValue)
+    {
+        sprintf(Details,"CMHAL_FWupdateAndFactoryReset: success");
+        response["result"]="SUCCESS";
+        response["details"]=Details;
+    }
+    else
+    {
+        response["result"]="FAILURE";
+        response["details"]="Failed to FWupdateAndFactoryReset ";
+        DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_FWupdateAndFactoryReset failed--->Exit\n");
+        return;
+    }
+    DEBUG_PRINT(DEBUG_TRACE,"\n CMHAL_FWupdateAndFactoryReset --->Exit\n");
+    return;
+}
+
 /**************************************************************************
  * Function Name        : CreateObject
 * Description  : This function will be used to create a new object for the

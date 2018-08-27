@@ -36,6 +36,11 @@ extern "C"
     int ssp_CMHAL_SetMddIpModeOverride(char* Value);
     int ssp_CMHAL_SetStartFreq(unsigned long int Value);
     int ssp_CMHAL_SetUSChannelId(int Value);
+    int ssp_CMHAL_SetHTTP_Download_Interface(unsigned int interface);
+    int ssp_CMHAL_Download();
+    int ssp_CMHAL_GetHTTP_Download_Url(char* httpURL, char* filename);
+    int ssp_CMHAL_SetHTTP_Download_Url(char* httpURL, char* filename);
+    int ssp_CMHAL_FWupdateAndFactoryReset();
 #ifdef __cplusplus
 }
 #endif

@@ -942,6 +942,11 @@ int ssp_CMHAL_GetParamUlongValue(char* paramName, unsigned long* value)
             return_status =SSP_FAILURE;
         }
     }
+    else if(!(strcmp(paramName, "HTTP_Download_Status")))
+    {
+       *value = cm_hal_Get_HTTP_Download_Status();
+        printf("ssp_CMHAL_GetParamUlongValue:Download status is %d", *value);
+    }
     else
     {
         printf("Invalid parameter name");
@@ -1258,4 +1263,132 @@ int ssp_CMHAL_SetMddIpModeOverride(char* Value)
     //Since the api is a void function, validation of this function is done inside the python scripts
     docsis_SetUSChannelId(Value);
     return SSP_SUCCESS;
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_SetHTTP_Download_Interface
+ * Description          : This function will invoke the hal api of cm_hal_Set_HTTP_Download_Interface()
+ *
+ * @param [in]          : interface - The value of download interface to set
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CMHAL_SetHTTP_Download_Interface(unsigned int interface)
+{
+    int return_status = 0;
+    printf("\nEntering ssp_CMHAL_SetHTTP_Download_Interface function\n\n");
+
+    return_status = cm_hal_Set_HTTP_Download_Interface(interface);
+    printf("\n return_status of cm_hal_Set_HTTP_Download_Interface: %d",return_status);
+
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_CMHAL_SetHTTP_Download_Interface::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_CMHAL_SetHTTP_Download_Interface::Success\n");
+     return SSP_SUCCESS;
+    }
+}
+
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_Download
+ * Description          : This function will invoke the hal api of cm_hal_HTTP_Download() to start the download
+ *
+ * @param [in]          : None
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CMHAL_Download()
+{
+    int return_status = 0;
+    printf("\nEntering ssp_CMHAL_Download function\n\n");
+
+    return_status = cm_hal_HTTP_Download();
+    printf("return_status of cm_hal_HTTP_Download is %d",return_status);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_CMHAL_Download::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_CMHAL_Download::Success\n");
+     return SSP_SUCCESS;
+    }
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_GetHTTP_Download_Url
+ * Description          : This function will invoke the hal api of CM to get the HTTP_Download_Url
+ *
+ * @param [in]          : httpURL : The URL of site from which the file should download
+                          filename: The name of the file which is to be download
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CMHAL_GetHTTP_Download_Url(char* httpURL, char* filename)
+{
+    int return_status = 0;
+    printf("\nEntering ssp_CMHAL_GetHTTP_Download_Url function\n\n");
+    return_status = cm_hal_Get_HTTP_Download_Url(httpURL,filename);
+    printf("Return status of cm_hal_Get_HTTP_Download_Url %d", return_status);
+    if ( return_status != SSP_SUCCESS)
+    {
+        printf("ssp_CMHAL_GetHTTP_Download_Url :Failed to get the HTTP_Download_Url\n");
+        return SSP_FAILURE;
+    }
+    return return_status;
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_SetHTTP_Download_Url
+ * Description          : This function will invoke the hal api of cm_hal_Set_HTTP_Download_Url
+ *
+ * @param [in]          :  Value : The value of HTTP_Download_Url to set
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CMHAL_SetHTTP_Download_Url(char* httpURL, char* filename)
+{
+    int return_status = 0;
+    printf("\nEntering ssp_CMHAL_SetHTTP_Download_Url function\n");
+
+    return_status = cm_hal_Set_HTTP_Download_Url(httpURL,filename);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\nssp_CMHAL_SetHTTP_Download_Url::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_CMHAL_SetHTTP_Download_Url::Success\n");
+     return SSP_SUCCESS;
+    }
+}
+/*******************************************************************************************
+ *
+ * Function Name        : ssp_CMHAL_FWupdateAndFactoryReset
+ * Description          : This function will invoke the hal api of cm_hal_FWupdateAndFactoryReset()
+ *
+ * @param [in]          : None
+ * @param [out]         : return status an integer value 0-success and 1-Failure
+ ********************************************************************************************/
+int ssp_CMHAL_FWupdateAndFactoryReset()
+{
+    int return_status = 0;
+    printf("\nEntering ssp_CMHAL_FWupdateAndFactoryReset function\n\n");
+
+    return_status = cm_hal_FWupdateAndFactoryReset();
+    printf("return_status of cm_hal_FWupdateAndFactoryReset is %d",return_status);
+    if(return_status != SSP_SUCCESS)
+    {
+     printf("\n ssp_CMHAL_FWupdateAndFactoryReset::Failed\n");
+     return SSP_FAILURE;
+    }
+    else
+    {
+     printf("\n ssp_CMHAL_FWupdateAndFactoryReset::Success\n");
+     return SSP_SUCCESS;
+    }
 }

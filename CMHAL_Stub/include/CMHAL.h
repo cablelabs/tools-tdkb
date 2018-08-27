@@ -58,6 +58,11 @@ class CMHAL : public RDKTestStubInterface,  public AbstractServer<CMHAL>
                   this->bindAndAddMethod(Procedure("CMHAL_SetMddIpModeOverride", PARAMS_BY_NAME, JSON_STRING,"value", JSON_STRING,NULL), &CMHAL::CMHAL_SetMddIpModeOverride);
                   this->bindAndAddMethod(Procedure("CMHAL_SetStartFreq", PARAMS_BY_NAME, JSON_STRING,"Value", JSON_INTEGER,NULL), &CMHAL::CMHAL_SetStartFreq);
                   this->bindAndAddMethod(Procedure("CMHAL_SetUSChannelId", PARAMS_BY_NAME, JSON_STRING,"Value", JSON_INTEGER,NULL), &CMHAL::CMHAL_SetUSChannelId);
+		  this->bindAndAddMethod(Procedure("CMHAL_SetHTTP_Download_Interface", PARAMS_BY_NAME, JSON_STRING,"interface", JSON_INTEGER,NULL), &CMHAL::CMHAL_SetHTTP_Download_Interface);
+                  this->bindAndAddMethod(Procedure("CMHAL_HTTP_Download", PARAMS_BY_NAME, JSON_STRING,NULL), &CMHAL::CMHAL_HTTP_Download);
+                  this->bindAndAddMethod(Procedure("CMHAL_GetHTTP_Download_Url", PARAMS_BY_NAME, JSON_STRING,NULL), &CMHAL::CMHAL_GetHTTP_Download_Url);
+                  this->bindAndAddMethod(Procedure("CMHAL_SetHTTP_Download_Url", PARAMS_BY_NAME, JSON_STRING,"httpURL", JSON_STRING,"filename", JSON_STRING,NULL), &CMHAL::CMHAL_SetHTTP_Download_Url);
+                  this->bindAndAddMethod(Procedure("CMHAL_FWupdateAndFactoryReset", PARAMS_BY_NAME, JSON_STRING,NULL), &CMHAL::CMHAL_FWupdateAndFactoryReset);
 		}
 
         /*inherited functions*/
@@ -78,5 +83,10 @@ class CMHAL : public RDKTestStubInterface,  public AbstractServer<CMHAL>
         void CMHAL_SetMddIpModeOverride(IN const Json::Value& req, OUT Json::Value& response);
         void CMHAL_SetStartFreq(IN const Json::Value& req, OUT Json::Value& response);
         void CMHAL_SetUSChannelId(IN const Json::Value& req, OUT Json::Value& response);
+	void CMHAL_SetHTTP_Download_Interface(IN const Json::Value& req, OUT Json::Value& response);
+        void CMHAL_HTTP_Download(IN const Json::Value& req, OUT Json::Value& response);
+        void CMHAL_GetHTTP_Download_Url(IN const Json::Value& req, OUT Json::Value& response);
+        void CMHAL_SetHTTP_Download_Url(IN const Json::Value& req, OUT Json::Value& response);
+        void CMHAL_FWupdateAndFactoryReset(IN const Json::Value& req, OUT Json::Value& response);
 };
 #endif //__CMHAL_STUB_H__
